@@ -7,24 +7,20 @@ import {
 
 const faqs = [
   {
+    q: "Can I keep my current phone number?",
+    a: "Yes. Simply forward your existing business phone number.",
+  },
+  {
     q: "Does the AI sound natural?",
-    a: "Yes. Our AI uses advanced voice technology to provide natural, human-like conversations.",
+    a: "Yes. Gigahoo uses advanced voice AI technology.",
   },
   {
     q: "Can customers speak different languages?",
-    a: "Yes. The AI can automatically communicate in multiple languages.",
-  },
-  {
-    q: "Can I keep my existing phone number?",
-    a: "Yes. Simply forward your existing business number.",
-  },
-  {
-    q: "What happens if I exceed my included minutes?",
-    a: "Additional minutes are billed separately.",
+    a: "Yes. Gigahoo supports multiple languages.",
   },
   {
     q: "How long does setup take?",
-    a: "Most businesses are up and running within a day.",
+    a: "Most businesses can be set up within a day.",
   },
 ]
 

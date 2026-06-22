@@ -3,10 +3,10 @@ import { Check, PhoneCall } from "lucide-react"
 import Link from "next/link"
 
 const bullets = [
-  "Answers every call",
-  "Multilingual support",
-  "Customer intake",
-  "Works 24/7",
+  "Answers calls 24/7",
+  "Supports English, French, Mandarin, Cantonese, Spanish, Japanese, Hindi, Korean, Tagalog, and more",
+  "Captures customer information automatically",
+  "Built for home-service businesses",
 ]
 
 export function Hero() {
@@ -21,12 +21,11 @@ export function Hero() {
             </span>
 
             <h1 className="mt-6 text-pretty text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-              Never Miss Another Customer Call!
+              Never Miss Another Customer Call
             </h1>
 
             <p className="mt-5 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground">
-              Your AI receptionist answers calls 24/7, collects customer
-              information, and speaks multiple languages.
+              Gigahoo answers your business calls 24/7, collects customer information, and speaks multiple languages.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">

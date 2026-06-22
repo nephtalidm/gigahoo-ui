@@ -51,6 +51,13 @@ type FeatureFormState = {
   distanceKm: number
   answerQuestions: boolean
   servicesInfo: string
+  serviceAreas: string
+  businessHours: string
+  emergencyAvailability: string
+  pricingPolicy: string
+  warrantyPolicy: string
+  frequentlyAskedQuestions: string
+  additionalBusinessInfo: string
   quoteInspection: boolean
   pricePerKm: string
 }
@@ -61,6 +68,13 @@ function toFormState(s: FeatureSettingsData): FeatureFormState {
     distanceKm: s.distanceKm,
     answerQuestions: s.answerQuestions,
     servicesInfo: s.servicesInfo ?? "",
+    serviceAreas: s.serviceAreas ?? "",
+    businessHours: s.businessHours ?? "",
+    emergencyAvailability: s.emergencyAvailability ?? "",
+    pricingPolicy: s.pricingPolicy ?? "",
+    warrantyPolicy: s.warrantyPolicy ?? "",
+    frequentlyAskedQuestions: s.frequentlyAskedQuestions ?? "",
+    additionalBusinessInfo: s.additionalBusinessInfo ?? "",
     quoteInspection: s.quoteInspection,
     pricePerKm: s.pricePerKm > 0 ? String(s.pricePerKm) : "",
   }
@@ -71,6 +85,13 @@ const defaultState: FeatureFormState = {
   distanceKm: 50,
   answerQuestions: false,
   servicesInfo: "",
+  serviceAreas: "",
+  businessHours: "",
+  emergencyAvailability: "",
+  pricingPolicy: "",
+  warrantyPolicy: "",
+  frequentlyAskedQuestions: "",
+  additionalBusinessInfo: "",
   quoteInspection: false,
   pricePerKm: "",
 }
@@ -109,6 +130,13 @@ function FeaturesPanel({ initial }: { initial: FeatureSettingsData | null }) {
       await updateFeatureSettings({
         answerQuestions: settings.answerQuestions,
         servicesInfo: settings.servicesInfo || null,
+        serviceAreas: settings.serviceAreas || null,
+        businessHours: settings.businessHours || null,
+        emergencyAvailability: settings.emergencyAvailability || null,
+        pricingPolicy: settings.pricingPolicy || null,
+        warrantyPolicy: settings.warrantyPolicy || null,
+        frequentlyAskedQuestions: settings.frequentlyAskedQuestions || null,
+        additionalBusinessInfo: settings.additionalBusinessInfo || null,
         serveArea: settings.serveArea,
         distanceKm: settings.distanceKm,
         quoteInspection: settings.quoteInspection,
@@ -150,15 +178,91 @@ function FeaturesPanel({ initial }: { initial: FeatureSettingsData | null }) {
         enabled={settings.answerQuestions}
         onToggle={(value) => update("answerQuestions", value)}
       >
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="services-info">Service information</Label>
-          <Textarea
-            id="services-info"
-            rows={4}
-            value={settings.servicesInfo}
-            onChange={(e) => update("servicesInfo", e.target.value)}
-            placeholder="Describe your services, what's included, typical turnaround times, and anything else customers ask about."
-          />
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="services-info">Services Offered</Label>
+            <Textarea
+              id="services-info"
+              rows={4}
+              value={settings.servicesInfo}
+              onChange={(e) => update("servicesInfo", e.target.value)}
+              placeholder="Describe your services, what's included, typical turnaround times, and anything else customers ask about."
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="service-areas">Service Areas</Label>
+            <Input
+              id="service-areas"
+              value={settings.serviceAreas}
+              onChange={(e) => update("serviceAreas", e.target.value)}
+              placeholder="e.g., San Francisco Bay Area, Downtown Seattle"
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="business-hours-feature">Business Hours</Label>
+            <Input
+              id="business-hours-feature"
+              value={settings.businessHours}
+              onChange={(e) => update("businessHours", e.target.value)}
+              placeholder="e.g., Mon-Fri 9am-5pm, Sat 10am-2pm"
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="emergency-availability">Emergency Availability</Label>
+            <Input
+              id="emergency-availability"
+              value={settings.emergencyAvailability}
+              onChange={(e) => update("emergencyAvailability", e.target.value)}
+              placeholder="e.g., 24/7 emergency service available"
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="pricing-policy">Pricing Policy</Label>
+            <Textarea
+              id="pricing-policy"
+              rows={3}
+              value={settings.pricingPolicy}
+              onChange={(e) => update("pricingPolicy", e.target.value)}
+              placeholder="Describe your pricing structure, estimates, payment terms, etc."
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="warranty-policy">Warranty Policy</Label>
+            <Textarea
+              id="warranty-policy"
+              rows={3}
+              value={settings.warrantyPolicy}
+              onChange={(e) => update("warrantyPolicy", e.target.value)}
+              placeholder="Describe your warranty terms, guarantees, etc."
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="faq">Frequently Asked Questions</Label>
+            <Textarea
+              id="faq"
+              rows={5}
+              value={settings.frequentlyAskedQuestions}
+              onChange={(e) => update("frequentlyAskedQuestions", e.target.value)}
+              placeholder="List common questions and answers, one per line. Example:&#10;Q: Do you offer free estimates?&#10;A: Yes, we provide free estimates for all jobs."
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="additional-info">Additional Business Information</Label>
+            <Textarea
+              id="additional-info"
+              rows={4}
+              value={settings.additionalBusinessInfo}
+              onChange={(e) => update("additionalBusinessInfo", e.target.value)}
+              placeholder="Any other information customers might ask about."
+            />
+          </div>
         </div>
       </FeatureCard>
 

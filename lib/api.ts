@@ -187,6 +187,8 @@ export function updateAccount(data: {
   phoneCountryCode: string;
   email: string;
   websiteUrl: string | null;
+  serviceArea: string | null;
+  businessHours: string | null;
   addressLine1: string | null;
   addressLine2: string | null;
   city: string | null;
@@ -314,6 +316,13 @@ export function createBillingPortal() {
 export interface FeatureSettings {
   answerQuestions: boolean;
   servicesInfo: string | null;
+  serviceAreas: string | null;
+  businessHours: string | null;
+  emergencyAvailability: string | null;
+  pricingPolicy: string | null;
+  warrantyPolicy: string | null;
+  frequentlyAskedQuestions: string | null;
+  additionalBusinessInfo: string | null;
   serveArea: boolean;
   distanceKm: number;
   quoteInspection: boolean;
