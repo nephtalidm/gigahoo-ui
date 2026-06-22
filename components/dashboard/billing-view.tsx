@@ -5,66 +5,64 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
+import { useToast } from "@/components/ui/toaster"
 import {
-  account,
   changePlan,
-  updatePaymentMethod,
-  openStripeCustomerPortal,
-  PLAN_MINUTES,
-  type Plan,
-} from "@/lib/data"
-import { Check, CreditCard, ArrowUpRight, Download } from "lucide-react"
+  createBillingPortal,
+  type BillingSummary,
+  type PlanData,
+  type InvoiceData,
+  type PaymentMethodData,
+} from "@/lib/api"
+import { formatDate } from "@/lib/data"
+import { Check, CreditCard, ArrowUpRight, Download, Loader2 } from "lucide-react"
 
-const planDetails: {
-  name: Plan
-  price: string
-  description: string
-  features: string[]
-}[] = [
-  {
-    name: "Free",
-    price: "$0",
-    description: "Everything you need to start answering calls.",
-    features: [
-      "24/7 AI receptionist",
-      "Multilingual support",
-      "Customer intake",
-      "Call summaries",
-      "25 included minutes",
-    ],
-  },
-  {
-    name: "Starter",
-    price: "$49",
-    description: "Everything in Free, plus:",
-    features: ["250 included minutes"],
-  },
-  {
-    name: "Business",
-    price: "$99",
-    description: "Everything in Starter, plus:",
-    features: ["Answers questions about services", "1,000 included minutes"],
-  },
-]
+const planOrder = ["Free", "Starter", "Business"]
 
-const billingHistory = [
-  { id: "inv-0006", date: "Jun 1, 2026", amount: "$99.00", status: "Paid" },
-  { id: "inv-0005", date: "May 1, 2026", amount: "$99.00", status: "Paid" },
-  { id: "inv-0004", date: "Apr 1, 2026", amount: "$99.00", status: "Paid" },
-  { id: "inv-0003", date: "Mar 1, 2026", amount: "$49.00", status: "Paid" },
-]
+export function BillingView({
+  summary,
+  plans,
+  invoices,
+  paymentMethod,
+}: {
+  summary: BillingSummary | null
+  plans: PlanData[]
+  invoices: InvoiceData[]
+  paymentMethod: PaymentMethodData | null
+}) {
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null)
+  const [portalLoading, setPortalLoading] = useState(false)
+  const { toast } = useToast()
 
-const planOrder: Plan[] = ["Free", "Starter", "Business"]
+  const currentPlan = summary?.plan ?? "Free"
+  const includedMinutes = summary?.includedMinutes ?? 25
+  const minutesUsed = summary?.minutesUsed ?? 0
+  const remaining = summary?.remainingMinutes ?? Math.max(includedMinutes - minutesUsed, 0)
+  const usagePct = summary?.usagePercent ?? 0
+  const billingPeriod = summary?.billingPeriod ?? ""
 
-export function BillingView() {
-  const [currentPlan, setCurrentPlan] = useState<Plan>(account.plan)
-  const includedMinutes = PLAN_MINUTES[currentPlan]
-  const remaining = Math.max(includedMinutes - account.minutesUsed, 0)
-  const usagePct = Math.min(Math.round((account.minutesUsed / includedMinutes) * 100), 100)
+  async function handleChangePlan(plan: PlanData) {
+    setLoadingPlan(plan.name)
+    try {
+      await changePlan(plan.id)
+      window.location.reload()
+    } catch {
+      toast({ title: "Failed to change plan", description: "Please try again.", variant: "destructive" })
+    } finally {
+      setLoadingPlan(null)
+    }
+  }
 
-  function handleChangePlan(plan: Plan) {
-    setCurrentPlan(plan)
-    changePlan(plan)
+  async function handleOpenPortal() {
+    setPortalLoading(true)
+    try {
+      const { url } = await createBillingPortal()
+      window.open(url, "_blank")
+    } catch {
+      toast({ title: "Failed to open billing portal", description: "Please try again.", variant: "destructive" })
+    } finally {
+      setPortalLoading(false)
+    }
   }
 
   return (
@@ -81,7 +79,7 @@ export function BillingView() {
               </Badge>
             </div>
           </div>
-          <p className="text-sm text-muted-foreground">Billing cycle: {account.billingPeriod}</p>
+          <p className="text-sm text-muted-foreground">Billing cycle: {billingPeriod}</p>
         </div>
 
         <Separator className="my-5" />
@@ -89,7 +87,7 @@ export function BillingView() {
         <div className="grid gap-4 sm:grid-cols-3">
           <div>
             <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Minutes Used</p>
-            <p className="mt-1 text-xl font-bold text-foreground">{account.minutesUsed.toLocaleString()}</p>
+            <p className="mt-1 text-xl font-bold text-foreground">{minutesUsed.toLocaleString()}</p>
           </div>
           <div>
             <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Included Minutes</p>
@@ -113,9 +111,10 @@ export function BillingView() {
       <div>
         <h2 className="text-lg font-semibold text-foreground">Choose your plan</h2>
         <div className="mt-4 grid gap-6 lg:grid-cols-3">
-          {planDetails.map((plan) => {
+          {plans.map((plan) => {
             const isCurrent = plan.name === currentPlan
             const isUpgrade = planOrder.indexOf(plan.name) > planOrder.indexOf(currentPlan)
+            const isLoading = loadingPlan === plan.name
             return (
               <div
                 key={plan.name}
@@ -131,10 +130,11 @@ export function BillingView() {
                 )}
                 <h3 className="text-lg font-semibold text-foreground">{plan.name}</h3>
                 <div className="mt-3 flex items-baseline gap-1">
-                  <span className="text-4xl font-bold tracking-tight text-foreground">{plan.price}</span>
+                  <span className="text-4xl font-bold tracking-tight text-foreground">
+                    ${plan.priceMonthly}
+                  </span>
                   <span className="text-sm text-muted-foreground">/month</span>
                 </div>
-                <p className="mt-3 text-sm text-muted-foreground">{plan.description}</p>
                 <ul className="mt-6 flex-1 space-y-3">
                   {plan.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-2.5 text-sm text-foreground">
@@ -146,17 +146,21 @@ export function BillingView() {
                   ))}
                 </ul>
                 <Button
-                  onClick={() => handleChangePlan(plan.name)}
-                  disabled={isCurrent}
+                  onClick={() => handleChangePlan(plan)}
+                  disabled={isCurrent || isLoading}
                   variant={isCurrent ? "outline" : isUpgrade ? "default" : "outline"}
                   size="lg"
                   className="mt-8 w-full"
                 >
+                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   {isCurrent ? "Current plan" : isUpgrade ? `Upgrade to ${plan.name}` : `Switch to ${plan.name}`}
                 </Button>
               </div>
             )
           })}
+          {plans.length === 0 && (
+            <p className="col-span-3 text-center text-sm text-muted-foreground">No plans available.</p>
+          )}
         </div>
       </div>
 
@@ -164,50 +168,77 @@ export function BillingView() {
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
           <h2 className="font-semibold text-foreground">Payment Method</h2>
-          <div className="mt-4 flex items-center gap-3 rounded-xl border border-border bg-secondary/30 p-4">
-            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <CreditCard className="h-5 w-5" />
-            </span>
-            <div className="flex-1">
-              <p className="text-sm font-medium text-foreground">Visa ending in 4242</p>
-              <p className="text-xs text-muted-foreground">Expires 09/2028</p>
+          {paymentMethod ? (
+            <div className="mt-4 flex items-center gap-3 rounded-xl border border-border bg-secondary/30 p-4">
+              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <CreditCard className="h-5 w-5" />
+              </span>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-foreground">
+                  {paymentMethod.brand} ending in {paymentMethod.last4}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Expires {String(paymentMethod.expMonth).padStart(2, "0")}/{paymentMethod.expYear}
+                </p>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="mt-4 rounded-xl border border-dashed border-border p-4 text-center">
+              <p className="text-sm text-muted-foreground">No payment method on file</p>
+            </div>
+          )}
           <div className="mt-4 flex flex-wrap gap-2">
-            <Button variant="outline" onClick={updatePaymentMethod}>
-              Update Payment Method
-            </Button>
-            <Button variant="ghost" className="gap-1.5" onClick={openStripeCustomerPortal}>
+            <Button variant="outline" onClick={handleOpenPortal} disabled={portalLoading}>
+              {portalLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Manage Subscription
-              <ArrowUpRight className="h-4 w-4" />
             </Button>
           </div>
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
           <h2 className="font-semibold text-foreground">Billing History</h2>
-          <ul className="mt-4 divide-y divide-border">
-            {billingHistory.map((inv) => (
-              <li key={inv.id} className="flex items-center justify-between py-3">
-                <div>
-                  <p className="text-sm font-medium text-foreground">{inv.date}</p>
-                  <p className="text-xs text-muted-foreground">{inv.id}</p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">
-                    {inv.status}
-                  </Badge>
-                  <span className="text-sm font-medium text-foreground">{inv.amount}</span>
-                  <button
-                    aria-label={`Download invoice ${inv.id}`}
-                    className="text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    <Download className="h-4 w-4" />
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
+          {invoices.length > 0 ? (
+            <ul className="mt-4 divide-y divide-border">
+              {invoices.map((inv) => (
+                <li key={inv.id} className="flex items-center justify-between py-3">
+                  <div>
+                    <p className="text-sm font-medium text-foreground">{formatDate(inv.dateUtc)}</p>
+                    <p className="text-xs text-muted-foreground">{inv.invoiceNumber}</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Badge
+                      variant="secondary"
+                      className={cn(
+                        inv.status === "paid"
+                          ? "bg-emerald-500/10 text-emerald-600"
+                          : inv.status === "open"
+                            ? "bg-amber-500/10 text-amber-600"
+                            : "bg-destructive/10 text-destructive",
+                      )}
+                    >
+                      {inv.status}
+                    </Badge>
+                    <span className="text-sm font-medium text-foreground">
+                      {inv.currency} {inv.amount.toFixed(2)}
+                    </span>
+                    {inv.pdfUrl && (
+                      <a
+                        href={inv.pdfUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Download invoice ${inv.invoiceNumber}`}
+                        className="text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        <Download className="h-4 w-4" />
+                      </a>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-4 text-sm text-muted-foreground">No invoices yet.</p>
+          )}
         </div>
       </div>
     </div>

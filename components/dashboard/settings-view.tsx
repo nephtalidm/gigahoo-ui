@@ -12,21 +12,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { account, businessCategories, countries, regionsByCountry } from "@/lib/data"
-
-function Flag({ code }: { code: string }) {
-  const cc = code.toLowerCase()
-  return (
-    <img
-      src={`https://flagcdn.com/${cc}.svg`}
-      alt=""
-      aria-hidden="true"
-      width={20}
-      height={15}
-      className="h-[15px] w-[20px] shrink-0 rounded-[2px] object-cover"
-    />
-  )
-}
+import { updateAccount, type AccountData, type CountryData, type RegionData } from "@/lib/api"
+import { businessCategories } from "@/lib/data"
+import { Loader2, CheckCircle2 } from "lucide-react"
 
 function Field({
   label,
@@ -45,41 +33,96 @@ function Field({
   )
 }
 
-export function SettingsView() {
+export function SettingsView({
+  account,
+  countries,
+  regions,
+  onCountryChange,
+}: {
+  account: AccountData
+  countries: CountryData[]
+  regions: RegionData[]
+  onCountryChange: (countryId: number) => void
+}) {
+  const [businessName, setBusinessName] = useState(account.businessName)
+  const [categoryId, setCategoryId] = useState(String(account.categoryId))
+  const [businessPhone, setBusinessPhone] = useState(account.businessPhone)
   const [phoneCountryCode, setPhoneCountryCode] = useState(account.phoneCountryCode)
-  const [country, setCountry] = useState(account.country)
-  const [region, setRegion] = useState(account.region)
+  const [email, setEmail] = useState(account.email)
+  const [websiteUrl, setWebsiteUrl] = useState(account.websiteUrl ?? "")
+  const [addressLine1, setAddressLine1] = useState(account.addressLine1 ?? "")
+  const [addressLine2, setAddressLine2] = useState(account.addressLine2 ?? "")
+  const [city, setCity] = useState(account.city ?? "")
+  const [regionId, setRegionId] = useState(account.region ? String(account.region) : "")
+  const [regionCustom, setRegionCustom] = useState(account.region ?? "")
+  const [postalCode, setPostalCode] = useState(account.postalCode ?? "")
+  const [countryId, setCountryId] = useState(String(account.countryId))
+  const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const regionOptions = regionsByCountry[country]
-  const selectedPhoneCountry = countries.find((c) => c.code === phoneCountryCode)
-  const selectedCountry = countries.find((c) => c.name === country)
-  const phoneCountries = countries.filter((c) => c.code !== "XX")
+  const selectedCountry = countries.find((c) => String(c.id) === countryId)
+  const hasRegions = regions.length > 0
 
   function handleCountryChange(value: string) {
-    setCountry(value)
-    // Reset the region when switching between countries since the options differ.
-    setRegion("")
+    setCountryId(value)
+    setRegionId("")
+    setRegionCustom("")
+    const id = Number(value)
+    if (!isNaN(id)) onCountryChange(id)
+  }
+
+  async function handleSave() {
+    setSaving(true)
+    setError(null)
+    setSaved(false)
+    try {
+      await updateAccount({
+        businessName,
+        categoryId: Number(categoryId),
+        businessPhone,
+        phoneCountryCode,
+        email,
+        websiteUrl: websiteUrl || null,
+        addressLine1: addressLine1 || null,
+        addressLine2: addressLine2 || null,
+        city: city || null,
+        regionId: hasRegions && regionId ? Number(regionId) : null,
+        regionCustom: !hasRegions && regionCustom ? regionCustom : null,
+        postalCode: postalCode || null,
+        countryId: Number(countryId),
+      })
+      setSaved(true)
+      setTimeout(() => setSaved(false), 3000)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to save changes")
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Business information */}
       <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
         <h2 className="font-semibold text-foreground">General Business Information</h2>
         <p className="text-sm text-muted-foreground">Update the details your AI receptionist uses on calls.</p>
         <Separator className="my-6" />
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Business Name" htmlFor="businessName">
-            <Input id="businessName" defaultValue={account.businessName} />
+            <Input
+              id="businessName"
+              value={businessName}
+              onChange={(e) => setBusinessName(e.target.value)}
+            />
           </Field>
           <Field label="Business Category" htmlFor="category">
-            <Select defaultValue={account.category}>
+            <Select value={categoryId} onValueChange={(v) => v && setCategoryId(v)}>
               <SelectTrigger id="category">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {businessCategories.map((cat) => (
-                  <SelectItem key={cat} value={cat}>
+                {businessCategories.map((cat, i) => (
+                  <SelectItem key={cat} value={String(i + 1)}>
                     {cat}
                   </SelectItem>
                 ))}
@@ -88,45 +131,47 @@ export function SettingsView() {
           </Field>
           <Field label="Business Phone Number" htmlFor="businessPhone">
             <div className="flex gap-2">
-              <Select value={phoneCountryCode} onValueChange={setPhoneCountryCode}>
+              <Select value={phoneCountryCode} onValueChange={(v) => v && setPhoneCountryCode(v)}>
                 <SelectTrigger className="w-[7.5rem] shrink-0" aria-label="Phone country code">
-                  <SelectValue>
-                    <span className="flex items-center gap-2">
-                      {selectedPhoneCountry && <Flag code={selectedPhoneCountry.code} />}
-                      <span>{selectedPhoneCountry?.dialCode}</span>
-                    </span>
-                  </SelectValue>
+                  <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {phoneCountries.map((c) => (
+                  {countries.filter((c) => c.code !== "XX").map((c) => (
                     <SelectItem key={c.code} value={c.code}>
-                      <span className="flex items-center gap-2">
-                        <Flag code={c.code} />
-                        <span>{c.name}</span>
-                        <span className="text-muted-foreground">{c.dialCode}</span>
-                      </span>
+                      <span>{c.name} ({c.dialCode})</span>
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
-              <Input id="businessPhone" className="flex-1" defaultValue={account.businessPhone} />
+              <Input
+                id="businessPhone"
+                className="flex-1"
+                value={businessPhone}
+                onChange={(e) => setBusinessPhone(e.target.value)}
+              />
             </div>
           </Field>
           <Field label="Email Address" htmlFor="email">
-            <Input id="email" type="email" defaultValue={account.email} />
+            <Input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </Field>
           <Field label="Website URL" htmlFor="websiteUrl">
             <Input
               id="websiteUrl"
               type="url"
-              defaultValue={account.websiteUrl}
+              value={websiteUrl}
+              onChange={(e) => setWebsiteUrl(e.target.value)}
               placeholder="https://yourbusiness.com"
             />
           </Field>
           <Field label="Forwarding Phone Number" htmlFor="forwardingPhone">
             <Input
               id="forwardingPhone"
-              value={account.forwardingPhone}
+              value={account.forwardingPhone ?? "—"}
               readOnly
               disabled
               aria-describedby="forwardingPhoneHint"
@@ -149,7 +194,8 @@ export function SettingsView() {
             <Field label="Address Line 1" htmlFor="addressLine1">
               <Input
                 id="addressLine1"
-                defaultValue={account.addressLine1}
+                value={addressLine1}
+                onChange={(e) => setAddressLine1(e.target.value)}
                 placeholder="Street address, P.O. box"
                 autoComplete="address-line1"
               />
@@ -159,25 +205,31 @@ export function SettingsView() {
             <Field label="Address Line 2" htmlFor="addressLine2">
               <Input
                 id="addressLine2"
-                defaultValue={account.addressLine2}
+                value={addressLine2}
+                onChange={(e) => setAddressLine2(e.target.value)}
                 placeholder="Apartment, suite, unit, building, floor (optional)"
                 autoComplete="address-line2"
               />
             </Field>
           </div>
           <Field label="City / Town" htmlFor="city">
-            <Input id="city" defaultValue={account.city} autoComplete="address-level2" />
+            <Input
+              id="city"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              autoComplete="address-level2"
+            />
           </Field>
           <Field label="State / Province / Region" htmlFor="region">
-            {regionOptions ? (
-              <Select value={region} onValueChange={setRegion}>
+            {hasRegions ? (
+              <Select value={regionId} onValueChange={(v) => v && setRegionId(v)}>
                 <SelectTrigger id="region">
                   <SelectValue placeholder="Select a state/province" />
                 </SelectTrigger>
                 <SelectContent>
-                  {regionOptions.map((r) => (
-                    <SelectItem key={r} value={r}>
-                      {r}
+                  {regions.map((r) => (
+                    <SelectItem key={r.id} value={String(r.id)}>
+                      {r.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -185,41 +237,49 @@ export function SettingsView() {
             ) : (
               <Input
                 id="region"
-                value={region}
-                onChange={(e) => setRegion(e.target.value)}
+                value={regionCustom}
+                onChange={(e) => setRegionCustom(e.target.value)}
                 placeholder="State / Province / Region"
                 autoComplete="address-level1"
               />
             )}
           </Field>
           <Field label="Postal / ZIP Code" htmlFor="postalCode">
-            <Input id="postalCode" defaultValue={account.postalCode} autoComplete="postal-code" />
+            <Input
+              id="postalCode"
+              value={postalCode}
+              onChange={(e) => setPostalCode(e.target.value)}
+              autoComplete="postal-code"
+            />
           </Field>
           <Field label="Country" htmlFor="country">
-            <Select value={country} onValueChange={handleCountryChange}>
+            <Select value={countryId} onValueChange={(v) => v && handleCountryChange(v)}>
               <SelectTrigger id="country">
-                <SelectValue>
-                  <span className="flex items-center gap-2">
-                    {selectedCountry && selectedCountry.code !== "XX" && <Flag code={selectedCountry.code} />}
-                    <span>{selectedCountry?.name}</span>
-                  </span>
-                </SelectValue>
+                <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 {countries.map((c) => (
-                  <SelectItem key={c.code} value={c.name}>
-                    <span className="flex items-center gap-2">
-                      {c.code !== "XX" && <Flag code={c.code} />}
-                      <span>{c.name}</span>
-                    </span>
+                  <SelectItem key={c.id} value={String(c.id)}>
+                    {c.name}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </Field>
         </div>
-        <div className="mt-6 flex justify-end">
-          <Button>Save Changes</Button>
+
+        <div className="mt-6 flex items-center justify-end gap-3">
+          {saved && (
+            <span className="flex items-center gap-1.5 text-sm text-emerald-600">
+              <CheckCircle2 className="h-4 w-4" />
+              Saved
+            </span>
+          )}
+          {error && <span className="text-sm text-destructive">{error}</span>}
+          <Button onClick={handleSave} disabled={saving}>
+            {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Save Changes
+          </Button>
         </div>
       </div>
     </div>

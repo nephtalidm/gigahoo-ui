@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { Suspense } from "react"
 import { BrandLogo } from "@/components/brand-logo"
 import { AuthMethods } from "@/components/auth-methods"
 
@@ -25,7 +26,9 @@ export default function LoginPage() {
           </div>
 
           <div className="mt-6">
-            <AuthMethods />
+            <Suspense>
+              <AuthMethods />
+            </Suspense>
           </div>
         </div>
 

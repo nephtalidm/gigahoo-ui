@@ -8,14 +8,52 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Mail, Phone, MapPin, CheckCircle2 } from "lucide-react"
+import { submitContact } from "@/lib/api"
+import { Mail, Phone, MapPin, CheckCircle2, Loader2 } from "lucide-react"
+import { z } from "zod"
+
+const contactSchema = z.object({
+  name: z.string().min(1, "Name is required").max(100),
+  email: z.string().email("Please enter a valid email address").max(254),
+  subject: z.string().min(1, "Subject is required").max(200),
+  message: z.string().min(1, "Message is required").max(5000),
+})
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setSubmitted(true)
+    setLoading(true)
+    setError(null)
+
+    const form = e.currentTarget
+    const formData = new FormData(form)
+
+    const data = {
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      subject: formData.get("subject") as string,
+      message: formData.get("message") as string,
+    }
+
+    const result = contactSchema.safeParse(data)
+    if (!result.success) {
+      setError(result.error.issues[0].message)
+      setLoading(false)
+      return
+    }
+
+    try {
+      await submitContact(result.data)
+      setSubmitted(true)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to send message. Please try again.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -68,6 +106,9 @@ export default function ContactPage() {
                   onSubmit={handleSubmit}
                   className="flex flex-col gap-5 rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8"
                 >
+                  {error && (
+                    <p className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">{error}</p>
+                  )}
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div className="flex flex-col gap-2">
                       <Label htmlFor="name">Name</Label>
@@ -86,7 +127,8 @@ export default function ContactPage() {
                     <Label htmlFor="message">Message</Label>
                     <Textarea id="message" name="message" rows={5} required placeholder="Tell us a bit more..." />
                   </div>
-                  <Button type="submit" className="w-full sm:w-auto sm:self-start">
+                  <Button type="submit" className="w-full sm:w-auto sm:self-start" disabled={loading}>
+                    {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                     Send message
                   </Button>
                 </form>

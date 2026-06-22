@@ -2,7 +2,7 @@
 name: frontend-to-backend
 description: Generate a production-ready backend (SQL schema + API) by exhaustively extracting the data model from an existing frontend codebase.
 source: auto-skill
-extracted_at: '2026-06-22T02:44:44.976Z'
+extracted_at: '2026-06-22T03:18:06.704Z'
 ---
 
 # Frontend-to-Backend Generation

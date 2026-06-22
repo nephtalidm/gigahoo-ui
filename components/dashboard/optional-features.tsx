@@ -8,8 +8,9 @@ import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
 import { Slider } from "@/components/ui/slider"
 import { Input } from "@/components/ui/input"
-import { Plus, Minus } from "lucide-react"
+import { Plus, Minus, Loader2, CheckCircle2 } from "lucide-react"
 import { UpgradeCard } from "@/components/dashboard/upgrade-card"
+import { updateFeatureSettings, type FeatureSettings as FeatureSettingsData } from "@/lib/api"
 import type { Plan } from "@/lib/data"
 
 function FeatureCard({
@@ -45,34 +46,48 @@ function FeatureCard({
   )
 }
 
-type FeatureSettings = {
+type FeatureFormState = {
   serveArea: boolean
-  distance: number
+  distanceKm: number
   answerQuestions: boolean
   servicesInfo: string
   quoteInspection: boolean
   pricePerKm: string
 }
 
-const initialSettings: FeatureSettings = {
-  serveArea: true,
-  distance: 50,
+function toFormState(s: FeatureSettingsData): FeatureFormState {
+  return {
+    serveArea: s.serveArea,
+    distanceKm: s.distanceKm,
+    answerQuestions: s.answerQuestions,
+    servicesInfo: s.servicesInfo ?? "",
+    quoteInspection: s.quoteInspection,
+    pricePerKm: s.pricePerKm > 0 ? String(s.pricePerKm) : "",
+  }
+}
+
+const defaultState: FeatureFormState = {
+  serveArea: false,
+  distanceKm: 50,
   answerQuestions: false,
   servicesInfo: "",
   quoteInspection: false,
   pricePerKm: "",
 }
 
-function FeaturesPanel() {
-  const [savedSettings, setSavedSettings] = useState<FeatureSettings>(initialSettings)
-  const [settings, setSettings] = useState<FeatureSettings>(initialSettings)
+function FeaturesPanel({ initial }: { initial: FeatureSettingsData | null }) {
+  const init = initial ? toFormState(initial) : defaultState
+  const [savedSettings, setSavedSettings] = useState<FeatureFormState>(init)
+  const [settings, setSettings] = useState<FeatureFormState>(init)
+  const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const isDirty = useMemo(
     () => JSON.stringify(settings) !== JSON.stringify(savedSettings),
     [settings, savedSettings],
   )
 
-  // Warn the customer if they try to leave with unsaved changes.
   useEffect(() => {
     if (!isDirty) return
     function handleBeforeUnload(e: BeforeUnloadEvent) {
@@ -83,12 +98,30 @@ function FeaturesPanel() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload)
   }, [isDirty])
 
-  function update<K extends keyof FeatureSettings>(key: K, value: FeatureSettings[K]) {
+  function update<K extends keyof FeatureFormState>(key: K, value: FeatureFormState[K]) {
     setSettings((prev) => ({ ...prev, [key]: value }))
   }
 
-  function handleSave() {
-    setSavedSettings(settings)
+  async function handleSave() {
+    setSaving(true)
+    setError(null)
+    try {
+      await updateFeatureSettings({
+        answerQuestions: settings.answerQuestions,
+        servicesInfo: settings.servicesInfo || null,
+        serveArea: settings.serveArea,
+        distanceKm: settings.distanceKm,
+        quoteInspection: settings.quoteInspection,
+        pricePerKm: settings.pricePerKm ? parseFloat(settings.pricePerKm) : 0,
+      })
+      setSavedSettings(settings)
+      setSaved(true)
+      setTimeout(() => setSaved(false), 3000)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to save")
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -96,8 +129,16 @@ function FeaturesPanel() {
       <div className="flex items-center justify-between gap-4">
         <h2 className="text-lg font-semibold text-foreground">Features</h2>
         <div className="flex items-center gap-3">
-          {isDirty && <p className="text-sm text-muted-foreground">You have unsaved changes</p>}
-          <Button onClick={handleSave} disabled={!isDirty}>
+          {saved && (
+            <span className="flex items-center gap-1.5 text-sm text-emerald-600">
+              <CheckCircle2 className="h-4 w-4" />
+              Saved
+            </span>
+          )}
+          {isDirty && !saved && <p className="text-sm text-muted-foreground">You have unsaved changes</p>}
+          {error && <p className="text-sm text-destructive">{error}</p>}
+          <Button onClick={handleSave} disabled={!isDirty || saving}>
+            {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Save Changes
           </Button>
         </div>
@@ -139,13 +180,13 @@ function FeaturesPanel() {
               size="icon"
               className="h-14 w-14 rounded-xl"
               aria-label="Decrease distance by 10 kilometers"
-              onClick={() => update("distance", Math.max(1, settings.distance - 10))}
+              onClick={() => update("distanceKm", Math.max(1, settings.distanceKm - 10))}
             >
               <Minus className="h-6 w-6" />
             </Button>
 
             <div className="flex min-w-[7rem] items-baseline justify-center gap-1.5 rounded-xl border border-border bg-secondary/40 px-4 py-3">
-              <span className="text-3xl font-bold tabular-nums text-foreground">{settings.distance}</span>
+              <span className="text-3xl font-bold tabular-nums text-foreground">{settings.distanceKm}</span>
               <span className="text-base font-medium text-muted-foreground">km</span>
             </div>
 
@@ -155,7 +196,7 @@ function FeaturesPanel() {
               size="icon"
               className="h-14 w-14 rounded-xl"
               aria-label="Increase distance by 10 kilometers"
-              onClick={() => update("distance", Math.min(1000, settings.distance + 10))}
+              onClick={() => update("distanceKm", Math.min(1000, settings.distanceKm + 10))}
             >
               <Plus className="h-6 w-6" />
             </Button>
@@ -165,8 +206,8 @@ function FeaturesPanel() {
             id="distance"
             min={1}
             max={1000}
-            value={[settings.distance]}
-            onValueChange={(value) => update("distance", Array.isArray(value) ? value[0] : value)}
+            value={[settings.distanceKm]}
+            onValueChange={(value) => update("distanceKm", Array.isArray(value) ? value[0] : value)}
             aria-label="Maximum service distance in kilometers"
             className="py-2"
           />
@@ -209,13 +250,19 @@ function FeaturesPanel() {
   )
 }
 
-export function OptionalFeatures({ plan }: { plan: Plan }) {
+export function OptionalFeatures({
+  plan,
+  initialSettings,
+}: {
+  plan: Plan
+  initialSettings: FeatureSettingsData | null
+}) {
   const hasFeatures = plan === "Business"
 
   return (
     <div className="w-full">
       {hasFeatures ? (
-        <FeaturesPanel />
+        <FeaturesPanel initial={initialSettings} />
       ) : (
         <UpgradeCard requiredPlan="Business" feature="Optional Features" />
       )}
