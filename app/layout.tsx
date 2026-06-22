@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { AuthProvider } from '@/contexts/auth-context'
 import { ToastProvider } from '@/components/ui/toaster'
+import { PreviewToggle } from '@/components/preview-toggle'
 import './globals.css'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
@@ -47,6 +48,7 @@ export default function RootLayout({
             {children}
           </AuthProvider>
         </ToastProvider>
+        <PreviewToggle />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

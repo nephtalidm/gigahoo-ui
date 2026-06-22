@@ -2,6 +2,13 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
+  // Check if in preview mode
+  const previewCookie = request.cookies.get("gigahoo_preview");
+  if (previewCookie?.value === "true") {
+    return NextResponse.next();
+  }
+
+  // Normal auth check
   const authCookie = request.cookies.get("gigahoo_auth");
 
   if (!authCookie) {

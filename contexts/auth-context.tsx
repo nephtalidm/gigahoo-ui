@@ -1,165 +1,154 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
-import {
-  googleLogin,
-  sendMagicLink as sendMagicLinkApi,
-  verifyMagicLink as verifyMagicLinkApi,
-  sendSmsCode as sendSmsCodeApi,
-  verifySmsCode as verifySmsCodeApi,
-  revokeToken,
-  type AuthResponse,
-} from "@/lib/api";
-
-type AuthUser = {
-  email?: string;
-  displayName?: string;
-};
-
-type AuthState = {
-  accessToken: string;
-  refreshToken: string;
-  expiresAt: string;
-  user: AuthUser | null;
-};
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { getAccount, type AccountData, googleLogin, sendMagicLink as apiSendMagicLink, sendSmsCode as apiSendSmsCode, verifySmsCode as apiVerifySmsCode } from "@/lib/api";
 
 type AuthContextType = {
   isAuthenticated: boolean;
-  isInitializing: boolean;
-  user: AuthUser | null;
-  loginWithGoogle: (idToken: string) => Promise<AuthResponse>;
-  sendMagicLink: (email: string) => Promise<void>;
-  verifyMagicLink: (email: string, code: string) => Promise<AuthResponse>;
-  sendSmsCode: (phoneNumber: string) => Promise<void>;
-  verifySmsCode: (phoneNumber: string, code: string) => Promise<AuthResponse>;
-  storeAuth: (response: AuthResponse, user?: AuthUser) => void;
+  isLoading: boolean;
+  account: AccountData | null;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  isLoggedIn: () => boolean;
-  waitForInit: () => Promise<void>;
+  storeAuth: (response: { accessToken: string; refreshToken: string; expiresAt: string }) => void;
+  loginWithGoogle: (idToken: string) => Promise<void>;
+  sendMagicLink: (email: string) => Promise<void>;
+  sendSmsCode: (phoneNumber: string) => Promise<void>;
+  verifySmsCode: (phoneNumber: string, code: string) => Promise<void>;
 };
 
-const AuthContext = createContext<AuthContextType | null>(null);
-
-const AUTH_KEY = "gigahoo_auth";
-
-function readStoredAuth(): AuthState | null {
-  try {
-    const raw = localStorage.getItem(AUTH_KEY);
-    if (!raw) return null;
-    return JSON.parse(raw);
-  } catch {
-    return null;
-  }
-}
-
-function persistAuth(state: AuthState) {
-  localStorage.setItem(AUTH_KEY, JSON.stringify(state));
-  document.cookie = "gigahoo_auth=1; path=/; max-age=2592000; SameSite=Lax";
-}
-
-function clearAuth() {
-  localStorage.removeItem(AUTH_KEY);
-  document.cookie = "gigahoo_auth=; path=/; max-age=0";
-}
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<AuthState | null>(null);
-  const [isInitializing, setIsInitializing] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [account, setAccount] = useState<AccountData | null>(null);
 
   useEffect(() => {
-    const stored = readStoredAuth();
-    if (stored) {
-      const expiresMs = new Date(stored.expiresAt).getTime();
-      if (expiresMs > Date.now() + 60_000) {
-        setState(stored);
+    const checkAuth = async () => {
+      const isPreview = localStorage.getItem("gigahoo_preview") === "true";
+      
+      if (isPreview) {
+        setIsAuthenticated(true);
+        setIsLoading(false);
+        // Load mock account data
+        try {
+          const mockAccount = await getAccount();
+          setAccount(mockAccount);
+        } catch (error) {
+          console.error("Failed to load mock account:", error);
+        }
+        return;
       }
-    }
-    setIsInitializing(false);
-  }, []);
 
-  const storeAuth = useCallback((response: AuthResponse, user?: AuthUser) => {
-    const newState: AuthState = {
-      accessToken: response.accessToken,
-      refreshToken: response.refreshToken,
-      expiresAt: response.expiresAt,
-      user: user ?? null,
+      const token = localStorage.getItem("gigahoo_token");
+      if (token) {
+        setIsAuthenticated(true);
+        try {
+          const accountData = await getAccount();
+          setAccount(accountData);
+        } catch (error) {
+          console.error("Failed to load account:", error);
+          setIsAuthenticated(false);
+          localStorage.removeItem("gigahoo_token");
+        }
+      }
+      setIsLoading(false);
     };
-    setState(newState);
-    persistAuth(newState);
+
+    checkAuth();
   }, []);
 
-  const logout = useCallback(async () => {
-    const stored = readStoredAuth();
-    clearAuth();
-    setState(null);
-    if (stored?.refreshToken) {
-      revokeToken(stored.refreshToken).catch(() => {});
+  const login = async (email: string, password: string) => {
+    // In preview mode, just set authenticated
+    const isPreview = localStorage.getItem("gigahoo_preview") === "true";
+    if (isPreview) {
+      setIsAuthenticated(true);
+      return;
     }
-  }, []);
 
-  const loginWithGoogle = useCallback(async (idToken: string) => {
+    // Real login logic would go here
+    throw new Error("Login not implemented - use preview mode");
+  };
+
+  const logout = async () => {
+    setIsAuthenticated(false);
+    setAccount(null);
+    localStorage.removeItem("gigahoo_token");
+  };
+
+  const storeAuth = (response: { accessToken: string; refreshToken: string; expiresAt: string }) => {
+    localStorage.setItem("gigahoo_token", response.accessToken);
+    localStorage.setItem("gigahoo_refresh_token", response.refreshToken);
+    localStorage.setItem("gigahoo_expires_at", response.expiresAt);
+    setIsAuthenticated(true);
+    // Load account data after storing auth
+    getAccount()
+      .then((accountData) => setAccount(accountData))
+      .catch((error) => console.error("Failed to load account:", error));
+  };
+
+  const loginWithGoogle = async (idToken: string) => {
+    const isPreview = localStorage.getItem("gigahoo_preview") === "true";
+    if (isPreview) {
+      setIsAuthenticated(true);
+      return;
+    }
+    
     const response = await googleLogin(idToken);
     storeAuth(response);
-    return response;
-  }, [storeAuth]);
+  };
 
-  const sendMagicLink = useCallback(async (email: string) => {
-    await sendMagicLinkApi(email);
-  }, []);
+  const sendMagicLink = async (email: string) => {
+    const isPreview = localStorage.getItem("gigahoo_preview") === "true";
+    if (isPreview) {
+      return;
+    }
+    
+    await apiSendMagicLink(email);
+  };
 
-  const verifyMagicLink = useCallback(async (email: string, code: string) => {
-    const response = await verifyMagicLinkApi(email, code);
+  const sendSmsCode = async (phoneNumber: string) => {
+    const isPreview = localStorage.getItem("gigahoo_preview") === "true";
+    if (isPreview) {
+      return;
+    }
+    
+    await apiSendSmsCode(phoneNumber);
+  };
+
+  const verifySmsCode = async (phoneNumber: string, code: string) => {
+    const isPreview = localStorage.getItem("gigahoo_preview") === "true";
+    if (isPreview) {
+      setIsAuthenticated(true);
+      return;
+    }
+    
+    const response = await apiVerifySmsCode(phoneNumber, code);
     storeAuth(response);
-    return response;
-  }, [storeAuth]);
-
-  const sendSmsCode = useCallback(async (phoneNumber: string) => {
-    await sendSmsCodeApi(phoneNumber);
-  }, []);
-
-  const verifySmsCode = useCallback(async (phoneNumber: string, code: string) => {
-    const response = await verifySmsCodeApi(phoneNumber, code);
-    storeAuth(response);
-    return response;
-  }, [storeAuth]);
-
-  const isLoggedIn = useCallback(() => !!state, [state]);
-
-  const waitForInit = useCallback(async () => {
-    if (!isInitializing) return;
-    return new Promise<void>((resolve) => {
-      const check = () => {
-        if (!isInitializing) resolve();
-        else setTimeout(check, 50);
-      };
-      check();
-    });
-  }, [isInitializing]);
+  };
 
   return (
-    <AuthContext.Provider
-      value={{
-        isAuthenticated: !!state,
-        isInitializing,
-        user: state?.user ?? null,
-        loginWithGoogle,
-        sendMagicLink,
-        verifyMagicLink,
-        sendSmsCode,
-        verifySmsCode,
-        storeAuth,
-        logout,
-        isLoggedIn,
-        waitForInit,
-      }}
-    >
+    <AuthContext.Provider value={{ 
+      isAuthenticated, 
+      isLoading, 
+      account, 
+      login, 
+      logout, 
+      storeAuth,
+      loginWithGoogle,
+      sendMagicLink,
+      sendSmsCode,
+      verifySmsCode
+    }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
 export function useAuth() {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used within an AuthProvider");
-  return ctx;
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
 }

@@ -1,6 +1,13 @@
+import { mockAccount, mockDashboard, mockCalls, mockFeatureSettings, mockBillingSummary, mockPlans } from "./mock-data";
+
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 let refreshPromise: Promise<string> | null = null;
+
+function isPreviewMode(): boolean {
+  if (typeof window === "undefined") return false;
+  return localStorage.getItem("gigahoo_preview") === "true";
+}
 
 function getAccessToken(): string | null {
   if (typeof window === "undefined") return null;
@@ -177,6 +184,9 @@ export function createAccount(data: {
 }
 
 export function getAccount() {
+  if (isPreviewMode()) {
+    return Promise.resolve(mockAccount);
+  }
   return api.get<AccountData>("/api/account");
 }
 
@@ -187,8 +197,6 @@ export function updateAccount(data: {
   phoneCountryCode: string;
   email: string;
   websiteUrl: string | null;
-  serviceArea: string | null;
-  businessHours: string | null;
   addressLine1: string | null;
   addressLine2: string | null;
   city: string | null;
@@ -214,6 +222,9 @@ export interface DashboardOverview {
 }
 
 export function getDashboardOverview() {
+  if (isPreviewMode()) {
+    return Promise.resolve(mockDashboard);
+  }
   return api.get<DashboardOverview>("/api/dashboard/overview");
 }
 
@@ -239,12 +250,28 @@ export interface CallsPage {
 }
 
 export function getCalls(page = 1, pageSize = 20, status?: string) {
+  if (isPreviewMode()) {
+    const filtered = status ? mockCalls.filter(c => c.status === status) : mockCalls;
+    const start = (page - 1) * pageSize;
+    const items = filtered.slice(start, start + pageSize);
+    return Promise.resolve({
+      items,
+      totalCount: filtered.length,
+      page,
+      pageSize,
+    });
+  }
   const params = new URLSearchParams({ page: String(page), pageSize: String(pageSize) });
   if (status) params.set("status", status);
   return api.get<CallsPage>(`/api/calls?${params}`);
 }
 
 export function getCall(id: string) {
+  if (isPreviewMode()) {
+    const call = mockCalls.find(c => c.id === id);
+    if (!call) return Promise.reject(new Error("Call not found"));
+    return Promise.resolve(call);
+  }
   return api.get<CallData>(`/api/calls/${id}`);
 }
 
@@ -288,10 +315,16 @@ export interface PaymentMethodData {
 }
 
 export function getBillingSummary() {
+  if (isPreviewMode()) {
+    return Promise.resolve(mockBillingSummary);
+  }
   return api.get<BillingSummary>("/api/billing/summary");
 }
 
 export function getPlans() {
+  if (isPreviewMode()) {
+    return Promise.resolve(mockPlans);
+  }
   return api.get<PlanData[]>("/api/billing/plans");
 }
 
@@ -330,10 +363,16 @@ export interface FeatureSettings {
 }
 
 export function getFeatureSettings() {
+  if (isPreviewMode()) {
+    return Promise.resolve(mockFeatureSettings);
+  }
   return api.get<FeatureSettings>("/api/features");
 }
 
 export function updateFeatureSettings(data: FeatureSettings) {
+  if (isPreviewMode()) {
+    return Promise.resolve(data);
+  }
   return api.put<FeatureSettings>("/api/features", data);
 }
 

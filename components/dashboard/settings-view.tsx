@@ -50,8 +50,6 @@ export function SettingsView({
   const [phoneCountryCode, setPhoneCountryCode] = useState(account.phoneCountryCode)
   const [email, setEmail] = useState(account.email)
   const [websiteUrl, setWebsiteUrl] = useState(account.websiteUrl ?? "")
-  const [serviceArea, setServiceArea] = useState(account.serviceArea ?? "")
-  const [businessHours, setBusinessHours] = useState(account.businessHours ?? "")
   const [addressLine1, setAddressLine1] = useState(account.addressLine1 ?? "")
   const [addressLine2, setAddressLine2] = useState(account.addressLine2 ?? "")
   const [city, setCity] = useState(account.city ?? "")
@@ -86,8 +84,6 @@ export function SettingsView({
         phoneCountryCode,
         email,
         websiteUrl: websiteUrl || null,
-        serviceArea: serviceArea || null,
-        businessHours: businessHours || null,
         addressLine1: addressLine1 || null,
         addressLine2: addressLine2 || null,
         city: city || null,
@@ -122,7 +118,9 @@ export function SettingsView({
           <Field label="Business Category" htmlFor="category">
             <Select value={categoryId} onValueChange={(v) => v && setCategoryId(v)}>
               <SelectTrigger id="category">
-                <SelectValue />
+                <SelectValue>
+                  {businessCategories[Number(categoryId) - 1] || "Select a category"}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {businessCategories.map((cat, i) => (
@@ -137,7 +135,12 @@ export function SettingsView({
             <div className="flex gap-2">
               <Select value={phoneCountryCode} onValueChange={(v) => v && setPhoneCountryCode(v)}>
                 <SelectTrigger className="w-[7.5rem] shrink-0" aria-label="Phone country code">
-                  <SelectValue />
+                  <SelectValue>
+                    {(() => {
+                      const country = countries.find((c) => c.code === phoneCountryCode);
+                      return country ? `${country.name} (${country.dialCode})` : "Select";
+                    })()}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   {countries.filter((c) => c.code !== "XX").map((c) => (
@@ -170,22 +173,6 @@ export function SettingsView({
               value={websiteUrl}
               onChange={(e) => setWebsiteUrl(e.target.value)}
               placeholder="https://yourbusiness.com"
-            />
-          </Field>
-          <Field label="Service Area" htmlFor="serviceArea">
-            <Input
-              id="serviceArea"
-              value={serviceArea}
-              onChange={(e) => setServiceArea(e.target.value)}
-              placeholder="e.g., San Francisco Bay Area"
-            />
-          </Field>
-          <Field label="Business Hours" htmlFor="businessHours">
-            <Input
-              id="businessHours"
-              value={businessHours}
-              onChange={(e) => setBusinessHours(e.target.value)}
-              placeholder="e.g., Mon-Fri 9am-5pm"
             />
           </Field>
           <Field label="Forwarding Phone Number" htmlFor="forwardingPhone">
@@ -244,7 +231,9 @@ export function SettingsView({
             {hasRegions ? (
               <Select value={regionId} onValueChange={(v) => v && setRegionId(v)}>
                 <SelectTrigger id="region">
-                  <SelectValue placeholder="Select a state/province" />
+                  <SelectValue>
+                    {regions.find((r) => String(r.id) === regionId)?.name || "Select a state/province"}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   {regions.map((r) => (
@@ -275,7 +264,9 @@ export function SettingsView({
           <Field label="Country" htmlFor="country">
             <Select value={countryId} onValueChange={(v) => v && handleCountryChange(v)}>
               <SelectTrigger id="country">
-                <SelectValue />
+                <SelectValue>
+                  {countries.find((c) => String(c.id) === countryId)?.name || "Select a country"}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {countries.map((c) => (
