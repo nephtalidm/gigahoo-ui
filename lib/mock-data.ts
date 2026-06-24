@@ -1,4 +1,4 @@
-import type { AccountData, CallData, DashboardOverview, FeatureSettings, BillingSummary, PlanData } from "./api";
+import type { ConversationData, AccountData, DashboardOverview, FeatureSettings, BillingSummary, PlanData } from "./api";
 
 export const mockAccount: AccountData = {
   id: "123e4567-e89b-12d3-a456-426614174000",
@@ -27,74 +27,49 @@ export const mockAccount: AccountData = {
   createdAt: "2024-01-15T00:00:00Z",
 };
 
-export const mockCalls: CallData[] = [
+export const mockConversations: ConversationData[] = [
   {
-    id: "call-1",
+    id: "conv-1",
     callerName: "John Smith",
     callerPhone: "+14155550101",
     dateTimeUtc: "2024-06-15T14:30:00Z",
     durationSeconds: 245,
     language: "English",
-    summary: "Customer has a leaking kitchen faucet. Scheduled for tomorrow morning.",
+    summary: "Customer has a leaking kitchen faucet. Needs repair scheduled for tomorrow morning. Address: 456 Oak Street, San Francisco.",
     status: "Completed",
-    collectedInfo: [
-      { label: "Name", value: "John Smith" },
-      { label: "Phone", value: "+14155550101" },
-      { label: "Address", value: "456 Oak Street, San Francisco" },
-      { label: "Issue", value: "Leaking kitchen faucet" },
-    ],
   },
   {
-    id: "call-2",
+    id: "conv-2",
     callerName: "Maria Garcia",
     callerPhone: "+14155550102",
     dateTimeUtc: "2024-06-15T11:15:00Z",
     durationSeconds: 180,
     language: "Spanish",
-    summary: "Emergency call - burst pipe in basement. Technician dispatched immediately.",
+    summary: "Emergency call - burst pipe in basement. Technician dispatched immediately. Address: 789 Pine Avenue, Oakland. Priority: Emergency.",
     status: "Completed",
-    collectedInfo: [
-      { label: "Name", value: "Maria Garcia" },
-      { label: "Phone", value: "+14155550102" },
-      { label: "Address", value: "789 Pine Avenue, Oakland" },
-      { label: "Issue", value: "Burst pipe in basement" },
-      { label: "Priority", value: "Emergency" },
-    ],
   },
   {
-    id: "call-3",
+    id: "conv-3",
     callerName: "Robert Chen",
     callerPhone: "+14155550103",
     dateTimeUtc: "2024-06-14T16:45:00Z",
     durationSeconds: 120,
     language: "English",
-    summary: "Routine maintenance inquiry. Scheduled for next week.",
+    summary: "Routine maintenance inquiry. Annual maintenance check needed. Address: 321 Elm Street, Berkeley. Scheduled for next week.",
     status: "Completed",
-    collectedInfo: [
-      { label: "Name", value: "Robert Chen" },
-      { label: "Phone", value: "+14155550103" },
-      { label: "Address", value: "321 Elm Street, Berkeley" },
-      { label: "Service", value: "Annual maintenance check" },
-    ],
   },
   {
-    id: "call-4",
+    id: "conv-4",
     callerName: "Sarah Johnson",
     callerPhone: "+14155550104",
     dateTimeUtc: "2024-06-14T09:20:00Z",
     durationSeconds: 95,
     language: "English",
-    summary: "Quote request for bathroom renovation. Sent estimate via email.",
+    summary: "Quote request for bathroom renovation. Sent estimate via email. Email: sarah.j@email.com.",
     status: "Completed",
-    collectedInfo: [
-      { label: "Name", value: "Sarah Johnson" },
-      { label: "Phone", value: "+14155550104" },
-      { label: "Email", value: "sarah.j@email.com" },
-      { label: "Project", value: "Bathroom renovation" },
-    ],
   },
   {
-    id: "call-5",
+    id: "conv-5",
     callerName: "Unknown",
     callerPhone: "+14155550105",
     dateTimeUtc: "2024-06-13T15:30:00Z",
@@ -102,7 +77,6 @@ export const mockCalls: CallData[] = [
     language: "English",
     summary: null,
     status: "Missed",
-    collectedInfo: [],
   },
 ];
 
@@ -112,9 +86,9 @@ export const mockDashboard: DashboardOverview = {
   minutesUsed: 87,
   remainingMinutes: 163,
   billingPeriod: "Jun 1 - Jun 30",
-  callsAnswered: 23,
-  avgCallDurationSeconds: 180,
-  recentCalls: mockCalls.slice(0, 4),
+  conversationsAnswered: 23,
+  avgConversationDurationSeconds: 180,
+  recentConversations: mockConversations.slice(0, 4),
 };
 
 export const mockFeatureSettings: FeatureSettings = {

@@ -5,8 +5,8 @@ import { BrandLogo } from "@/components/brand-logo"
 import { SignupFlow } from "@/components/signup-flow"
 
 export const metadata: Metadata = {
-  title: "Start free — Gigahoo",
-  description: "Create your Gigahoo account and never miss another customer call.",
+  title: "Set up your account — Gigahoo",
+  description: "Tell us about your business to set up your AI receptionist.",
 }
 
 export default function SignupPage() {
@@ -24,9 +24,9 @@ export default function SignupPage() {
         </div>
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
-          {"Already have an account? "}
-          <Link href="/login" className="font-medium text-primary hover:underline">
-            Sign in
+          {"Already set up your account? "}
+          <Link href="/dashboard" className="font-medium text-primary hover:underline">
+            Go to dashboard
           </Link>
         </p>
       </div>

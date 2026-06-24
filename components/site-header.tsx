@@ -38,8 +38,8 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Button variant="ghost" size="sm" render={<Link href="/login">Sign in</Link>} />
-          <Button size="sm" render={<Link href="/signup">Start Free</Link>} />
+          <Button variant="ghost" size="sm" render={<Link href="/login">Sign In</Link>} />
+          <Button size="sm" render={<Link href="/login?mode=signup">Sign Up</Link>} />
         </div>
 
         <button
@@ -71,14 +71,14 @@ export function SiteHeader() {
                 variant="outline"
                 render={
                   <Link href="/login" onClick={() => setOpen(false)}>
-                    Sign in
+                    Sign In
                   </Link>
                 }
               />
               <Button
                 render={
-                  <Link href="/signup" onClick={() => setOpen(false)}>
-                    Start Free
+                  <Link href="/login?mode=signup" onClick={() => setOpen(false)}>
+                    Sign Up
                   </Link>
                 }
               />

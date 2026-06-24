@@ -2,21 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-  // Check if in preview mode
-  const previewCookie = request.cookies.get("gigahoo_preview");
-  if (previewCookie?.value === "true") {
-    return NextResponse.next();
-  }
-
-  // Normal auth check
-  const authCookie = request.cookies.get("gigahoo_auth");
-
-  if (!authCookie) {
-    const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("from", request.nextUrl.pathname);
-    return NextResponse.redirect(loginUrl);
-  }
-
+  // Allow all requests through — auth is handled client-side via localStorage
   return NextResponse.next();
 }
 

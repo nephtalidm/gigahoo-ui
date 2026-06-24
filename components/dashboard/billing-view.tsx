@@ -9,13 +9,13 @@ import { useToast } from "@/components/ui/toaster"
 import {
   changePlan,
   createBillingPortal,
+  createCheckout,
   type BillingSummary,
   type PlanData,
   type InvoiceData,
-  type PaymentMethodData,
 } from "@/lib/api"
 import { formatDate } from "@/lib/data"
-import { Check, CreditCard, ArrowUpRight, Download, Loader2 } from "lucide-react"
+import { ArrowUpRight, Download, Loader2 } from "lucide-react"
 
 const planOrder = ["Free", "Starter", "Business"]
 
@@ -23,12 +23,10 @@ export function BillingView({
   summary,
   plans,
   invoices,
-  paymentMethod,
 }: {
   summary: BillingSummary | null
   plans: PlanData[]
   invoices: InvoiceData[]
-  paymentMethod: PaymentMethodData | null
 }) {
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null)
   const [portalLoading, setPortalLoading] = useState(false)
@@ -42,12 +40,26 @@ export function BillingView({
   const billingPeriod = summary?.billingPeriod ?? ""
 
   async function handleChangePlan(plan: PlanData) {
+    if (plan.priceMonthly === 0) {
+      // Free plan — switch directly
+      setLoadingPlan(plan.name)
+      try {
+        await changePlan(plan.id)
+        window.location.reload()
+      } catch {
+        toast({ title: "Failed to change plan", description: "Please try again.", variant: "destructive" })
+      } finally {
+        setLoadingPlan(null)
+      }
+      return
+    }
+
     setLoadingPlan(plan.name)
     try {
-      await changePlan(plan.id)
-      window.location.reload()
+      const { url } = await createCheckout(plan.id)
+      window.location.href = url
     } catch {
-      toast({ title: "Failed to change plan", description: "Please try again.", variant: "destructive" })
+      toast({ title: "Failed to start checkout", description: "Please try again.", variant: "destructive" })
     } finally {
       setLoadingPlan(null)
     }
@@ -167,30 +179,14 @@ export function BillingView({
       {/* Billing / Stripe section */}
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-          <h2 className="font-semibold text-foreground">Payment Method</h2>
-          {paymentMethod ? (
-            <div className="mt-4 flex items-center gap-3 rounded-xl border border-border bg-secondary/30 p-4">
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <CreditCard className="h-5 w-5" />
-              </span>
-              <div className="flex-1">
-                <p className="text-sm font-medium text-foreground">
-                  {paymentMethod.brand} ending in {paymentMethod.last4}
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  Expires {String(paymentMethod.expMonth).padStart(2, "0")}/{paymentMethod.expYear}
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className="mt-4 rounded-xl border border-dashed border-border p-4 text-center">
-              <p className="text-sm text-muted-foreground">No payment method on file</p>
-            </div>
-          )}
+          <h2 className="font-semibold text-foreground">Payment & Subscription</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Manage your payment methods and subscription through the Stripe Billing Portal.
+          </p>
           <div className="mt-4 flex flex-wrap gap-2">
-            <Button variant="outline" onClick={handleOpenPortal} disabled={portalLoading}>
+            <Button variant="default" onClick={handleOpenPortal} disabled={portalLoading}>
               {portalLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Manage Subscription
+              Open Billing Portal
             </Button>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import type { CallData, AccountData, PlanData } from "@/lib/api";
+import type { ConversationData, AccountData, PlanData } from "@/lib/api";
 
 // ── Types ──
 
@@ -6,7 +6,7 @@ export type Plan = "Free" | "Starter" | "Business"
 
 export type CallStatus = "Answered" | "Completed" | "Missed" | "Failed"
 
-export type Call = {
+export type Conversation = {
   id: string
   callerName: string
   callerPhone: string
@@ -15,7 +15,6 @@ export type Call = {
   language: string
   summary: string
   status: CallStatus
-  collectedInfo: { label: string; value: string }[]
 }
 
 export type Account = {
@@ -51,7 +50,7 @@ export type LinkedAccount = {
 
 // ── Mappers (API → UI types) ──
 
-export function mapApiCall(c: CallData): Call {
+export function mapApiConversation(c: ConversationData): Conversation {
   return {
     id: c.id,
     callerName: c.callerName ?? "Unknown Caller",
@@ -61,7 +60,6 @@ export function mapApiCall(c: CallData): Call {
     language: c.language,
     summary: c.summary ?? "",
     status: c.status as CallStatus,
-    collectedInfo: c.collectedInfo,
   };
 }
 

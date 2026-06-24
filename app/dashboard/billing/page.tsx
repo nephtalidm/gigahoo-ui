@@ -7,11 +7,9 @@ import {
   getBillingSummary,
   getPlans,
   getInvoices,
-  getPaymentMethod,
   type BillingSummary,
   type PlanData,
   type InvoiceData,
-  type PaymentMethodData,
 } from "@/lib/api"
 import { Loader2 } from "lucide-react"
 
@@ -19,7 +17,6 @@ export default function BillingPage() {
   const [summary, setSummary] = useState<BillingSummary | null>(null)
   const [plans, setPlans] = useState<PlanData[]>([])
   const [invoices, setInvoices] = useState<InvoiceData[]>([])
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethodData | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -27,7 +24,6 @@ export default function BillingPage() {
       getBillingSummary().then(setSummary).catch(() => {}),
       getPlans().then(setPlans).catch(() => {}),
       getInvoices().then(setInvoices).catch(() => {}),
-      getPaymentMethod().then(setPaymentMethod).catch(() => {}),
     ]).finally(() => setLoading(false))
   }, [])
 
@@ -49,7 +45,6 @@ export default function BillingPage() {
         summary={summary}
         plans={plans}
         invoices={invoices}
-        paymentMethod={paymentMethod}
       />
     </div>
   )

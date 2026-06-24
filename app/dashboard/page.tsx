@@ -8,7 +8,7 @@ import { MetricsGrid } from "@/components/dashboard/metrics-grid"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { getDashboardOverview, type DashboardOverview } from "@/lib/api"
-import { mapApiCall, formatDateTime, formatDuration } from "@/lib/data"
+import { mapApiConversation, formatDateTime, formatDuration } from "@/lib/data"
 import { ArrowRight, ArrowUpRight, Loader2 } from "lucide-react"
 
 export default function OverviewPage() {
@@ -42,7 +42,7 @@ export default function OverviewPage() {
   }
 
   const remaining = data.remainingMinutes
-  const recentCalls = data.recentCalls.map(mapApiCall)
+  const recentCalls = data.recentCalls.map(mapApiConversation)
   const nextPlan = data.plan === "Free" ? "Starter" : data.plan === "Starter" ? "Business" : null
 
   return (

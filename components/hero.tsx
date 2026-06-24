@@ -29,7 +29,7 @@ export function Hero() {
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button size="lg" className="text-base" render={<Link href="/signup">Start Free</Link>} />
+              <Button size="lg" className="text-base" render={<Link href="/login">Start Free</Link>} />
               <Button
                 size="lg"
                 variant="outline"
