@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { PhoneInput } from "@/components/phone-input"
-import { businessCategories, businessCategoryKeys, type Plan } from "@/lib/data"
+import { businessCategories, businessCategoryKeys, countries, type Plan } from "@/lib/data"
 import { getAccount, getCategories, api, createCheckout } from "@/lib/api"
 import { useAuth } from "@/contexts/auth-context"
 import { useTranslation } from "@/contexts/language-context"
@@ -49,6 +49,11 @@ type FieldErrors = {
   businessName?: string
   businessPhone?: string
   category?: string
+  addressLine1?: string
+  city?: string
+  region?: string
+  postalCode?: string
+  country?: string
   plan?: string
   general?: string
 }
@@ -78,6 +83,16 @@ export function SignupFlow() {
   const defaultPhoneCountry = useDefaultPhoneCountry()
   const [phoneCountryPicked, setPhoneCountryPicked] = useState<string | null>(null)
   const phoneCountryCode = phoneCountryPicked ?? defaultPhoneCountry
+  // Business address (used by Twilio regulatory bundles; the country also drives
+  // the phone number's country and billing currency).
+  const [addressLine1, setAddressLine1] = useState("")
+  const [addressLine2, setAddressLine2] = useState("")
+  const [city, setCity] = useState("")
+  const [region, setRegion] = useState("")
+  const [postalCode, setPostalCode] = useState("")
+  // Defaults to the phone country (until the user changes it).
+  const [addressCountryPicked, setAddressCountryPicked] = useState<string | null>(null)
+  const addressCountry = addressCountryPicked ?? phoneCountryCode
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -125,8 +140,12 @@ export function SignupFlow() {
     if (businessPhone.replace(/\D/g, "").length > 15) e.businessPhone = t("signup.errPhoneLong")
     if (isEmailSignup && password.length > 0 && password.length < 8) e.password = t("signup.errPasswordShort")
     if (isPhoneSignup && email.length > 0 && !z.string().email().safeParse(email).success) e.email = t("signup.errEmailInvalid")
+    if (addressLine1.length > 200) e.addressLine1 = t("signup.errAddressLong")
+    if (city.length > 100) e.city = t("signup.errAddressLong")
+    if (region.length > 100) e.region = t("signup.errAddressLong")
+    if (postalCode.length > 20) e.postalCode = t("signup.errAddressLong")
     setErrors(e)
-  }, [businessName, businessPhone, password, category, email, isPhoneSignup, isEmailSignup, t])
+  }, [businessName, businessPhone, password, category, email, isPhoneSignup, isEmailSignup, addressLine1, city, region, postalCode, t])
 
   const emailValid = z.string().email().safeParse(email).success
   const isValid =
@@ -136,6 +155,15 @@ export function SignupFlow() {
     businessPhone.replace(/\D/g, "").length <= 15 &&
     !!category &&
     !!selectedPlan &&
+    addressLine1.trim().length >= 1 &&
+    addressLine1.length <= 200 &&
+    city.trim().length >= 1 &&
+    city.length <= 100 &&
+    region.trim().length >= 1 &&
+    region.length <= 100 &&
+    postalCode.trim().length >= 1 &&
+    postalCode.length <= 20 &&
+    !!addressCountry &&
     (!isEmailSignup || password.length >= 8) &&
     emailValid
 
@@ -209,6 +237,12 @@ export function SignupFlow() {
         phoneCountryCode,
         email,
         planId: plans.find((p) => p.name === selectedPlan)!.planId,
+        addressLine1,
+        addressLine2,
+        city,
+        region,
+        postalCode,
+        countryCode: addressCountry,
         // Omit when empty (SMS/Google are passwordless) so the optional,
         // min-length-8 backend field stays null instead of failing on "".
         password: password || undefined,
@@ -368,6 +402,112 @@ export function SignupFlow() {
           )}
         </div>
       )}
+
+      {/* Row 3+: Business address. The country drives the phone number's
+          country and the billing currency, and is required by Twilio's
+          regulatory bundles for CA/MX numbers. */}
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="country">{t("signup.countryLabel")}</Label>
+        <Select value={addressCountry} onValueChange={(v) => { if (v) { setAddressCountryPicked(v); setErrors((e) => ({ ...e, country: undefined })) } }}>
+          <SelectTrigger id="country" className={cn("w-full", errors.country && "border-destructive focus-visible:ring-destructive")}>
+            <SelectValue placeholder={t("signup.countryPlaceholder")}>
+              {addressCountry ? countries.find((c) => c.code === addressCountry)?.name : undefined}
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            {countries.map((c) => (
+              <SelectItem key={c.code} value={c.code}>{c.flag} {c.name}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {errors.country && (
+          <p className="text-xs text-destructive">{errors.country}</p>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="addressLine1">{t("signup.addressLine1Label")}</Label>
+        <Input
+          name="addressLine1"
+          id="addressLine1"
+          value={addressLine1}
+          onChange={(e) => setAddressLine1(e.target.value)}
+          placeholder={t("signup.addressLine1Placeholder")}
+          maxLength={200}
+          className={cn(errors.addressLine1 && "border-destructive focus-visible:ring-destructive")}
+          aria-invalid={!!errors.addressLine1}
+          aria-describedby={errors.addressLine1 ? "addressLine1-error" : undefined}
+        />
+        {errors.addressLine1 && (
+          <p id="addressLine1-error" className="text-xs text-destructive">{errors.addressLine1}</p>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-2 sm:col-span-2">
+        <Label htmlFor="addressLine2">{t("signup.addressLine2Label")}</Label>
+        <Input
+          name="addressLine2"
+          id="addressLine2"
+          value={addressLine2}
+          onChange={(e) => setAddressLine2(e.target.value)}
+          placeholder={t("signup.addressLine2Placeholder")}
+          maxLength={200}
+        />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="city">{t("signup.cityLabel")}</Label>
+        <Input
+          name="city"
+          id="city"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          placeholder={t("signup.cityPlaceholder")}
+          maxLength={100}
+          className={cn(errors.city && "border-destructive focus-visible:ring-destructive")}
+          aria-invalid={!!errors.city}
+          aria-describedby={errors.city ? "city-error" : undefined}
+        />
+        {errors.city && (
+          <p id="city-error" className="text-xs text-destructive">{errors.city}</p>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="region">{t("signup.regionLabel")}</Label>
+        <Input
+          name="region"
+          id="region"
+          value={region}
+          onChange={(e) => setRegion(e.target.value)}
+          placeholder={t("signup.regionPlaceholder")}
+          maxLength={100}
+          className={cn(errors.region && "border-destructive focus-visible:ring-destructive")}
+          aria-invalid={!!errors.region}
+          aria-describedby={errors.region ? "region-error" : undefined}
+        />
+        {errors.region && (
+          <p id="region-error" className="text-xs text-destructive">{errors.region}</p>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="postalCode">{t("signup.postalCodeLabel")}</Label>
+        <Input
+          name="postalCode"
+          id="postalCode"
+          value={postalCode}
+          onChange={(e) => setPostalCode(e.target.value)}
+          placeholder={t("signup.postalCodePlaceholder")}
+          maxLength={20}
+          className={cn(errors.postalCode && "border-destructive focus-visible:ring-destructive")}
+          aria-invalid={!!errors.postalCode}
+          aria-describedby={errors.postalCode ? "postalCode-error" : undefined}
+        />
+        {errors.postalCode && (
+          <p id="postalCode-error" className="text-xs text-destructive">{errors.postalCode}</p>
+        )}
+      </div>
       </div>
 
       </div>
