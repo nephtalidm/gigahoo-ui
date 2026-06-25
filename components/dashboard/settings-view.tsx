@@ -12,8 +12,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { updateAccount, type AccountData, type CountryData, type RegionData } from "@/lib/api"
-import { businessCategories } from "@/lib/data"
+import { PhoneInput } from "@/components/phone-input"
+import { GoogleSignInButton } from "@/components/google-signin-button"
+import { useTranslation } from "@/contexts/language-context"
+import { updateAccount, setPassword as apiSetPassword, linkGoogle, type AccountData, type CountryData, type RegionData } from "@/lib/api"
+import { businessCategories, businessCategoryKeys } from "@/lib/data"
 import { Loader2, CheckCircle2 } from "lucide-react"
 
 function Field({
@@ -44,6 +47,7 @@ export function SettingsView({
   regions: RegionData[]
   onCountryChange: (countryId: number) => void
 }) {
+  const { t } = useTranslation()
   const [businessName, setBusinessName] = useState(account.businessName)
   const [categoryId, setCategoryId] = useState(String(account.categoryId))
   const [businessPhone, setBusinessPhone] = useState(account.businessPhone)
@@ -60,6 +64,15 @@ export function SettingsView({
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  // Password set/change
+  const [showPwForm, setShowPwForm] = useState(false)
+  const [curPw, setCurPw] = useState("")
+  const [newPw, setNewPw] = useState("")
+  const [confirmPw, setConfirmPw] = useState("")
+  const [pwSaving, setPwSaving] = useState(false)
+  const [pwSaved, setPwSaved] = useState(false)
+  const [pwError, setPwError] = useState<string | null>(null)
 
   const selectedCountry = countries.find((c) => String(c.id) === countryId)
   const hasRegions = regions.length > 0
@@ -95,70 +108,88 @@ export function SettingsView({
       setSaved(true)
       setTimeout(() => setSaved(false), 3000)
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to save changes")
+      setError(err instanceof Error ? err.message : t("settings.saveFailed"))
     } finally {
       setSaving(false)
+    }
+  }
+
+  async function handleLinkGoogle(idToken: string) {
+    setError(null)
+    try {
+      await linkGoogle(idToken)
+      window.location.reload()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("settings.googleLinkFailed"))
+    }
+  }
+
+  function focusField(id: string) {
+    const el = document.getElementById(id)
+    el?.scrollIntoView({ behavior: "smooth", block: "center" })
+    el?.focus()
+  }
+
+  async function handleSetPassword() {
+    setPwError(null)
+    setPwSaved(false)
+    if (newPw.length < 8) { setPwError(t("settings.passwordTooShort")); return }
+    if (newPw !== confirmPw) { setPwError(t("settings.passwordMismatch")); return }
+    setPwSaving(true)
+    try {
+      await apiSetPassword({ currentPassword: account.hasPassword ? curPw : undefined, newPassword: newPw })
+      setPwSaved(true)
+      setCurPw(""); setNewPw(""); setConfirmPw("")
+      setTimeout(() => { setPwSaved(false); setShowPwForm(false) }, 1500)
+    } catch (err) {
+      setPwError(err instanceof Error ? err.message : t("settings.passwordSaveFailed"))
+    } finally {
+      setPwSaving(false)
     }
   }
 
   return (
     <div className="flex flex-col gap-6">
       <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-        <h2 className="font-semibold text-foreground">General Business Information</h2>
-        <p className="text-sm text-muted-foreground">Update the details your AI receptionist uses on calls.</p>
+        <h2 className="font-semibold text-foreground">{t("settings.generalInfoTitle")}</h2>
+        <p className="text-sm text-muted-foreground">{t("settings.generalInfoDescription")}</p>
         <Separator className="my-6" />
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field label="Business Name" htmlFor="businessName">
+          <Field label={t("settings.businessName")} htmlFor="businessName">
             <Input
               id="businessName"
               value={businessName}
               onChange={(e) => setBusinessName(e.target.value)}
             />
           </Field>
-          <Field label="Business Category" htmlFor="category">
+          <Field label={t("settings.businessCategory")} htmlFor="category">
             <Select value={categoryId} onValueChange={(v) => v && setCategoryId(v)}>
               <SelectTrigger id="category">
                 <SelectValue>
-                  {businessCategories[Number(categoryId) - 1] || "Select a category"}
+                  {businessCategories[Number(categoryId) - 1]
+                    ? t(`categories.${businessCategoryKeys[businessCategories[Number(categoryId) - 1]]}`)
+                    : t("settings.selectCategory")}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {businessCategories.map((cat, i) => (
                   <SelectItem key={cat} value={String(i + 1)}>
-                    {cat}
+                    {t(`categories.${businessCategoryKeys[cat]}`)}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </Field>
-          <Field label="Business Phone Number" htmlFor="businessPhone">
-            <div className="flex gap-2">
-              <Select value={phoneCountryCode} onValueChange={(v) => v && setPhoneCountryCode(v)}>
-                <SelectTrigger className="w-[7.5rem] shrink-0" aria-label="Phone country code">
-                  <SelectValue>
-                    {(() => {
-                      const country = countries.find((c) => c.code === phoneCountryCode);
-                      return country ? `${country.name} (${country.dialCode})` : "Select";
-                    })()}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  {countries.filter((c) => c.code !== "XX").map((c) => (
-                    <SelectItem key={c.code} value={c.code}>
-                      <span>{c.name} ({c.dialCode})</span>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Input
-                id="businessPhone"
-                className="flex-1"
-                value={businessPhone}
-                onChange={(e) => setBusinessPhone(e.target.value)}
-              />
-            </div>
+          <Field label={t("settings.businessPhone")} htmlFor="businessPhone">
+            <PhoneInput
+              id="businessPhone"
+              country={phoneCountryCode}
+              onCountryChange={setPhoneCountryCode}
+              value={businessPhone}
+              onValueChange={setBusinessPhone}
+            />
           </Field>
-          <Field label="Email Address" htmlFor="email">
+          <Field label={t("settings.email")} htmlFor="email">
             <Input
               id="email"
               type="email"
@@ -166,16 +197,16 @@ export function SettingsView({
               onChange={(e) => setEmail(e.target.value)}
             />
           </Field>
-          <Field label="Website URL" htmlFor="websiteUrl">
+          <Field label={t("settings.websiteUrl")} htmlFor="websiteUrl">
             <Input
               id="websiteUrl"
               type="url"
               value={websiteUrl}
               onChange={(e) => setWebsiteUrl(e.target.value)}
-              placeholder="https://yourbusiness.com"
+              placeholder={t("settings.websiteUrlPlaceholder")}
             />
           </Field>
-          <Field label="Forwarding Phone Number" htmlFor="forwardingPhone">
+          <Field label={t("settings.forwardingPhone")} htmlFor="forwardingPhone">
             <Input
               id="forwardingPhone"
               value={account.forwardingPhone ?? "—"}
@@ -185,41 +216,41 @@ export function SettingsView({
               className="bg-muted text-muted-foreground"
             />
             <p id="forwardingPhoneHint" className="text-xs text-muted-foreground">
-              This number is managed by Gigahoo and cannot be edited.
+              {t("settings.forwardingPhoneHint")}
             </p>
           </Field>
         </div>
 
         <Separator className="my-6" />
 
-        <h3 className="font-semibold text-foreground">Business Address</h3>
+        <h3 className="font-semibold text-foreground">{t("settings.addressTitle")}</h3>
         <p className="text-sm text-muted-foreground">
-          Enter the address fields that apply in your country.
+          {t("settings.addressDescription")}
         </p>
         <div className="mt-5 grid gap-5 sm:grid-cols-2">
           <div className="sm:col-span-2">
-            <Field label="Address Line 1" htmlFor="addressLine1">
+            <Field label={t("settings.addressLine1")} htmlFor="addressLine1">
               <Input
                 id="addressLine1"
                 value={addressLine1}
                 onChange={(e) => setAddressLine1(e.target.value)}
-                placeholder="Street address, P.O. box"
+                placeholder={t("settings.addressLine1Placeholder")}
                 autoComplete="address-line1"
               />
             </Field>
           </div>
           <div className="sm:col-span-2">
-            <Field label="Address Line 2" htmlFor="addressLine2">
+            <Field label={t("settings.addressLine2")} htmlFor="addressLine2">
               <Input
                 id="addressLine2"
                 value={addressLine2}
                 onChange={(e) => setAddressLine2(e.target.value)}
-                placeholder="Apartment, suite, unit, building, floor (optional)"
+                placeholder={t("settings.addressLine2Placeholder")}
                 autoComplete="address-line2"
               />
             </Field>
           </div>
-          <Field label="City / Town" htmlFor="city">
+          <Field label={t("settings.city")} htmlFor="city">
             <Input
               id="city"
               value={city}
@@ -227,12 +258,12 @@ export function SettingsView({
               autoComplete="address-level2"
             />
           </Field>
-          <Field label="State / Province / Region" htmlFor="region">
+          <Field label={t("settings.region")} htmlFor="region">
             {hasRegions ? (
               <Select value={regionId} onValueChange={(v) => v && setRegionId(v)}>
                 <SelectTrigger id="region">
                   <SelectValue>
-                    {regions.find((r) => String(r.id) === regionId)?.name || "Select a state/province"}
+                    {regions.find((r) => String(r.id) === regionId)?.name || t("settings.selectRegion")}
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
@@ -248,12 +279,12 @@ export function SettingsView({
                 id="region"
                 value={regionCustom}
                 onChange={(e) => setRegionCustom(e.target.value)}
-                placeholder="State / Province / Region"
+                placeholder={t("settings.regionPlaceholder")}
                 autoComplete="address-level1"
               />
             )}
           </Field>
-          <Field label="Postal / ZIP Code" htmlFor="postalCode">
+          <Field label={t("settings.postalCode")} htmlFor="postalCode">
             <Input
               id="postalCode"
               value={postalCode}
@@ -261,11 +292,11 @@ export function SettingsView({
               autoComplete="postal-code"
             />
           </Field>
-          <Field label="Country" htmlFor="country">
+          <Field label={t("settings.country")} htmlFor="country">
             <Select value={countryId} onValueChange={(v) => v && handleCountryChange(v)}>
               <SelectTrigger id="country">
                 <SelectValue>
-                  {countries.find((c) => String(c.id) === countryId)?.name || "Select a country"}
+                  {countries.find((c) => String(c.id) === countryId)?.name || t("settings.selectCountry")}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
@@ -281,11 +312,60 @@ export function SettingsView({
 
         <Separator className="my-6" />
 
-        <h3 className="font-semibold text-foreground">Account Security</h3>
+        <h3 className="font-semibold text-foreground">{t("settings.securityTitle")}</h3>
         <p className="text-sm text-muted-foreground">
-          Manage your linked authentication methods.
+          {t("settings.securityDescription")}
         </p>
         <div className="mt-5 space-y-4">
+          {/* Password — set (no password yet, e.g. Google accounts) or change */}
+          <div className="rounded-lg border border-border p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-foreground">{t("settings.passwordMethod")}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {account.hasPassword ? t("settings.passwordSetStatus") : t("settings.passwordNotSet")}
+                  </p>
+                </div>
+              </div>
+              <Button variant="outline" size="sm" onClick={() => setShowPwForm((v) => !v)}>
+                {account.hasPassword ? t("settings.change") : t("settings.setPassword")}
+              </Button>
+            </div>
+            {showPwForm && (
+              <div className="mt-4 flex flex-col gap-3 border-t border-border pt-4">
+                {account.hasPassword && (
+                  <Field label={t("settings.currentPassword")} htmlFor="currentPassword">
+                    <Input id="currentPassword" type="password" autoComplete="current-password" value={curPw} onChange={(e) => setCurPw(e.target.value)} />
+                  </Field>
+                )}
+                <Field label={t("settings.newPassword")} htmlFor="newPassword">
+                  <Input id="newPassword" type="password" autoComplete="new-password" placeholder={t("settings.passwordPlaceholder")} value={newPw} onChange={(e) => setNewPw(e.target.value)} />
+                </Field>
+                <Field label={t("settings.confirmPassword")} htmlFor="confirmPassword">
+                  <Input id="confirmPassword" type="password" autoComplete="new-password" value={confirmPw} onChange={(e) => setConfirmPw(e.target.value)} />
+                </Field>
+                <div className="flex items-center justify-end gap-3">
+                  {pwSaved && (
+                    <span className="flex items-center gap-1.5 text-sm text-emerald-600">
+                      <CheckCircle2 className="h-4 w-4" />{t("settings.passwordSaved")}
+                    </span>
+                  )}
+                  {pwError && <span className="text-sm text-destructive">{pwError}</span>}
+                  <Button size="sm" onClick={handleSetPassword} disabled={pwSaving || newPw.length < 8 || newPw !== confirmPw}>
+                    {pwSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {account.hasPassword ? t("settings.changePassword") : t("settings.setPassword")}
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className="flex items-center justify-between rounded-lg border border-border p-4">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
@@ -297,11 +377,17 @@ export function SettingsView({
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-medium text-foreground">Google</p>
-                <p className="text-xs text-muted-foreground">Not linked</p>
+                <p className="text-sm font-medium text-foreground">{t("settings.google")}</p>
+                <p className="text-xs text-muted-foreground">{account.hasGoogle ? t("settings.linked") : t("settings.notLinked")}</p>
               </div>
             </div>
-            <Button variant="outline" size="sm">Link</Button>
+            {account.hasGoogle ? (
+              <span className="flex items-center gap-1.5 text-sm text-emerald-600">
+                <CheckCircle2 className="h-4 w-4" />{t("settings.linked")}
+              </span>
+            ) : (
+              <GoogleSignInButton onCredential={handleLinkGoogle} text="signin" />
+            )}
           </div>
 
           <div className="flex items-center justify-between rounded-lg border border-border p-4">
@@ -312,11 +398,11 @@ export function SettingsView({
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-medium text-foreground">Email</p>
+                <p className="text-sm font-medium text-foreground">{t("settings.emailMethod")}</p>
                 <p className="text-xs text-muted-foreground">{account.email}</p>
               </div>
             </div>
-            <Button variant="outline" size="sm">Change</Button>
+            <Button variant="outline" size="sm" onClick={() => focusField("email")}>{t("settings.change")}</Button>
           </div>
 
           <div className="flex items-center justify-between rounded-lg border border-border p-4">
@@ -327,11 +413,11 @@ export function SettingsView({
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-medium text-foreground">Phone Number</p>
+                <p className="text-sm font-medium text-foreground">{t("settings.phoneNumber")}</p>
                 <p className="text-xs text-muted-foreground">{account.businessPhone}</p>
               </div>
             </div>
-            <Button variant="outline" size="sm">Change</Button>
+            <Button variant="outline" size="sm" onClick={() => focusField("businessPhone")}>{t("settings.change")}</Button>
           </div>
         </div>
 
@@ -339,13 +425,13 @@ export function SettingsView({
           {saved && (
             <span className="flex items-center gap-1.5 text-sm text-emerald-600">
               <CheckCircle2 className="h-4 w-4" />
-              Saved
+              {t("settings.saved")}
             </span>
           )}
           {error && <span className="text-sm text-destructive">{error}</span>}
           <Button onClick={handleSave} disabled={saving}>
             {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Save Changes
+            {t("settings.saveChanges")}
           </Button>
         </div>
       </div>

@@ -9,20 +9,22 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { submitContact } from "@/lib/api"
+import { useTranslation } from "@/contexts/language-context"
 import { Mail, Phone, MapPin, CheckCircle2, Loader2 } from "lucide-react"
 import { z } from "zod"
 
-const contactSchema = z.object({
-  name: z.string().min(1, "Name is required").max(100),
-  email: z.string().email("Please enter a valid email address").max(254),
-  subject: z.string().min(1, "Subject is required").max(200),
-  message: z.string().min(1, "Message is required").max(5000),
-})
-
 export default function ContactPage() {
+  const { t } = useTranslation()
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const contactSchema = z.object({
+    name: z.string().min(1, t("contact.nameRequired")).max(100),
+    email: z.string().email(t("contact.emailInvalid")).max(254),
+    subject: z.string().min(1, t("contact.subjectRequired")).max(200),
+    message: z.string().min(1, t("contact.messageRequired")).max(5000),
+  })
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -50,7 +52,7 @@ export default function ContactPage() {
       await submitContact(result.data)
       setSubmitted(true)
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to send message. Please try again.")
+      setError(err instanceof Error ? err.message : t("contact.sendError"))
     } finally {
       setLoading(false)
     }
@@ -63,11 +65,10 @@ export default function ContactPage() {
         <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
           <div className="mx-auto max-w-2xl text-center">
             <h1 className="text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-              Get in touch
+              {t("contact.title")}
             </h1>
             <p className="mt-4 text-pretty text-lg leading-relaxed text-muted-foreground">
-              Have a question about Gigahoo or need help getting started? Send us a message and our team will get back to
-              you within one business day.
+              {t("contact.subtitle")}
             </p>
           </div>
 
@@ -75,20 +76,20 @@ export default function ContactPage() {
             <div className="flex flex-col gap-6 lg:col-span-2">
               <ContactDetail
                 icon={<Mail className="h-5 w-5" />}
-                label="Email"
+                label={t("contact.emailLabel")}
                 value="support@gigahoo.com"
                 href="mailto:support@gigahoo.com"
               />
               <ContactDetail
                 icon={<Phone className="h-5 w-5" />}
-                label="Phone"
+                label={t("contact.phoneLabel")}
                 value="+1 (888) 555-0142"
                 href="tel:+18885550142"
               />
               <ContactDetail
                 icon={<MapPin className="h-5 w-5" />}
-                label="Office"
-                value="1820 Market St, Suite 200, San Francisco, CA 94102"
+                label={t("contact.officeLabel")}
+                value={t("contact.officeValue")}
               />
             </div>
 
@@ -96,10 +97,8 @@ export default function ContactPage() {
               {submitted ? (
                 <div className="flex h-full flex-col items-center justify-center gap-4 rounded-2xl border border-border bg-card p-10 text-center">
                   <CheckCircle2 className="h-12 w-12 text-primary" />
-                  <h2 className="text-xl font-semibold text-foreground">Message sent</h2>
-                  <p className="text-pretty text-muted-foreground">
-                    Thanks for reaching out. We&apos;ll be in touch soon.
-                  </p>
+                  <h2 className="text-xl font-semibold text-foreground">{t("contact.successTitle")}</h2>
+                  <p className="text-pretty text-muted-foreground">{t("contact.successBody")}</p>
                 </div>
               ) : (
                 <form
@@ -111,25 +110,25 @@ export default function ContactPage() {
                   )}
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div className="flex flex-col gap-2">
-                      <Label htmlFor="name">Name</Label>
-                      <Input id="name" name="name" required placeholder="Jane Smith" />
+                      <Label htmlFor="name">{t("contact.nameLabel")}</Label>
+                      <Input id="name" name="name" required placeholder={t("contact.namePlaceholder")} />
                     </div>
                     <div className="flex flex-col gap-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input id="email" name="email" type="email" required placeholder="jane@business.com" />
+                      <Label htmlFor="email">{t("contact.emailLabel")}</Label>
+                      <Input id="email" name="email" type="email" required placeholder={t("contact.emailPlaceholder")} />
                     </div>
                   </div>
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="subject">Subject</Label>
-                    <Input id="subject" name="subject" required placeholder="How can we help?" />
+                    <Label htmlFor="subject">{t("contact.subjectLabel")}</Label>
+                    <Input id="subject" name="subject" required placeholder={t("contact.subjectPlaceholder")} />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="message">Message</Label>
-                    <Textarea id="message" name="message" rows={5} required placeholder="Tell us a bit more..." />
+                    <Label htmlFor="message">{t("contact.messageLabel")}</Label>
+                    <Textarea id="message" name="message" rows={5} required placeholder={t("contact.messagePlaceholder")} />
                   </div>
                   <Button type="submit" className="w-full sm:w-auto sm:self-start" disabled={loading}>
                     {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Send message
+                    {t("contact.send")}
                   </Button>
                 </form>
               )}

@@ -3,26 +3,27 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Phone, Menu, X } from "lucide-react"
-
-const navLinks = [
-  { label: "Features", href: "/#features" },
-  { label: "Pricing", href: "/#pricing" },
-  { label: "FAQ", href: "/#faq" },
-  { label: "Contact", href: "/contact" },
-]
+import { LanguageSwitcher } from "@/components/language-switcher"
+import { useTranslation } from "@/contexts/language-context"
+import { Menu, X } from "lucide-react"
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
+  const { t } = useTranslation()
+
+  const navLinks = [
+    { label: t("nav.features"), href: "/#features" },
+    { label: t("nav.pricing"), href: "/#pricing" },
+    { label: t("nav.faq"), href: "/#faq" },
+    { label: t("nav.contact"), href: "/contact" },
+  ]
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link href="#" className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Phone className="h-4 w-4" />
-          </span>
-          <span className="text-lg font-semibold tracking-tight text-foreground">Gigahoo</span>
+        <Link href="/" className="flex items-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/gigahoo-logo.png" alt="Gigahoo" className="h-[2.4rem] w-auto" />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
@@ -30,7 +31,7 @@ export function SiteHeader() {
             <a
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="text-base font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               {link.label}
             </a>
@@ -38,15 +39,16 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Button variant="ghost" size="sm" render={<Link href="/login">Sign In</Link>} />
-          <Button size="sm" render={<Link href="/login?mode=signup">Sign Up</Link>} />
+          <LanguageSwitcher />
+          <Button variant="ghost" size="default" render={<Link href="/login">{t("nav.signIn")}</Link>} />
+          <Button size="default" render={<Link href="/login?mode=signup">{t("nav.signUp")}</Link>} />
         </div>
 
         <button
           type="button"
           className="inline-flex h-10 w-10 items-center justify-center rounded-md text-foreground md:hidden"
           onClick={() => setOpen((v) => !v)}
-          aria-label={open ? "Close menu" : "Open menu"}
+          aria-label={open ? t("nav.closeMenu") : t("nav.openMenu")}
           aria-expanded={open}
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -71,17 +73,20 @@ export function SiteHeader() {
                 variant="outline"
                 render={
                   <Link href="/login" onClick={() => setOpen(false)}>
-                    Sign In
+                    {t("nav.signIn")}
                   </Link>
                 }
               />
               <Button
                 render={
                   <Link href="/login?mode=signup" onClick={() => setOpen(false)}>
-                    Sign Up
+                    {t("nav.signUp")}
                   </Link>
                 }
               />
+              <div className="pt-2">
+                <LanguageSwitcher />
+              </div>
             </div>
           </nav>
         </div>

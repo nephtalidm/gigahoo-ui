@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 export default function SignupPage() {
   return (
     <main className="flex min-h-dvh flex-col bg-secondary/30">
-      <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-4 py-12">
-        <div className="flex justify-center">
+      <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col justify-center px-4 py-12">
+        <div className="flex justify-center [&_img]:h-[3.6rem]">
           <BrandLogo />
         </div>
 

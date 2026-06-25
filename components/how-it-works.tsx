@@ -1,31 +1,36 @@
-import { PhoneForwarded, Bot, ClipboardList } from "lucide-react"
+"use client"
 
-const steps = [
-  {
-    icon: PhoneForwarded,
-    title: "Forward your business number",
-    description: "Keep your existing number and forward incoming calls to Gigahoo in minutes.",
-  },
-  {
-    icon: Bot,
-    title: "The AI answers incoming calls",
-    description: "Your AI receptionist greets callers, answers questions, and handles requests.",
-  },
-  {
-    icon: ClipboardList,
-    title: "Receive qualified leads",
-    description: "Get detailed call summaries and customer information delivered straight to you.",
-  },
-]
+import { PhoneForwarded, Bot, ClipboardList } from "lucide-react"
+import { useTranslation } from "@/contexts/language-context"
 
 export function HowItWorks() {
+  const { t } = useTranslation()
+
+  const steps = [
+    {
+      icon: PhoneForwarded,
+      title: t("home.howStep1Title"),
+      description: t("home.howStep1Description"),
+    },
+    {
+      icon: Bot,
+      title: t("home.howStep2Title"),
+      description: t("home.howStep2Description"),
+    },
+    {
+      icon: ClipboardList,
+      title: t("home.howStep3Title"),
+      description: t("home.howStep3Description"),
+    },
+  ]
+
   return (
     <section className="border-b border-border">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-wide text-primary">How it works</p>
+          <p className="text-sm font-semibold uppercase tracking-wide text-primary">{t("home.howEyebrow")}</p>
           <h2 className="mt-2 text-pretty text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Up and running in three simple steps
+            {t("home.howTitle")}
           </h2>
         </div>
 
@@ -37,7 +42,7 @@ export function HowItWorks() {
                   <step.icon className="h-5 w-5" />
                 </span>
                 <span className="text-sm font-semibold text-muted-foreground">
-                  Step {i + 1}
+                  {t("home.howStepLabel", { number: i + 1 })}
                 </span>
               </div>
               <h3 className="mt-4 text-lg font-semibold text-foreground">{step.title}</h3>

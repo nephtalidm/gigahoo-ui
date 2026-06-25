@@ -1,6 +1,9 @@
+"use client"
+
 import type React from "react"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
+import { useTranslation } from "@/contexts/language-context"
 
 export function LegalLayout({
   title,
@@ -11,6 +14,7 @@ export function LegalLayout({
   lastUpdated: string
   children: React.ReactNode
 }) {
+  const { t } = useTranslation()
   return (
     <div className="flex min-h-dvh flex-col">
       <SiteHeader />
@@ -18,7 +22,9 @@ export function LegalLayout({
         <article className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-20">
           <header className="border-b border-border pb-8">
             <h1 className="text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl">{title}</h1>
-            <p className="mt-3 text-sm text-muted-foreground">Last updated: {lastUpdated}</p>
+            <p className="mt-3 text-sm text-muted-foreground">
+              {t("legal.lastUpdatedLabel")} {lastUpdated}
+            </p>
           </header>
           <div className="mt-8 flex flex-col gap-8">{children}</div>
         </article>

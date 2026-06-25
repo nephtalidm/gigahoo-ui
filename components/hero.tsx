@@ -1,15 +1,20 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { Check, PhoneCall } from "lucide-react"
 import Link from "next/link"
-
-const bullets = [
-  "Answers calls 24/7",
-  "Supports English, French, Mandarin, Cantonese, Spanish, Japanese, Hindi, Korean, Tagalog, and more",
-  "Captures customer information automatically",
-  "Built for home-service businesses",
-]
+import { useTranslation } from "@/contexts/language-context"
 
 export function Hero() {
+  const { t } = useTranslation()
+
+  const bullets = [
+    t("home.heroBullet1"),
+    t("home.heroBullet2"),
+    t("home.heroBullet3"),
+    t("home.heroBullet4"),
+  ]
+
   return (
     <section className="relative overflow-hidden border-b border-border">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24 lg:py-28">
@@ -17,28 +22,28 @@ export function Hero() {
           <div className="flex flex-col items-start">
             <span className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
               <span className="flex h-1.5 w-1.5 rounded-full bg-primary" />
-              AI receptionist for home service businesses
+              {t("home.heroBadge")}
             </span>
 
             <h1 className="mt-6 text-pretty text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-              Never Miss Another Customer Call
+              {t("home.heroTitle")}
             </h1>
 
             <p className="mt-5 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground">
-              Gigahoo answers your business calls 24/7, collects customer information, and speaks multiple languages.
+              {t("home.heroSubtitle")}
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button size="lg" className="text-base" render={<Link href="/login">Start Free</Link>} />
+              <Button size="lg" className="text-base" render={<Link href="/login">{t("home.heroCtaPrimary")}</Link>} />
               <Button
                 size="lg"
                 variant="outline"
                 className="text-base"
-                render={<a href="#pricing">View Pricing</a>}
+                render={<a href="#pricing">{t("home.heroCtaSecondary")}</a>}
               />
             </div>
 
-            <p className="mt-3 text-sm">No credit card required</p>
+            <p className="mt-3 text-sm">{t("home.heroNoCard")}</p>
 
             <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
               {bullets.map((b) => (
@@ -59,39 +64,39 @@ export function Hero() {
                   <PhoneCall className="h-5 w-5" />
                 </span>
                 <div>
-                  <p className="text-sm font-semibold text-foreground">Incoming call</p>
-                  <p className="text-xs text-muted-foreground">Answered by Gigahoo · 0:08</p>
+                  <p className="text-sm font-semibold text-foreground">{t("home.heroCardIncoming")}</p>
+                  <p className="text-xs text-muted-foreground">{t("home.heroCardAnswered")}</p>
                 </div>
                 <span className="ml-auto flex items-center gap-1.5 rounded-full bg-accent px-2.5 py-1 text-xs font-medium text-accent-foreground">
                   <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                  Live
+                  {t("home.heroCardLive")}
                 </span>
               </div>
 
               <div className="mt-4 space-y-3">
                 <div className="max-w-[80%] rounded-2xl rounded-tl-sm bg-muted px-4 py-2.5 text-sm text-foreground">
-                  Hi, thanks for calling Summit Plumbing! How can I help you today?
+                  {t("home.heroCardMsg1")}
                 </div>
                 <div className="ml-auto max-w-[80%] rounded-2xl rounded-tr-sm bg-primary px-4 py-2.5 text-sm text-primary-foreground">
-                  My water heater is leaking. Can someone come out today?
+                  {t("home.heroCardMsg2")}
                 </div>
                 <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-muted px-4 py-2.5 text-sm text-foreground">
-                  Absolutely. Can I grab your name and address so we can send someone out?
+                  {t("home.heroCardMsg3")}
                 </div>
               </div>
 
               <div className="mt-5 grid grid-cols-3 gap-3 border-t border-border pt-4 text-center">
                 <div>
-                  <p className="text-lg font-semibold text-foreground">24/7</p>
-                  <p className="text-xs text-muted-foreground">Availability</p>
+                  <p className="text-lg font-semibold text-foreground">{t("home.heroStat1Value")}</p>
+                  <p className="text-xs text-muted-foreground">{t("home.heroStat1Label")}</p>
                 </div>
                 <div>
-                  <p className="text-lg font-semibold text-foreground">6+</p>
-                  <p className="text-xs text-muted-foreground">Languages</p>
+                  <p className="text-lg font-semibold text-foreground">{t("home.heroStat2Value")}</p>
+                  <p className="text-xs text-muted-foreground">{t("home.heroStat2Label")}</p>
                 </div>
                 <div>
-                  <p className="text-lg font-semibold text-foreground">0</p>
-                  <p className="text-xs text-muted-foreground">Missed calls</p>
+                  <p className="text-lg font-semibold text-foreground">{t("home.heroStat3Value")}</p>
+                  <p className="text-xs text-muted-foreground">{t("home.heroStat3Label")}</p>
                 </div>
               </div>
             </div>

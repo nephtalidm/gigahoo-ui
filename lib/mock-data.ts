@@ -25,6 +25,8 @@ export const mockAccount: AccountData = {
   billingPeriod: "Jun 1 - Jun 30",
   minutesUsed: 87,
   createdAt: "2024-01-15T00:00:00Z",
+  hasPassword: true,
+  hasGoogle: false,
 };
 
 export const mockConversations: ConversationData[] = [

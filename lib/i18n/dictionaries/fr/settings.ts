@@ -1,0 +1,67 @@
+const settings = {
+  // Page header
+  title: "Paramètres",
+  description: "Gérez les informations de votre entreprise.",
+
+  // General business information
+  generalInfoTitle: "Informations générales sur l'entreprise",
+  generalInfoDescription: "Mettez à jour les détails que votre réceptionniste IA utilise lors des appels.",
+  businessName: "Nom de l'entreprise",
+  businessCategory: "Catégorie d'entreprise",
+  selectCategory: "Sélectionnez une catégorie",
+  businessPhone: "Numéro de téléphone professionnel",
+  email: "Adresse e-mail",
+  websiteUrl: "URL du site web",
+  websiteUrlPlaceholder: "https://votreentreprise.com",
+  forwardingPhone: "Numéro de transfert d'appel",
+  forwardingPhoneHint: "Ce numéro est géré par Gigahoo et ne peut pas être modifié.",
+
+  // Business address
+  addressTitle: "Adresse de l'entreprise",
+  addressDescription: "Saisissez les champs d'adresse applicables dans votre pays.",
+  addressLine1: "Adresse ligne 1",
+  addressLine1Placeholder: "Adresse, boîte postale",
+  addressLine2: "Adresse ligne 2",
+  addressLine2Placeholder: "Appartement, bureau, unité, bâtiment, étage (facultatif)",
+  city: "Ville",
+  region: "État / Province / Région",
+  selectRegion: "Sélectionnez un état/une province",
+  regionPlaceholder: "État / Province / Région",
+  postalCode: "Code postal",
+  country: "Pays",
+  selectCountry: "Sélectionnez un pays",
+
+  // Account security
+  securityTitle: "Sécurité du compte",
+  securityDescription: "Gérez vos méthodes d'authentification liées.",
+  google: "Google",
+  notLinked: "Non lié",
+  link: "Lier",
+  emailMethod: "E-mail",
+  phoneNumber: "Numéro de téléphone",
+  change: "Modifier",
+
+  // Save
+  saved: "Enregistré",
+  saveChanges: "Enregistrer les modifications",
+  saveFailed: "Échec de l'enregistrement des modifications",
+
+  // Account linking and password
+  linked: "Lié",
+  googleLinkFailed: "Impossible de lier le compte Google",
+  passwordMethod: "Mot de passe",
+  passwordSetStatus: "Le mot de passe est défini",
+  passwordNotSet: "Aucun mot de passe défini",
+  setPassword: "Définir un mot de passe",
+  changePassword: "Changer le mot de passe",
+  currentPassword: "Mot de passe actuel",
+  newPassword: "Nouveau mot de passe",
+  confirmPassword: "Confirmer le mot de passe",
+  passwordPlaceholder: "Au moins 8 caractères",
+  passwordTooShort: "Le mot de passe doit comporter au moins 8 caractères",
+  passwordMismatch: "Les mots de passe ne correspondent pas",
+  passwordSaved: "Mot de passe mis à jour",
+  passwordSaveFailed: "Impossible de mettre à jour le mot de passe",
+}
+
+export default settings

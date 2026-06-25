@@ -10,6 +10,7 @@ import { Slider } from "@/components/ui/slider"
 import { Input } from "@/components/ui/input"
 import { Plus, Minus, Loader2, CheckCircle2 } from "lucide-react"
 import { UpgradeCard } from "@/components/dashboard/upgrade-card"
+import { useTranslation } from "@/contexts/language-context"
 import { updateFeatureSettings, type FeatureSettings as FeatureSettingsData } from "@/lib/api"
 import type { Plan } from "@/lib/data"
 
@@ -26,6 +27,7 @@ function FeatureCard({
   onToggle: (value: boolean) => void
   children?: React.ReactNode
 }) {
+  const { t } = useTranslation()
   return (
     <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
       <div className="flex items-center justify-between gap-4">
@@ -33,7 +35,7 @@ function FeatureCard({
           <h3 className="font-semibold text-foreground">{title}</h3>
           <p className="text-sm text-muted-foreground">{description}</p>
         </div>
-        <Switch checked={enabled} onCheckedChange={onToggle} aria-label={`Enable ${title}`} />
+        <Switch checked={enabled} onCheckedChange={onToggle} aria-label={t("features.enable", { title })} />
       </div>
 
       {enabled && children && (
@@ -97,6 +99,7 @@ const defaultState: FeatureFormState = {
 }
 
 function FeaturesPanel({ initial }: { initial: FeatureSettingsData | null }) {
+  const { t } = useTranslation()
   const init = initial ? toFormState(initial) : defaultState
   const [savedSettings, setSavedSettings] = useState<FeatureFormState>(init)
   const [settings, setSettings] = useState<FeatureFormState>(init)
@@ -146,7 +149,7 @@ function FeaturesPanel({ initial }: { initial: FeatureSettingsData | null }) {
       setSaved(true)
       setTimeout(() => setSaved(false), 3000)
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to save")
+      setError(err instanceof Error ? err.message : t("features.saveFailed"))
     } finally {
       setSaving(false)
     }
@@ -155,126 +158,126 @@ function FeaturesPanel({ initial }: { initial: FeatureSettingsData | null }) {
   return (
     <div className="flex flex-col gap-5">
       <div className="flex items-center justify-between gap-4">
-        <h2 className="text-lg font-semibold text-foreground">Features</h2>
+        <h2 className="text-lg font-semibold text-foreground">{t("features.sectionTitle")}</h2>
         <div className="flex items-center gap-3">
           {saved && (
             <span className="flex items-center gap-1.5 text-sm text-emerald-600">
               <CheckCircle2 className="h-4 w-4" />
-              Saved
+              {t("features.saved")}
             </span>
           )}
-          {isDirty && !saved && <p className="text-sm text-muted-foreground">You have unsaved changes</p>}
+          {isDirty && !saved && <p className="text-sm text-muted-foreground">{t("features.unsavedChanges")}</p>}
           {error && <p className="text-sm text-destructive">{error}</p>}
           <Button onClick={handleSave} disabled={!isDirty || saving}>
             {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Save Changes
+            {t("features.saveChanges")}
           </Button>
         </div>
       </div>
 
       <FeatureCard
-        title="Answer basic questions about your services"
-        description="The AI responds to common questions using information you provide."
+        title={t("features.answerQuestionsTitle")}
+        description={t("features.answerQuestionsDescription")}
         enabled={settings.answerQuestions}
         onToggle={(value) => update("answerQuestions", value)}
       >
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-2">
-            <Label htmlFor="services-info">Services Offered</Label>
+            <Label htmlFor="services-info">{t("features.servicesOffered")}</Label>
             <Textarea
               id="services-info"
               rows={4}
               value={settings.servicesInfo}
               onChange={(e) => update("servicesInfo", e.target.value)}
-              placeholder="Describe your services, what's included, typical turnaround times, and anything else customers ask about."
+              placeholder={t("features.servicesOfferedPlaceholder")}
             />
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="service-areas">Service Areas</Label>
+            <Label htmlFor="service-areas">{t("features.serviceAreas")}</Label>
             <Input
               id="service-areas"
               value={settings.serviceAreas}
               onChange={(e) => update("serviceAreas", e.target.value)}
-              placeholder="e.g., San Francisco Bay Area, Downtown Seattle"
+              placeholder={t("features.serviceAreasPlaceholder")}
             />
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="business-hours-feature">Business Hours</Label>
+            <Label htmlFor="business-hours-feature">{t("features.businessHours")}</Label>
             <Input
               id="business-hours-feature"
               value={settings.businessHours}
               onChange={(e) => update("businessHours", e.target.value)}
-              placeholder="e.g., Mon-Fri 9am-5pm, Sat 10am-2pm"
+              placeholder={t("features.businessHoursPlaceholder")}
             />
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="emergency-availability">Emergency Availability</Label>
+            <Label htmlFor="emergency-availability">{t("features.emergencyAvailability")}</Label>
             <Input
               id="emergency-availability"
               value={settings.emergencyAvailability}
               onChange={(e) => update("emergencyAvailability", e.target.value)}
-              placeholder="e.g., 24/7 emergency service available"
+              placeholder={t("features.emergencyAvailabilityPlaceholder")}
             />
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="pricing-policy">Pricing Policy</Label>
+            <Label htmlFor="pricing-policy">{t("features.pricingPolicy")}</Label>
             <Textarea
               id="pricing-policy"
               rows={3}
               value={settings.pricingPolicy}
               onChange={(e) => update("pricingPolicy", e.target.value)}
-              placeholder="Describe your pricing structure, estimates, payment terms, etc."
+              placeholder={t("features.pricingPolicyPlaceholder")}
             />
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="warranty-policy">Warranty Policy</Label>
+            <Label htmlFor="warranty-policy">{t("features.warrantyPolicy")}</Label>
             <Textarea
               id="warranty-policy"
               rows={3}
               value={settings.warrantyPolicy}
               onChange={(e) => update("warrantyPolicy", e.target.value)}
-              placeholder="Describe your warranty terms, guarantees, etc."
+              placeholder={t("features.warrantyPolicyPlaceholder")}
             />
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="faq">Frequently Asked Questions</Label>
+            <Label htmlFor="faq">{t("features.faq")}</Label>
             <Textarea
               id="faq"
               rows={5}
               value={settings.frequentlyAskedQuestions}
               onChange={(e) => update("frequentlyAskedQuestions", e.target.value)}
-              placeholder="List common questions and answers, one per line. Example:&#10;Q: Do you offer free estimates?&#10;A: Yes, we provide free estimates for all jobs."
+              placeholder={t("features.faqPlaceholder")}
             />
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="additional-info">Additional Business Information</Label>
+            <Label htmlFor="additional-info">{t("features.additionalInfo")}</Label>
             <Textarea
               id="additional-info"
               rows={4}
               value={settings.additionalBusinessInfo}
               onChange={(e) => update("additionalBusinessInfo", e.target.value)}
-              placeholder="Any other information customers might ask about."
+              placeholder={t("features.additionalInfoPlaceholder")}
             />
           </div>
         </div>
       </FeatureCard>
 
       <FeatureCard
-        title="Check if you serve the customer's area"
-        description="The AI confirms whether a caller is within your service coverage."
+        title={t("features.serveAreaTitle")}
+        description={t("features.serveAreaDescription")}
         enabled={settings.serveArea}
         onToggle={(value) => update("serveArea", value)}
       >
         <div className="flex flex-col gap-6">
           <Label htmlFor="distance" className="text-base">
-            Maximum distance
+            {t("features.maximumDistance")}
           </Label>
 
           <div className="flex items-center justify-center gap-4">
@@ -283,7 +286,7 @@ function FeaturesPanel({ initial }: { initial: FeatureSettingsData | null }) {
               variant="outline"
               size="icon"
               className="h-14 w-14 rounded-xl"
-              aria-label="Decrease distance by 10 kilometers"
+              aria-label={t("features.decreaseDistance")}
               onClick={() => update("distanceKm", Math.max(1, settings.distanceKm - 10))}
             >
               <Minus className="h-6 w-6" />
@@ -299,7 +302,7 @@ function FeaturesPanel({ initial }: { initial: FeatureSettingsData | null }) {
               variant="outline"
               size="icon"
               className="h-14 w-14 rounded-xl"
-              aria-label="Increase distance by 10 kilometers"
+              aria-label={t("features.increaseDistance")}
               onClick={() => update("distanceKm", Math.min(1000, settings.distanceKm + 10))}
             >
               <Plus className="h-6 w-6" />
@@ -312,24 +315,24 @@ function FeaturesPanel({ initial }: { initial: FeatureSettingsData | null }) {
             max={1000}
             value={[settings.distanceKm]}
             onValueChange={(value) => update("distanceKm", Array.isArray(value) ? value[0] : value)}
-            aria-label="Maximum service distance in kilometers"
+            aria-label={t("features.maxServiceDistanceAria")}
             className="py-2"
           />
           <div className="flex justify-between text-sm text-muted-foreground">
-            <span>1 km</span>
-            <span>1000 km</span>
+            <span>{t("features.distanceMin")}</span>
+            <span>{t("features.distanceMax")}</span>
           </div>
         </div>
       </FeatureCard>
 
       <FeatureCard
-        title="Quote inspection based on distance"
-        description="Quote an inspection fee based on how far the customer is from you."
+        title={t("features.quoteInspectionTitle")}
+        description={t("features.quoteInspectionDescription")}
         enabled={settings.quoteInspection}
         onToggle={(value) => update("quoteInspection", value)}
       >
         <div className="flex flex-col gap-2">
-          <Label htmlFor="price-per-km">Price per km</Label>
+          <Label htmlFor="price-per-km">{t("features.pricePerKm")}</Label>
           <div className="relative max-w-xs">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
             <Input
@@ -346,7 +349,7 @@ function FeaturesPanel({ initial }: { initial: FeatureSettingsData | null }) {
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">/ km</span>
           </div>
           <p className="text-sm text-muted-foreground">
-            The AI multiplies this rate by the distance to quote an inspection fee.
+            {t("features.pricePerKmHint")}
           </p>
         </div>
       </FeatureCard>
@@ -361,6 +364,7 @@ export function OptionalFeatures({
   plan: Plan
   initialSettings: FeatureSettingsData | null
 }) {
+  const { t } = useTranslation()
   const hasFeatures = plan === "Business"
 
   return (
@@ -368,7 +372,7 @@ export function OptionalFeatures({
       {hasFeatures ? (
         <FeaturesPanel initial={initialSettings} />
       ) : (
-        <UpgradeCard requiredPlan="Business" feature="Optional Features" />
+        <UpgradeCard requiredPlan="Business" feature={t("features.featureName")} />
       )}
     </div>
   )

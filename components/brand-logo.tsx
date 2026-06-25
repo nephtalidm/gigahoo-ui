@@ -1,14 +1,11 @@
 import Link from "next/link"
-import { Phone } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export function BrandLogo({ className }: { className?: string }) {
   return (
-    <Link href="/" className={cn("flex items-center gap-2", className)}>
-      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-        <Phone className="h-4 w-4" />
-      </span>
-      <span className="text-lg font-semibold tracking-tight text-foreground">Gigahoo</span>
+    <Link href="/" className={cn("inline-flex items-center", className)}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/gigahoo-logo.png" alt="Gigahoo" className="h-[2.4rem] w-auto" />
     </Link>
   )
 }

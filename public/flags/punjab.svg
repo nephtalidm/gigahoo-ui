@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 45" width="60" height="45">
+  <rect width="60" height="45" fill="#FF9933"/>
+  <g fill="none" stroke="#15489e" stroke-width="2.4" stroke-linecap="round">
+    <!-- chakkar (ring) -->
+    <circle cx="30" cy="23" r="8.5"/>
+    <!-- kirpans (crossed curved swords) -->
+    <path d="M17 13 q15 10 0 23"/>
+    <path d="M43 13 q-15 10 0 23"/>
+  </g>
+  <!-- central khanda (double-edged sword) -->
+  <path d="M30 7 l2.6 5.5 v16 l-2.6 4 -2.6 -4 v-16 z" fill="#15489e"/>
+</svg>

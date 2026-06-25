@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Clock,
   Languages,
@@ -5,50 +7,49 @@ import {
   ClipboardList,
   MessageCircleQuestion,
 } from "lucide-react"
-
-const features = [
-  {
-    icon: Clock,
-    title: "24/7 AI Receptionist",
-    description:
-      "Your AI receptionist answers every call, even when you're driving, working on-site, or after hours.",
-  },
-  {
-    icon: Languages,
-    title: "Multilingual Support",
-    description:
-      "Serve customers in multiple languages including English, Mandarin, Cantonese, Spanish, Japanese, and more.",
-  },
-  {
-    icon: FileText,
-    title: "Call Summaries",
-    description: "Receive detailed summaries of every customer conversation.",
-  },
-  {
-    icon: ClipboardList,
-    title: "Customer Intake",
-    description:
-      "Collect names, phone numbers, addresses, and service details automatically.",
-  },
-  {
-    icon: MessageCircleQuestion,
-    title: "Answers Questions About Services",
-    description:
-      "Provide instant answers to common questions about your services, service areas, and business information.",
-  },
-]
+import { useTranslation } from "@/contexts/language-context"
 
 export function Features() {
+  const { t } = useTranslation()
+
+  const features = [
+    {
+      icon: Clock,
+      title: t("home.feature1Title"),
+      description: t("home.feature1Description"),
+    },
+    {
+      icon: Languages,
+      title: t("home.feature2Title"),
+      description: t("home.feature2Description"),
+    },
+    {
+      icon: FileText,
+      title: t("home.feature3Title"),
+      description: t("home.feature3Description"),
+    },
+    {
+      icon: ClipboardList,
+      title: t("home.feature4Title"),
+      description: t("home.feature4Description"),
+    },
+    {
+      icon: MessageCircleQuestion,
+      title: t("home.feature5Title"),
+      description: t("home.feature5Description"),
+    },
+  ]
+
   return (
     <section id="features" className="border-b border-border bg-secondary/40">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-wide text-primary">Features</p>
+          <p className="text-sm font-semibold uppercase tracking-wide text-primary">{t("home.featuresEyebrow")}</p>
           <h2 className="mt-2 text-pretty text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Everything you need to capture every lead
+            {t("home.featuresTitle")}
           </h2>
           <p className="mt-4 text-pretty text-lg leading-relaxed text-muted-foreground">
-            Purpose-built for plumbers, HVAC, electricians, and other home service pros.
+            {t("home.featuresSubtitle")}
           </p>
         </div>
 

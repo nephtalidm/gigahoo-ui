@@ -9,9 +9,11 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { getDashboardOverview, type DashboardOverview } from "@/lib/api"
 import { mapApiConversation, formatDateTime, formatDuration } from "@/lib/data"
+import { useTranslation } from "@/contexts/language-context"
 import { ArrowRight, ArrowUpRight, Loader2 } from "lucide-react"
 
 export default function OverviewPage() {
+  const { t } = useTranslation()
   const [data, setData] = useState<DashboardOverview | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -33,35 +35,35 @@ export default function OverviewPage() {
   if (!data) {
     return (
       <div className="flex flex-col items-center justify-center gap-4 py-20">
-        <p className="text-muted-foreground">Failed to load dashboard.</p>
+        <p className="text-muted-foreground">{t("dashboard.loadFailed")}</p>
         <Button variant="outline" onClick={() => window.location.reload()}>
-          Try again
+          {t("dashboard.tryAgain")}
         </Button>
       </div>
     )
   }
 
   const remaining = data.remainingMinutes
-  const recentCalls = data.recentCalls.map(mapApiConversation)
+  const recentCalls = data.recentConversations.map(mapApiConversation)
   const nextPlan = data.plan === "Free" ? "Starter" : data.plan === "Starter" ? "Business" : null
 
   return (
     <div className="flex flex-col gap-6">
-      <PageHeader title="Overview" description={`Welcome back.`} />
+      <PageHeader title={t("dashboard.overviewTitle")} description={t("dashboard.overviewWelcome")} />
 
       {/* Plan summary */}
       <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-sm font-medium text-muted-foreground">Current Plan</p>
+            <p className="text-sm font-medium text-muted-foreground">{t("dashboard.currentPlan")}</p>
             <div className="mt-1 flex items-center gap-2">
               <span className="text-xl font-bold text-foreground">{data.plan}</span>
               <Badge variant="secondary" className="bg-primary/10 text-primary">
-                {data.includedMinutes.toLocaleString()} min/mo
+                {t("dashboard.minutesPerMonth", { minutes: data.includedMinutes.toLocaleString() })}
               </Badge>
             </div>
             <p className="mt-1 text-sm text-muted-foreground">
-              {data.minutesUsed.toLocaleString()} of {data.includedMinutes.toLocaleString()} minutes used this period
+              {t("dashboard.minutesUsedThisPeriod", { used: data.minutesUsed.toLocaleString(), total: data.includedMinutes.toLocaleString() })}
             </p>
           </div>
           {nextPlan ? (
@@ -69,13 +71,13 @@ export default function OverviewPage() {
               className="gap-1.5"
               render={
                 <Link href="/dashboard/billing">
-                  Upgrade to {nextPlan}
+                  {t("dashboard.upgradeTo", { plan: nextPlan })}
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
               }
             />
           ) : (
-            <Button variant="outline" render={<Link href="/dashboard/billing">Manage plan</Link>} />
+            <Button variant="outline" render={<Link href="/dashboard/billing">{t("dashboard.managePlan")}</Link>} />
           )}
         </div>
       </div>
@@ -87,8 +89,8 @@ export default function OverviewPage() {
       />
 
       <MetricsGrid
-        callsAnswered={data.callsAnswered}
-        avgDuration={Math.round(data.avgCallDurationSeconds)}
+        callsAnswered={data.conversationsAnswered}
+        avgDuration={Math.round(data.avgConversationDurationSeconds)}
         minutesRemaining={remaining}
       />
 
@@ -96,14 +98,14 @@ export default function OverviewPage() {
         {/* Recent calls */}
         <div className="rounded-2xl border border-border bg-card shadow-sm">
           <div className="flex items-center justify-between border-b border-border px-5 py-4">
-            <h2 className="font-semibold text-foreground">Recent Calls</h2>
+            <h2 className="font-semibold text-foreground">{t("dashboard.recentCalls")}</h2>
             <Button
               variant="ghost"
               size="sm"
               className="gap-1"
               render={
                 <Link href="/dashboard/calls">
-                  View all
+                  {t("dashboard.viewAll")}
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               }
@@ -125,7 +127,7 @@ export default function OverviewPage() {
             ))}
             {recentCalls.length === 0 && (
               <li className="px-5 py-8 text-center text-sm text-muted-foreground">
-                No calls yet. Your AI receptionist is ready to go.
+                {t("dashboard.noCalls")}
               </li>
             )}
           </ul>

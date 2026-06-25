@@ -1,38 +1,46 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { GoogleIcon } from "@/components/brand-logo"
+import { GoogleSignInButton } from "@/components/google-signin-button"
+import { CodeBoxes } from "@/components/code-boxes"
+import { PhoneInput } from "@/components/phone-input"
 import { useAuth } from "@/contexts/auth-context"
+import { useTranslation } from "@/contexts/language-context"
+import { useDefaultPhoneCountry } from "@/hooks/use-default-phone-country"
 import { verifyMagicLink, api } from "@/lib/api"
-import { cn } from "@/lib/utils"
+import { toE164 } from "@/lib/data"
 import { Mail, MessageSquare, ArrowLeft, Loader2 } from "lucide-react"
 import { z } from "zod"
 
 type Mode = "menu" | "email" | "sms" | "password"
 
 const emailSchema = z.object({
-  email: z.string().email("Please enter a valid email address").max(254),
+  email: z.string().email().max(254),
 })
 
 const phoneSchema = z.object({
-  phone: z.string().min(7, "Please enter a valid phone number").max(20),
+  phone: z.string().min(7).max(20),
 })
 
 const codeSchema = z.object({
-  code: z.string().min(4, "Code must be at least 4 digits").max(6),
+  code: z.string().min(4).max(6),
 })
 
 export function AuthMethods({ onAuthenticated, initialMode }: { onAuthenticated?: () => void; initialMode?: "signin" | "signup" }) {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { t } = useTranslation()
   const { loginWithGoogle, sendMagicLink, sendSmsCode, verifySmsCode, storeAuth } = useAuth()
-  const [mode, setMode] = useState<Mode>(initialMode === "signup" ? "email" : "menu")
+  const [mode, setMode] = useState<Mode>("menu")
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
+  const defaultPhoneCountry = useDefaultPhoneCountry()
+  const [phoneCountryPicked, setPhoneCountryPicked] = useState<string | null>(null)
+  const phoneCountry = phoneCountryPicked ?? defaultPhoneCountry
   const [code, setCode] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
@@ -42,31 +50,32 @@ export function AuthMethods({ onAuthenticated, initialMode }: { onAuthenticated?
   const [error, setError] = useState<string | null>(null)
   const [hasPassword, setHasPassword] = useState(false)
   const [isSignUp, setIsSignUp] = useState(initialMode === "signup")
+  const lastAutoCode = useRef("")
 
   function finish() {
     if (onAuthenticated) onAuthenticated()
   }
 
-  const backLabel = isSignUp ? "Back to sign up" : "All sign-in options"
+  const backLabel = isSignUp ? t("auth.backToSignUp") : t("auth.allSignInOptions")
 
-  async function handleGoogle() {
+  async function handleGoogle(idToken: string) {
     setLoading(true)
     setError(null)
     try {
-      await loginWithGoogle("google-id-token-placeholder")
+      await loginWithGoogle(idToken)
       finish()
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Google sign-in failed")
+      setError(err instanceof Error ? err.message : t("auth.googleSignInFailed"))
     } finally {
       setLoading(false)
     }
   }
 
-  async function handleVerifyEmail(e: React.FormEvent) {
-    e.preventDefault()
+  async function handleVerifyEmail(e?: React.FormEvent) {
+    e?.preventDefault()
     const result = codeSchema.safeParse({ code })
     if (!result.success) {
-      setError(result.error.issues[0].message)
+      setError(t("auth.codeMinLength"))
       return
     }
     setLoading(true)
@@ -75,7 +84,7 @@ export function AuthMethods({ onAuthenticated, initialMode }: { onAuthenticated?
       const response = await verifyMagicLink(email, code)
       storeAuth(response)
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Invalid or expired code")
+      setError(err instanceof Error ? err.message : t("auth.invalidOrExpiredCode"))
     } finally {
       setLoading(false)
     }
@@ -85,7 +94,7 @@ export function AuthMethods({ onAuthenticated, initialMode }: { onAuthenticated?
     e.preventDefault()
     const result = emailSchema.safeParse({ email })
     if (!result.success) {
-      setError(result.error.issues[0].message)
+      setError(t("auth.invalidEmail"))
       return
     }
     setLoading(true)
@@ -96,7 +105,7 @@ export function AuthMethods({ onAuthenticated, initialMode }: { onAuthenticated?
       if (isSignUp) {
         // Sign up: email must NOT exist
         if (resp.exists) {
-          setError("This email is already registered. Please sign in instead.")
+          setError(t("auth.emailAlreadyRegistered"))
           setLoading(false)
           return
         }
@@ -105,7 +114,7 @@ export function AuthMethods({ onAuthenticated, initialMode }: { onAuthenticated?
       } else {
         // Sign in: email must exist
         if (!resp.exists) {
-          setError("No account found with this email. Please sign up instead.")
+          setError(t("auth.noAccountFound"))
           setLoading(false)
           return
         }
@@ -119,7 +128,7 @@ export function AuthMethods({ onAuthenticated, initialMode }: { onAuthenticated?
         setEmailSent(true)
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to check email")
+      setError(err instanceof Error ? err.message : t("auth.failedToCheckEmail"))
     } finally {
       setLoading(false)
     }
@@ -127,9 +136,9 @@ export function AuthMethods({ onAuthenticated, initialMode }: { onAuthenticated?
 
   async function handlePasswordLogin(e: React.FormEvent) {
     e.preventDefault()
-    const result = z.object({ password: z.string().min(1, "Password is required") }).safeParse({ password })
+    const result = z.object({ password: z.string().min(1) }).safeParse({ password })
     if (!result.success) {
-      setError(result.error.issues[0].message)
+      setError(t("auth.passwordRequired"))
       return
     }
     setLoading(true)
@@ -141,7 +150,7 @@ export function AuthMethods({ onAuthenticated, initialMode }: { onAuthenticated?
       )
       storeAuth(response)
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Invalid email or password")
+      setError(err instanceof Error ? err.message : t("auth.invalidEmailOrPassword"))
     } finally {
       setLoading(false)
     }
@@ -151,55 +160,72 @@ export function AuthMethods({ onAuthenticated, initialMode }: { onAuthenticated?
     e.preventDefault()
     const result = phoneSchema.safeParse({ phone })
     if (!result.success) {
-      setError(result.error.issues[0].message)
+      setError(t("auth.invalidPhone"))
       return
     }
     setLoading(true)
     setError(null)
     try {
-      await sendSmsCode(phone)
+      await sendSmsCode(toE164(phoneCountry, phone))
       setCodeSent(true)
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to send code")
+      setError(err instanceof Error ? err.message : t("auth.failedToSendCode"))
     } finally {
       setLoading(false)
     }
   }
 
-  async function handleVerify(e: React.FormEvent) {
-    e.preventDefault()
+  async function handleVerify(e?: React.FormEvent) {
+    e?.preventDefault()
     const result = codeSchema.safeParse({ code })
     if (!result.success) {
-      setError(result.error.issues[0].message)
+      setError(t("auth.codeMinLength"))
       return
     }
     setLoading(true)
     setError(null)
     try {
-      await verifySmsCode(phone, code)
+      await verifySmsCode(toE164(phoneCountry, phone), code)
       finish()
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Invalid or expired code")
+      setError(err instanceof Error ? err.message : t("auth.invalidOrExpiredCode"))
     } finally {
       setLoading(false)
     }
   }
+
+  // Auto-submit the verification code as soon as it's complete (6 digits), for
+  // both email and SMS. The "Verify" button stays as a manual fallback. The ref
+  // guards against re-submitting the same code (e.g. after a wrong-code error);
+  // editing the code (dropping below 6 digits) re-arms it.
+  useEffect(() => {
+    if (code.length < 6) {
+      lastAutoCode.current = ""
+      return
+    }
+    if (loading || code === lastAutoCode.current) return
+    if (mode === "email" && emailSent) {
+      lastAutoCode.current = code
+      handleVerifyEmail()
+    } else if (mode === "sms" && codeSent) {
+      lastAutoCode.current = code
+      handleVerify()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [code, loading, mode, emailSent, codeSent])
 
   if (mode === "menu") {
     return (
       <div className="flex flex-col gap-3">
         {error && <p className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">{error}</p>}
-        <Button onClick={handleGoogle} disabled={loading} variant="outline" size="lg" className="w-full justify-center gap-3">
-          {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <GoogleIcon className="h-5 w-5" />}
-          Continue with Google
-        </Button>
+        <GoogleSignInButton onCredential={handleGoogle} text={isSignUp ? "signup_with" : "continue_with"} />
         <Button onClick={() => setMode("sms")} variant="outline" size="lg" className="w-full justify-center gap-3">
           <MessageSquare className="h-5 w-5" />
-          Continue with SMS
+          {t("auth.continueWithSms")}
         </Button>
         <Button onClick={() => setMode("email")} variant="outline" size="lg" className="w-full justify-center gap-3">
           <Mail className="h-5 w-5" />
-          Continue with Email
+          {t("auth.continueWithEmail")}
         </Button>
       </div>
     )
@@ -213,6 +239,8 @@ export function AuthMethods({ onAuthenticated, initialMode }: { onAuthenticated?
           setMode("menu")
           setEmailSent(false)
           setCodeSent(false)
+          setPassword("")
+          setHasPassword(false)
           setError(null)
         }}
         className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
@@ -227,89 +255,53 @@ export function AuthMethods({ onAuthenticated, initialMode }: { onAuthenticated?
         (emailSent ? (
           <form onSubmit={handleVerifyEmail} className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="email-code">Verification Code</Label>
-              <div className="flex justify-center gap-2">
-                <input
-                  id="email-code"
-                  inputMode="numeric"
-                  maxLength={6}
-                  required
-                  value={code}
-                  onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                  onKeyDown={(e) => {
-                    if (e.key === "Backspace" && code.length === 0) {
-                      setMode("menu")
-                      setEmailSent(false)
-                      setCode("")
-                      setError(null)
-                    }
-                  }}
-                  className="absolute -left-[9999px] -top-[9999px] w-0 h-0 opacity-0"
-                  autoFocus
-                />
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <div
-                    key={i}
-                    onClick={() => document.getElementById("email-code")?.focus()}
-                    className={cn(
-                      "w-12 h-14 flex items-center justify-center text-2xl font-mono rounded-lg border cursor-text transition-colors",
-                      code[i]
-                        ? "border-primary bg-primary/5 text-foreground"
-                        : "border-border bg-secondary/30 text-muted-foreground",
-                    )}
-                  >
-                    {code[i] || "_"}
-                  </div>
-                ))}
-              </div>
+              <Label htmlFor="email-code">{t("auth.verificationCode")}</Label>
+              <CodeBoxes
+                id="email-code"
+                value={code}
+                onChange={setCode}
+                onEscape={() => { setMode("menu"); setEmailSent(false); setCode(""); setError(null) }}
+              />
               <p className="text-xs text-muted-foreground text-center">
-                {"Sent to "}
+                {t("auth.sentTo")}
                 <span className="font-medium text-foreground">{email}</span>
               </p>
             </div>
             <Button type="submit" size="lg" disabled={loading || code.length < 6} className="w-full">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Verify & Continue
+              {t("auth.verifyAndContinue")}
             </Button>
           </form>
         ) : (
           <form onSubmit={handleSendMagicLink} className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="email">Email Address</Label>
+              <Label htmlFor="email">{t("auth.emailAddress")}</Label>
               <Input
                 id="email"
                 type="email"
                 required
-                placeholder="you@business.com"
+                placeholder={t("auth.emailPlaceholder")}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <Button type="submit" size="lg" disabled={loading} className="w-full">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Continue
+              {t("auth.continue")}
             </Button>
           </form>
         ))}
 
       {mode === "password" && (
         <form onSubmit={handlePasswordLogin} className="flex flex-col gap-4">
-          <button
-            type="button"
-            onClick={() => { setMode("menu"); setPassword(""); setHasPassword(false) }}
-            className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <ArrowLeft className="h-4 w-4" />
-              {backLabel}
-          </button>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="login-password">Password</Label>
+            <Label htmlFor="login-password">{t("auth.password")}</Label>
             <div className="relative">
               <Input
                 id="login-password"
                 type={showPassword ? "text" : "password"}
                 required
-                placeholder="Enter your password"
+                placeholder={t("auth.passwordPlaceholder")}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="pr-10"
@@ -328,12 +320,12 @@ export function AuthMethods({ onAuthenticated, initialMode }: { onAuthenticated?
               </button>
             </div>
             <p className="text-xs text-muted-foreground">
-              Signing in as <span className="font-medium text-foreground">{email}</span>
+              {t("auth.signingInAs")}<span className="font-medium text-foreground">{email}</span>
             </p>
           </div>
           <Button type="submit" size="lg" disabled={loading} className="w-full">
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Sign In
+            {t("auth.signIn")}
           </Button>
         </form>
       )}
@@ -342,43 +334,39 @@ export function AuthMethods({ onAuthenticated, initialMode }: { onAuthenticated?
         (codeSent ? (
           <form onSubmit={handleVerify} className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="code">6-Digit Code</Label>
-              <Input
-                id="code"
-                inputMode="numeric"
-                maxLength={6}
-                required
-                placeholder="••••••"
+              <Label htmlFor="sms-code">{t("auth.sixDigitCode")}</Label>
+              <CodeBoxes
+                id="sms-code"
                 value={code}
-                onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
-                className="text-center text-lg tracking-[0.5em]"
+                onChange={setCode}
+                onEscape={() => { setMode("menu"); setCodeSent(false); setCode(""); setError(null) }}
               />
-              <p className="text-xs text-muted-foreground">
-                {"Sent to "}
-                <span className="font-medium text-foreground">{phone}</span>
+              <p className="text-xs text-muted-foreground text-center">
+                {t("auth.sentTo")}
+                <span className="font-medium text-foreground">{toE164(phoneCountry, phone)}</span>
               </p>
             </div>
             <Button type="submit" size="lg" disabled={loading} className="w-full">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Verify & Continue
+              {t("auth.verifyAndContinue")}
             </Button>
           </form>
         ) : (
           <form onSubmit={handleSendCode} className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="phone">Business Phone Number</Label>
-              <Input
+              <Label htmlFor="phone">{t("auth.businessPhoneNumber")}</Label>
+              <PhoneInput
                 id="phone"
-                type="tel"
-                required
-                placeholder="(555) 000-0000"
+                country={phoneCountry}
+                onCountryChange={setPhoneCountryPicked}
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onValueChange={setPhone}
+                placeholder={t("auth.phonePlaceholder")}
               />
             </div>
             <Button type="submit" size="lg" disabled={loading} className="w-full">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Send Verification Code
+              {t("auth.sendVerificationCode")}
             </Button>
           </form>
         ))}

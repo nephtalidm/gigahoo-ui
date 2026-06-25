@@ -1,37 +1,42 @@
+"use client"
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-
-const faqs = [
-  {
-    q: "Can I keep my current phone number?",
-    a: "Yes. Simply forward your existing business phone number.",
-  },
-  {
-    q: "Does the AI sound natural?",
-    a: "Yes. Gigahoo uses advanced voice AI technology.",
-  },
-  {
-    q: "Can customers speak different languages?",
-    a: "Yes. Gigahoo supports multiple languages.",
-  },
-  {
-    q: "How long does setup take?",
-    a: "Most businesses can be set up within a day.",
-  },
-]
+import { useTranslation } from "@/contexts/language-context"
 
 export function Faq() {
+  const { t } = useTranslation()
+
+  const faqs = [
+    {
+      q: t("home.faqQ1"),
+      a: t("home.faqA1"),
+    },
+    {
+      q: t("home.faqQ2"),
+      a: t("home.faqA2"),
+    },
+    {
+      q: t("home.faqQ3"),
+      a: t("home.faqA3"),
+    },
+    {
+      q: t("home.faqQ4"),
+      a: t("home.faqA4"),
+    },
+  ]
+
   return (
     <section id="faq" className="border-b border-border">
       <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-wide text-primary">FAQ</p>
+          <p className="text-sm font-semibold uppercase tracking-wide text-primary">{t("home.faqEyebrow")}</p>
           <h2 className="mt-2 text-pretty text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Frequently asked questions
+            {t("home.faqTitle")}
           </h2>
         </div>
 

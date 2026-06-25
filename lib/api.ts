@@ -93,6 +93,8 @@ export interface AccountData {
   billingPeriod: string;
   minutesUsed: number;
   createdAt: string;
+  hasPassword: boolean;
+  hasGoogle: boolean;
 }
 
 export function createAccount(data: {
@@ -109,6 +111,14 @@ export function createAccount(data: {
 
 export function getAccount() {
   return api.get<AccountData>("/api/account");
+}
+
+export function setPassword(data: { currentPassword?: string; newPassword: string }) {
+  return api.post<{ message: string }>("/api/account/password", data);
+}
+
+export function linkGoogle(idToken: string) {
+  return api.post<{ message: string }>("/api/account/link-google", { idToken });
 }
 
 export function updateAccount(data: {

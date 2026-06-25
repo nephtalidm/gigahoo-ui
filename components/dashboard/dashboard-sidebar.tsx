@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { getAccount, type AccountData } from "@/lib/api"
 import { useAuth } from "@/contexts/auth-context"
+import { useTranslation } from "@/contexts/language-context"
 import {
   LayoutDashboard,
   PhoneCall,
@@ -20,15 +21,16 @@ import {
 } from "lucide-react"
 
 const navItems = [
-  { label: "Overview", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Call History", href: "/dashboard/calls", icon: PhoneCall },
-  { label: "Optional Features", href: "/dashboard/features", icon: Sparkles },
-  { label: "Plan & Billing", href: "/dashboard/billing", icon: CreditCard },
-  { label: "Settings", href: "/dashboard/settings", icon: Settings },
+  { labelKey: "dashboard.navOverview", href: "/dashboard", icon: LayoutDashboard },
+  { labelKey: "dashboard.navCallHistory", href: "/dashboard/calls", icon: PhoneCall },
+  { labelKey: "dashboard.navOptionalFeatures", href: "/dashboard/features", icon: Sparkles },
+  { labelKey: "dashboard.navPlanBilling", href: "/dashboard/billing", icon: CreditCard },
+  { labelKey: "dashboard.navSettings", href: "/dashboard/settings", icon: Settings },
 ]
 
 function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname()
+  const { t } = useTranslation()
   return (
     <nav className="flex flex-col gap-1">
       {navItems.map((item) => {
@@ -47,7 +49,7 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
             )}
           >
             <Icon className="h-4 w-4" />
-            {item.label}
+            {t(item.labelKey)}
           </Link>
         )
       })}
@@ -57,6 +59,7 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
 
 function UserInfo({ onLogout }: { onLogout: () => void }) {
   const [account, setAccount] = useState<AccountData | null>(null)
+  const { t } = useTranslation()
 
   useEffect(() => {
     getAccount()
@@ -80,16 +83,16 @@ function UserInfo({ onLogout }: { onLogout: () => void }) {
       </span>
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium text-foreground">
-          {account?.businessName ?? "Loading…"}
+          {account?.businessName ?? t("dashboard.loading")}
         </p>
         <p className="truncate text-xs text-muted-foreground">
-          {account ? `${account.plan} plan` : ""}
+          {account ? t("dashboard.planLabel", { plan: account.plan }) : ""}
         </p>
       </div>
       <button
         onClick={onLogout}
         className="shrink-0 text-muted-foreground transition-colors hover:text-foreground"
-        title="Sign out"
+        title={t("dashboard.signOut")}
       >
         <LogOut className="h-4 w-4" />
       </button>
@@ -100,11 +103,11 @@ function UserInfo({ onLogout }: { onLogout: () => void }) {
 export function DashboardSidebar() {
   const [open, setOpen] = useState(false)
   const { logout } = useAuth()
+  const { t } = useTranslation()
 
   function handleLogout() {
-    logout().then(() => {
-      window.location.href = "/login"
-    })
+    // logout() clears auth state and redirects, so just invoke it.
+    logout()
   }
 
   return (
@@ -128,13 +131,13 @@ export function DashboardSidebar() {
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger
             render={
-              <Button variant="outline" size="icon" aria-label="Open menu">
+              <Button variant="outline" size="icon" aria-label={t("dashboard.openMenu")}>
                 <Menu className="h-5 w-5" />
               </Button>
             }
           />
           <SheetContent side="left" className="w-72 p-0">
-            <SheetTitle className="sr-only">Navigation</SheetTitle>
+            <SheetTitle className="sr-only">{t("dashboard.navigation")}</SheetTitle>
             <div className="flex h-16 items-center border-b border-border px-6">
               <BrandLogo />
             </div>

@@ -1,0 +1,67 @@
+const settings = {
+  // Page header
+  title: "设置",
+  description: "管理您的企业信息。",
+
+  // General business information
+  generalInfoTitle: "企业基本信息",
+  generalInfoDescription: "更新您的 AI 接待员在通话中使用的详细信息。",
+  businessName: "企业名称",
+  businessCategory: "企业类别",
+  selectCategory: "请选择一个类别",
+  businessPhone: "企业电话号码",
+  email: "电子邮箱地址",
+  websiteUrl: "网站网址",
+  websiteUrlPlaceholder: "https://yourbusiness.com",
+  forwardingPhone: "转接电话号码",
+  forwardingPhoneHint: "此号码由 Gigahoo 管理，无法编辑。",
+
+  // Business address
+  addressTitle: "企业地址",
+  addressDescription: "请填写适用于您所在国家/地区的地址字段。",
+  addressLine1: "地址行 1",
+  addressLine1Placeholder: "街道地址、邮政信箱",
+  addressLine2: "地址行 2",
+  addressLine2Placeholder: "公寓、套间、单元、楼栋、楼层（可选）",
+  city: "城市 / 城镇",
+  region: "州 / 省 / 地区",
+  selectRegion: "请选择州/省",
+  regionPlaceholder: "州 / 省 / 地区",
+  postalCode: "邮政编码",
+  country: "国家/地区",
+  selectCountry: "请选择国家/地区",
+
+  // Account security
+  securityTitle: "账户安全",
+  securityDescription: "管理您已关联的身份验证方式。",
+  google: "Google",
+  notLinked: "未关联",
+  link: "关联",
+  emailMethod: "电子邮箱",
+  phoneNumber: "电话号码",
+  change: "更改",
+
+  // Save
+  saved: "已保存",
+  saveChanges: "保存更改",
+  saveFailed: "更改保存失败",
+
+  // Account linking and password
+  linked: "已关联",
+  googleLinkFailed: "无法关联 Google 账户",
+  passwordMethod: "密码",
+  passwordSetStatus: "密码已设置",
+  passwordNotSet: "尚未设置密码",
+  setPassword: "设置密码",
+  changePassword: "更改密码",
+  currentPassword: "当前密码",
+  newPassword: "新密码",
+  confirmPassword: "确认密码",
+  passwordPlaceholder: "至少 8 个字符",
+  passwordTooShort: "密码长度至少为 8 个字符",
+  passwordMismatch: "两次输入的密码不一致",
+  passwordSaved: "密码已更新",
+  passwordSaveFailed: "无法更新密码",
+}
+
+export default settings

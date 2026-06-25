@@ -3,16 +3,17 @@
 import { Button } from "@/components/ui/button"
 import { useCountUp } from "@/hooks/use-count-up"
 import { cn } from "@/lib/utils"
+import { useTranslation } from "@/contexts/language-context"
 import Link from "next/link"
 
-type Status = { label: string; className: string }
+type Status = { labelKey: string; className: string }
 
 function getStatus(pct: number): Status {
   if (pct >= 100)
-    return { label: "Over Limit", className: "bg-destructive/10 text-destructive" }
+    return { labelKey: "dashboard.statusOverLimit", className: "bg-destructive/10 text-destructive" }
   if (pct >= 85)
-    return { label: "Near Limit", className: "bg-amber-500/10 text-amber-600" }
-  return { label: "Healthy Usage", className: "bg-emerald-500/10 text-emerald-600" }
+    return { labelKey: "dashboard.statusNearLimit", className: "bg-amber-500/10 text-amber-600" }
+  return { labelKey: "dashboard.statusHealthy", className: "bg-emerald-500/10 text-emerald-600" }
 }
 
 export function MinuteUsageWidget({
@@ -24,6 +25,7 @@ export function MinuteUsageWidget({
   includedMinutes: number
   billingPeriod: string
 }) {
+  const { t } = useTranslation()
   const pct = Math.min((minutesUsed / includedMinutes) * 100, 100)
   const remaining = Math.max(includedMinutes - minutesUsed, 0)
   const status = getStatus(pct)
@@ -43,11 +45,11 @@ export function MinuteUsageWidget({
       <div className="relative bg-gradient-to-br from-primary to-primary/80 px-6 py-5 text-primary-foreground sm:px-8">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="text-sm font-medium text-primary-foreground/80">Minute Usage</p>
-            <p className="text-xs text-primary-foreground/70">Billing period: {billingPeriod}</p>
+            <p className="text-sm font-medium text-primary-foreground/80">{t("dashboard.minuteUsage")}</p>
+            <p className="text-xs text-primary-foreground/70">{t("dashboard.billingPeriod", { period: billingPeriod })}</p>
           </div>
           <span className="rounded-full bg-primary-foreground/15 px-3 py-1 text-xs font-semibold text-primary-foreground">
-            {status.label}
+            {t(status.labelKey)}
           </span>
         </div>
       </div>
@@ -81,9 +83,9 @@ export function MinuteUsageWidget({
               <span className="text-4xl font-bold tracking-tight text-foreground">
                 {Math.round(animatedUsed)}
               </span>
-              <span className="text-xs font-medium text-muted-foreground">Minutes Used</span>
+              <span className="text-xs font-medium text-muted-foreground">{t("dashboard.minutesUsedLabel")}</span>
               <span className="mt-1 text-xs text-muted-foreground">
-                of {includedMinutes.toLocaleString()}
+                {t("dashboard.ofTotal", { total: includedMinutes.toLocaleString() })}
               </span>
             </div>
           </div>
@@ -92,9 +94,9 @@ export function MinuteUsageWidget({
         {/* Stats */}
         <div className="flex flex-col gap-5">
           <div className="grid grid-cols-3 gap-4">
-            <Stat label="Used" value={Math.round(animatedUsed).toLocaleString()} />
-            <Stat label="Remaining" value={Math.round(animatedRemaining).toLocaleString()} />
-            <Stat label="Used %" value={`${animatedPct.toFixed(1)}%`} />
+            <Stat label={t("dashboard.statUsed")} value={Math.round(animatedUsed).toLocaleString()} />
+            <Stat label={t("dashboard.statRemaining")} value={Math.round(animatedRemaining).toLocaleString()} />
+            <Stat label={t("dashboard.statUsedPct")} value={`${animatedPct.toFixed(1)}%`} />
           </div>
 
           <div>
@@ -108,7 +110,7 @@ export function MinuteUsageWidget({
               />
             </div>
             <p className="mt-2 text-xs text-muted-foreground">
-              {remaining.toLocaleString()} of {includedMinutes.toLocaleString()} included minutes remaining
+              {t("dashboard.includedMinutesRemaining", { remaining: remaining.toLocaleString(), total: includedMinutes.toLocaleString() })}
             </p>
           </div>
 
@@ -116,7 +118,7 @@ export function MinuteUsageWidget({
             <Button
               variant="outline"
               size="sm"
-              render={<Link href="/dashboard/billing">Change Plan</Link>}
+              render={<Link href="/dashboard/billing">{t("dashboard.changePlan")}</Link>}
             />
           </div>
         </div>

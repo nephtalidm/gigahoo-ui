@@ -16,10 +16,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { StatusBadge } from "@/components/dashboard/status-badge"
+import { useTranslation } from "@/contexts/language-context"
 import { type Conversation, formatDateTime, formatDuration } from "@/lib/data"
 
 export function ConversationHistoryTable({ conversations }: { conversations: Conversation[] }) {
   const [selected, setSelected] = useState<Conversation | null>(null)
+  const { t } = useTranslation()
 
   return (
     <>
@@ -28,13 +30,13 @@ export function ConversationHistoryTable({ conversations }: { conversations: Con
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead>Caller</TableHead>
-              <TableHead>Phone</TableHead>
-              <TableHead>Date / Time</TableHead>
-              <TableHead>Duration</TableHead>
-              <TableHead>Language</TableHead>
-              <TableHead className="max-w-xs">Summary</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>{t("calls.caller")}</TableHead>
+              <TableHead>{t("calls.phone")}</TableHead>
+              <TableHead>{t("calls.dateTime")}</TableHead>
+              <TableHead>{t("calls.duration")}</TableHead>
+              <TableHead>{t("calls.language")}</TableHead>
+              <TableHead className="max-w-xs">{t("calls.summary")}</TableHead>
+              <TableHead>{t("calls.status")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -91,7 +93,7 @@ export function ConversationHistoryTable({ conversations }: { conversations: Con
           {selected && (
             <>
               <DialogHeader>
-                <DialogTitle>Conversation Details</DialogTitle>
+                <DialogTitle>{t("calls.detailsTitle")}</DialogTitle>
               </DialogHeader>
               <div className="flex flex-col gap-4">
                 <div className="flex items-center justify-between">
@@ -103,13 +105,13 @@ export function ConversationHistoryTable({ conversations }: { conversations: Con
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 rounded-xl border border-border bg-secondary/40 p-4 text-sm">
-                  <DetailItem label="Date / Time" value={formatDateTime(selected.dateTime)} />
-                  <DetailItem label="Duration" value={formatDuration(selected.durationSeconds)} />
-                  <DetailItem label="Language" value={selected.language} />
+                  <DetailItem label={t("calls.dateTime")} value={formatDateTime(selected.dateTime)} />
+                  <DetailItem label={t("calls.duration")} value={formatDuration(selected.durationSeconds)} />
+                  <DetailItem label={t("calls.language")} value={selected.language} />
                 </div>
 
                 <div>
-                  <p className="text-sm font-medium text-foreground">Summary</p>
+                  <p className="text-sm font-medium text-foreground">{t("calls.summary")}</p>
                   <p className="mt-1 text-sm text-muted-foreground">{selected.summary}</p>
                 </div>
               </div>

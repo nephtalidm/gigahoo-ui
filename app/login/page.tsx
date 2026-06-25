@@ -6,28 +6,28 @@ import { Suspense, useEffect, useState } from "react"
 import { BrandLogo } from "@/components/brand-logo"
 import { AuthMethods } from "@/components/auth-methods"
 import { useSearchParams } from "next/navigation"
+import { useTranslation } from "@/contexts/language-context"
 
 function LoginFormInner() {
   const searchParams = useSearchParams()
+  const { t } = useTranslation()
   const mode = searchParams.get("mode")
   const isSignUp = mode === "signup"
 
   return (
     <main className="flex min-h-dvh flex-col bg-secondary/30">
       <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-4 py-12">
-        <div className="flex justify-center">
+        <div className="flex justify-center [&_img]:h-[3.6rem]">
           <BrandLogo />
         </div>
 
         <div className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
           <div className="text-center">
             <h1 className="text-2xl font-bold tracking-tight text-foreground">
-              {isSignUp ? "Create your account" : "Welcome"}
+              {isSignUp ? t("auth.createAccountTitle") : t("auth.welcomeTitle")}
             </h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              {isSignUp
-                ? "Start answering every call in minutes."
-                : "Sign in or create your account to get started."}
+              {isSignUp ? t("auth.signUpSubtitle") : t("auth.signInSubtitle")}
             </p>
           </div>
 
@@ -39,29 +39,29 @@ function LoginFormInner() {
         <p className="mt-6 text-center text-sm text-muted-foreground">
           {isSignUp ? (
             <>
-              {"Already have an account? "}
+              {t("auth.alreadyHaveAccount")}
               <Link href="/login" className="font-medium text-primary hover:underline">
-                Sign in
+                {t("auth.signInLink")}
               </Link>
             </>
           ) : (
             <>
-              {"Don't have an account? "}
+              {t("auth.noAccount")}
               <Link href="/login?mode=signup" className="font-medium text-primary hover:underline">
-                Start free
+                {t("auth.startFree")}
               </Link>
             </>
           )}
         </p>
 
         <p className="mt-3 text-center text-sm text-muted-foreground">
-          By continuing, you agree to our{" "}
+          {t("auth.termsPrefix")}
           <Link href="/terms" className="text-primary hover:underline">
-            Terms
-          </Link>{" "}
-          and{" "}
+            {t("auth.terms")}
+          </Link>
+          {t("auth.and")}
           <Link href="/privacy" className="text-primary hover:underline">
-            Privacy Policy
+            {t("auth.privacyPolicy")}
           </Link>
           .
         </p>

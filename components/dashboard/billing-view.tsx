@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import { useToast } from "@/components/ui/toaster"
+import { useTranslation } from "@/contexts/language-context"
 import {
   changePlan,
   createBillingPortal,
@@ -15,7 +16,7 @@ import {
   type InvoiceData,
 } from "@/lib/api"
 import { formatDate } from "@/lib/data"
-import { ArrowUpRight, Download, Loader2 } from "lucide-react"
+import { ArrowUpRight, Check, Download, Loader2 } from "lucide-react"
 
 const planOrder = ["Free", "Starter", "Business"]
 
@@ -31,6 +32,7 @@ export function BillingView({
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null)
   const [portalLoading, setPortalLoading] = useState(false)
   const { toast } = useToast()
+  const { t } = useTranslation()
 
   const currentPlan = summary?.plan ?? "Free"
   const includedMinutes = summary?.includedMinutes ?? 25
@@ -47,7 +49,7 @@ export function BillingView({
         await changePlan(plan.id)
         window.location.reload()
       } catch {
-        toast({ title: "Failed to change plan", description: "Please try again.", variant: "destructive" })
+        toast({ title: t("billing.changePlanFailed"), description: t("billing.tryAgain"), variant: "destructive" })
       } finally {
         setLoadingPlan(null)
       }
@@ -59,7 +61,7 @@ export function BillingView({
       const { url } = await createCheckout(plan.id)
       window.location.href = url
     } catch {
-      toast({ title: "Failed to start checkout", description: "Please try again.", variant: "destructive" })
+      toast({ title: t("billing.checkoutFailed"), description: t("billing.tryAgain"), variant: "destructive" })
     } finally {
       setLoadingPlan(null)
     }
@@ -71,7 +73,7 @@ export function BillingView({
       const { url } = await createBillingPortal()
       window.open(url, "_blank")
     } catch {
-      toast({ title: "Failed to open billing portal", description: "Please try again.", variant: "destructive" })
+      toast({ title: t("billing.portalFailed"), description: t("billing.tryAgain"), variant: "destructive" })
     } finally {
       setPortalLoading(false)
     }
@@ -83,30 +85,30 @@ export function BillingView({
       <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
         <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-sm font-medium text-muted-foreground">Current Plan</p>
+            <p className="text-sm font-medium text-muted-foreground">{t("billing.currentPlan")}</p>
             <div className="mt-1 flex items-center gap-2">
               <span className="text-2xl font-bold text-foreground">{currentPlan}</span>
               <Badge variant="secondary" className="bg-primary/10 text-primary">
-                {includedMinutes.toLocaleString()} min/mo
+                {t("billing.minutesPerMonth", { minutes: includedMinutes.toLocaleString() })}
               </Badge>
             </div>
           </div>
-          <p className="text-sm text-muted-foreground">Billing cycle: {billingPeriod}</p>
+          <p className="text-sm text-muted-foreground">{t("billing.billingCycle", { period: billingPeriod })}</p>
         </div>
 
         <Separator className="my-5" />
 
         <div className="grid gap-4 sm:grid-cols-3">
           <div>
-            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Minutes Used</p>
+            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{t("billing.minutesUsed")}</p>
             <p className="mt-1 text-xl font-bold text-foreground">{minutesUsed.toLocaleString()}</p>
           </div>
           <div>
-            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Included Minutes</p>
+            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{t("billing.includedMinutes")}</p>
             <p className="mt-1 text-xl font-bold text-foreground">{includedMinutes.toLocaleString()}</p>
           </div>
           <div>
-            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Remaining</p>
+            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{t("billing.remaining")}</p>
             <p className="mt-1 text-xl font-bold text-foreground">{remaining.toLocaleString()}</p>
           </div>
         </div>
@@ -115,13 +117,13 @@ export function BillingView({
           <div className="h-2 w-full overflow-hidden rounded-full bg-secondary">
             <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${usagePct}%` }} />
           </div>
-          <p className="mt-2 text-xs text-muted-foreground">{usagePct}% of included minutes used this cycle</p>
+          <p className="mt-2 text-xs text-muted-foreground">{t("billing.usedThisCycle", { percent: usagePct })}</p>
         </div>
       </div>
 
       {/* Plan selection */}
       <div>
-        <h2 className="text-lg font-semibold text-foreground">Choose your plan</h2>
+        <h2 className="text-lg font-semibold text-foreground">{t("billing.choosePlan")}</h2>
         <div className="mt-4 grid gap-6 lg:grid-cols-3">
           {plans.map((plan) => {
             const isCurrent = plan.name === currentPlan
@@ -137,7 +139,7 @@ export function BillingView({
               >
                 {isCurrent && (
                   <span className="absolute -top-3 left-7 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
-                    Current plan
+                    {t("billing.currentPlanBadge")}
                   </span>
                 )}
                 <h3 className="text-lg font-semibold text-foreground">{plan.name}</h3>
@@ -145,7 +147,7 @@ export function BillingView({
                   <span className="text-4xl font-bold tracking-tight text-foreground">
                     ${plan.priceMonthly}
                   </span>
-                  <span className="text-sm text-muted-foreground">/month</span>
+                  <span className="text-sm text-muted-foreground">{t("billing.perMonth")}</span>
                 </div>
                 <ul className="mt-6 flex-1 space-y-3">
                   {plan.features.map((feature) => (
@@ -165,13 +167,13 @@ export function BillingView({
                   className="mt-8 w-full"
                 >
                   {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {isCurrent ? "Current plan" : isUpgrade ? `Upgrade to ${plan.name}` : `Switch to ${plan.name}`}
+                  {isCurrent ? t("billing.currentPlanBadge") : isUpgrade ? t("billing.upgradeTo", { plan: plan.name }) : t("billing.switchTo", { plan: plan.name })}
                 </Button>
               </div>
             )
           })}
           {plans.length === 0 && (
-            <p className="col-span-3 text-center text-sm text-muted-foreground">No plans available.</p>
+            <p className="col-span-3 text-center text-sm text-muted-foreground">{t("billing.noPlans")}</p>
           )}
         </div>
       </div>
@@ -179,20 +181,20 @@ export function BillingView({
       {/* Billing / Stripe section */}
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-          <h2 className="font-semibold text-foreground">Payment & Subscription</h2>
+          <h2 className="font-semibold text-foreground">{t("billing.paymentSubscription")}</h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Manage your payment methods and subscription through the Stripe Billing Portal.
+            {t("billing.paymentDescription")}
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             <Button variant="default" onClick={handleOpenPortal} disabled={portalLoading}>
               {portalLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Open Billing Portal
+              {t("billing.openBillingPortal")}
             </Button>
           </div>
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-          <h2 className="font-semibold text-foreground">Billing History</h2>
+          <h2 className="font-semibold text-foreground">{t("billing.billingHistory")}</h2>
           {invoices.length > 0 ? (
             <ul className="mt-4 divide-y divide-border">
               {invoices.map((inv) => (
@@ -222,7 +224,7 @@ export function BillingView({
                         href={inv.pdfUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        aria-label={`Download invoice ${inv.invoiceNumber}`}
+                        aria-label={t("billing.downloadInvoice", { number: inv.invoiceNumber })}
                         className="text-muted-foreground transition-colors hover:text-foreground"
                       >
                         <Download className="h-4 w-4" />
@@ -233,7 +235,7 @@ export function BillingView({
               ))}
             </ul>
           ) : (
-            <p className="mt-4 text-sm text-muted-foreground">No invoices yet.</p>
+            <p className="mt-4 text-sm text-muted-foreground">{t("billing.noInvoices")}</p>
           )}
         </div>
       </div>
