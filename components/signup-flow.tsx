@@ -304,7 +304,9 @@ export function SignupFlow() {
         <Label htmlFor="category">{t("signup.categoryLabel")}</Label>
         <Select value={category} onValueChange={(v) => { if (v) { setCategory(v); setErrors((e) => ({ ...e, category: undefined })) } }}>
           <SelectTrigger id="category" className={cn("w-full", errors.category && "border-destructive focus-visible:ring-destructive")}>
-            <SelectValue placeholder={t("signup.categoryPlaceholder")} />
+            <SelectValue placeholder={t("signup.categoryPlaceholder")}>
+              {category ? t(`categories.${businessCategoryKeys[category]}`) : undefined}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {businessCategories.map((c) => (
