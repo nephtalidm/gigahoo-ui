@@ -1,9 +1,10 @@
 const auth = {
   // login page
+  signInTitle: "Sign in to Gigahoo",
   createAccountTitle: "Create your account",
   welcomeTitle: "Welcome",
   signUpSubtitle: "Start answering every call in minutes.",
-  signInSubtitle: "Sign in or create your account to get started.",
+  signInSubtitle: "Enter your email or phone and we'll sign you in — or set you up if you're new.",
   alreadyHaveAccount: "Already have an account? ",
   signInLink: "Sign in",
   noAccount: "Don't have an account? ",

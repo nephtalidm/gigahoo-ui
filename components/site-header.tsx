@@ -40,8 +40,7 @@ export function SiteHeader() {
 
         <div className="hidden items-center gap-3 md:flex">
           <LanguageSwitcher />
-          <Button variant="ghost" size="default" render={<Link href="/login">{t("nav.signIn")}</Link>} />
-          <Button size="default" render={<Link href="/login?mode=signup">{t("nav.signUp")}</Link>} />
+          <Button size="default" render={<Link href="/login">{t("nav.signIn")}</Link>} />
         </div>
 
         <button
@@ -70,17 +69,9 @@ export function SiteHeader() {
             ))}
             <div className="mt-2 flex flex-col gap-2">
               <Button
-                variant="outline"
                 render={
                   <Link href="/login" onClick={() => setOpen(false)}>
                     {t("nav.signIn")}
-                  </Link>
-                }
-              />
-              <Button
-                render={
-                  <Link href="/login?mode=signup" onClick={() => setOpen(false)}>
-                    {t("nav.signUp")}
                   </Link>
                 }
               />

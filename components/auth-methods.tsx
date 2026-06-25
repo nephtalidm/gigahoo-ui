@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -30,9 +29,7 @@ const codeSchema = z.object({
   code: z.string().min(4).max(6),
 })
 
-export function AuthMethods({ onAuthenticated, initialMode }: { onAuthenticated?: () => void; initialMode?: "signin" | "signup" }) {
-  const router = useRouter()
-  const searchParams = useSearchParams()
+export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void }) {
   const { t } = useTranslation()
   const { loginWithGoogle, sendMagicLink, sendSmsCode, verifySmsCode, storeAuth } = useAuth()
   const [mode, setMode] = useState<Mode>("menu")
@@ -49,14 +46,13 @@ export function AuthMethods({ onAuthenticated, initialMode }: { onAuthenticated?
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [hasPassword, setHasPassword] = useState(false)
-  const [isSignUp, setIsSignUp] = useState(initialMode === "signup")
   const lastAutoCode = useRef("")
 
   function finish() {
     if (onAuthenticated) onAuthenticated()
   }
 
-  const backLabel = isSignUp ? t("auth.backToSignUp") : t("auth.allSignInOptions")
+  const backLabel = t("auth.allSignInOptions")
 
   async function handleGoogle(idToken: string) {
     setLoading(true)
@@ -102,31 +98,16 @@ export function AuthMethods({ onAuthenticated, initialMode }: { onAuthenticated?
     try {
       const resp = await api.post<{ exists: boolean; hasPassword: boolean }>("/api/auth/check-email", { email })
 
-      if (isSignUp) {
-        // Sign up: email must NOT exist
-        if (resp.exists) {
-          setError(t("auth.emailAlreadyRegistered"))
-          setLoading(false)
-          return
-        }
-        await sendMagicLink(email)
-        setEmailSent(true)
-      } else {
-        // Sign in: email must exist
-        if (!resp.exists) {
-          setError(t("auth.noAccountFound"))
-          setLoading(false)
-          return
-        }
-        if (resp.hasPassword) {
-          setHasPassword(true)
-          setMode("password")
-          setLoading(false)
-          return
-        }
-        await sendMagicLink(email)
-        setEmailSent(true)
+      // Unified create-or-login: returning users with a password sign in with it;
+      // everyone else (new users and passwordless accounts) gets a magic link.
+      if (resp.exists && resp.hasPassword) {
+        setHasPassword(true)
+        setMode("password")
+        setLoading(false)
+        return
       }
+      await sendMagicLink(email)
+      setEmailSent(true)
     } catch (err) {
       setError(err instanceof Error ? err.message : t("auth.failedToCheckEmail"))
     } finally {
@@ -218,7 +199,7 @@ export function AuthMethods({ onAuthenticated, initialMode }: { onAuthenticated?
     return (
       <div className="flex flex-col gap-3">
         {error && <p className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">{error}</p>}
-        <GoogleSignInButton onCredential={handleGoogle} text={isSignUp ? "signup_with" : "continue_with"} />
+        <GoogleSignInButton onCredential={handleGoogle} text="continue_with" />
         <Button onClick={() => setMode("sms")} variant="outline" size="lg" className="w-full justify-center gap-3">
           <MessageSquare className="h-5 w-5" />
           {t("auth.continueWithSms")}
