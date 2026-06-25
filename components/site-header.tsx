@@ -23,7 +23,7 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link href="/" className="flex items-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/gigahoo-logo.png" alt="Gigahoo" className="h-[3.6rem] w-auto" />
+          <img src="/gigahoo-logo.png" alt="Gigahoo" className="h-[3.0rem] w-auto" />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
