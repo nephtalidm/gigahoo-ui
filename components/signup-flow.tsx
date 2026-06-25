@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select"
 import { PhoneInput } from "@/components/phone-input"
 import { businessCategories, businessCategoryKeys, type Plan } from "@/lib/data"
-import { getAccount, getCategories, api } from "@/lib/api"
+import { getAccount, getCategories, api, createCheckout } from "@/lib/api"
 import { useAuth } from "@/contexts/auth-context"
 import { useTranslation } from "@/contexts/language-context"
 import { useDefaultPhoneCountry } from "@/hooks/use-default-phone-country"
@@ -216,6 +216,15 @@ export function SignupFlow() {
 
       try { localStorage.removeItem(SIGNUP_PLAN_KEY) } catch {}
       storeAuth({ accessToken: response.token, expiresAt: response.expiresAt })
+
+      // Paid plans collect a card via Stripe Checkout; Free goes straight to the dashboard.
+      if (selectedPlan !== "Free") {
+        const planId = plans.find((p) => p.name === selectedPlan)!.planId
+        const { url } = await createCheckout(planId)
+        window.location.href = url
+        return
+      }
+      router.push("/dashboard")
     } catch (err) {
       const msg = err instanceof Error ? err.message : t("signup.errGeneric")
       if (msg.toLowerCase().includes("email")) {
