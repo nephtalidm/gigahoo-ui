@@ -90,9 +90,15 @@ export function SignupFlow() {
   const [city, setCity] = useState("")
   const [region, setRegion] = useState("")
   const [postalCode, setPostalCode] = useState("")
-  // Defaults to the phone country (until the user changes it).
+  // Gigahoo is currently only available in the US and Canada, so the address
+  // country selector is limited to those two.
+  const supportedCountries = countries.filter((c) => c.code === "US" || c.code === "CA")
+  // Defaults to the phone country (until the user changes it); if the phone
+  // country isn't US/CA, default the selector to "US".
   const [addressCountryPicked, setAddressCountryPicked] = useState<string | null>(null)
-  const addressCountry = addressCountryPicked ?? phoneCountryCode
+  const addressCountry =
+    addressCountryPicked ??
+    (phoneCountryCode === "US" || phoneCountryCode === "CA" ? phoneCountryCode : "US")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -415,7 +421,7 @@ export function SignupFlow() {
             </SelectValue>
           </SelectTrigger>
           <SelectContent>
-            {countries.map((c) => (
+            {supportedCountries.map((c) => (
               <SelectItem key={c.code} value={c.code}>{c.flag} {c.name}</SelectItem>
             ))}
           </SelectContent>
