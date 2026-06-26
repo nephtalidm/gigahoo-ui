@@ -82,7 +82,11 @@ export function SignupFlow() {
   const [businessPhone, setBusinessPhone] = useState("")
   const defaultPhoneCountry = useDefaultPhoneCountry()
   const [phoneCountryPicked, setPhoneCountryPicked] = useState<string | null>(null)
-  const phoneCountryCode = phoneCountryPicked ?? defaultPhoneCountry
+  // Gigahoo only serves the US and Canada, so clamp the geo-detected default to
+  // "US" when the visitor isn't in a supported country.
+  const phoneCountryCode =
+    phoneCountryPicked ??
+    (defaultPhoneCountry === "US" || defaultPhoneCountry === "CA" ? defaultPhoneCountry : "US")
   // Business address (used by Twilio regulatory bundles; the country also drives
   // the phone number's country and billing currency).
   const [addressLine1, setAddressLine1] = useState("")
@@ -402,6 +406,7 @@ export function SignupFlow() {
             onValueChange={setBusinessPhone}
             invalid={!!errors.businessPhone}
             describedBy={errors.businessPhone ? "phone-error" : undefined}
+            allowedCodes={["US", "CA"]}
           />
           {errors.businessPhone && (
             <p id="phone-error" className="text-xs text-destructive">{errors.businessPhone}</p>

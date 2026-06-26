@@ -37,7 +37,11 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
   const [phone, setPhone] = useState("")
   const defaultPhoneCountry = useDefaultPhoneCountry()
   const [phoneCountryPicked, setPhoneCountryPicked] = useState<string | null>(null)
-  const phoneCountry = phoneCountryPicked ?? defaultPhoneCountry
+  // Gigahoo only serves the US and Canada, so clamp the geo-detected default to
+  // "US" when the visitor isn't in a supported country.
+  const phoneCountry =
+    phoneCountryPicked ??
+    (defaultPhoneCountry === "US" || defaultPhoneCountry === "CA" ? defaultPhoneCountry : "US")
   const [code, setCode] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
@@ -343,6 +347,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
                 value={phone}
                 onValueChange={setPhone}
                 placeholder={t("auth.phonePlaceholder")}
+                allowedCodes={["US", "CA"]}
               />
             </div>
             <Button type="submit" size="lg" disabled={loading} className="w-full">

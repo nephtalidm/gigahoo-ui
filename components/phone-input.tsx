@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect } from "react"
 import { Combobox } from "@base-ui/react/combobox"
 import { ChevronDownIcon, CheckIcon, SearchIcon } from "lucide-react"
 import { Input } from "@/components/ui/input"
@@ -27,15 +28,34 @@ function CountryFlag({ code }: { code: string }) {
 function CountrySelect({
   country,
   onCountryChange,
+  allowedCodes,
 }: {
   country: string
   onCountryChange: (countryCode: string) => void
+  allowedCodes?: string[]
 }) {
-  const selected = countries.find((c) => c.code === country) ?? countries.find((c) => c.code === "US")!
+  // When `allowedCodes` is provided, restrict the list to those codes and
+  // preserve their given order (e.g. US then CA). Otherwise show all countries.
+  const items = allowedCodes
+    ? allowedCodes
+        .map((code) => countries.find((c) => c.code === code))
+        .filter((c): c is CountryInfo => Boolean(c))
+    : countries
+
+  const fallback = (items.find((c) => c.code === "US") ?? items[0])!
+  const selected = items.find((c) => c.code === country) ?? fallback
+
+  // If the incoming country isn't one of the allowed codes, fall back to the
+  // first allowed code for display AND notify the parent so its state matches.
+  useEffect(() => {
+    if (allowedCodes && selected && selected.code !== country) {
+      onCountryChange(selected.code)
+    }
+  }, [allowedCodes, selected, country, onCountryChange])
 
   return (
     <Combobox.Root
-      items={countries}
+      items={items}
       value={selected}
       onValueChange={(c: CountryInfo | null) => c && onCountryChange(c.code)}
       itemToStringLabel={(c: CountryInfo) => (c ? `${c.name} ${c.dialCode}` : "")}
@@ -104,6 +124,7 @@ export function PhoneInput({
   placeholder = "(555) 000-0000",
   invalid,
   describedBy,
+  allowedCodes,
 }: {
   id?: string
   country: string
@@ -113,10 +134,11 @@ export function PhoneInput({
   placeholder?: string
   invalid?: boolean
   describedBy?: string
+  allowedCodes?: string[]
 }) {
   return (
     <div className="flex gap-2">
-      <CountrySelect country={country} onCountryChange={onCountryChange} />
+      <CountrySelect country={country} onCountryChange={onCountryChange} allowedCodes={allowedCodes} />
       <Input
         id={id}
         type="tel"
