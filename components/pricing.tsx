@@ -1,61 +1,31 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Check } from "lucide-react"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { useTranslation } from "@/contexts/language-context"
-import { getCurrencyForVisitor } from "@/lib/api"
-import { COMING_SOON_COUNTRY_CODES, PLAN_PRICES } from "@/lib/settings"
+import { COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
 
-export function Pricing() {
+interface PricingProps {
+  // Resolved server-side (Country.Currency / PlanPrice) so prices render on
+  // first paint with no client-fetch flicker.
+  currency?: string
+  prices?: Record<string, string>
+  country?: string
+}
+
+export function Pricing({ currency, prices = {}, country = "" }: PricingProps) {
   const { t } = useTranslation()
-  // Initialize from the NEXT_CURRENCY cookie so a returning/just-switched
-  // visitor renders the currency immediately (no flicker); only a brand-new
-  // visitor has to fetch it.
-  const [currency, setCurrency] = useState<string | null>(() =>
-    typeof document !== "undefined"
-      ? (document.cookie.match(/(?:^|;\s*)NEXT_CURRENCY=([^;]+)/)?.[1] ?? null)
-      : null,
-  )
-  // The visitor's country, read from the same cookie middleware sets for geo.
-  const [country, setCountry] = useState<string>("")
-
-  useEffect(() => {
-    // Show prices in the visitor's currency, taken from the DB (Country.Currency):
-    // middleware records their geo country in a cookie; we resolve the currency
-    // via the API. Cache the result in NEXT_CURRENCY so subsequent renders have
-    // it synchronously.
-    const country = (document.cookie.match(/(?:^|;\s*)NEXT_COUNTRY=([^;]+)/)?.[1] ?? "").toUpperCase()
-    setCountry(country)
-    // Only fetch when the cookie wasn't already present.
-    const cached = document.cookie.match(/(?:^|;\s*)NEXT_CURRENCY=([^;]+)/)?.[1]
-    if (!cached) {
-      getCurrencyForVisitor(country)
-        .then((c) => {
-          if (c.currency) {
-            setCurrency(c.currency)
-            document.cookie = `NEXT_CURRENCY=${c.currency};path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`
-          }
-        })
-        .catch(() => {})
-    }
-  }, [])
 
   // In "coming soon" markets the product isn't open for signup yet, so the
   // plan CTAs are disabled and labeled accordingly.
   const comingSoon = COMING_SOON_COUNTRY_CODES.includes(country)
 
-  // Per-currency plan amounts, falling back to USD until/unless the visitor's
-  // currency is one we price for.
-  const prices = PLAN_PRICES[currency ?? ""] ?? PLAN_PRICES.USD
-
   const plans = [
     {
       slug: "Free",
       name: t("home.pricingFreeName"),
-      price: prices.Free,
       period: t("home.pricingPeriod"),
       description: t("home.pricingFreeDescription"),
       features: [
@@ -71,7 +41,6 @@ export function Pricing() {
     {
       slug: "Starter",
       name: t("home.pricingStarterName"),
-      price: prices.Starter,
       period: t("home.pricingPeriod"),
       description: t("home.pricingStarterDescription"),
       features: [t("home.pricingStarterFeature1")],
@@ -81,7 +50,6 @@ export function Pricing() {
     {
       slug: "Business",
       name: t("home.pricingBusinessName"),
-      price: prices.Business,
       period: t("home.pricingPeriod"),
       description: t("home.pricingBusinessDescription"),
       features: [t("home.pricingBusinessFeature1"), t("home.pricingBusinessFeature2")],
@@ -122,7 +90,7 @@ export function Pricing() {
               <h3 className="text-lg font-semibold text-foreground">{plan.name}</h3>
               <div className="mt-3 flex items-baseline gap-1">
                 <span className="text-4xl font-bold tracking-tight text-foreground">
-                  {plan.price}
+                  {prices[plan.slug] ?? "$0"}
                 </span>
                 {plan.slug !== "Free" && currency && (
                   <span className="text-sm font-medium text-muted-foreground">{currency}</span>

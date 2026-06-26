@@ -265,6 +265,19 @@ export function getCurrencyForVisitor(countryCode: string) {
   );
 }
 
+// Public, per-currency plan prices for the marketing pricing section. Anonymous
+// and resolved from the visitor's geo country (Country.Currency in the DB).
+export interface PublicPrices {
+  currency: string;
+  plans: { slug: string; amount: number }[];
+}
+
+export function getPublicPrices(country: string) {
+  return api.get<PublicPrices>(
+    `/api/billing/public-prices?code=${encodeURIComponent(country)}`,
+  );
+}
+
 export function changePlan(planId: number) {
   return api.post<{ message: string; plan: string }>("/api/billing/change-plan", { planId });
 }
