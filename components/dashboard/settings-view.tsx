@@ -15,6 +15,7 @@ import {
 import { PhoneInput } from "@/components/phone-input"
 import { GoogleSignInButton } from "@/components/google-signin-button"
 import { CodeBoxes } from "@/components/code-boxes"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import { useTranslation } from "@/contexts/language-context"
 import {
   updateAccount,
@@ -46,6 +47,52 @@ function Field({
       <Label htmlFor={htmlFor}>{label}</Label>
       {children}
     </div>
+  )
+}
+
+/** Modal shown while waiting for the user to enter an email/phone change code. */
+function VerifyModal({
+  open, id, title, description, waitingLabel, cancelLabel, confirmLabel,
+  code, setCode, busy, error, onCancel, onConfirm,
+}: {
+  open: boolean
+  id: string
+  title: string
+  description: string
+  waitingLabel: string
+  cancelLabel: string
+  confirmLabel: string
+  code: string
+  setCode: (v: string) => void
+  busy: boolean
+  error: string | null
+  onCancel: () => void
+  onConfirm: () => void
+}) {
+  return (
+    <Dialog open={open} onOpenChange={(o) => { if (!o) onCancel() }}>
+      <DialogContent showCloseButton={false} className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
+        </DialogHeader>
+        <CodeBoxes id={id} value={code} onChange={setCode} length={6} />
+        <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          {waitingLabel}
+        </div>
+        {error && <p className="text-center text-sm text-destructive">{error}</p>}
+        <DialogFooter>
+          <Button type="button" variant="outline" onClick={onCancel} disabled={busy}>
+            {cancelLabel}
+          </Button>
+          <Button type="button" onClick={onConfirm} disabled={busy || code.length < 6}>
+            {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {confirmLabel}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }
 
@@ -214,6 +261,21 @@ export function SettingsView({
     }
   }
 
+  function handleCancelEmailChange() {
+    setEmailVerifyOpen(false)
+    setEmailCode("")
+    setEmailVerifyError(null)
+    setEmail(account.email)
+  }
+
+  function handleCancelPhoneChange() {
+    setPhoneVerifyOpen(false)
+    setPhoneCode("")
+    setPhoneVerifyError(null)
+    setBusinessPhone(account.businessPhone)
+    setPhoneCountryCode(account.phoneCountryCode)
+  }
+
   async function handleRequestPhoneChange() {
     setPhoneVerifyError(null)
     setPhoneVerified(false)
@@ -309,22 +371,21 @@ export function SettingsView({
                 {phoneVerifyError && <span className="text-sm text-destructive">{phoneVerifyError}</span>}
               </div>
             )}
-            {phoneChanged && phoneVerifyOpen && (
-              <div className="flex flex-col gap-3 rounded-lg border border-border p-3">
-                <p className="text-xs text-muted-foreground">{t("settings.enterPhoneCode")}</p>
-                <CodeBoxes id="phoneCode" value={phoneCode} onChange={setPhoneCode} length={6} />
-                {phoneVerifyError && <span className="text-sm text-destructive">{phoneVerifyError}</span>}
-                <div className="flex items-center justify-end gap-2">
-                  <Button type="button" variant="ghost" size="sm" onClick={() => setPhoneVerifyOpen(false)}>
-                    {t("settings.cancel")}
-                  </Button>
-                  <Button type="button" size="sm" onClick={handleConfirmPhoneChange} disabled={phoneVerifyBusy || phoneCode.length < 6}>
-                    {phoneVerifyBusy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    {t("settings.confirm")}
-                  </Button>
-                </div>
-              </div>
-            )}
+            <VerifyModal
+              open={phoneVerifyOpen}
+              id="phoneCode"
+              title={t("settings.phoneVerifyTitle")}
+              description={t("settings.enterPhoneCode")}
+              waitingLabel={t("settings.waitingForConfirmation")}
+              cancelLabel={t("settings.cancel")}
+              confirmLabel={t("settings.confirm")}
+              code={phoneCode}
+              setCode={setPhoneCode}
+              busy={phoneVerifyBusy}
+              error={phoneVerifyError}
+              onCancel={handleCancelPhoneChange}
+              onConfirm={handleConfirmPhoneChange}
+            />
           </Field>
           <Field label={t("settings.email")} htmlFor="email">
             <Input
@@ -355,22 +416,21 @@ export function SettingsView({
                 {emailVerifyError && <span className="text-sm text-destructive">{emailVerifyError}</span>}
               </div>
             )}
-            {emailChanged && emailVerifyOpen && (
-              <div className="flex flex-col gap-3 rounded-lg border border-border p-3">
-                <p className="text-xs text-muted-foreground">{t("settings.enterEmailCode")}</p>
-                <CodeBoxes id="emailCode" value={emailCode} onChange={setEmailCode} length={6} />
-                {emailVerifyError && <span className="text-sm text-destructive">{emailVerifyError}</span>}
-                <div className="flex items-center justify-end gap-2">
-                  <Button type="button" variant="ghost" size="sm" onClick={() => setEmailVerifyOpen(false)}>
-                    {t("settings.cancel")}
-                  </Button>
-                  <Button type="button" size="sm" onClick={handleConfirmEmailChange} disabled={emailVerifyBusy || emailCode.length < 6}>
-                    {emailVerifyBusy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    {t("settings.confirm")}
-                  </Button>
-                </div>
-              </div>
-            )}
+            <VerifyModal
+              open={emailVerifyOpen}
+              id="emailCode"
+              title={t("settings.emailVerifyTitle")}
+              description={t("settings.enterEmailCode")}
+              waitingLabel={t("settings.waitingForConfirmation")}
+              cancelLabel={t("settings.cancel")}
+              confirmLabel={t("settings.confirm")}
+              code={emailCode}
+              setCode={setEmailCode}
+              busy={emailVerifyBusy}
+              error={emailVerifyError}
+              onCancel={handleCancelEmailChange}
+              onConfirm={handleConfirmEmailChange}
+            />
           </Field>
           <Field label={t("settings.websiteUrl")} htmlFor="websiteUrl">
             <Input
@@ -603,8 +663,11 @@ export function SettingsView({
               {t("settings.saved")}
             </span>
           )}
+          {(emailChanged || phoneChanged) && (
+            <span className="text-sm text-amber-600">{t("settings.verifyBeforeSave")}</span>
+          )}
           {error && <span className="text-sm text-destructive">{error}</span>}
-          <Button onClick={handleSave} disabled={saving}>
+          <Button onClick={handleSave} disabled={saving || emailChanged || phoneChanged}>
             {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {t("settings.saveChanges")}
           </Button>

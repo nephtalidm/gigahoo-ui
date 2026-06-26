@@ -54,6 +54,10 @@ const settings = {
   phoneVerified: "Phone verified",
   codeSendFailed: "Couldn't send verification code",
   verifyFailed: "Invalid or expired code",
+  verifyBeforeSave: "Verify your new email or phone number before saving",
+  emailVerifyTitle: "Confirm your new email",
+  phoneVerifyTitle: "Confirm your new phone number",
+  waitingForConfirmation: "Waiting for confirmation…",
 
   // Password
   passwordMethod: "Password",
