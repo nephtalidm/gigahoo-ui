@@ -25,10 +25,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link href="/" className="flex items-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/gigahoo-logo.png" alt="Gigahoo" className="h-[3.0rem] w-auto" />
-        </Link>
+        <BrandLogo />
 
         <nav className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
@@ -96,7 +93,8 @@ export function SiteHeader() {
                   {link.label}
                 </a>
               ))}
-              <div className="mt-2 flex flex-col gap-2">
+              <div className="my-2 border-t border-border" />
+              <div className="flex flex-col gap-2">
                 {isAuthenticated ? (
                   <>
                     <Button
