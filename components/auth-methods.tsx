@@ -63,6 +63,16 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
   // that isn't a valid address; empty clears the error.
   const emailInvalid = email.length > 0 && !emailSchema.safeParse({ email }).success
 
+  // Live phone-format validation for the SMS step: flag non-empty input that
+  // isn't a valid 10-digit US/CA number; empty clears the error.
+  const phoneDigits = phone.replace(/\D/g, "")
+  const phoneInvalid = phone.length > 0 && (/[a-zA-Z]/.test(phone) || phoneDigits.length !== 10)
+
+  // The password-login field is flagged red whenever the password step has an
+  // error (a failed login attempt or a required-empty submit). Typing into the
+  // field clears the error, which clears the red border.
+  const passwordInvalid = mode === "password" && !!error
+
   async function handleResend() {
     setResending(true)
     setError(null)
@@ -266,7 +276,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
           {backLabel}
       </button>
 
-      {error && <p className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">{error}</p>}
+      {error && !passwordInvalid && <p className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">{error}</p>}
 
       {mode === "email" &&
         (emailSent ? (
@@ -327,8 +337,10 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
                 required
                 placeholder={t("auth.passwordPlaceholder")}
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="pr-10"
+                onChange={(e) => { setPassword(e.target.value); if (error) setError(null) }}
+                className={cn("pr-10", passwordInvalid && "border-destructive focus-visible:ring-destructive")}
+                aria-invalid={passwordInvalid}
+                aria-describedby={passwordInvalid ? "login-password-error" : undefined}
               />
               <button
                 type="button"
@@ -343,6 +355,9 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
                 )}
               </button>
             </div>
+            {passwordInvalid && (
+              <p id="login-password-error" className="text-xs text-destructive">{error}</p>
+            )}
             <p className="text-xs text-muted-foreground">
               {t("auth.signingInAs")}<span className="font-medium text-foreground">{email}</span>
             </p>
@@ -388,7 +403,12 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
                 onValueChange={setPhone}
                 placeholder={t("auth.phonePlaceholder")}
                 allowedCodes={supportedCodes}
+                invalid={phoneInvalid}
+                describedBy={phoneInvalid ? "phone-error" : undefined}
               />
+              {phoneInvalid && (
+                <p id="phone-error" className="text-xs text-destructive">{t("auth.invalidPhone")}</p>
+              )}
             </div>
             <Button type="submit" size="lg" disabled={loading} className="w-full">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

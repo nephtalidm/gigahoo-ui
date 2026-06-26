@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import { getAccount, type AccountData, googleLogin, sendMagicLink as apiSendMagicLink, sendSmsCode as apiSendSmsCode, verifySmsCode as apiVerifySmsCode } from "@/lib/api";
 
 type AuthContextType = {
@@ -21,6 +22,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [account, setAccount] = useState<AccountData | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -49,11 +51,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     window.location.href = "/";
   };
 
-  const storeAuth = (response: { accessToken: string; expiresAt: string }) => {
+  const storeAuth = async (response: { accessToken: string; expiresAt: string }) => {
     localStorage.setItem("gigahoo_token", response.accessToken);
     localStorage.setItem("gigahoo_expires_at", response.expiresAt);
     setIsAuthenticated(true);
-    window.location.href = "/signup";
+    // Go straight to the right page with client-side navigation (no full reload,
+    // no flash of the /signup loader): dashboard if the account is already set up,
+    // otherwise onboarding.
+    try {
+      const acc = await getAccount();
+      setAccount(acc);
+      router.push(acc.businessName?.trim() ? "/dashboard" : "/signup");
+    } catch {
+      router.push("/signup");
+    }
   };
 
   const loginWithGoogle = async (idToken: string) => {

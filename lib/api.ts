@@ -96,6 +96,7 @@ export interface AccountData {
   createdAt: string;
   hasPassword: boolean;
   hasGoogle: boolean;
+  requiresCurrentPassword: boolean;
 }
 
 export function createAccount(data: {

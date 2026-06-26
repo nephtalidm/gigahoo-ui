@@ -26,6 +26,14 @@ export function GoogleSignInButton({
   const ref = useRef<HTMLDivElement>(null)
   const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
 
+  // Keep the latest callback in a ref so the init effect does NOT re-run (and
+  // re-render the Google button, which caused a flicker) just because the parent
+  // passes a new onCredential function reference on each render.
+  const onCredentialRef = useRef(onCredential)
+  useEffect(() => {
+    onCredentialRef.current = onCredential
+  }, [onCredential])
+
   useEffect(() => {
     if (!clientId) return
     let cancelled = false
@@ -35,7 +43,7 @@ export function GoogleSignInButton({
       window.google.accounts.id.initialize({
         client_id: clientId,
         callback: (resp: { credential?: string }) => {
-          if (resp?.credential) onCredential(resp.credential)
+          if (resp?.credential) onCredentialRef.current(resp.credential)
         },
       })
       ref.current.innerHTML = ""
@@ -67,7 +75,7 @@ export function GoogleSignInButton({
       cancelled = true
       script?.removeEventListener("load", render)
     }
-  }, [clientId, onCredential, text])
+  }, [clientId, text])
 
   if (!clientId) return null
   return <div ref={ref} className="flex min-h-10 justify-center" />

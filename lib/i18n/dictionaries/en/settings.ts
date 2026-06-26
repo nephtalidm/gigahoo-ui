@@ -75,6 +75,7 @@ const settings = {
   passwordPlaceholder: "At least 8 characters",
   passwordTooShort: "Password must be at least 8 characters",
   passwordMismatch: "Passwords don't match",
+  currentPasswordRequired: "Enter your current password",
   passwordSaved: "Password updated",
   passwordSaveFailed: "Couldn't update password",
 

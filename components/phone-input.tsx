@@ -7,6 +7,20 @@ import { Input } from "@/components/ui/input"
 import { countries, type CountryInfo } from "@/lib/data"
 import { cn } from "@/lib/utils"
 
+/**
+ * Live US/CA (NANP) phone formatter. Strips to digits, caps at 10, then renders
+ * partial formats as the user types — e.g. "7783923021" -> "(778) 392-3021".
+ * Idempotent: re-formatting an already-formatted string yields the same result,
+ * and dropping digits (backspace) re-formats the shorter number.
+ */
+export function formatUsPhone(value: string): string {
+  const digits = value.replace(/\D/g, "").slice(0, 10)
+  if (digits.length === 0) return ""
+  if (digits.length <= 3) return `(${digits}`
+  if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`
+  return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`
+}
+
 // Flag image (renders on every OS, unlike emoji flags).
 function CountryFlag({ code }: { code: string }) {
   return (
@@ -143,8 +157,8 @@ export function PhoneInput({
         id={id}
         type="tel"
         inputMode="tel"
-        value={value}
-        onChange={(e) => onValueChange(e.target.value.replace(/[^\d\s\-()]/g, ""))}
+        value={formatUsPhone(value)}
+        onChange={(e) => onValueChange(formatUsPhone(e.target.value))}
         placeholder={placeholder}
         className={cn("flex-1", invalid && "border-destructive focus-visible:ring-destructive")}
         aria-invalid={invalid}

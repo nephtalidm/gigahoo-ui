@@ -28,6 +28,7 @@ export const mockAccount: AccountData = {
   createdAt: "2024-01-15T00:00:00Z",
   hasPassword: true,
   hasGoogle: false,
+  requiresCurrentPassword: true,
 };
 
 export const mockConversations: ConversationData[] = [

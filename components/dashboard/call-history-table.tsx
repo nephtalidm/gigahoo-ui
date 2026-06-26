@@ -30,13 +30,13 @@ export function ConversationHistoryTable({ conversations }: { conversations: Con
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead>{t("calls.caller")}</TableHead>
-              <TableHead>{t("calls.phone")}</TableHead>
-              <TableHead>{t("calls.dateTime")}</TableHead>
-              <TableHead>{t("calls.duration")}</TableHead>
-              <TableHead>{t("calls.language")}</TableHead>
-              <TableHead className="max-w-xs">{t("calls.summary")}</TableHead>
-              <TableHead>{t("calls.status")}</TableHead>
+              <TableHead className="text-center">{t("calls.caller")}</TableHead>
+              <TableHead className="text-center">{t("calls.phone")}</TableHead>
+              <TableHead className="text-center">{t("calls.dateTime")}</TableHead>
+              <TableHead className="text-center">{t("calls.duration")}</TableHead>
+              <TableHead className="text-center">{t("calls.language")}</TableHead>
+              <TableHead className="max-w-xs text-center">{t("calls.summary")}</TableHead>
+              <TableHead className="text-center">{t("calls.status")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
