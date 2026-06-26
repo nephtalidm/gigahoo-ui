@@ -34,25 +34,24 @@ export function middleware(request: NextRequest) {
     request.headers.get("cf-ipcountry") ??
     undefined;
 
-  const country = (forcedCountry ?? geoCountry)?.toUpperCase();
-
-  // Country cookie: a regional domain always pins its market. Geo domains
-  // (.ai/.com) reflect the visitor's CURRENT location on every visit — unless
-  // they've explicitly picked a country (NEXT_COUNTRY_PICKED === "1").
+  // The default country: a regional domain pins its market; geo domains use the
+  // visitor's current location. An explicit pick (NEXT_COUNTRY_PICKED === "1")
+  // overrides the default on EVERY domain so the country switcher actually sticks.
   const countryPicked = request.cookies.get(COUNTRY_PICKED_COOKIE)?.value === "1";
-  if (forcedCountry) {
-    response.cookies.set(COUNTRY_COOKIE, forcedCountry, COOKIE_OPTIONS);
-  } else if (geoCountry && !countryPicked) {
-    response.cookies.set(COUNTRY_COOKIE, geoCountry.toUpperCase(), COOKIE_OPTIONS);
+  const existingCountry = request.cookies.get(COUNTRY_COOKIE)?.value?.toUpperCase();
+  const defaultCountry = (forcedCountry ?? geoCountry)?.toUpperCase();
+  const effectiveCountry = countryPicked ? (existingCountry ?? defaultCountry) : defaultCountry;
+
+  if (!countryPicked && defaultCountry) {
+    response.cookies.set(COUNTRY_COOKIE, defaultCountry, COOKIE_OPTIONS);
   }
 
-  // Locale cookie: only set the host/geo default while the user has NOT
-  // explicitly chosen a language. Once they pick, NEXT_LOCALE_PICKED === "1"
-  // and we leave their NEXT_LOCALE untouched.
-  const picked = request.cookies.get(LOCALE_PICKED_COOKIE)?.value;
-  if (picked !== "1") {
-    const locale = country
-      ? localeForCountry(country)
+  // Locale follows the effective country (so picking Mexico -> Spanish, US/CA ->
+  // English), unless the user has explicitly chosen a language themselves.
+  const localePicked = request.cookies.get(LOCALE_PICKED_COOKIE)?.value === "1";
+  if (!localePicked) {
+    const locale = effectiveCountry
+      ? localeForCountry(effectiveCountry)
       : localeForAcceptLanguage(request.headers.get("accept-language")) ?? defaultLocale;
 
     response.cookies.set(LOCALE_COOKIE, locale, COOKIE_OPTIONS);
