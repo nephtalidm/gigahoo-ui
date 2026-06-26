@@ -56,6 +56,8 @@ const signup = {
   errRegionRequired: "주/도를 입력하세요",
   errPostalCodeRequired: "우편번호를 입력하세요",
   errTermsRequired: "서비스 약관 및 개인정보 처리방침에 동의해 주세요",
+  errorTitle: "문제가 발생했습니다",
+  tryAgain: "다시 시도",
 }
 
 export default signup

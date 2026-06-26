@@ -56,6 +56,8 @@ const signup = {
   errRegionRequired: "Saisissez votre état / province",
   errPostalCodeRequired: "Saisissez votre code postal",
   errTermsRequired: "Veuillez accepter les Conditions d'utilisation et la Politique de confidentialité",
+  errorTitle: "Une erreur s'est produite",
+  tryAgain: "Réessayer",
 }
 
 export default signup

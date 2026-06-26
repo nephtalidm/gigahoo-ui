@@ -56,6 +56,8 @@ const signup = {
   errRegionRequired: "ਆਪਣਾ ਰਾਜ / ਪ੍ਰਾਂਤ ਦਾਖਲ ਕਰੋ",
   errPostalCodeRequired: "ਆਪਣਾ ਪੋਸਟਲ / ZIP ਕੋਡ ਦਾਖਲ ਕਰੋ",
   errTermsRequired: "ਕਿਰਪਾ ਕਰਕੇ ਸੇਵਾ ਦੀਆਂ ਸ਼ਰਤਾਂ ਅਤੇ ਪਰਾਈਵੇਸੀ ਨੀਤੀ ਨੂੰ ਸਵੀਕਾਰ ਕਰੋ",
+  errorTitle: "ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ",
+  tryAgain: "ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ",
 }
 
 export default signup

@@ -4,6 +4,7 @@ const dashboard = {
   navCallHistory: "Historique des appels",
   navOptionalFeatures: "Fonctionnalités optionnelles",
   navPlanBilling: "Forfait et facturation",
+  navNotifications: "Notifications",
   navSettings: "Paramètres",
   navigation: "Navigation",
   openMenu: "Ouvrir le menu",

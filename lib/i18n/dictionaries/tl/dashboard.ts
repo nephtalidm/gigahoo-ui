@@ -4,6 +4,7 @@ const dashboard = {
   navCallHistory: "Kasaysayan ng Tawag",
   navOptionalFeatures: "Mga Opsyonal na Feature",
   navPlanBilling: "Plano at Pagbabayad",
+  navNotifications: "Mga Abiso",
   navSettings: "Mga Setting",
   navigation: "Nabigasyon",
   openMenu: "Buksan ang menu",

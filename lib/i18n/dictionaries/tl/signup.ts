@@ -56,6 +56,8 @@ const signup = {
   errRegionRequired: "Ilagay ang iyong estado / probinsya",
   errPostalCodeRequired: "Ilagay ang iyong postal / ZIP code",
   errTermsRequired: "Pakitanggap ang Mga Tuntunin ng Serbisyo at Patakaran sa Privacy",
+  errorTitle: "May nangyaring mali",
+  tryAgain: "Subukan muli",
 }
 
 export default signup

@@ -4,6 +4,7 @@ const dashboard = {
   navCallHistory: "Історія дзвінків",
   navOptionalFeatures: "Додаткові можливості",
   navPlanBilling: "Тариф і оплата",
+  navNotifications: "Сповіщення",
   navSettings: "Налаштування",
   navigation: "Навігація",
   openMenu: "Відкрити меню",

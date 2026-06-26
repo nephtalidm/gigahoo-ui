@@ -4,6 +4,7 @@ const dashboard = {
   navCallHistory: "通話記錄",
   navOptionalFeatures: "選用功能",
   navPlanBilling: "方案與帳單",
+  navNotifications: "通知",
   navSettings: "設定",
   navigation: "導覽",
   openMenu: "開啟選單",

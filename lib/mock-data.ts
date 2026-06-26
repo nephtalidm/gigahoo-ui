@@ -29,6 +29,8 @@ export const mockAccount: AccountData = {
   hasPassword: true,
   hasGoogle: false,
   requiresCurrentPassword: true,
+  emailCallNotifications: true,
+  smsCallNotifications: false,
 };
 
 export const mockConversations: ConversationData[] = [

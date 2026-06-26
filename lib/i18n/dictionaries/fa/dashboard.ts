@@ -4,6 +4,7 @@ const dashboard = {
   navCallHistory: "تاریخچه تماس‌ها",
   navOptionalFeatures: "امکانات اختیاری",
   navPlanBilling: "طرح و صورت‌حساب",
+  navNotifications: "اعلان‌ها",
   navSettings: "تنظیمات",
   navigation: "ناوبری",
   openMenu: "باز کردن منو",

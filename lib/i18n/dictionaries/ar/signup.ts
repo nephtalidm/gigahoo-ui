@@ -56,6 +56,8 @@ const signup = {
   errRegionRequired: "أدخل الولاية / المقاطعة",
   errPostalCodeRequired: "أدخل الرمز البريدي",
   errTermsRequired: "يرجى قبول شروط الخدمة وسياسة الخصوصية",
+  errorTitle: "حدث خطأ ما",
+  tryAgain: "حاول مرة أخرى",
 }
 
 export default signup

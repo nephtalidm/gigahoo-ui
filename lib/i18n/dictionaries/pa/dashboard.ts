@@ -4,6 +4,7 @@ const dashboard = {
   navCallHistory: "ਕਾਲ ਇਤਿਹਾਸ",
   navOptionalFeatures: "ਵਿਕਲਪਿਕ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ",
   navPlanBilling: "ਪਲਾਨ ਅਤੇ ਬਿਲਿੰਗ",
+  navNotifications: "ਸੂਚਨਾਵਾਂ",
   navSettings: "ਸੈਟਿੰਗਾਂ",
   navigation: "ਨੈਵੀਗੇਸ਼ਨ",
   openMenu: "ਮੇਨੂ ਖੋਲ੍ਹੋ",

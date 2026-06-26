@@ -56,6 +56,8 @@ const signup = {
   errRegionRequired: "Enter your state / province",
   errPostalCodeRequired: "Enter your postal / ZIP code",
   errTermsRequired: "Please accept the Terms of Service and Privacy Policy",
+  errorTitle: "Something went wrong",
+  tryAgain: "Try again",
 }
 
 export default signup

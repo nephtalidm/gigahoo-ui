@@ -35,6 +35,7 @@ export function BillingView({
   const { t } = useTranslation()
 
   const currentPlan = summary?.plan ?? "Free"
+  const onFreePlan = currentPlan === "Free"
   const includedMinutes = summary?.includedMinutes ?? 25
   const minutesUsed = summary?.minutesUsed ?? 0
   const remaining = summary?.remainingMinutes ?? Math.max(includedMinutes - minutesUsed, 0)
@@ -178,7 +179,8 @@ export function BillingView({
         </div>
       </div>
 
-      {/* Billing / Stripe section */}
+      {/* Payment & Subscription + Billing History — hidden on the free plan */}
+      {!onFreePlan && (
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
           <h2 className="font-semibold text-foreground">{t("billing.paymentSubscription")}</h2>
@@ -239,6 +241,7 @@ export function BillingView({
           )}
         </div>
       </div>
+      )}
     </div>
   )
 }

@@ -97,6 +97,8 @@ export interface AccountData {
   hasPassword: boolean;
   hasGoogle: boolean;
   requiresCurrentPassword: boolean;
+  emailCallNotifications: boolean;
+  smsCallNotifications: boolean;
 }
 
 export function createAccount(data: {
@@ -139,6 +141,19 @@ export function updateAccount(data: {
   countryId: number;
 }) {
   return api.put<AccountData>("/api/account", data);
+}
+
+export interface NotificationSettings {
+  emailCallNotifications: boolean;
+  smsCallNotifications: boolean;
+}
+
+export function getNotificationSettings() {
+  return api.get<NotificationSettings>("/api/account/notifications");
+}
+
+export function updateNotificationSettings(s: NotificationSettings) {
+  return api.put<void>("/api/account/notifications", s);
 }
 
 export function requestEmailChange(newEmail: string) {

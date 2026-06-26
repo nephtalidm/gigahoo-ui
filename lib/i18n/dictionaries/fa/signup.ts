@@ -56,6 +56,8 @@ const signup = {
   errRegionRequired: "استان / ایالت خود را وارد کنید",
   errPostalCodeRequired: "کد پستی خود را وارد کنید",
   errTermsRequired: "لطفاً شرایط خدمات و سیاست حفظ حریم خصوصی را بپذیرید",
+  errorTitle: "مشکلی پیش آمد",
+  tryAgain: "دوباره تلاش کنید",
 }
 
 export default signup

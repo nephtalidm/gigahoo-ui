@@ -56,6 +56,8 @@ const signup = {
   errRegionRequired: "請填寫省/州",
   errPostalCodeRequired: "請填寫郵政編碼",
   errTermsRequired: "請接受服務條款同私隱政策",
+  errorTitle: "出咗啲問題",
+  tryAgain: "再試一次",
 }
 
 export default signup

@@ -15,6 +15,7 @@ import {
   PhoneCall,
   Sparkles,
   CreditCard,
+  Bell,
   Settings,
   Menu,
 } from "lucide-react"
@@ -24,6 +25,7 @@ const navItems = [
   { labelKey: "dashboard.navCallHistory", href: "/dashboard/calls", icon: PhoneCall },
   { labelKey: "dashboard.navOptionalFeatures", href: "/dashboard/features", icon: Sparkles },
   { labelKey: "dashboard.navPlanBilling", href: "/dashboard/billing", icon: CreditCard },
+  { labelKey: "dashboard.navNotifications", href: "/dashboard/notifications", icon: Bell },
   { labelKey: "dashboard.navSettings", href: "/dashboard/settings", icon: Settings },
 ]
 

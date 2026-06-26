@@ -11,6 +11,7 @@ import calls from "./calls"
 import billing from "./billing"
 import features from "./features"
 import settings from "./settings"
+import notifications from "./notifications"
 import categories from "./categories"
 
 export const fr = {
@@ -27,5 +28,6 @@ export const fr = {
   billing,
   features,
   settings,
+  notifications,
   categories,
 }

@@ -56,6 +56,8 @@ const signup = {
   errRegionRequired: "都道府県・州を入力してください",
   errPostalCodeRequired: "郵便番号を入力してください",
   errTermsRequired: "利用規約とプライバシーポリシーに同意してください",
+  errorTitle: "問題が発生しました",
+  tryAgain: "もう一度お試しください",
 }
 
 export default signup

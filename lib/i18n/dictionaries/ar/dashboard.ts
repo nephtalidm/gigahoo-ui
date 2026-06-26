@@ -4,6 +4,7 @@ const dashboard = {
   navCallHistory: "سجل المكالمات",
   navOptionalFeatures: "الميزات الاختيارية",
   navPlanBilling: "الخطة والفوترة",
+  navNotifications: "الإشعارات",
   navSettings: "الإعدادات",
   navigation: "التنقّل",
   openMenu: "فتح القائمة",

@@ -4,6 +4,7 @@ const dashboard = {
   navCallHistory: "통화 기록",
   navOptionalFeatures: "선택 기능",
   navPlanBilling: "요금제 및 결제",
+  navNotifications: "알림",
   navSettings: "설정",
   navigation: "탐색",
   openMenu: "메뉴 열기",

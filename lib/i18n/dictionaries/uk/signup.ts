@@ -56,6 +56,8 @@ const signup = {
   errRegionRequired: "Введіть ваш штат / область",
   errPostalCodeRequired: "Введіть ваш поштовий індекс",
   errTermsRequired: "Будь ласка, прийміть Умови надання послуг та Політику конфіденційності",
+  errorTitle: "Щось пішло не так",
+  tryAgain: "Спробувати ще раз",
 }
 
 export default signup

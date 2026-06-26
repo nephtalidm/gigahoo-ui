@@ -13,6 +13,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { PhoneInput } from "@/components/phone-input"
 import { businessCategories, businessCategoryKeys, countries, type Plan } from "@/lib/data"
 import { getAccount, getCategories, api, createCheckout } from "@/lib/api"
@@ -113,6 +121,9 @@ export function SignupFlow() {
   const [agreedToTerms, setAgreedToTerms] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState<FieldErrors>({})
+  // Server errors that aren't tied to a specific field (e.g. phone-number
+  // provisioning failures on free-plan signup) surface as a blocking modal.
+  const [signupError, setSignupError] = useState<string | null>(null)
   const [email, setEmail] = useState("")
   // The verified contact is shown read-only; the other contact is collected:
   //  - email signup -> email read-only, ask for phone
@@ -350,7 +361,11 @@ export function SignupFlow() {
         setErrors({ businessPhone: t("signup.errPhoneTaken") })
         focusField("phone")
       } else {
+        // Genuinely non-field server/network failures (e.g. the API couldn't
+        // provision a phone number on free-plan signup). Surface the server's
+        // message in a blocking modal; keep errors.general as a fallback too.
         setErrors({ general: msg })
+        setSignupError(msg)
       }
     } finally {
       setLoading(false)
@@ -358,6 +373,18 @@ export function SignupFlow() {
   }
 
   return (
+    <>
+    <Dialog open={!!signupError} onOpenChange={(o) => { if (!o) setSignupError(null) }}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t("signup.errorTitle")}</DialogTitle>
+          <DialogDescription>{signupError}</DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <Button onClick={() => setSignupError(null)}>{t("signup.tryAgain")}</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
     <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
       <div className="text-center">
@@ -693,5 +720,6 @@ export function SignupFlow() {
         </Button>
       </div>
     </form>
+    </>
   )
 }
