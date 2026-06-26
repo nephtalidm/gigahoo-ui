@@ -4,6 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { BrandLogo } from "@/components/brand-logo"
 import { LanguageSwitcher } from "@/components/language-switcher"
 import { useTranslation } from "@/contexts/language-context"
 import { useAuth } from "@/contexts/auth-context"
@@ -78,7 +79,10 @@ export function SiteHeader() {
           />
           <SheetContent side="right" className="w-72 p-0">
             <SheetTitle className="sr-only">{t("nav.openMenu")}</SheetTitle>
-            <nav className="flex flex-col gap-1 p-4">
+            <div className="flex h-16 items-center px-6">
+              <BrandLogo />
+            </div>
+            <nav className="flex flex-col gap-1 border-t border-border p-4">
               <div className="pb-2">
                 <LanguageSwitcher className="w-full" />
               </div>

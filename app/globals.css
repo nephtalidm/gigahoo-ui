@@ -131,5 +131,7 @@
   }
   html {
     @apply font-sans;
+    /* Offset in-page anchor jumps so sections clear the sticky header (h-16). */
+    @apply scroll-pt-20;
   }
 }
