@@ -67,21 +67,9 @@ function UserInfo({ onLogout }: { onLogout: () => void }) {
       .catch(() => {})
   }, [])
 
-  const initials = account
-    ? account.businessName
-        .split(" ")
-        .map((w) => w[0])
-        .join("")
-        .slice(0, 2)
-        .toUpperCase()
-    : "…"
-
   return (
-    <div className="flex items-center gap-3 rounded-lg px-2 py-1.5">
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
-        {initials}
-      </span>
-      <div className="min-w-0 flex-1">
+    <div className="flex flex-col gap-2">
+      <div className="min-w-0 px-2">
         <p className="truncate text-sm font-medium text-foreground">
           {account?.businessName ?? t("dashboard.loading")}
         </p>
@@ -89,13 +77,14 @@ function UserInfo({ onLogout }: { onLogout: () => void }) {
           {account ? t("dashboard.planLabel", { plan: account.plan }) : ""}
         </p>
       </div>
-      <button
+      <Button
+        variant="ghost"
         onClick={onLogout}
-        className="shrink-0 text-muted-foreground transition-colors hover:text-foreground"
-        title={t("dashboard.signOut")}
+        className="w-full justify-start gap-2 text-muted-foreground hover:bg-accent hover:text-foreground"
       >
         <LogOut className="h-4 w-4" />
-      </button>
+        {t("dashboard.signOut")}
+      </Button>
     </div>
   )
 }

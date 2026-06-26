@@ -139,6 +139,22 @@ export function updateAccount(data: {
   return api.put<AccountData>("/api/account", data);
 }
 
+export function requestEmailChange(newEmail: string) {
+  return api.post<{ message: string }>("/api/account/email/request-change", { newEmail });
+}
+
+export function confirmEmailChange(newEmail: string, code: string) {
+  return api.post<{ message: string }>("/api/account/email/confirm-change", { newEmail, code });
+}
+
+export function requestPhoneChange(newPhone: string) {
+  return api.post<{ message: string }>("/api/account/phone/request-change", { newPhone });
+}
+
+export function confirmPhoneChange(newPhone: string, phoneCountryCode: string, code: string) {
+  return api.post<{ message: string }>("/api/account/phone/confirm-change", { newPhone, phoneCountryCode, code });
+}
+
 // ── Dashboard ──
 
 export interface DashboardOverview {

@@ -14,9 +14,21 @@ import {
 } from "@/components/ui/select"
 import { PhoneInput } from "@/components/phone-input"
 import { GoogleSignInButton } from "@/components/google-signin-button"
+import { CodeBoxes } from "@/components/code-boxes"
 import { useTranslation } from "@/contexts/language-context"
-import { updateAccount, setPassword as apiSetPassword, linkGoogle, type AccountData, type CountryData, type RegionData } from "@/lib/api"
-import { businessCategories, businessCategoryKeys } from "@/lib/data"
+import {
+  updateAccount,
+  setPassword as apiSetPassword,
+  linkGoogle,
+  requestEmailChange,
+  confirmEmailChange,
+  requestPhoneChange,
+  confirmPhoneChange,
+  type AccountData,
+  type CountryData,
+  type RegionData,
+} from "@/lib/api"
+import { businessCategories, businessCategoryKeys, toE164 } from "@/lib/data"
 import { useSupportedCountries } from "@/hooks/use-supported-countries"
 import { Loader2, CheckCircle2 } from "lucide-react"
 
@@ -77,6 +89,23 @@ export function SettingsView({
   const [pwSaved, setPwSaved] = useState(false)
   const [pwError, setPwError] = useState<string | null>(null)
 
+  // Email change verification
+  const [emailVerifyOpen, setEmailVerifyOpen] = useState(false)
+  const [emailCode, setEmailCode] = useState("")
+  const [emailVerifyBusy, setEmailVerifyBusy] = useState(false)
+  const [emailVerified, setEmailVerified] = useState(false)
+  const [emailVerifyError, setEmailVerifyError] = useState<string | null>(null)
+
+  // Phone change verification
+  const [phoneVerifyOpen, setPhoneVerifyOpen] = useState(false)
+  const [phoneCode, setPhoneCode] = useState("")
+  const [phoneVerifyBusy, setPhoneVerifyBusy] = useState(false)
+  const [phoneVerified, setPhoneVerified] = useState(false)
+  const [phoneVerifyError, setPhoneVerifyError] = useState<string | null>(null)
+
+  const emailChanged = email.trim() !== account.email
+  const phoneChanged = businessPhone !== account.businessPhone || phoneCountryCode !== account.phoneCountryCode
+
   const selectedCountry = countries.find((c) => String(c.id) === countryId)
   const hasRegions = regions.length > 0
 
@@ -93,12 +122,14 @@ export function SettingsView({
     setError(null)
     setSaved(false)
     try {
+      // Email and business phone changes require verification and persist only
+      // through their own verify flows — never persist unverified edits here.
       await updateAccount({
         businessName,
         categoryId: Number(categoryId),
-        businessPhone,
-        phoneCountryCode,
-        email,
+        businessPhone: account.businessPhone,
+        phoneCountryCode: account.phoneCountryCode,
+        email: account.email,
         websiteUrl: websiteUrl || null,
         addressLine1: addressLine1 || null,
         addressLine2: addressLine2 || null,
@@ -151,6 +182,70 @@ export function SettingsView({
     }
   }
 
+  async function handleRequestEmailChange() {
+    setEmailVerifyError(null)
+    setEmailVerified(false)
+    setEmailVerifyBusy(true)
+    try {
+      await requestEmailChange(email.trim())
+      setEmailCode("")
+      setEmailVerifyOpen(true)
+    } catch (err) {
+      setEmailVerifyError(err instanceof Error ? err.message : t("settings.codeSendFailed"))
+    } finally {
+      setEmailVerifyBusy(false)
+    }
+  }
+
+  async function handleConfirmEmailChange() {
+    setEmailVerifyError(null)
+    setEmailVerifyBusy(true)
+    try {
+      await confirmEmailChange(email.trim(), emailCode)
+      account.email = email.trim()
+      setEmail(account.email)
+      setEmailVerifyOpen(false)
+      setEmailVerified(true)
+      setTimeout(() => setEmailVerified(false), 3000)
+    } catch (err) {
+      setEmailVerifyError(err instanceof Error ? err.message : t("settings.verifyFailed"))
+    } finally {
+      setEmailVerifyBusy(false)
+    }
+  }
+
+  async function handleRequestPhoneChange() {
+    setPhoneVerifyError(null)
+    setPhoneVerified(false)
+    setPhoneVerifyBusy(true)
+    try {
+      await requestPhoneChange(toE164(phoneCountryCode, businessPhone))
+      setPhoneCode("")
+      setPhoneVerifyOpen(true)
+    } catch (err) {
+      setPhoneVerifyError(err instanceof Error ? err.message : t("settings.codeSendFailed"))
+    } finally {
+      setPhoneVerifyBusy(false)
+    }
+  }
+
+  async function handleConfirmPhoneChange() {
+    setPhoneVerifyError(null)
+    setPhoneVerifyBusy(true)
+    try {
+      await confirmPhoneChange(toE164(phoneCountryCode, businessPhone), phoneCountryCode, phoneCode)
+      account.businessPhone = businessPhone
+      account.phoneCountryCode = phoneCountryCode
+      setPhoneVerifyOpen(false)
+      setPhoneVerified(true)
+      setTimeout(() => setPhoneVerified(false), 3000)
+    } catch (err) {
+      setPhoneVerifyError(err instanceof Error ? err.message : t("settings.verifyFailed"))
+    } finally {
+      setPhoneVerifyBusy(false)
+    }
+  }
+
   return (
     <div className="flex flex-col gap-6">
       <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
@@ -192,6 +287,44 @@ export function SettingsView({
               onValueChange={setBusinessPhone}
               allowedCodes={supportedCodes}
             />
+            {phoneVerified && (
+              <span className="flex items-center gap-1.5 text-sm text-emerald-600">
+                <CheckCircle2 className="h-4 w-4" />
+                {t("settings.phoneVerified")}
+              </span>
+            )}
+            {phoneChanged && !phoneVerifyOpen && (
+              <div className="flex flex-col gap-1.5">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="self-start"
+                  onClick={handleRequestPhoneChange}
+                  disabled={phoneVerifyBusy}
+                >
+                  {phoneVerifyBusy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {t("settings.verifySavePhone")}
+                </Button>
+                {phoneVerifyError && <span className="text-sm text-destructive">{phoneVerifyError}</span>}
+              </div>
+            )}
+            {phoneChanged && phoneVerifyOpen && (
+              <div className="flex flex-col gap-3 rounded-lg border border-border p-3">
+                <p className="text-xs text-muted-foreground">{t("settings.enterPhoneCode")}</p>
+                <CodeBoxes id="phoneCode" value={phoneCode} onChange={setPhoneCode} length={6} />
+                {phoneVerifyError && <span className="text-sm text-destructive">{phoneVerifyError}</span>}
+                <div className="flex items-center justify-end gap-2">
+                  <Button type="button" variant="ghost" size="sm" onClick={() => setPhoneVerifyOpen(false)}>
+                    {t("settings.cancel")}
+                  </Button>
+                  <Button type="button" size="sm" onClick={handleConfirmPhoneChange} disabled={phoneVerifyBusy || phoneCode.length < 6}>
+                    {phoneVerifyBusy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {t("settings.confirm")}
+                  </Button>
+                </div>
+              </div>
+            )}
           </Field>
           <Field label={t("settings.email")} htmlFor="email">
             <Input
@@ -200,6 +333,44 @@ export function SettingsView({
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+            {emailVerified && (
+              <span className="flex items-center gap-1.5 text-sm text-emerald-600">
+                <CheckCircle2 className="h-4 w-4" />
+                {t("settings.emailVerified")}
+              </span>
+            )}
+            {emailChanged && !emailVerifyOpen && (
+              <div className="flex flex-col gap-1.5">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="self-start"
+                  onClick={handleRequestEmailChange}
+                  disabled={emailVerifyBusy}
+                >
+                  {emailVerifyBusy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {t("settings.verifySaveEmail")}
+                </Button>
+                {emailVerifyError && <span className="text-sm text-destructive">{emailVerifyError}</span>}
+              </div>
+            )}
+            {emailChanged && emailVerifyOpen && (
+              <div className="flex flex-col gap-3 rounded-lg border border-border p-3">
+                <p className="text-xs text-muted-foreground">{t("settings.enterEmailCode")}</p>
+                <CodeBoxes id="emailCode" value={emailCode} onChange={setEmailCode} length={6} />
+                {emailVerifyError && <span className="text-sm text-destructive">{emailVerifyError}</span>}
+                <div className="flex items-center justify-end gap-2">
+                  <Button type="button" variant="ghost" size="sm" onClick={() => setEmailVerifyOpen(false)}>
+                    {t("settings.cancel")}
+                  </Button>
+                  <Button type="button" size="sm" onClick={handleConfirmEmailChange} disabled={emailVerifyBusy || emailCode.length < 6}>
+                    {emailVerifyBusy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {t("settings.confirm")}
+                  </Button>
+                </div>
+              </div>
+            )}
           </Field>
           <Field label={t("settings.websiteUrl")} htmlFor="websiteUrl">
             <Input

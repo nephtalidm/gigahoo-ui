@@ -43,6 +43,18 @@ const settings = {
   phoneNumber: "Phone Number",
   change: "Change",
 
+  // Email / phone verification
+  verifySaveEmail: "Verify & save email",
+  verifySavePhone: "Verify & save phone",
+  enterEmailCode: "Enter the 6-digit code sent to your new email.",
+  enterPhoneCode: "Enter the 6-digit code sent to your new phone.",
+  confirm: "Confirm",
+  cancel: "Cancel",
+  emailVerified: "Email verified",
+  phoneVerified: "Phone verified",
+  codeSendFailed: "Couldn't send verification code",
+  verifyFailed: "Invalid or expired code",
+
   // Password
   passwordMethod: "Password",
   passwordSetStatus: "Password is set",

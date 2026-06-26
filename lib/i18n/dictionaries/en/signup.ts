@@ -29,7 +29,7 @@ const signup = {
   planStarterDesc: "Everything in Free, plus 250 minutes/month",
   planBusinessDesc: "Everything in Starter, plus answers service questions · 1,000 minutes/month",
   createAccount: "Create account",
-  errEmailInvalid: "Please enter a valid email address",
+  errEmailInvalid: "Enter a valid email address (e.g. you@example.com)",
   errEmailMissing: "Email not found. Please sign in again.",
   errBusinessNameLong: "Business name is too long",
   errPhoneInvalid: "Enter a valid phone number (at least 7 digits)",
@@ -40,6 +40,17 @@ const signup = {
   errEmailTaken: "This email is already registered. Please sign in instead.",
   errPhoneTaken: "This phone number is already in use.",
   errGeneric: "Failed to create account",
+  errBusinessNameRequired: "Enter your business name",
+  errEmailRequired: "Enter your email address",
+  errPhoneRequired: "Enter your business phone number",
+  errPasswordRequired: "Enter a password (at least 8 characters)",
+  errCategoryRequired: "Select a business category",
+  errPlanRequired: "Select a plan",
+  errCountryRequired: "Select your business country",
+  errAddressLine1Required: "Enter your street address",
+  errCityRequired: "Enter your city",
+  errRegionRequired: "Enter your state / province",
+  errPostalCodeRequired: "Enter your postal / ZIP code",
 }
 
 export default signup

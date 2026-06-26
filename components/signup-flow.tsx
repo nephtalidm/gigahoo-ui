@@ -160,25 +160,10 @@ export function SignupFlow() {
     setErrors(e)
   }, [businessName, businessPhone, password, category, email, isPhoneSignup, isEmailSignup, addressLine1, city, region, postalCode, t])
 
+  // Used by validateAll() to flag a malformed email on submit. Full required/
+  // length validation now lives in validateAll() so each failure maps to its
+  // own inline field error.
   const emailValid = z.string().email().safeParse(email).success
-  const isValid =
-    businessName.trim().length >= 1 &&
-    businessName.length <= 200 &&
-    businessPhone.replace(/\D/g, "").length >= 7 &&
-    businessPhone.replace(/\D/g, "").length <= 15 &&
-    !!category &&
-    !!selectedPlan &&
-    addressLine1.trim().length >= 1 &&
-    addressLine1.length <= 200 &&
-    city.trim().length >= 1 &&
-    city.length <= 100 &&
-    region.trim().length >= 1 &&
-    region.length <= 100 &&
-    postalCode.trim().length >= 1 &&
-    postalCode.length <= 20 &&
-    !!addressCountry &&
-    (!isEmailSignup || password.length >= 8) &&
-    emailValid
 
   // Resolve the preselected plan from the URL (?plan=) or a value persisted
   // before an auth redirect, and persist URL values so they survive the
@@ -222,23 +207,92 @@ export function SignupFlow() {
     )
   }
 
+  // Order matters: the first invalid field in this list is the one we focus and
+  // scroll into view on submit. It mirrors the visual top-to-bottom layout.
+  function focusField(id: string) {
+    if (typeof document === "undefined") return
+    const el = document.getElementById(id)
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" })
+      ;(el as HTMLElement).focus({ preventScroll: true })
+    }
+  }
+
+  // Build a specific field error for every required-but-empty or invalid field.
+  // Only field keys are set here; errors.general is reserved for server/network.
+  function validateAll(): FieldErrors {
+    const e: FieldErrors = {}
+    const phoneDigits = businessPhone.replace(/\D/g, "")
+
+    if (businessName.trim().length < 1) e.businessName = t("signup.errBusinessNameRequired")
+    else if (businessName.length > 200) e.businessName = t("signup.errBusinessNameLong")
+
+    if (isEmailSignup && password.length < 1) e.password = t("signup.errPasswordRequired")
+    else if (isEmailSignup && password.length < 8) e.password = t("signup.errPasswordShort")
+
+    if (!category) e.category = t("signup.errCategoryRequired")
+
+    if (isPhoneSignup) {
+      if (email.trim().length < 1) e.email = t("signup.errEmailRequired")
+      else if (!emailValid) e.email = t("signup.errEmailInvalid")
+    }
+
+    if (phoneDigits.length < 1) e.businessPhone = t("signup.errPhoneRequired")
+    else if (phoneDigits.length < 7) e.businessPhone = t("signup.errPhoneInvalid")
+    else if (phoneDigits.length > 15) e.businessPhone = t("signup.errPhoneLong")
+
+    if (!addressCountry) e.country = t("signup.errCountryRequired")
+
+    if (addressLine1.trim().length < 1) e.addressLine1 = t("signup.errAddressLine1Required")
+    else if (addressLine1.length > 200) e.addressLine1 = t("signup.errAddressLong")
+
+    if (city.trim().length < 1) e.city = t("signup.errCityRequired")
+    else if (city.length > 100) e.city = t("signup.errAddressLong")
+
+    if (region.trim().length < 1) e.region = t("signup.errRegionRequired")
+    else if (region.length > 100) e.region = t("signup.errAddressLong")
+
+    if (postalCode.trim().length < 1) e.postalCode = t("signup.errPostalCodeRequired")
+    else if (postalCode.length > 20) e.postalCode = t("signup.errAddressLong")
+
+    if (!selectedPlan) e.plan = t("signup.errPlanRequired")
+
+    return e
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setErrors({})
-    if (!isValid) return
-    setLoading(true)
 
-    if (!email) {
-      setErrors({ general: t("signup.errEmailMissing") })
-      setLoading(false)
+    const fieldErrors = validateAll()
+    if (Object.keys(fieldErrors).length > 0) {
+      setErrors(fieldErrors)
+      // Focus/scroll the first invalid field (top-to-bottom by form layout).
+      const order: { key: keyof FieldErrors; id: string }[] = [
+        { key: "businessName", id: "businessName" },
+        { key: "password", id: "password" },
+        { key: "category", id: "category" },
+        { key: "email", id: "email" },
+        { key: "businessPhone", id: "phone" },
+        { key: "country", id: "country" },
+        { key: "addressLine1", id: "addressLine1" },
+        { key: "city", id: "city" },
+        { key: "region", id: "region" },
+        { key: "postalCode", id: "postalCode" },
+      ]
+      const first = order.find((f) => fieldErrors[f.key])
+      if (first) focusField(first.id)
       return
     }
+
+    setLoading(true)
 
     try {
       const categories = await getCategories()
       const cat = categories.find((c) => c.name === category)
       if (!cat) {
         setErrors({ category: t("signup.errCategoryInvalid") })
+        focusField("category")
         setLoading(false)
         return
       }
@@ -274,10 +328,21 @@ export function SignupFlow() {
       router.push("/dashboard")
     } catch (err) {
       const msg = err instanceof Error ? err.message : t("signup.errGeneric")
+      // Map known server errors to their specific field; reserve errors.general
+      // for genuinely non-field (server/network) failures.
       if (msg.toLowerCase().includes("email")) {
-        setErrors({ general: t("signup.errEmailTaken") })
+        // The email field is only rendered (and thus can show an inline error)
+        // for phone signups; for email signups the address is read-only from the
+        // verified JWT, so surface it as a general error instead.
+        if (isPhoneSignup) {
+          setErrors({ email: t("signup.errEmailTaken") })
+          focusField("email")
+        } else {
+          setErrors({ general: t("signup.errEmailTaken") })
+        }
       } else if (msg.toLowerCase().includes("phone")) {
         setErrors({ businessPhone: t("signup.errPhoneTaken") })
+        focusField("phone")
       } else {
         setErrors({ general: msg })
       }
@@ -583,7 +648,7 @@ export function SignupFlow() {
       </div>
 
       <div className="mx-auto w-full max-w-md">
-        <Button type="submit" size="lg" className="w-full" disabled={loading || !isValid}>
+        <Button type="submit" size="lg" className="w-full" disabled={loading}>
           {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {t("signup.createAccount")}
         </Button>

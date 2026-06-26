@@ -1,11 +1,13 @@
 "use client"
 
+import { useRef } from "react"
 import { cn } from "@/lib/utils"
 
 /**
- * A fixed-length numeric code entry rendered as individual boxes, backed by a
- * single hidden input. Shared by the email and SMS verification steps (and
- * reusable anywhere a one-time code is entered).
+ * A fixed-length numeric code entry rendered as individual editable boxes.
+ * - Type left-to-right and focus auto-advances (no clicking the next box).
+ * - Click or arrow to any box and retype to fix a single digit — the others stay.
+ * - Backspace clears the current digit (or steps back); paste fills across boxes.
  */
 export function CodeBoxes({
   id,
@@ -18,39 +20,84 @@ export function CodeBoxes({
   id: string
   value: string
   onChange: (v: string) => void
-  /** Called when Backspace is pressed while empty (e.g. to step back a screen). */
+  /** Called when Backspace is pressed while the first box is empty. */
   onEscape?: () => void
   length?: number
   autoFocus?: boolean
 }) {
+  const refs = useRef<Array<HTMLInputElement | null>>([])
+
+  const focusBox = (i: number) => {
+    const el = refs.current[Math.max(0, Math.min(length - 1, i))]
+    el?.focus()
+    el?.select()
+  }
+
+  // Place one or more digits starting at box `start`, then move focus past them.
+  const place = (start: number, raw: string) => {
+    const incoming = raw.replace(/\D/g, "")
+    if (!incoming) return
+    const chars = value.padEnd(length, " ").slice(0, length).split("")
+    let i = start
+    for (const c of incoming) {
+      if (i >= length) break
+      chars[i] = c
+      i++
+    }
+    onChange(chars.join("").replace(/\s/g, "").slice(0, length))
+    focusBox(i)
+  }
+
+  const handleKeyDown = (i: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace") {
+      e.preventDefault()
+      const chars = value.padEnd(length, " ").slice(0, length).split("")
+      if (chars[i] !== " ") {
+        chars[i] = " "
+        onChange(chars.join("").replace(/\s/g, ""))
+      } else if (i > 0) {
+        chars[i - 1] = " "
+        onChange(chars.join("").replace(/\s/g, ""))
+        focusBox(i - 1)
+      } else {
+        onEscape?.()
+      }
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault()
+      focusBox(i - 1)
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault()
+      focusBox(i + 1)
+    }
+  }
+
   return (
     <div className="flex justify-center gap-2">
-      <input
-        id={id}
-        inputMode="numeric"
-        maxLength={length}
-        required
-        value={value}
-        onChange={(e) => onChange(e.target.value.replace(/\D/g, "").slice(0, length))}
-        onKeyDown={(e) => {
-          if (e.key === "Backspace" && value.length === 0) onEscape?.()
-        }}
-        className="absolute -left-[9999px] -top-[9999px] h-0 w-0 opacity-0"
-        autoFocus={autoFocus}
-      />
       {Array.from({ length }).map((_, i) => (
-        <div
+        <input
           key={i}
-          onClick={() => document.getElementById(id)?.focus()}
+          id={i === 0 ? id : undefined}
+          ref={(el) => {
+            refs.current[i] = el
+          }}
+          inputMode="numeric"
+          autoComplete={i === 0 ? "one-time-code" : "off"}
+          maxLength={1}
+          autoFocus={autoFocus && i === 0}
+          value={value[i] ?? ""}
+          onChange={(e) => place(i, e.target.value)}
+          onKeyDown={(e) => handleKeyDown(i, e)}
+          onPaste={(e) => {
+            e.preventDefault()
+            place(i, e.clipboardData.getData("text"))
+          }}
+          onFocus={(e) => e.target.select()}
           className={cn(
-            "flex h-14 w-12 cursor-text items-center justify-center rounded-lg border font-mono text-2xl transition-colors",
-            value[i]
-              ? "border-primary bg-primary/5 text-foreground"
-              : "border-border bg-secondary/30 text-muted-foreground",
+            "h-14 w-12 rounded-lg border bg-secondary/30 text-center font-mono text-2xl text-foreground caret-primary outline-none transition-colors",
+            "focus:border-primary focus:ring-2 focus:ring-primary/30",
+            value[i] ? "border-primary bg-primary/5" : "border-border",
           )}
-        >
-          {value[i] || "_"}
-        </div>
+        />
       ))}
     </div>
   )
