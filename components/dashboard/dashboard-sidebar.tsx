@@ -116,7 +116,7 @@ export function DashboardSidebar() {
           />
           <SheetContent side="right" className="w-72 p-0">
             <SheetTitle className="sr-only">{t("dashboard.navigation")}</SheetTitle>
-            <div className="flex h-16 items-center px-6">
+            <div className="flex h-14 items-center px-6">
               <BrandLogo />
             </div>
             <div className="border-t border-border px-4 pt-4 pb-2">
