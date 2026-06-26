@@ -85,6 +85,7 @@ const home = {
   pricingBusinessFeature1: "ਸੇਵਾਵਾਂ ਬਾਰੇ ਸਵਾਲਾਂ ਦੇ ਜਵਾਬ ਦਿੰਦਾ ਹੈ",
   pricingBusinessFeature2: "1,000 ਸ਼ਾਮਲ ਮਿੰਟ",
   pricingBusinessCta: "ਸ਼ੁਰੂ ਕਰੋ",
+  comingSoon: "ਜਲਦੀ ਆ ਰਿਹਾ ਹੈ!",
 
   // FAQ
   faqEyebrow: "ਆਮ ਸਵਾਲ",

@@ -85,6 +85,7 @@ const home = {
   pricingBusinessFeature1: "回答有關服務嘅問題",
   pricingBusinessFeature2: "包含 1,000 分鐘",
   pricingBusinessCta: "立即開始",
+  comingSoon: "敬請期待！",
 
   // FAQ
   faqEyebrow: "常見問題",

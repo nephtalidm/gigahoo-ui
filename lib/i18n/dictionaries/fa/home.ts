@@ -85,6 +85,7 @@ const home = {
   pricingBusinessFeature1: "پاسخ به سوالات درباره خدمات",
   pricingBusinessFeature2: "۱۰۰۰ دقیقه گنجانده‌شده",
   pricingBusinessCta: "شروع کنید",
+  comingSoon: "به‌زودی!",
 
   // FAQ
   faqEyebrow: "سوالات متداول",

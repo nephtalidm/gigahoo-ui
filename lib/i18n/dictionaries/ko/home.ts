@@ -85,6 +85,7 @@ const home = {
   pricingBusinessFeature1: "서비스에 대한 질문 답변",
   pricingBusinessFeature2: "1,000분 포함",
   pricingBusinessCta: "시작하기",
+  comingSoon: "곧 출시됩니다!",
 
   // FAQ
   faqEyebrow: "자주 묻는 질문",

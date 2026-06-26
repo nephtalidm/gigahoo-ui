@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { cookies } from 'next/headers'
 import { AuthProvider } from '@/contexts/auth-context'
 import { LanguageProvider } from '@/contexts/language-context'
+import { LocalizedTitle } from '@/components/localized-title'
 import { ToastProvider } from '@/components/ui/toaster'
 import { LOCALE_COOKIE, defaultLocale, dirForLocale, isLocale } from '@/lib/i18n/config'
 import './globals.css'
@@ -37,6 +38,7 @@ export default async function RootLayout({
     <html lang={locale} dir={dirForLocale(locale)} className={`${geistSans.variable} ${geistMono.variable} bg-background`}>
       <body className="font-sans antialiased">
         <LanguageProvider initialLocale={locale}>
+          <LocalizedTitle />
           <ToastProvider>
             <AuthProvider>
               {children}

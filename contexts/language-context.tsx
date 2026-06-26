@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useCallback } from "react"
 import { dictionaries } from "@/lib/i18n/dictionaries"
-import { LOCALE_COOKIE, defaultLocale, dirForLocale, isLocale, type Locale } from "@/lib/i18n/config"
+import { LOCALE_COOKIE, LOCALE_PICKED_COOKIE, defaultLocale, dirForLocale, isLocale, type Locale } from "@/lib/i18n/config"
 
 type LanguageContextValue = {
   locale: Locale
@@ -44,6 +44,9 @@ export function LanguageProvider({
   const setLocale = useCallback((next: Locale) => {
     setLocaleState(next)
     document.cookie = `${LOCALE_COOKIE}=${next};path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`
+    // Mark the language as explicitly chosen so the middleware's host/geo
+    // default no longer overrides it.
+    document.cookie = `${LOCALE_PICKED_COOKIE}=1;path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`
     // Keep the document in sync so RTL languages (Arabic/Persian) flip layout
     // immediately, without a reload.
     document.documentElement.lang = next

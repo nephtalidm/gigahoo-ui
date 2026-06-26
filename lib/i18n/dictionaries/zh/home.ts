@@ -85,6 +85,7 @@ const home = {
   pricingBusinessFeature1: "解答有关服务的问题",
   pricingBusinessFeature2: "含 1,000 分钟通话时长",
   pricingBusinessCta: "立即开始",
+  comingSoon: "敬请期待！",
 
   // FAQ
   faqEyebrow: "常见问题",

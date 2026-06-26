@@ -7,10 +7,13 @@ import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { useTranslation } from "@/contexts/language-context"
 import { getCurrencyForVisitor } from "@/lib/api"
+import { COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
 
 export function Pricing() {
   const { t } = useTranslation()
   const [currency, setCurrency] = useState<string | null>(null)
+  // The visitor's country, read from the same cookie middleware sets for geo.
+  const [country, setCountry] = useState<string>("")
 
   useEffect(() => {
     // Show prices in the visitor's currency, taken from the DB (Country.Currency):
@@ -18,10 +21,15 @@ export function Pricing() {
     // via the API. No currency is hardcoded here — until it loads we show the
     // amount without a code.
     const country = (document.cookie.match(/(?:^|;\s*)NEXT_COUNTRY=([^;]+)/)?.[1] ?? "").toUpperCase()
+    setCountry(country)
     getCurrencyForVisitor(country)
       .then((c) => setCurrency(c.currency))
       .catch(() => {})
   }, [])
+
+  // In "coming soon" markets the product isn't open for signup yet, so the
+  // plan CTAs are disabled and labeled accordingly.
+  const comingSoon = COMING_SOON_COUNTRY_CODES.includes(country)
 
   const plans = [
     {
@@ -114,12 +122,23 @@ export function Pricing() {
                 ))}
               </ul>
 
-              <Button
-                size="lg"
-                variant={plan.featured ? "default" : "outline"}
-                className="mt-8 w-full"
-                render={<Link href={`/signup?plan=${plan.slug}`}>{plan.cta}</Link>}
-              />
+              {comingSoon ? (
+                <Button
+                  size="lg"
+                  variant={plan.featured ? "default" : "outline"}
+                  className="mt-8 w-full"
+                  disabled
+                >
+                  {t("home.comingSoon")}
+                </Button>
+              ) : (
+                <Button
+                  size="lg"
+                  variant={plan.featured ? "default" : "outline"}
+                  className="mt-8 w-full"
+                  render={<Link href={`/signup?plan=${plan.slug}`}>{plan.cta}</Link>}
+                />
+              )}
             </div>
           ))}
         </div>

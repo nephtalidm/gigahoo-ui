@@ -85,6 +85,7 @@ const home = {
   pricingBusinessFeature1: "Answers questions about services",
   pricingBusinessFeature2: "1,000 included minutes",
   pricingBusinessCta: "Get Started",
+  comingSoon: "Coming soon!",
 
   // FAQ
   faqEyebrow: "FAQ",

@@ -85,6 +85,7 @@ const home = {
   pricingBusinessFeature1: "Sumasagot ng mga tanong tungkol sa mga serbisyo",
   pricingBusinessFeature2: "1,000 kasamang minuto",
   pricingBusinessCta: "Magsimula",
+  comingSoon: "Malapit nang dumating!",
 
   // FAQ
   faqEyebrow: "FAQ",

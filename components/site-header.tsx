@@ -84,8 +84,8 @@ export function SiteHeader() {
             </div>
             <nav className="flex flex-col gap-1 border-t border-border p-4">
               <div className="flex flex-col gap-2 pb-2">
-                <CountrySwitcher className="h-11 w-full" />
-                <LanguageSwitcher className="h-11 w-full" />
+                <CountrySwitcher className="h-11 w-full data-[size=default]:h-11" />
+                <LanguageSwitcher className="h-11 w-full data-[size=default]:h-11" />
               </div>
               {navLinks.map((link) => (
                 <a

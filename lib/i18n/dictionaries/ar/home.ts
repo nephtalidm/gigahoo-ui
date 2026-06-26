@@ -85,6 +85,7 @@ const home = {
   pricingBusinessFeature1: "الإجابة عن الأسئلة حول الخدمات",
   pricingBusinessFeature2: "1,000 دقيقة مضمّنة",
   pricingBusinessCta: "ابدأ الآن",
+  comingSoon: "قريباً!",
 
   // FAQ
   faqEyebrow: "الأسئلة الشائعة",

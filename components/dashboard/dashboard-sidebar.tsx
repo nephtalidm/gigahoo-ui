@@ -121,8 +121,8 @@ export function DashboardSidebar() {
               <BrandLogo />
             </div>
             <div className="flex flex-col gap-2 border-t border-border px-4 pt-4 pb-2">
-              <CountrySwitcher className="h-11 w-full" />
-              <LanguageSwitcher className="h-11 w-full" />
+              <CountrySwitcher className="h-11 w-full data-[size=default]:h-11" />
+              <LanguageSwitcher className="h-11 w-full data-[size=default]:h-11" />
             </div>
             <div className="px-4 pb-4 pt-1">
               <NavLinks onNavigate={() => setOpen(false)} />

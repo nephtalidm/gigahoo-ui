@@ -10,7 +10,8 @@ import {
 } from "@/components/ui/select"
 import { useSupportedCountries } from "@/hooks/use-supported-countries"
 import { countries } from "@/lib/data"
-import { COUNTRY_COOKIE, LOCALE_COOKIE, localeForCountry } from "@/lib/i18n/config"
+import { COUNTRY_COOKIE, LOCALE_COOKIE, LOCALE_PICKED_COOKIE, localeForCountry } from "@/lib/i18n/config"
+import { COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
 import { cn } from "@/lib/utils"
 
 // Lookup a country's name from its ISO-2 code.
@@ -38,7 +39,11 @@ function readCountryCookie(): string | null {
 
 export function CountrySwitcher({ className }: { className?: string }) {
   const supported = useSupportedCountries()
-  const [current, setCurrent] = useState<string | null>(null)
+  // Initialize lazily from the cookie so a re-opened menu shows the active
+  // country immediately, with no flicker through options[0].
+  const [current, setCurrent] = useState<string | null>(() =>
+    typeof document !== "undefined" ? readCountryCookie() : null,
+  )
 
   // Resolve the active country from the cookie on mount, falling back to the
   // first supported code when absent or unsupported.
@@ -48,8 +53,12 @@ export function CountrySwitcher({ className }: { className?: string }) {
     setCurrent(cookie && supported.includes(cookie) ? cookie : fallback)
   }, [supported])
 
-  // Only render supported codes we can actually label from lib/data.
-  const options = supported.filter((code) => COUNTRY_BY_CODE.has(code))
+  // Show supported markets plus "coming soon" ones (so they're selectable even
+  // though signup isn't open yet). Supported first, then coming-soon; deduped and
+  // limited to codes we can actually label from lib/data.
+  const options = [...new Set([...supported, ...COMING_SOON_COUNTRY_CODES])].filter((code) =>
+    COUNTRY_BY_CODE.has(code),
+  )
 
   if (options.length === 0) return null
 
@@ -61,6 +70,9 @@ export function CountrySwitcher({ className }: { className?: string }) {
     const maxAge = 60 * 60 * 24 * 365
     document.cookie = `${COUNTRY_COOKIE}=${code};path=/;max-age=${maxAge};samesite=lax`
     document.cookie = `${LOCALE_COOKIE}=${localeForCountry(code)};path=/;max-age=${maxAge};samesite=lax`
+    // Picking a country applies that country's default language, so clear the
+    // explicit-pick flag.
+    document.cookie = `${LOCALE_PICKED_COOKIE}=;path=/;max-age=0`
     window.location.reload()
   }
 

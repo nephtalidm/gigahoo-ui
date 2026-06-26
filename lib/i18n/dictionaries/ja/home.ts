@@ -85,6 +85,7 @@ const home = {
   pricingBusinessFeature1: "サービスに関する質問への回答",
   pricingBusinessFeature2: "1,000分間利用可能",
   pricingBusinessCta: "始める",
+  comingSoon: "近日公開！",
 
   // FAQ
   faqEyebrow: "よくある質問",

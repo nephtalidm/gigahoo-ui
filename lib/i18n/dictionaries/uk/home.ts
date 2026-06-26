@@ -85,6 +85,7 @@ const home = {
   pricingBusinessFeature1: "Відповіді на запитання про послуги",
   pricingBusinessFeature2: "1 000 включених хвилин",
   pricingBusinessCta: "Почати",
+  comingSoon: "Незабаром!",
 
   // FAQ
   faqEyebrow: "Часті запитання",

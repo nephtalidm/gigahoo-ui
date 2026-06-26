@@ -25,6 +25,10 @@ export const LOCALE_COOKIE = "NEXT_LOCALE"
 // provides a geo header), used to default phone country codes.
 export const COUNTRY_COOKIE = "NEXT_COUNTRY"
 
+// Cookie set to "1" once the user explicitly picks a language, so the
+// middleware's host/geo default no longer overrides their choice.
+export const LOCALE_PICKED_COOKIE = "NEXT_LOCALE_PICKED"
+
 // Native display names + a representative flag (ISO country code) per language.
 export const LOCALE_META: Record<Locale, { native: string; english: string; flags: string[] }> = {
   en: { native: "English", english: "English", flags: ["gb"] },
