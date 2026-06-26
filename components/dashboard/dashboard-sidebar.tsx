@@ -109,8 +109,8 @@ export function DashboardSidebar() {
           <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger
             render={
-              <Button variant="outline" size="icon" aria-label={t("dashboard.openMenu")}>
-                <Menu className="h-5 w-5" />
+              <Button variant="outline" size="icon" aria-label={t("dashboard.openMenu")} className="h-11 w-11">
+                <Menu className="h-6 w-6" />
               </Button>
             }
           />

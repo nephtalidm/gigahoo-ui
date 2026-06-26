@@ -67,10 +67,10 @@ export function SiteHeader() {
             render={
               <button
                 type="button"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-md text-foreground md:hidden"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-md text-foreground md:hidden"
                 aria-label={t("nav.openMenu")}
               >
-                <Menu className="h-5 w-5" />
+                <Menu className="h-6 w-6" />
               </button>
             }
           />
