@@ -11,6 +11,12 @@ const dashboard = {
   loading: "Loading…",
   planLabel: "{plan} plan",
 
+  // Idle session timeout
+  idleTitle: "Still there?",
+  idleDescription: "You've been inactive for a while. For your security you'll be signed out automatically when the timer runs out.",
+  idleStay: "Stay signed in",
+  idleLogoutNow: "Log out now",
+
   // Overview page
   overviewTitle: "Overview",
   overviewWelcome: "Welcome back.",
