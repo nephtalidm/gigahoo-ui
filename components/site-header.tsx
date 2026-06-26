@@ -77,7 +77,7 @@ export function SiteHeader() {
           />
           <SheetContent side="right" className="w-72 p-0">
             <SheetTitle className="sr-only">{t("nav.openMenu")}</SheetTitle>
-            <div className="flex h-14 items-center px-6">
+            <div className="flex h-14 items-center justify-center px-6">
               <BrandLogo />
             </div>
             <nav className="flex flex-col gap-1 border-t border-border p-4">
