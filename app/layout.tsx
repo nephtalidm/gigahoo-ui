@@ -19,21 +19,8 @@ export const metadata: Metadata = {
   description:
     'Gigahoo answers your calls 24/7, collects customer info, and speaks multiple languages. Never miss another customer call.',
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+    icon: '/gigahoo-icon.png',
+    apple: '/gigahoo-icon.png',
   },
 }
 
