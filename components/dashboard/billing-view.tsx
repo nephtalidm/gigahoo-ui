@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
@@ -11,6 +11,7 @@ import {
   changePlan,
   createBillingPortal,
   createCheckout,
+  getCurrencyForVisitor,
   type BillingSummary,
   type PlanData,
   type InvoiceData,
@@ -31,8 +32,19 @@ export function BillingView({
 }) {
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null)
   const [portalLoading, setPortalLoading] = useState(false)
+  // Billing currency for the plan amounts. The summary/plan data carries no
+  // currency, so (like the homepage Pricing) resolve it from the visitor's geo
+  // country (Country.Currency via the API). Null until it loads.
+  const [currency, setCurrency] = useState<string | null>(null)
   const { toast } = useToast()
   const { t } = useTranslation()
+
+  useEffect(() => {
+    const country = (document.cookie.match(/(?:^|;\s*)NEXT_COUNTRY=([^;]+)/)?.[1] ?? "").toUpperCase()
+    getCurrencyForVisitor(country)
+      .then((c) => setCurrency(c.currency))
+      .catch(() => {})
+  }, [])
 
   const currentPlan = summary?.plan ?? "Free"
   const onFreePlan = currentPlan === "Free"
@@ -148,6 +160,9 @@ export function BillingView({
                   <span className="text-4xl font-bold tracking-tight text-foreground">
                     ${plan.priceMonthly}
                   </span>
+                  {plan.priceMonthly !== 0 && currency && (
+                    <span className="text-sm font-medium text-muted-foreground">{currency}</span>
+                  )}
                   <span className="text-sm text-muted-foreground">{t("billing.perMonth")}</span>
                 </div>
                 <ul className="mt-6 flex-1 space-y-3">

@@ -23,7 +23,8 @@ import {
 } from "@/components/ui/dialog"
 import { PhoneInput } from "@/components/phone-input"
 import { businessCategories, businessCategoryKeys, countries, type Plan } from "@/lib/data"
-import { getAccount, getCategories, api, createCheckout } from "@/lib/api"
+import { getAccount, getCategories, api, createCheckout, getCurrencyForVisitor } from "@/lib/api"
+import { PLAN_PRICES } from "@/lib/settings"
 import { useAuth } from "@/contexts/auth-context"
 import { useTranslation } from "@/contexts/language-context"
 import { useDefaultPhoneCountry } from "@/hooks/use-default-phone-country"
@@ -88,6 +89,9 @@ export function SignupFlow() {
   const { t } = useTranslation()
   const [checkingAccount, setCheckingAccount] = useState(true)
   const [selectedPlan, setSelectedPlan] = useState<Plan>("Starter")
+  // Billing currency for the plan amounts, resolved from the visitor's geo
+  // country (the same source the homepage Pricing uses). Null until it loads.
+  const [currency, setCurrency] = useState<string | null>(null)
   const [category, setCategory] = useState("")
   const [businessName, setBusinessName] = useState("")
   const [businessPhone, setBusinessPhone] = useState("")
@@ -133,6 +137,15 @@ export function SignupFlow() {
   // A password is only collected for plain-email signups. SMS and Google are
   // passwordless (a password can be added later in Settings).
   const isEmailSignup = !isPhoneSignup && !isGoogleSignup
+
+  // Show plan amounts in the visitor's currency (Country.Currency via the API),
+  // resolved from the geo country middleware records in a cookie.
+  useEffect(() => {
+    const country = (document.cookie.match(/(?:^|;\s*)NEXT_COUNTRY=([^;]+)/)?.[1] ?? "").toUpperCase()
+    getCurrencyForVisitor(country)
+      .then((c) => setCurrency(c.currency))
+      .catch(() => {})
+  }, [])
 
   // Read the verified contact(s) from the JWT (account may not be loaded yet).
   useEffect(() => {
@@ -657,7 +670,10 @@ export function SignupFlow() {
                   </span>
                 </div>
                 <div className="mt-2 flex items-baseline gap-1">
-                  <span className="text-3xl font-bold tracking-tight text-foreground">{p.price}</span>
+                  <span className="text-3xl font-bold tracking-tight text-foreground">{PLAN_PRICES[currency ?? ""]?.[p.name] ?? p.price}</span>
+                  {p.name !== "Free" && currency && (
+                    <span className="text-xs font-medium text-muted-foreground">{currency}</span>
+                  )}
                   <span className="text-xs text-muted-foreground">{t("home.pricingPeriod")}</span>
                 </div>
                 <p className="mt-2 text-xs text-muted-foreground">{t(p.descKey)}</p>
