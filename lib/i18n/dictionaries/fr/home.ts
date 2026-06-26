@@ -27,7 +27,7 @@ const home = {
 
   // Features
   featuresEyebrow: "Fonctionnalités",
-  featuresTitle: "Tout Ce Qu'il Vous Faut Pour Saisir Chaque Prospect",
+  featuresTitle: "Tout ce qu'il vous faut pour saisir chaque prospect",
   featuresSubtitle:
     "Spécialement conçu pour les plombiers, les techniciens CVC, les électriciens et autres professionnels des services à domicile.",
   feature1Title: "Réceptionniste IA 24h/24 et 7j/7",
@@ -47,21 +47,21 @@ const home = {
 
   // How it works
   howEyebrow: "Comment ça marche",
-  howTitle: "Opérationnel En Trois Étapes Simples",
+  howTitle: "Opérationnel en trois étapes simples",
   howStepLabel: "Étape {number}",
-  howStep1Title: "Transférez Votre Numéro Professionnel",
+  howStep1Title: "Transférez votre numéro professionnel",
   howStep1Description:
     "Conservez votre numéro existant et transférez les appels entrants vers Gigahoo en quelques minutes.",
-  howStep2Title: "L'IA Répond Aux Appels Entrants",
+  howStep2Title: "L'IA répond aux appels entrants",
   howStep2Description:
     "Votre réceptionniste IA accueille les appelants, répond aux questions et traite les demandes.",
-  howStep3Title: "Recevez Des Prospects Qualifiés",
+  howStep3Title: "Recevez des prospects qualifiés",
   howStep3Description:
     "Recevez des résumés d'appels détaillés et les informations des clients directement.",
 
   // Pricing
   pricingEyebrow: "Tarifs",
-  pricingTitle: "Une Tarification Simple Qui Évolue Avec Vous",
+  pricingTitle: "Une tarification simple qui évolue avec vous",
   pricingSubtitle: "Commencez gratuitement. Passez à un forfait supérieur à tout moment, à mesure que votre volume d'appels augmente.",
   pricingMostPopular: "Le plus populaire",
   pricingPeriod: "/mois",

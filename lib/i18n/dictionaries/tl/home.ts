@@ -27,7 +27,7 @@ const home = {
 
   // Features
   featuresEyebrow: "Mga Feature",
-  featuresTitle: "Lahat Ng Kailangan Mo Para Makuha Ang Bawat Lead",
+  featuresTitle: "Lahat ng kailangan mo para makuha ang bawat lead",
   featuresSubtitle:
     "Ginawa para sa mga plumber, HVAC, electrician, at iba pang propesyonal sa home service.",
   feature1Title: "24/7 AI Receptionist",
@@ -47,21 +47,21 @@ const home = {
 
   // How it works
   howEyebrow: "Paano ito gumagana",
-  howTitle: "Handa Nang Gamitin Sa Tatlong Simpleng Hakbang",
+  howTitle: "Handa nang gamitin sa tatlong simpleng hakbang",
   howStepLabel: "Hakbang {number}",
-  howStep1Title: "I-forward Ang Numero Ng Iyong Negosyo",
+  howStep1Title: "I-forward ang numero ng iyong negosyo",
   howStep1Description:
     "Panatilihin ang iyong kasalukuyang numero at i-forward ang mga papasok na tawag sa Gigahoo sa loob ng ilang minuto.",
-  howStep2Title: "Sinasagot Ng AI Ang Mga Papasok Na Tawag",
+  howStep2Title: "Sinasagot ng AI ang mga papasok na tawag",
   howStep2Description:
     "Binabati ng iyong AI receptionist ang mga tumatawag, sumasagot ng mga tanong, at hinahawakan ang mga kahilingan.",
-  howStep3Title: "Tumanggap Ng Mga Kwalipikadong Lead",
+  howStep3Title: "Tumanggap ng mga kwalipikadong lead",
   howStep3Description:
     "Kumuha ng detalyadong buod ng tawag at impormasyon ng customer na direktang ipinapadala sa iyo.",
 
   // Pricing
   pricingEyebrow: "Presyo",
-  pricingTitle: "Simpleng Presyo Na Lumalaki Kasama Mo",
+  pricingTitle: "Simpleng presyo na lumalaki kasama mo",
   pricingSubtitle: "Magsimula nang libre. Mag-upgrade anumang oras habang lumalaki ang dami ng iyong tawag.",
   pricingMostPopular: "Pinakasikat",
   pricingPeriod: "/buwan",

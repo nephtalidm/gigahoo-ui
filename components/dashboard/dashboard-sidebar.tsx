@@ -103,7 +103,6 @@ export function DashboardSidebar() {
       <div className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-border bg-background/90 px-4 backdrop-blur-md lg:hidden">
         <BrandLogo />
         <div className="flex items-center gap-2">
-          <TopbarActions />
           <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger
             render={
@@ -120,8 +119,9 @@ export function DashboardSidebar() {
             <div className="p-4">
               <NavLinks onNavigate={() => setOpen(false)} />
             </div>
-            <div className="border-t border-border p-4">
+            <div className="flex flex-col gap-4 border-t border-border p-4">
               <UserInfo />
+              <TopbarActions />
             </div>
           </SheetContent>
           </Sheet>
