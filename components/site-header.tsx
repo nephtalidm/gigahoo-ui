@@ -3,10 +3,11 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { LanguageSwitcher } from "@/components/language-switcher"
 import { useTranslation } from "@/contexts/language-context"
 import { useAuth } from "@/contexts/auth-context"
-import { LayoutDashboard, LogOut, Menu, X } from "lucide-react"
+import { LayoutDashboard, LogOut, Menu } from "lucide-react"
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
@@ -63,63 +64,65 @@ export function SiteHeader() {
           )}
         </div>
 
-        <button
-          type="button"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-md text-foreground md:hidden"
-          onClick={() => setOpen((v) => !v)}
-          aria-label={open ? t("nav.closeMenu") : t("nav.openMenu")}
-          aria-expanded={open}
-        >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
-      </div>
-
-      {open && (
-        <div className="border-t border-border bg-background md:hidden">
-          <nav className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-4 sm:px-6">
-            <div className="flex justify-end pb-2">
-              <LanguageSwitcher className="w-1/2" />
-            </div>
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+        <Sheet open={open} onOpenChange={setOpen}>
+          <SheetTrigger
+            render={
+              <button
+                type="button"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-md text-foreground md:hidden"
+                aria-label={t("nav.openMenu")}
               >
-                {link.label}
-              </a>
-            ))}
-            <div className="mt-2 flex flex-col gap-2">
-              {isAuthenticated ? (
-                <>
+                <Menu className="h-5 w-5" />
+              </button>
+            }
+          />
+          <SheetContent side="right" className="w-72 p-0">
+            <SheetTitle className="sr-only">{t("nav.openMenu")}</SheetTitle>
+            <nav className="flex flex-col gap-1 p-4">
+              <div className="flex justify-end pb-2">
+                <LanguageSwitcher className="w-1/2" />
+              </div>
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                >
+                  {link.label}
+                </a>
+              ))}
+              <div className="mt-2 flex flex-col gap-2">
+                {isAuthenticated ? (
+                  <>
+                    <Button
+                      variant="outline"
+                      render={
+                        <Link href="/dashboard" onClick={() => setOpen(false)}>
+                          <LayoutDashboard className="h-4 w-4" />
+                          {t("nav.dashboard")}
+                        </Link>
+                      }
+                    />
+                    <Button onClick={() => { setOpen(false); logout() }}>
+                      <LogOut className="h-4 w-4" />
+                      {t("nav.signOut")}
+                    </Button>
+                  </>
+                ) : (
                   <Button
-                    variant="outline"
                     render={
-                      <Link href="/dashboard" onClick={() => setOpen(false)}>
-                        <LayoutDashboard className="h-4 w-4" />
-                        {t("nav.dashboard")}
+                      <Link href="/login" onClick={() => setOpen(false)}>
+                        {t("nav.signIn")}
                       </Link>
                     }
                   />
-                  <Button onClick={() => { setOpen(false); logout() }}>
-                    <LogOut className="h-4 w-4" />
-                    {t("nav.signOut")}
-                  </Button>
-                </>
-              ) : (
-                <Button
-                  render={
-                    <Link href="/login" onClick={() => setOpen(false)}>
-                      {t("nav.signIn")}
-                    </Link>
-                  }
-                />
-              )}
-            </div>
-          </nav>
-        </div>
-      )}
+                )}
+              </div>
+            </nav>
+          </SheetContent>
+        </Sheet>
+      </div>
     </header>
   )
 }
