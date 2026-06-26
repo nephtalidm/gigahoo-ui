@@ -7,6 +7,9 @@ import { LOCALE_COOKIE, LOCALE_PICKED_COOKIE, defaultLocale, dirForLocale, isLoc
 type LanguageContextValue = {
   locale: Locale
   setLocale: (locale: Locale) => void
+  /** The visitor's resolved country (ISO-2, read server-side from NEXT_COUNTRY)
+   * so the country switcher renders correctly on SSR with no US->actual flash. */
+  country: string
   /** Translate a dotted key path, e.g. t("home.heroTitle"). Supports {var} interpolation. */
   t: (key: string, vars?: Record<string, string | number>) => string
 }
@@ -34,9 +37,11 @@ function interpolate(template: string, vars?: Record<string, string | number>): 
 
 export function LanguageProvider({
   initialLocale,
+  initialCountry,
   children,
 }: {
   initialLocale: Locale
+  initialCountry: string
   children: React.ReactNode
 }) {
   const [locale, setLocaleState] = useState<Locale>(initialLocale)
@@ -64,7 +69,7 @@ export function LanguageProvider({
   )
 
   return (
-    <LanguageContext.Provider value={{ locale, setLocale, t }}>
+    <LanguageContext.Provider value={{ locale, setLocale, country: initialCountry, t }}>
       {children}
     </LanguageContext.Provider>
   )

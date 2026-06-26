@@ -16,17 +16,34 @@ const COOKIE_OPTIONS = {
   sameSite: "lax",
 } as const;
 
-export function middleware(request: NextRequest) {
+// Regional domains are data-driven: the API's /api/domains endpoint maps each
+// host to an optional country code (null = geo-detect). A regional host like
+// gigahoo.ca pins its market; geo hosts (.ai/.com) return null. Fetched here
+// (cached 1h) instead of hardcoded so coverage is changed in the DB, not code.
+async function forcedCountryForHost(host: string): Promise<string | null> {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/domains`, {
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) return null;
+    const domains = (await res.json()) as { host: string; countryCode: string | null }[];
+    const map = new Map<string, string | null>();
+    for (const d of domains) {
+      map.set(d.host.toLowerCase().replace(/^www\./, ""), d.countryCode ?? null);
+    }
+    const normalized = host.replace(/^www\./, "");
+    return map.get(normalized)?.toUpperCase() ?? null;
+  } catch {
+    // On any error, fall back to NO forced country (geo) — never re-hardcode.
+    return null;
+  }
+}
+
+export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
-  // The host pins the market for regional domains: `.ca` -> Canada and
-  // `.mx`/`.com.mx` -> Mexico. Other hosts (.ai/.com) fall back to geo.
   const host = (request.headers.get("host") ?? "").toLowerCase();
-  const forcedCountry = host.endsWith(".ca")
-    ? "CA"
-    : host.endsWith(".mx")
-      ? "MX"
-      : null;
+  const forcedCountry = await forcedCountryForHost(host);
 
   // Hosting-provided country (Vercel / Cloudflare), when available.
   const geoCountry =

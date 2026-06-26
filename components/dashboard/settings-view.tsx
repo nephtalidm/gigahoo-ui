@@ -29,7 +29,7 @@ import {
   type CountryData,
   type RegionData,
 } from "@/lib/api"
-import { businessCategories, businessCategoryKeys, toE164 } from "@/lib/data"
+import { areaCodeMatchesCountry, businessCategories, businessCategoryKeys, toE164 } from "@/lib/data"
 import { useSupportedCountries } from "@/hooks/use-supported-countries"
 import { cn } from "@/lib/utils"
 import { Loader2, CheckCircle2 } from "lucide-react"
@@ -457,6 +457,11 @@ export function SettingsView({
     const phoneDigits = businessPhone.replace(/\D/g, "")
     if (/[a-zA-Z]/.test(businessPhone) || phoneDigits.length !== 10) {
       setPhoneVerifyError(t("settings.invalidPhone"))
+      return
+    }
+    // US/CA share +1; the area code must match the account's stored country.
+    if (!areaCodeMatchesCountry(phoneDigits, account.phoneCountryCode)) {
+      setPhoneVerifyError(t("signup.errAreaCodeMismatch"))
       return
     }
     setPhoneVerifyBusy(true)

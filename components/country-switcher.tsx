@@ -1,6 +1,5 @@
 "use client"
 
-import { useState } from "react"
 import {
   Select,
   SelectContent,
@@ -34,13 +33,8 @@ function Flag({ code }: { code: string }) {
   )
 }
 
-function readCountryCookie(): string | null {
-  const match = document.cookie.match(/(?:^|;\s*)NEXT_COUNTRY=([^;]+)/)
-  return match ? decodeURIComponent(match[1]).toUpperCase() : null
-}
-
 export function CountrySwitcher({ className }: { className?: string }) {
-  const { t } = useTranslation()
+  const { t, country } = useTranslation()
   const supported = useSupportedCountries()
 
   // Translate a country name for the active UI language, falling back to the
@@ -59,17 +53,12 @@ export function CountrySwitcher({ className }: { className?: string }) {
     COUNTRY_BY_CODE.has(code),
   )
 
-  // The active country comes from the NEXT_COUNTRY cookie (set by middleware per
-  // host/geo, or by this dropdown). Read it lazily so a re-opened menu shows it
-  // immediately. It's validated against the FULL option list (incl. coming-soon)
-  // below — so Mexico isn't reset just because it's not in the "supported" list.
-  const [current] = useState<string | null>(() =>
-    typeof document !== "undefined" ? readCountryCookie() : null,
-  )
-
+  // The active country comes from the LanguageProvider (read server-side from the
+  // NEXT_COUNTRY cookie), so SSR and client agree — no US->actual flash. Validated
+  // against the FULL option list (incl. coming-soon) so Mexico isn't reset.
   if (options.length === 0) return null
 
-  const value = current && options.includes(current) ? current : options[0]
+  const value = country && options.includes(country) ? country : options[0]
   const selected = COUNTRY_BY_CODE.get(value)
 
   async function onChange(code: string | null) {

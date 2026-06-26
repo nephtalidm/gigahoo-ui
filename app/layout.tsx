@@ -6,7 +6,7 @@ import { AuthProvider } from '@/contexts/auth-context'
 import { LanguageProvider } from '@/contexts/language-context'
 import { LocalizedTitle } from '@/components/localized-title'
 import { ToastProvider } from '@/components/ui/toaster'
-import { LOCALE_COOKIE, defaultLocale, dirForLocale, isLocale } from '@/lib/i18n/config'
+import { LOCALE_COOKIE, COUNTRY_COOKIE, defaultLocale, dirForLocale, isLocale } from '@/lib/i18n/config'
 import './globals.css'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
@@ -33,11 +33,12 @@ export default async function RootLayout({
   const cookieStore = await cookies()
   const cookieLocale = cookieStore.get(LOCALE_COOKIE)?.value
   const locale = isLocale(cookieLocale) ? cookieLocale : defaultLocale
+  const country = (cookieStore.get(COUNTRY_COOKIE)?.value ?? '').toUpperCase()
 
   return (
     <html lang={locale} dir={dirForLocale(locale)} className={`${geistSans.variable} ${geistMono.variable} bg-background`}>
       <body className="font-sans antialiased">
-        <LanguageProvider initialLocale={locale}>
+        <LanguageProvider initialLocale={locale} initialCountry={country}>
           <LocalizedTitle />
           <ToastProvider>
             <AuthProvider>
