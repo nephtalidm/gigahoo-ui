@@ -5,8 +5,8 @@ const dashboard = {
   navOptionalFeatures: "الميزات الاختيارية",
   navPlanBilling: "الخطة والفوترة",
   navNotifications: "الإشعارات",
-  navVoiceAgent: "الوكيل الصوتي",
-  navSettings: "الإعدادات",
+  navVoiceAgent: "وكيل صوتي بالذكاء الاصطناعي",
+  navSettings: "الإعدادات العامة",
 
   // Voice Agent page
   voiceAgentTitle: "وكيل صوتي بالذكاء الاصطناعي",

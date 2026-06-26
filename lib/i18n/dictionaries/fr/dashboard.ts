@@ -5,8 +5,8 @@ const dashboard = {
   navOptionalFeatures: "Fonctionnalités optionnelles",
   navPlanBilling: "Forfait et facturation",
   navNotifications: "Notifications",
-  navVoiceAgent: "Agent vocal",
-  navSettings: "Paramètres",
+  navVoiceAgent: "Agent vocal IA",
+  navSettings: "Paramètres généraux",
 
   // Voice Agent page
   voiceAgentTitle: "Agent vocal IA",

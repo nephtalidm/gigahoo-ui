@@ -188,6 +188,14 @@ export function updateVoiceSettings(s: { greetingMessage: string | null; agentVo
   return api.put<VoiceSettings>("/api/account/voice-settings", s);
 }
 
+export interface SiteSettings {
+  defaultGreeting: string | null;
+}
+
+export function getSettings() {
+  return api.get<SiteSettings>("/api/settings");
+}
+
 export function requestEmailChange(newEmail: string) {
   return api.post<{ message: string }>("/api/account/email/request-change", { newEmail });
 }

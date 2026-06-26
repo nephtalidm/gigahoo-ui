@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { PageHeader } from "@/components/dashboard/page-header"
-import { getAccount, updateVoiceSettings } from "@/lib/api"
+import { getAccount, getSettings, updateVoiceSettings } from "@/lib/api"
 import { useTranslation } from "@/contexts/language-context"
 import { cn } from "@/lib/utils"
 import { Loader2, CheckCircle2, Play } from "lucide-react"
@@ -24,9 +24,11 @@ export default function VoiceAgentPage() {
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
-    getAccount()
-      .then((account) => {
-        setGreetingMessage(account.greetingMessage ?? "")
+    Promise.all([getAccount(), getSettings().catch(() => null)])
+      .then(([account, settings]) => {
+        // Show the account's custom greeting if set; otherwise pre-fill with the
+        // site-wide default so an un-customized account has an editable starting point.
+        setGreetingMessage(account.greetingMessage ?? settings?.defaultGreeting ?? "")
         setVoice(account.agentVoice ?? null)
       })
       .catch(() => {})

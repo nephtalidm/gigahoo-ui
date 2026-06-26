@@ -5,8 +5,8 @@ const dashboard = {
   navOptionalFeatures: "ਵਿਕਲਪਿਕ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ",
   navPlanBilling: "ਪਲਾਨ ਅਤੇ ਬਿਲਿੰਗ",
   navNotifications: "ਸੂਚਨਾਵਾਂ",
-  navVoiceAgent: "ਵੌਇਸ ਏਜੰਟ",
-  navSettings: "ਸੈਟਿੰਗਾਂ",
+  navVoiceAgent: "AI ਵੌਇਸ ਏਜੰਟ",
+  navSettings: "ਆਮ ਸੈਟਿੰਗਾਂ",
 
   // Voice Agent page
   voiceAgentTitle: "AI ਵੌਇਸ ਏਜੰਟ",

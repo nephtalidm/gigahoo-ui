@@ -5,8 +5,8 @@ const dashboard = {
   navOptionalFeatures: "オプション機能",
   navPlanBilling: "プランと請求",
   navNotifications: "通知",
-  navVoiceAgent: "音声エージェント",
-  navSettings: "設定",
+  navVoiceAgent: "AI音声エージェント",
+  navSettings: "一般設定",
 
   // Voice Agent page
   voiceAgentTitle: "AI音声エージェント",

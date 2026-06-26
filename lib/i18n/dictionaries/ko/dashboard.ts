@@ -5,8 +5,8 @@ const dashboard = {
   navOptionalFeatures: "선택 기능",
   navPlanBilling: "요금제 및 결제",
   navNotifications: "알림",
-  navVoiceAgent: "음성 에이전트",
-  navSettings: "설정",
+  navVoiceAgent: "AI 음성 에이전트",
+  navSettings: "일반 설정",
 
   // Voice Agent page
   voiceAgentTitle: "AI 음성 에이전트",

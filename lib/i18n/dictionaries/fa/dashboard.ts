@@ -5,8 +5,8 @@ const dashboard = {
   navOptionalFeatures: "امکانات اختیاری",
   navPlanBilling: "طرح و صورت‌حساب",
   navNotifications: "اعلان‌ها",
-  navVoiceAgent: "دستیار صوتی",
-  navSettings: "تنظیمات",
+  navVoiceAgent: "دستیار صوتی هوش مصنوعی",
+  navSettings: "تنظیمات عمومی",
 
   // Voice Agent page
   voiceAgentTitle: "دستیار صوتی هوش مصنوعی",

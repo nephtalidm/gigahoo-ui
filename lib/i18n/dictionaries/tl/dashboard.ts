@@ -5,8 +5,8 @@ const dashboard = {
   navOptionalFeatures: "Mga Opsyonal na Feature",
   navPlanBilling: "Plano at Pagbabayad",
   navNotifications: "Mga Abiso",
-  navVoiceAgent: "Voice Agent",
-  navSettings: "Mga Setting",
+  navVoiceAgent: "AI Voice Agent",
+  navSettings: "Mga Pangkalahatang Setting",
 
   // Voice Agent page
   voiceAgentTitle: "AI Voice Agent",

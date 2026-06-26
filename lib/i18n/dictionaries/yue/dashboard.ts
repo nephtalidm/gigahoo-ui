@@ -5,8 +5,8 @@ const dashboard = {
   navOptionalFeatures: "選用功能",
   navPlanBilling: "方案與帳單",
   navNotifications: "通知",
-  navVoiceAgent: "語音助手",
-  navSettings: "設定",
+  navVoiceAgent: "AI 語音助手",
+  navSettings: "一般設定",
 
   // Voice Agent page
   voiceAgentTitle: "AI 語音助手",
