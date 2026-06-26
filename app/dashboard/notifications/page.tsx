@@ -11,28 +11,6 @@ import {
 import { useTranslation } from "@/contexts/language-context"
 import { Loader2, CheckCircle2 } from "lucide-react"
 
-function ToggleRow({
-  label,
-  hint,
-  checked,
-  onChange,
-}: {
-  label: string
-  hint: string
-  checked: boolean
-  onChange: (next: boolean) => void
-}) {
-  return (
-    <div className="flex items-center justify-between gap-4 rounded-lg border border-border p-4">
-      <div className="min-w-0">
-        <p className="text-sm font-medium text-foreground">{label}</p>
-        <p className="mt-0.5 text-xs text-muted-foreground">{hint}</p>
-      </div>
-      <Switch checked={checked} onCheckedChange={onChange} />
-    </div>
-  )
-}
-
 export default function NotificationsPage() {
   const { t } = useTranslation()
   const [settings, setSettings] = useState<NotificationSettings | null>(null)
@@ -73,7 +51,7 @@ export default function NotificationsPage() {
       <PageHeader title={t("notifications.title")} description={t("notifications.description")} />
       {settings && (
         <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-          <div className="flex items-center justify-end">
+          <div className="flex h-5 items-center justify-end">
             {saved && (
               <span className="flex items-center gap-1.5 text-sm text-emerald-600">
                 <CheckCircle2 className="h-4 w-4" />
@@ -81,19 +59,27 @@ export default function NotificationsPage() {
               </span>
             )}
           </div>
-          <div className="mt-2 space-y-4">
-            <ToggleRow
-              label={t("notifications.emailLabel")}
-              hint={t("notifications.emailHint")}
-              checked={settings.emailCallNotifications}
-              onChange={(v) => update({ ...settings, emailCallNotifications: v })}
-            />
-            <ToggleRow
-              label={t("notifications.smsLabel")}
-              hint={t("notifications.smsHint")}
-              checked={settings.smsCallNotifications}
-              onChange={(v) => update({ ...settings, smsCallNotifications: v })}
-            />
+          <div className="mt-2 flex items-center justify-between gap-4 rounded-lg border border-border p-4">
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-foreground">{t("notifications.summaryLabel")}</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">{t("notifications.summaryHint")}</p>
+            </div>
+            <div className="flex shrink-0 items-center gap-6">
+              <div className="flex flex-col items-center gap-1.5">
+                <span className="text-xs font-medium text-muted-foreground">{t("notifications.email")}</span>
+                <Switch
+                  checked={settings.emailCallNotifications}
+                  onCheckedChange={(v) => update({ ...settings, emailCallNotifications: v })}
+                />
+              </div>
+              <div className="flex flex-col items-center gap-1.5">
+                <span className="text-xs font-medium text-muted-foreground">{t("notifications.sms")}</span>
+                <Switch
+                  checked={settings.smsCallNotifications}
+                  onCheckedChange={(v) => update({ ...settings, smsCallNotifications: v })}
+                />
+              </div>
+            </div>
           </div>
         </div>
       )}
