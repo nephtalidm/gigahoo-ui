@@ -119,10 +119,10 @@ export function DashboardSidebar() {
             <div className="flex h-16 items-center px-6">
               <BrandLogo />
             </div>
-            <div className="flex justify-end border-t border-border p-4">
+            <div className="flex justify-end border-t border-border px-4 pt-4 pb-2">
               <LanguageSwitcher className="w-1/2" />
             </div>
-            <div className="p-4">
+            <div className="px-4 pb-4 pt-1">
               <NavLinks onNavigate={() => setOpen(false)} />
             </div>
             <div className="flex flex-col gap-4 border-t border-border p-4">
