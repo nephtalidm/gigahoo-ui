@@ -46,10 +46,12 @@ export function SiteHeader() {
             <>
               <Button
                 variant="outline"
-                size="icon"
-                aria-label={t("nav.dashboard")}
-                title={t("nav.dashboard")}
-                render={<Link href="/dashboard"><LayoutDashboard className="h-5 w-5" /></Link>}
+                render={
+                  <Link href="/dashboard">
+                    <LayoutDashboard className="h-5 w-5" />
+                    {t("nav.dashboard")}
+                  </Link>
+                }
               />
               <Button size="default" onClick={() => logout()}>
                 <LogOut className="h-4 w-4" />

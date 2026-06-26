@@ -99,7 +99,7 @@ const home = {
   faqA4: "大多数企业可在一天之内完成设置。",
 
   // Final CTA
-  ctaTitle: "别再错过客户来电",
+  ctaTitle: "别再错过客户来电！",
   ctaSubtitle:
     "立即开始使用 AI 接待员，无需增聘人手即可捕捉更多商机。",
   ctaPrimary: "免费开始",

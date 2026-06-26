@@ -101,7 +101,7 @@ const home = {
   faqA4: "La mayoría de los negocios pueden configurarse en un día.",
 
   // Final CTA
-  ctaTitle: "Deja de perder llamadas de clientes",
+  ctaTitle: "¡Deja de perder llamadas de clientes!",
   ctaSubtitle:
     "Empieza a usar una recepcionista con IA hoy y capta más prospectos sin contratar más personal.",
   ctaPrimary: "Comenzar gratis",

@@ -99,7 +99,7 @@ const home = {
   faqA4: "La plupart des entreprises peuvent être configurées en une journée.",
 
   // Final CTA
-  ctaTitle: "Ne manquez plus aucun appel client",
+  ctaTitle: "Ne manquez plus aucun appel client !",
   ctaSubtitle:
     "Adoptez un réceptionniste IA dès aujourd'hui et saisissez davantage de prospects sans embaucher de personnel supplémentaire.",
   ctaPrimary: "Commencer gratuitement",

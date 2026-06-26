@@ -99,7 +99,7 @@ const home = {
   faqA4: "Karamihan ng mga negosyo ay maaaring ma-set up sa loob ng isang araw.",
 
   // Final CTA
-  ctaTitle: "Itigil ang Pagkaligta sa mga Tawag ng Customer",
+  ctaTitle: "Itigil ang Pagkaligta sa mga Tawag ng Customer!",
   ctaSubtitle:
     "Magsimulang gumamit ng AI receptionist ngayon at makakuha ng mas maraming lead nang hindi kumukuha ng karagdagang tauhan.",
   ctaPrimary: "Magsimula nang Libre",

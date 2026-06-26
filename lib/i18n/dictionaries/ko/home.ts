@@ -99,7 +99,7 @@ const home = {
   faqA4: "대부분의 비즈니스는 하루 안에 설정을 완료할 수 있습니다.",
 
   // Final CTA
-  ctaTitle: "고객 전화를 놓치지 마세요",
+  ctaTitle: "고객 전화를 놓치지 마세요!",
   ctaSubtitle:
     "지금 AI 응대원을 사용하여 추가 직원을 고용하지 않고도 더 많은 잠재 고객을 확보하세요.",
   ctaPrimary: "무료로 시작",
