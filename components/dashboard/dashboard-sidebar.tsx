@@ -114,13 +114,13 @@ export function DashboardSidebar() {
               </Button>
             }
           />
-          <SheetContent side="right" className="w-1/2 p-0">
+          <SheetContent side="left" className="w-72 p-0">
             <SheetTitle className="sr-only">{t("dashboard.navigation")}</SheetTitle>
             <div className="flex h-16 items-center px-6">
               <BrandLogo />
             </div>
-            <div className="border-t border-border p-4">
-              <LanguageSwitcher />
+            <div className="flex justify-end border-t border-border p-4">
+              <LanguageSwitcher className="w-1/2" />
             </div>
             <div className="p-4">
               <NavLinks onNavigate={() => setOpen(false)} />
