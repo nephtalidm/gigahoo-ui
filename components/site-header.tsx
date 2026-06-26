@@ -79,8 +79,8 @@ export function SiteHeader() {
           <SheetContent side="right" className="w-72 p-0">
             <SheetTitle className="sr-only">{t("nav.openMenu")}</SheetTitle>
             <nav className="flex flex-col gap-1 p-4">
-              <div className="flex justify-end pb-2">
-                <LanguageSwitcher className="w-1/2" />
+              <div className="pb-2">
+                <LanguageSwitcher className="w-full" />
               </div>
               {navLinks.map((link) => (
                 <a
