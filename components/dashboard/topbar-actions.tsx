@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { LanguageSwitcher } from "@/components/language-switcher"
+import { CountrySwitcher } from "@/components/country-switcher"
 import { useAuth } from "@/contexts/auth-context"
 import { useTranslation } from "@/contexts/language-context"
 import { LogOut } from "lucide-react"
@@ -12,6 +13,7 @@ export function TopbarActions() {
 
   return (
     <div className="flex items-center gap-2">
+      <CountrySwitcher />
       <LanguageSwitcher />
       <Button
         onClick={() => logout()}

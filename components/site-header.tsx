@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { BrandLogo } from "@/components/brand-logo"
 import { LanguageSwitcher } from "@/components/language-switcher"
+import { CountrySwitcher } from "@/components/country-switcher"
 import { useTranslation } from "@/contexts/language-context"
 import { useAuth } from "@/contexts/auth-context"
 import { LayoutDashboard, LogOut, Menu } from "lucide-react"
@@ -40,6 +41,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
+          <CountrySwitcher />
           <LanguageSwitcher />
           {isAuthenticated ? (
             <>
@@ -77,11 +79,12 @@ export function SiteHeader() {
           />
           <SheetContent side="right" className="w-72 p-0">
             <SheetTitle className="sr-only">{t("nav.openMenu")}</SheetTitle>
-            <div className="flex h-14 items-center justify-center px-6">
+            <div className="flex h-14 items-center px-4">
               <BrandLogo />
             </div>
             <nav className="flex flex-col gap-1 border-t border-border p-4">
-              <div className="pb-2">
+              <div className="flex flex-col gap-2 pb-2">
+                <CountrySwitcher className="w-full" />
                 <LanguageSwitcher className="w-full" />
               </div>
               {navLinks.map((link) => (

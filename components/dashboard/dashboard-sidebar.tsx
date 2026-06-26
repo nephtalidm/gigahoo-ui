@@ -8,6 +8,7 @@ import { BrandLogo } from "@/components/brand-logo"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { LanguageSwitcher } from "@/components/language-switcher"
+import { CountrySwitcher } from "@/components/country-switcher"
 import { getAccount, type AccountData } from "@/lib/api"
 import { useTranslation } from "@/contexts/language-context"
 import { useAuth } from "@/contexts/auth-context"
@@ -116,10 +117,11 @@ export function DashboardSidebar() {
           />
           <SheetContent side="right" className="w-72 p-0">
             <SheetTitle className="sr-only">{t("dashboard.navigation")}</SheetTitle>
-            <div className="flex h-14 items-center justify-center px-6">
+            <div className="flex h-14 items-center px-4">
               <BrandLogo />
             </div>
-            <div className="border-t border-border px-4 pt-4 pb-2">
+            <div className="flex flex-col gap-2 border-t border-border px-4 pt-4 pb-2">
+              <CountrySwitcher className="w-full" />
               <LanguageSwitcher className="w-full" />
             </div>
             <div className="px-4 pb-4 pt-1">
