@@ -83,6 +83,7 @@ const home = {
   pricingBusinessPrice: "$99",
   pricingBusinessDescription: "Lahat ng nasa Starter, plus:",
   pricingBusinessFeature1: "Sumasagot ng mga tanong tungkol sa mga serbisyo",
+  pricingBusinessFeatureConcurrent: "Humahawak ng maraming tawag nang sabay-sabay",
   pricingBusinessFeature2: "1,000 kasamang minuto",
   pricingBusinessCta: "Magsimula",
   comingSoon: "Malapit nang dumating!",

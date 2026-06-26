@@ -83,6 +83,7 @@ const home = {
   pricingBusinessPrice: "$99",
   pricingBusinessDescription: "包含 Starter 套餐的全部功能，另加：",
   pricingBusinessFeature1: "解答有关服务的问题",
+  pricingBusinessFeatureConcurrent: "同时处理多个来电",
   pricingBusinessFeature2: "含 1,000 分钟通话时长",
   pricingBusinessCta: "立即开始",
   comingSoon: "敬请期待！",

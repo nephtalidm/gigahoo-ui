@@ -59,6 +59,7 @@ const auth = {
   failedToCheckEmail: "بررسی ایمیل ناموفق بود",
   invalidEmailOrPassword: "ایمیل یا رمز عبور نادرست است",
   failedToSendCode: "ارسال کد ناموفق بود",
+  regionRestricted: "ایجاد حساب در منطقه شما در حال حاضر محدود است. اگر از قبل حساب دارید، لطفاً وارد شوید.",
 
   // callback page
   invalidVerificationLink: "پیوند تأیید نامعتبر است.",

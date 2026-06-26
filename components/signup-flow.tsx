@@ -50,7 +50,7 @@ const plans: { name: Plan; planId: number; price: string; featured?: boolean; de
   {
     name: "Business", planId: 3, price: "$99",
     descKey: "home.pricingBusinessDescription",
-    featureKeys: ["home.pricingBusinessFeature1", "home.pricingBusinessFeature2"],
+    featureKeys: ["home.pricingBusinessFeature1", "home.pricingBusinessFeatureConcurrent", "home.pricingBusinessFeature2"],
   },
 ]
 

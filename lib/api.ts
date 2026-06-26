@@ -2,6 +2,20 @@ import { mockAccount, mockDashboard, mockConversations, mockFeatureSettings, moc
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
+// Error thrown by the api client. Carries the HTTP status and the server's
+// machine-readable error code so callers can branch on them (e.g. a 403 with
+// code "region_signup_restricted").
+export class ApiError extends Error {
+  status: number;
+  code?: string;
+  constructor(message: string, status: number, code?: string) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+    this.code = code;
+  }
+}
+
 async function apiRequest<T>(
   path: string,
   options: RequestInit = {},
@@ -24,7 +38,14 @@ async function apiRequest<T>(
       window.location.href = "/login";
       throw new Error("Unauthorized");
     }
-    throw new Error(body.error || body.title || `Request failed (${res.status})`);
+    // Surface the server's machine-readable error code (e.g. "region_signup_restricted")
+    // and HTTP status so callers can branch on them.
+    const err = new ApiError(
+      body.error || body.title || `Request failed (${res.status})`,
+      res.status,
+      typeof body.error === "string" ? body.error : undefined,
+    );
+    throw err;
   }
 
   return res.json() as Promise<T>;
@@ -50,16 +71,16 @@ export function googleLogin(idToken: string) {
   return api.post<AuthResponse>("/api/auth/google", { idToken });
 }
 
-export function sendMagicLink(email: string) {
-  return api.post<{ message: string }>("/api/auth/magic-link", { email });
+export function sendMagicLink(email: string, country?: string) {
+  return api.post<{ message: string }>("/api/auth/magic-link", { email, country });
 }
 
 export function verifyMagicLink(email: string, code: string) {
   return api.post<AuthResponse>("/api/auth/verify-magic-link", { email, code });
 }
 
-export function sendSmsCode(phoneNumber: string) {
-  return api.post<{ message: string }>("/api/auth/sms/send", { phoneNumber });
+export function sendSmsCode(phoneNumber: string, country?: string) {
+  return api.post<{ message: string }>("/api/auth/sms/send", { phoneNumber, country });
 }
 
 export function verifySmsCode(phoneNumber: string, code: string) {
@@ -99,6 +120,8 @@ export interface AccountData {
   requiresCurrentPassword: boolean;
   emailCallNotifications: boolean;
   smsCallNotifications: boolean;
+  greetingMessage: string | null;
+  agentVoice: string | null;
 }
 
 export function createAccount(data: {
@@ -154,6 +177,15 @@ export function getNotificationSettings() {
 
 export function updateNotificationSettings(s: NotificationSettings) {
   return api.put<void>("/api/account/notifications", s);
+}
+
+export interface VoiceSettings {
+  greetingMessage: string | null;
+  agentVoice: string | null;
+}
+
+export function updateVoiceSettings(s: { greetingMessage: string | null; agentVoice: string | null }) {
+  return api.put<VoiceSettings>("/api/account/voice-settings", s);
 }
 
 export function requestEmailChange(newEmail: string) {

@@ -11,8 +11,8 @@ type AuthContextType = {
   logout: () => void;
   storeAuth: (response: { accessToken: string; expiresAt: string }) => void;
   loginWithGoogle: (idToken: string) => Promise<void>;
-  sendMagicLink: (email: string) => Promise<void>;
-  sendSmsCode: (phoneNumber: string) => Promise<void>;
+  sendMagicLink: (email: string, country?: string) => Promise<void>;
+  sendSmsCode: (phoneNumber: string, country?: string) => Promise<void>;
   verifySmsCode: (phoneNumber: string, code: string) => Promise<void>;
 };
 
@@ -72,12 +72,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     storeAuth(response);
   };
 
-  const sendMagicLink = async (email: string) => {
-    await apiSendMagicLink(email);
+  const sendMagicLink = async (email: string, country?: string) => {
+    await apiSendMagicLink(email, country);
   };
 
-  const sendSmsCode = async (phoneNumber: string) => {
-    await apiSendSmsCode(phoneNumber);
+  const sendSmsCode = async (phoneNumber: string, country?: string) => {
+    await apiSendSmsCode(phoneNumber, country);
   };
 
   const verifySmsCode = async (phoneNumber: string, code: string) => {

@@ -18,6 +18,7 @@ import {
   Sparkles,
   CreditCard,
   Bell,
+  AudioLines,
   Settings,
   Menu,
   LogOut,
@@ -29,6 +30,7 @@ const navItems = [
   { labelKey: "dashboard.navOptionalFeatures", href: "/dashboard/features", icon: Sparkles },
   { labelKey: "dashboard.navPlanBilling", href: "/dashboard/billing", icon: CreditCard },
   { labelKey: "dashboard.navNotifications", href: "/dashboard/notifications", icon: Bell },
+  { labelKey: "dashboard.navVoiceAgent", href: "/dashboard/voice", icon: AudioLines },
   { labelKey: "dashboard.navSettings", href: "/dashboard/settings", icon: Settings },
 ]
 

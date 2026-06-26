@@ -54,6 +54,7 @@ const auth = {
   failedToCheckEmail: "メールアドレスの確認に失敗しました",
   invalidEmailOrPassword: "メールアドレスまたはパスワードが正しくありません",
   failedToSendCode: "コードの送信に失敗しました",
+  regionRestricted: "お住まいの地域では現在アカウントの作成が制限されています。すでにアカウントをお持ちの場合はログインしてください。",
 
   // callback page
   invalidVerificationLink: "確認リンクが無効です。",

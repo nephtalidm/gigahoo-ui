@@ -59,6 +59,7 @@ const auth = {
   failedToCheckEmail: "ईमेल जाँचने में विफल",
   invalidEmailOrPassword: "अमान्य ईमेल या पासवर्ड",
   failedToSendCode: "कोड भेजने में विफल",
+  regionRestricted: "आपके क्षेत्र में अभी खाता बनाना प्रतिबंधित है। यदि आपके पास पहले से खाता है, तो कृपया लॉग इन करें।",
 
   // callback page
   invalidVerificationLink: "अमान्य सत्यापन लिंक।",

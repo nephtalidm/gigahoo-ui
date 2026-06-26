@@ -52,7 +52,7 @@ export function Pricing({ currency, prices = {}, country = "" }: PricingProps) {
       name: t("home.pricingBusinessName"),
       period: t("home.pricingPeriod"),
       description: t("home.pricingBusinessDescription"),
-      features: [t("home.pricingBusinessFeature1"), t("home.pricingBusinessFeature2")],
+      features: [t("home.pricingBusinessFeature1"), t("home.pricingBusinessFeatureConcurrent"), t("home.pricingBusinessFeature2")],
       cta: t("home.pricingBusinessCta"),
       featured: false,
     },

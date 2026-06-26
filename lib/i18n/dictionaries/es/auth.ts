@@ -59,6 +59,7 @@ const auth = {
   failedToCheckEmail: "No se pudo verificar el correo",
   invalidEmailOrPassword: "Correo o contraseña incorrectos",
   failedToSendCode: "No se pudo enviar el código",
+  regionRestricted: "Por ahora, la creación de cuentas está restringida en tu región. Si ya tienes una cuenta, inicia sesión.",
 
   // callback page
   invalidVerificationLink: "Enlace de verificación inválido.",

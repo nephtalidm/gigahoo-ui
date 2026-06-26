@@ -83,6 +83,7 @@ const home = {
   pricingBusinessPrice: "$99",
   pricingBusinessDescription: "包含 Starter 嘅所有功能，再加：",
   pricingBusinessFeature1: "回答有關服務嘅問題",
+  pricingBusinessFeatureConcurrent: "同時處理多個來電",
   pricingBusinessFeature2: "包含 1,000 分鐘",
   pricingBusinessCta: "立即開始",
   comingSoon: "敬請期待！",

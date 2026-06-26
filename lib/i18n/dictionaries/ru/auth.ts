@@ -59,6 +59,7 @@ const auth = {
   failedToCheckEmail: "Не удалось проверить эл. почту",
   invalidEmailOrPassword: "Неверная эл. почта или пароль",
   failedToSendCode: "Не удалось отправить код",
+  regionRestricted: "Создание аккаунта в вашем регионе пока ограничено. Если у вас уже есть аккаунт, пожалуйста, войдите.",
 
   // callback page
   invalidVerificationLink: "Недействительная ссылка для подтверждения.",

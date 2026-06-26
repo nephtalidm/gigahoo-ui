@@ -54,6 +54,7 @@ const auth = {
   failedToCheckEmail: "檢查電郵失敗",
   invalidEmailOrPassword: "電郵或密碼錯誤",
   failedToSendCode: "傳送驗證碼失敗",
+  regionRestricted: "你所在地區暫時未能建立帳戶。如果你已經有帳戶，請登入。",
 
   // callback page
   invalidVerificationLink: "驗證連結無效。",

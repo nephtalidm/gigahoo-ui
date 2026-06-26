@@ -83,6 +83,7 @@ const home = {
   pricingBusinessPrice: "$99",
   pricingBusinessDescription: "Starterのすべてに加えて：",
   pricingBusinessFeature1: "サービスに関する質問への回答",
+  pricingBusinessFeatureConcurrent: "複数の通話を同時に対応",
   pricingBusinessFeature2: "1,000分間利用可能",
   pricingBusinessCta: "始める",
   comingSoon: "近日公開！",

@@ -83,6 +83,7 @@ const home = {
   pricingBusinessPrice: "$99",
   pricingBusinessDescription: "Starter의 모든 기능에 추가로:",
   pricingBusinessFeature1: "서비스에 대한 질문 답변",
+  pricingBusinessFeatureConcurrent: "여러 통화를 동시에 처리",
   pricingBusinessFeature2: "1,000분 포함",
   pricingBusinessCta: "시작하기",
   comingSoon: "곧 출시됩니다!",

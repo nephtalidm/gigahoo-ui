@@ -83,6 +83,7 @@ const home = {
   pricingBusinessPrice: "$99",
   pricingBusinessDescription: "Усе зі Starter, а також:",
   pricingBusinessFeature1: "Відповіді на запитання про послуги",
+  pricingBusinessFeatureConcurrent: "Обробляє кілька дзвінків одночасно",
   pricingBusinessFeature2: "1 000 включених хвилин",
   pricingBusinessCta: "Почати",
   comingSoon: "Незабаром!",

@@ -59,6 +59,7 @@ const auth = {
   failedToCheckEmail: "Nabigong suriin ang email",
   invalidEmailOrPassword: "Mali ang email o password",
   failedToSendCode: "Nabigong magpadala ng code",
+  regionRestricted: "Pansamantalang hindi pinapayagan ang paggawa ng account sa iyong rehiyon. Kung mayroon ka nang account, mangyaring mag-log in.",
 
   // callback page
   invalidVerificationLink: "Hindi wastong verification link.",

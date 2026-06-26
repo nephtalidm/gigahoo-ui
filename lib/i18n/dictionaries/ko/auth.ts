@@ -54,6 +54,7 @@ const auth = {
   failedToCheckEmail: "이메일 확인에 실패했습니다",
   invalidEmailOrPassword: "이메일 또는 비밀번호가 올바르지 않습니다",
   failedToSendCode: "코드 전송에 실패했습니다",
+  regionRestricted: "현재 회원님의 지역에서는 계정 생성이 제한되어 있습니다. 이미 계정이 있으시면 로그인해 주세요.",
 
   // callback page
   invalidVerificationLink: "유효하지 않은 인증 링크입니다.",

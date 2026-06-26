@@ -59,6 +59,7 @@ const auth = {
   failedToCheckEmail: "ਈਮੇਲ ਦੀ ਜਾਂਚ ਕਰਨ ਵਿੱਚ ਅਸਫਲ",
   invalidEmailOrPassword: "ਅਜਾਇਜ਼ ਈਮੇਲ ਜਾਂ ਪਾਸਵਰਡ",
   failedToSendCode: "ਕੋਡ ਭੇਜਣ ਵਿੱਚ ਅਸਫਲ",
+  regionRestricted: "ਤੁਹਾਡੇ ਖੇਤਰ ਵਿੱਚ ਫਿਲਹਾਲ ਖਾਤਾ ਬਣਾਉਣਾ ਪ੍ਰਤੀਬੰਧਿਤ ਹੈ। ਜੇ ਤੁਹਾਡੇ ਕੋਲ ਪਹਿਲਾਂ ਹੀ ਖਾਤਾ ਹੈ, ਤਾਂ ਕਿਰਪਾ ਕਰਕੇ ਲੌਗ ਇਨ ਕਰੋ।",
 
   // callback page
   invalidVerificationLink: "ਅਜਾਇਜ਼ ਤਸਦੀਕ ਲਿੰਕ।",

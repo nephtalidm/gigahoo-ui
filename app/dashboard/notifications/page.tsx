@@ -50,16 +50,14 @@ export default function NotificationsPage() {
     <div className="flex flex-col gap-6">
       <PageHeader title={t("notifications.title")} description={t("notifications.description")} />
       {settings && (
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-          <div className="flex h-5 items-center justify-end">
-            {saved && (
-              <span className="flex items-center gap-1.5 text-sm text-emerald-600">
-                <CheckCircle2 className="h-4 w-4" />
-                {t("notifications.saved")}
-              </span>
-            )}
-          </div>
-          <div className="mt-2 flex items-center justify-between gap-4 rounded-lg border border-border p-4">
+        <div className="relative rounded-2xl border border-border bg-card p-6 shadow-sm">
+          {saved && (
+            <span className="absolute top-2 right-6 flex items-center gap-1.5 text-sm text-emerald-600">
+              <CheckCircle2 className="h-4 w-4" />
+              {t("notifications.saved")}
+            </span>
+          )}
+          <div className="flex items-center justify-between gap-4 rounded-lg border border-border p-4">
             <div className="min-w-0">
               <p className="text-sm font-medium text-foreground">{t("notifications.summaryLabel")}</p>
               <p className="mt-0.5 text-xs text-muted-foreground">{t("notifications.summaryHint")}</p>

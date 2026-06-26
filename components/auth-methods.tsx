@@ -11,7 +11,7 @@ import { useAuth } from "@/contexts/auth-context"
 import { useTranslation } from "@/contexts/language-context"
 import { useDefaultPhoneCountry } from "@/hooks/use-default-phone-country"
 import { useSupportedCountries } from "@/hooks/use-supported-countries"
-import { verifyMagicLink, api } from "@/lib/api"
+import { verifyMagicLink, api, ApiError } from "@/lib/api"
 import { toE164 } from "@/lib/data"
 import { cn } from "@/lib/utils"
 import { Mail, MessageSquare, ArrowLeft, Loader2 } from "lucide-react"
@@ -30,6 +30,17 @@ const phoneSchema = z.object({
 const codeSchema = z.object({
   code: z.string().min(4).max(6),
 })
+
+// The visitor's selected market (ISO-2), used to gate new-account signups from
+// non-supported / coming-soon regions. Read from the NEXT_COUNTRY cookie.
+function selectedCountry() {
+  return (document.cookie.match(/(?:^|;\s*)NEXT_COUNTRY=([^;]+)/)?.[1] ?? "").toUpperCase()
+}
+
+// True when the error is the backend's 403 region-signup gate.
+function isRegionRestricted(err: unknown) {
+  return err instanceof ApiError && err.status === 403 && err.code === "region_signup_restricted"
+}
 
 export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void }) {
   const { t } = useTranslation()
@@ -79,14 +90,18 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
     setResentNotice(false)
     try {
       if (mode === "sms") {
-        await sendSmsCode(toE164(phoneCountry, phone))
+        await sendSmsCode(toE164(phoneCountry, phone), selectedCountry())
       } else {
-        await sendMagicLink(email)
+        await sendMagicLink(email, selectedCountry())
       }
       setCode("")
       lastAutoCode.current = ""
       setResentNotice(true)
     } catch (err) {
+      if (isRegionRestricted(err)) {
+        setError(t("auth.regionRestricted"))
+        return
+      }
       setError(err instanceof Error ? err.message : t("auth.failedToSendCode"))
     } finally {
       setResending(false)
@@ -151,9 +166,13 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
         setLoading(false)
         return
       }
-      await sendMagicLink(email)
+      await sendMagicLink(email, selectedCountry())
       setEmailSent(true)
     } catch (err) {
+      if (isRegionRestricted(err)) {
+        setError(t("auth.regionRestricted"))
+        return
+      }
       setError(err instanceof Error ? err.message : t("auth.failedToCheckEmail"))
     } finally {
       setLoading(false)
@@ -192,9 +211,13 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
     setLoading(true)
     setError(null)
     try {
-      await sendSmsCode(toE164(phoneCountry, phone))
+      await sendSmsCode(toE164(phoneCountry, phone), selectedCountry())
       setCodeSent(true)
     } catch (err) {
+      if (isRegionRestricted(err)) {
+        setError(t("auth.regionRestricted"))
+        return
+      }
       setError(err instanceof Error ? err.message : t("auth.failedToSendCode"))
     } finally {
       setLoading(false)

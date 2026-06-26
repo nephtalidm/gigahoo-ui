@@ -83,6 +83,7 @@ const home = {
   pricingBusinessPrice: "$99",
   pricingBusinessDescription: "كل ما في خطة Starter، بالإضافة إلى:",
   pricingBusinessFeature1: "الإجابة عن الأسئلة حول الخدمات",
+  pricingBusinessFeatureConcurrent: "التعامل مع عدة مكالمات في وقت واحد",
   pricingBusinessFeature2: "1,000 دقيقة مضمّنة",
   pricingBusinessCta: "ابدأ الآن",
   comingSoon: "قريباً!",

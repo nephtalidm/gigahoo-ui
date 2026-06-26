@@ -83,6 +83,7 @@ const home = {
   pricingBusinessPrice: "$99",
   pricingBusinessDescription: "همه امکانات Starter، به‌علاوه:",
   pricingBusinessFeature1: "پاسخ به سوالات درباره خدمات",
+  pricingBusinessFeatureConcurrent: "مدیریت همزمان چند تماس",
   pricingBusinessFeature2: "۱۰۰۰ دقیقه گنجانده‌شده",
   pricingBusinessCta: "شروع کنید",
   comingSoon: "به‌زودی!",

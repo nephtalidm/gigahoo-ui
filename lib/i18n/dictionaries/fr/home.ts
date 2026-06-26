@@ -83,6 +83,7 @@ const home = {
   pricingBusinessPrice: "99 $",
   pricingBusinessDescription: "Tout ce qui est inclus dans Starter, plus :",
   pricingBusinessFeature1: "Répond aux questions sur les services",
+  pricingBusinessFeatureConcurrent: "Gère plusieurs appels à la fois",
   pricingBusinessFeature2: "1 000 minutes incluses",
   pricingBusinessCta: "Démarrer",
   comingSoon: "Bientôt disponible !",

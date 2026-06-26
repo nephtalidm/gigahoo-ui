@@ -59,6 +59,7 @@ const auth = {
   failedToCheckEmail: "فشل التحقق من البريد الإلكتروني",
   invalidEmailOrPassword: "البريد الإلكتروني أو كلمة المرور غير صحيحة",
   failedToSendCode: "فشل إرسال الرمز",
+  regionRestricted: "إنشاء حساب في منطقتك مقيّد حاليًا. إذا كان لديك حساب بالفعل، فيرجى تسجيل الدخول.",
 
   // callback page
   invalidVerificationLink: "رابط التحقق غير صالح.",
