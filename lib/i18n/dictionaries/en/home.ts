@@ -27,7 +27,7 @@ const home = {
 
   // Features
   featuresEyebrow: "Features",
-  featuresTitle: "Everything you need to capture every lead",
+  featuresTitle: "Everything You Need To Capture Every Lead",
   featuresSubtitle:
     "Purpose-built for plumbers, HVAC, electricians, and other home service pros.",
   feature1Title: "24/7 AI Receptionist",
@@ -47,21 +47,21 @@ const home = {
 
   // How it works
   howEyebrow: "How it works",
-  howTitle: "Up and running in three simple steps",
+  howTitle: "Up And Running In Three Simple Steps",
   howStepLabel: "Step {number}",
-  howStep1Title: "Forward your business number",
+  howStep1Title: "Forward Your Business Number",
   howStep1Description:
     "Keep your existing number and forward incoming calls to Gigahoo in minutes.",
-  howStep2Title: "The AI answers incoming calls",
+  howStep2Title: "The AI Answers Incoming Calls",
   howStep2Description:
     "Your AI receptionist greets callers, answers questions, and handles requests.",
-  howStep3Title: "Receive qualified leads",
+  howStep3Title: "Receive Qualified Leads",
   howStep3Description:
     "Get detailed call summaries and customer information delivered straight to you.",
 
   // Pricing
   pricingEyebrow: "Pricing",
-  pricingTitle: "Simple pricing that scales with you",
+  pricingTitle: "Simple Pricing That Scales With You",
   pricingSubtitle: "Start free. Upgrade anytime as your call volume grows.",
   pricingMostPopular: "Most popular",
   pricingPeriod: "/month",

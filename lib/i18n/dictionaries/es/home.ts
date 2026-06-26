@@ -28,7 +28,7 @@ const home = {
 
   // Features
   featuresEyebrow: "Funciones",
-  featuresTitle: "Todo lo que necesitas para captar cada oportunidad",
+  featuresTitle: "Todo Lo Que Necesitas Para Captar Cada Oportunidad",
   featuresSubtitle:
     "Diseñado especialmente para plomeros, técnicos de climatización, electricistas y otros profesionales de servicios a domicilio.",
   feature1Title: "Recepcionista con IA las 24 horas",
@@ -48,21 +48,21 @@ const home = {
 
   // How it works
   howEyebrow: "Cómo funciona",
-  howTitle: "Listo para usar en tres simples pasos",
+  howTitle: "Listo Para Usar En Tres Simples Pasos",
   howStepLabel: "Paso {number}",
-  howStep1Title: "Redirige el número de tu negocio",
+  howStep1Title: "Redirige El Número De Tu Negocio",
   howStep1Description:
     "Conserva tu número actual y redirige las llamadas entrantes a Gigahoo en minutos.",
-  howStep2Title: "La IA contesta las llamadas entrantes",
+  howStep2Title: "La IA Contesta Las Llamadas Entrantes",
   howStep2Description:
     "Tu recepcionista con IA saluda a quien llama, responde preguntas y atiende solicitudes.",
-  howStep3Title: "Recibe prospectos calificados",
+  howStep3Title: "Recibe Prospectos Calificados",
   howStep3Description:
     "Recibe resúmenes detallados de las llamadas y la información de los clientes directamente.",
 
   // Pricing
   pricingEyebrow: "Precios",
-  pricingTitle: "Precios simples que crecen contigo",
+  pricingTitle: "Precios Simples Que Crecen Contigo",
   pricingSubtitle:
     "Empieza gratis. Mejora tu plan cuando quieras a medida que aumenta tu volumen de llamadas.",
   pricingMostPopular: "Más popular",
