@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import { BrandLogo } from "@/components/brand-logo"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { LanguageSwitcher } from "@/components/language-switcher"
 import { getAccount, type AccountData } from "@/lib/api"
 import { useAuth } from "@/contexts/auth-context"
 import { useTranslation } from "@/contexts/language-context"
@@ -117,7 +118,9 @@ export function DashboardSidebar() {
       {/* Mobile top bar */}
       <div className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-border bg-background/90 px-4 backdrop-blur-md lg:hidden">
         <BrandLogo />
-        <Sheet open={open} onOpenChange={setOpen}>
+        <div className="flex items-center gap-2">
+          <LanguageSwitcher />
+          <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger
             render={
               <Button variant="outline" size="icon" aria-label={t("dashboard.openMenu")}>
@@ -137,7 +140,8 @@ export function DashboardSidebar() {
               <UserInfo onLogout={handleLogout} />
             </div>
           </SheetContent>
-        </Sheet>
+          </Sheet>
+        </div>
       </div>
     </>
   )
