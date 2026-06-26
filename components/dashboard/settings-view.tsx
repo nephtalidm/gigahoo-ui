@@ -17,6 +17,7 @@ import { GoogleSignInButton } from "@/components/google-signin-button"
 import { useTranslation } from "@/contexts/language-context"
 import { updateAccount, setPassword as apiSetPassword, linkGoogle, type AccountData, type CountryData, type RegionData } from "@/lib/api"
 import { businessCategories, businessCategoryKeys } from "@/lib/data"
+import { useSupportedCountries } from "@/hooks/use-supported-countries"
 import { Loader2, CheckCircle2 } from "lucide-react"
 
 function Field({
@@ -48,6 +49,8 @@ export function SettingsView({
   onCountryChange: (countryId: number) => void
 }) {
   const { t } = useTranslation()
+  // Supported (served) countries from the API (Country.IsSupported), settings.ts fallback.
+  const supportedCodes = useSupportedCountries()
   const [businessName, setBusinessName] = useState(account.businessName)
   const [categoryId, setCategoryId] = useState(String(account.categoryId))
   const [businessPhone, setBusinessPhone] = useState(account.businessPhone)
@@ -187,7 +190,7 @@ export function SettingsView({
               onCountryChange={setPhoneCountryCode}
               value={businessPhone}
               onValueChange={setBusinessPhone}
-              allowedCodes={["US", "CA"]}
+              allowedCodes={supportedCodes}
             />
           </Field>
           <Field label={t("settings.email")} htmlFor="email">

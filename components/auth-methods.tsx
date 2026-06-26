@@ -10,6 +10,7 @@ import { PhoneInput } from "@/components/phone-input"
 import { useAuth } from "@/contexts/auth-context"
 import { useTranslation } from "@/contexts/language-context"
 import { useDefaultPhoneCountry } from "@/hooks/use-default-phone-country"
+import { useSupportedCountries } from "@/hooks/use-supported-countries"
 import { verifyMagicLink, api } from "@/lib/api"
 import { toE164 } from "@/lib/data"
 import { Mail, MessageSquare, ArrowLeft, Loader2 } from "lucide-react"
@@ -36,12 +37,15 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
   const defaultPhoneCountry = useDefaultPhoneCountry()
+  // Supported (served) countries come from the API (Country.IsSupported), with a
+  // settings.ts fallback while loading.
+  const supportedCodes = useSupportedCountries()
   const [phoneCountryPicked, setPhoneCountryPicked] = useState<string | null>(null)
-  // Gigahoo only serves the US and Canada, so clamp the geo-detected default to
-  // "US" when the visitor isn't in a supported country.
+  // Clamp the geo-detected default to a supported country when the visitor isn't
+  // in one.
   const phoneCountry =
     phoneCountryPicked ??
-    (defaultPhoneCountry === "US" || defaultPhoneCountry === "CA" ? defaultPhoneCountry : "US")
+    (supportedCodes.includes(defaultPhoneCountry) ? defaultPhoneCountry : supportedCodes[0])
   const [code, setCode] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
@@ -347,7 +351,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
                 value={phone}
                 onValueChange={setPhone}
                 placeholder={t("auth.phonePlaceholder")}
-                allowedCodes={["US", "CA"]}
+                allowedCodes={supportedCodes}
               />
             </div>
             <Button type="submit" size="lg" disabled={loading} className="w-full">

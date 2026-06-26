@@ -302,6 +302,10 @@ export function getCountries() {
   return api.get<CountryData[]>("/api/lookup/countries");
 }
 
+export function getSupportedCountryCodes() {
+  return api.get<string[]>("/api/countries/supported");
+}
+
 export function getRegions(countryId: number) {
   return api.get<RegionData[]>(`/api/lookup/countries/${countryId}/regions`);
 }

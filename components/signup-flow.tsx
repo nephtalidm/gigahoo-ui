@@ -18,6 +18,7 @@ import { getAccount, getCategories, api, createCheckout } from "@/lib/api"
 import { useAuth } from "@/contexts/auth-context"
 import { useTranslation } from "@/contexts/language-context"
 import { useDefaultPhoneCountry } from "@/hooks/use-default-phone-country"
+import { useSupportedCountries } from "@/hooks/use-supported-countries"
 import { cn } from "@/lib/utils"
 import { Check, Loader2 } from "lucide-react"
 import { z } from "zod"
@@ -81,12 +82,15 @@ export function SignupFlow() {
   const [businessName, setBusinessName] = useState("")
   const [businessPhone, setBusinessPhone] = useState("")
   const defaultPhoneCountry = useDefaultPhoneCountry()
+  // Supported (served) countries come from the API (Country.IsSupported), with a
+  // settings.ts fallback while loading.
+  const supportedCodes = useSupportedCountries()
   const [phoneCountryPicked, setPhoneCountryPicked] = useState<string | null>(null)
-  // Gigahoo only serves the US and Canada, so clamp the geo-detected default to
-  // "US" when the visitor isn't in a supported country.
+  // Clamp the geo-detected default to a supported country when the visitor isn't
+  // in one.
   const phoneCountryCode =
     phoneCountryPicked ??
-    (defaultPhoneCountry === "US" || defaultPhoneCountry === "CA" ? defaultPhoneCountry : "US")
+    (supportedCodes.includes(defaultPhoneCountry) ? defaultPhoneCountry : supportedCodes[0])
   // Business address (used by Twilio regulatory bundles; the country also drives
   // the phone number's country and billing currency).
   const [addressLine1, setAddressLine1] = useState("")
@@ -94,15 +98,14 @@ export function SignupFlow() {
   const [city, setCity] = useState("")
   const [region, setRegion] = useState("")
   const [postalCode, setPostalCode] = useState("")
-  // Gigahoo is currently only available in the US and Canada, so the address
-  // country selector is limited to those two.
-  const supportedCountries = countries.filter((c) => c.code === "US" || c.code === "CA")
+  // The address country selector is limited to the supported (served) countries.
+  const supportedCountries = countries.filter((c) => supportedCodes.includes(c.code))
   // Defaults to the phone country (until the user changes it); if the phone
-  // country isn't US/CA, default the selector to "US".
+  // country isn't supported, default to the first supported country.
   const [addressCountryPicked, setAddressCountryPicked] = useState<string | null>(null)
   const addressCountry =
     addressCountryPicked ??
-    (phoneCountryCode === "US" || phoneCountryCode === "CA" ? phoneCountryCode : "US")
+    (supportedCodes.includes(phoneCountryCode) ? phoneCountryCode : supportedCodes[0])
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -406,7 +409,7 @@ export function SignupFlow() {
             onValueChange={setBusinessPhone}
             invalid={!!errors.businessPhone}
             describedBy={errors.businessPhone ? "phone-error" : undefined}
-            allowedCodes={["US", "CA"]}
+            allowedCodes={supportedCodes}
           />
           {errors.businessPhone && (
             <p id="phone-error" className="text-xs text-destructive">{errors.businessPhone}</p>
