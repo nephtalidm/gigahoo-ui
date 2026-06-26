@@ -187,6 +187,7 @@ export function SettingsView({
               onCountryChange={setPhoneCountryCode}
               value={businessPhone}
               onValueChange={setBusinessPhone}
+              allowedCodes={["US", "CA"]}
             />
           </Field>
           <Field label={t("settings.email")} htmlFor="email">
