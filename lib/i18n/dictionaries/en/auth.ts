@@ -43,6 +43,10 @@ const auth = {
   phonePlaceholder: "(555) 000-0000",
   sendVerificationCode: "Send Verification Code",
 
+  // resend code
+  resendCode: "Resend code",
+  codeSent: "Code sent",
+
   // validation / errors
   invalidEmail: "Please enter a valid email address",
   invalidPhone: "Please enter a valid phone number",

@@ -10,14 +10,24 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { submitContact } from "@/lib/api"
 import { useTranslation } from "@/contexts/language-context"
+import { cn } from "@/lib/utils"
 import { Mail, Phone, MapPin, CheckCircle2, Loader2 } from "lucide-react"
 import { z } from "zod"
+
+type ContactField = "name" | "email" | "subject" | "message"
+type ContactErrors = Partial<Record<ContactField, string>>
 
 export default function ContactPage() {
   const { t } = useTranslation()
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [subject, setSubject] = useState("")
+  const [message, setMessage] = useState("")
+  const [errors, setErrors] = useState<ContactErrors>({})
 
   const contactSchema = z.object({
     name: z.string().min(1, t("contact.nameRequired")).max(100),
@@ -26,28 +36,32 @@ export default function ContactPage() {
     message: z.string().min(1, t("contact.messageRequired")).max(5000),
   })
 
+  // Validate a single field live and update its error (clears when valid).
+  function validateField(field: ContactField, value: string) {
+    const result = contactSchema.shape[field].safeParse(value)
+    setErrors((e) => ({
+      ...e,
+      [field]: result.success ? undefined : result.error.issues[0].message,
+    }))
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setLoading(true)
     setError(null)
 
-    const form = e.currentTarget
-    const formData = new FormData(form)
-
-    const data = {
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
-      subject: formData.get("subject") as string,
-      message: formData.get("message") as string,
-    }
-
+    const data = { name, email, subject, message }
     const result = contactSchema.safeParse(data)
     if (!result.success) {
-      setError(result.error.issues[0].message)
-      setLoading(false)
+      const fieldErrors: ContactErrors = {}
+      for (const issue of result.error.issues) {
+        const field = issue.path[0] as ContactField
+        if (!fieldErrors[field]) fieldErrors[field] = issue.message
+      }
+      setErrors(fieldErrors)
       return
     }
 
+    setLoading(true)
     try {
       await submitContact(result.data)
       setSubmitted(true)
@@ -111,20 +125,70 @@ export default function ContactPage() {
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div className="flex flex-col gap-2">
                       <Label htmlFor="name">{t("contact.nameLabel")}</Label>
-                      <Input id="name" name="name" required placeholder={t("contact.namePlaceholder")} />
+                      <Input
+                        id="name"
+                        name="name"
+                        required
+                        placeholder={t("contact.namePlaceholder")}
+                        value={name}
+                        onChange={(e) => { setName(e.target.value); validateField("name", e.target.value) }}
+                        maxLength={100}
+                        className={cn(errors.name && "border-destructive focus-visible:ring-destructive")}
+                        aria-invalid={!!errors.name}
+                        aria-describedby={errors.name ? "name-error" : undefined}
+                      />
+                      {errors.name && <p id="name-error" className="text-xs text-destructive">{errors.name}</p>}
                     </div>
                     <div className="flex flex-col gap-2">
                       <Label htmlFor="email">{t("contact.emailLabel")}</Label>
-                      <Input id="email" name="email" type="email" required placeholder={t("contact.emailPlaceholder")} />
+                      <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        required
+                        placeholder={t("contact.emailPlaceholder")}
+                        value={email}
+                        onChange={(e) => { setEmail(e.target.value); validateField("email", e.target.value) }}
+                        maxLength={254}
+                        className={cn(errors.email && "border-destructive focus-visible:ring-destructive")}
+                        aria-invalid={!!errors.email}
+                        aria-describedby={errors.email ? "email-error" : undefined}
+                      />
+                      {errors.email && <p id="email-error" className="text-xs text-destructive">{errors.email}</p>}
                     </div>
                   </div>
                   <div className="flex flex-col gap-2">
                     <Label htmlFor="subject">{t("contact.subjectLabel")}</Label>
-                    <Input id="subject" name="subject" required placeholder={t("contact.subjectPlaceholder")} />
+                    <Input
+                      id="subject"
+                      name="subject"
+                      required
+                      placeholder={t("contact.subjectPlaceholder")}
+                      value={subject}
+                      onChange={(e) => { setSubject(e.target.value); validateField("subject", e.target.value) }}
+                      maxLength={200}
+                      className={cn(errors.subject && "border-destructive focus-visible:ring-destructive")}
+                      aria-invalid={!!errors.subject}
+                      aria-describedby={errors.subject ? "subject-error" : undefined}
+                    />
+                    {errors.subject && <p id="subject-error" className="text-xs text-destructive">{errors.subject}</p>}
                   </div>
                   <div className="flex flex-col gap-2">
                     <Label htmlFor="message">{t("contact.messageLabel")}</Label>
-                    <Textarea id="message" name="message" rows={5} required placeholder={t("contact.messagePlaceholder")} />
+                    <Textarea
+                      id="message"
+                      name="message"
+                      rows={5}
+                      required
+                      placeholder={t("contact.messagePlaceholder")}
+                      value={message}
+                      onChange={(e) => { setMessage(e.target.value); validateField("message", e.target.value) }}
+                      maxLength={5000}
+                      className={cn(errors.message && "border-destructive focus-visible:ring-destructive")}
+                      aria-invalid={!!errors.message}
+                      aria-describedby={errors.message ? "message-error" : undefined}
+                    />
+                    {errors.message && <p id="message-error" className="text-xs text-destructive">{errors.message}</p>}
                   </div>
                   <Button type="submit" className="w-full sm:w-auto sm:self-start" disabled={loading}>
                     {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

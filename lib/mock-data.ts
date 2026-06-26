@@ -16,6 +16,7 @@ export const mockAccount: AccountData = {
   addressLine2: "Suite 100",
   city: "San Francisco",
   region: "California",
+  regionId: null,
   postalCode: "94102",
   country: "United States",
   countryId: 1,

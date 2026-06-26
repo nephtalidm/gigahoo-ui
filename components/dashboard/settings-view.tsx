@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -31,6 +31,7 @@ import {
 } from "@/lib/api"
 import { businessCategories, businessCategoryKeys, toE164 } from "@/lib/data"
 import { useSupportedCountries } from "@/hooks/use-supported-countries"
+import { cn } from "@/lib/utils"
 import { Loader2, CheckCircle2 } from "lucide-react"
 
 function Field({
@@ -52,8 +53,8 @@ function Field({
 
 /** Modal shown while waiting for the user to enter an email/phone change code. */
 function VerifyModal({
-  open, id, title, description, waitingLabel, cancelLabel, confirmLabel,
-  code, setCode, busy, error, onCancel, onConfirm,
+  open, id, title, description, waitingLabel, cancelLabel, confirmLabel, resendLabel, codeSentLabel,
+  code, setCode, busy, error, onCancel, onConfirm, onResend,
 }: {
   open: boolean
   id: string
@@ -62,13 +63,31 @@ function VerifyModal({
   waitingLabel: string
   cancelLabel: string
   confirmLabel: string
+  resendLabel: string
+  codeSentLabel: string
   code: string
   setCode: (v: string) => void
   busy: boolean
   error: string | null
   onCancel: () => void
   onConfirm: () => void
+  onResend: () => void | Promise<void>
 }) {
+  const [resending, setResending] = useState(false)
+  const [resent, setResent] = useState(false)
+
+  async function handleResend() {
+    setResending(true)
+    setResent(false)
+    try {
+      await onResend()
+      setResent(true)
+      setTimeout(() => setResent(false), 3000)
+    } finally {
+      setResending(false)
+    }
+  }
+
   return (
     <Dialog open={open} onOpenChange={(o) => { if (!o) onCancel() }}>
       <DialogContent showCloseButton={false} className="sm:max-w-md">
@@ -81,12 +100,35 @@ function VerifyModal({
           <Loader2 className="h-4 w-4 animate-spin" />
           {waitingLabel}
         </div>
+        <div className="flex items-center justify-center gap-2 text-sm">
+          {resent ? (
+            <span className="flex items-center gap-1.5 text-emerald-600">
+              <CheckCircle2 className="h-4 w-4" />
+              {codeSentLabel}
+            </span>
+          ) : (
+            <button
+              type="button"
+              onClick={handleResend}
+              disabled={busy || resending}
+              className="text-indigo-600 hover:text-indigo-700 disabled:opacity-50"
+            >
+              {resending && <Loader2 className="mr-1 inline h-3.5 w-3.5 animate-spin" />}
+              {resendLabel}
+            </button>
+          )}
+        </div>
         {error && <p className="text-center text-sm text-destructive">{error}</p>}
         <DialogFooter>
           <Button type="button" variant="outline" onClick={onCancel} disabled={busy}>
             {cancelLabel}
           </Button>
-          <Button type="button" onClick={onConfirm} disabled={busy || code.length < 6}>
+          <Button
+            type="button"
+            className="bg-indigo-600 text-white hover:bg-indigo-700"
+            onClick={onConfirm}
+            disabled={busy || code.length < 6}
+          >
             {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {confirmLabel}
           </Button>
@@ -94,6 +136,17 @@ function VerifyModal({
       </DialogContent>
     </Dialog>
   )
+}
+
+type FieldErrors = {
+  businessName?: string
+  email?: string
+  addressLine1?: string
+  city?: string
+  region?: string
+  postalCode?: string
+  category?: string
+  country?: string
 }
 
 export function SettingsView({
@@ -119,13 +172,14 @@ export function SettingsView({
   const [addressLine1, setAddressLine1] = useState(account.addressLine1 ?? "")
   const [addressLine2, setAddressLine2] = useState(account.addressLine2 ?? "")
   const [city, setCity] = useState(account.city ?? "")
-  const [regionId, setRegionId] = useState(account.region ? String(account.region) : "")
+  const [regionId, setRegionId] = useState(account.regionId != null ? String(account.regionId) : "")
   const [regionCustom, setRegionCustom] = useState(account.region ?? "")
   const [postalCode, setPostalCode] = useState(account.postalCode ?? "")
   const [countryId, setCountryId] = useState(String(account.countryId))
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [errors, setErrors] = useState<FieldErrors>({})
 
   // Password set/change
   const [showPwForm, setShowPwForm] = useState(false)
@@ -156,6 +210,31 @@ export function SettingsView({
   const selectedCountry = countries.find((c) => String(c.id) === countryId)
   const hasRegions = regions.length > 0
 
+  // Build a specific field error for every required-but-empty or invalid field.
+  function validateAll(): FieldErrors {
+    const e: FieldErrors = {}
+    if (businessName.trim().length < 1) e.businessName = t("settings.errBusinessNameRequired")
+    if (email.trim().length < 1) e.email = t("settings.errEmailRequired")
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) e.email = t("settings.errEmailInvalid")
+    if (!categoryId || Number(categoryId) < 1) e.category = t("settings.errCategoryRequired")
+    if (!countryId) e.country = t("settings.errCountryRequired")
+    if (addressLine1.trim().length < 1) e.addressLine1 = t("settings.errAddressLine1Required")
+    if (city.trim().length < 1) e.city = t("settings.errCityRequired")
+    if (hasRegions ? !regionId : regionCustom.trim().length < 1) e.region = t("settings.errRegionRequired")
+    if (postalCode.trim().length < 1) e.postalCode = t("settings.errPostalCodeRequired")
+    return e
+  }
+
+  // Live re-validation: once a field becomes valid its red border clears. Only
+  // re-validate fields already flagged so untouched fields stay clean.
+  useEffect(() => {
+    setErrors((prev) => {
+      if (Object.keys(prev).length === 0) return prev
+      return validateAll()
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [businessName, email, categoryId, countryId, addressLine1, city, regionId, regionCustom, postalCode, hasRegions])
+
   function handleCountryChange(value: string) {
     setCountryId(value)
     setRegionId("")
@@ -175,6 +254,25 @@ export function SettingsView({
       btn?.focus()
       return
     }
+    // Client-side field validation: flag each offending field and focus the first.
+    const fieldErrors = validateAll()
+    if (Object.keys(fieldErrors).length > 0) {
+      setErrors(fieldErrors)
+      const order: { key: keyof FieldErrors; id: string }[] = [
+        { key: "businessName", id: "businessName" },
+        { key: "category", id: "category" },
+        { key: "email", id: "email" },
+        { key: "country", id: "country" },
+        { key: "addressLine1", id: "addressLine1" },
+        { key: "city", id: "city" },
+        { key: "region", id: "region" },
+        { key: "postalCode", id: "postalCode" },
+      ]
+      const first = order.find((f) => fieldErrors[f.key])
+      if (first) focusField(first.id)
+      return
+    }
+    setErrors({})
     setSaving(true)
     setError(null)
     setSaved(false)
@@ -275,6 +373,30 @@ export function SettingsView({
     }
   }
 
+  // Re-request a fresh email code (the old one is invalidated after too many
+  // wrong attempts). Clears the entered code; the modal shows a "Code sent" hint.
+  async function handleResendEmailCode() {
+    setEmailVerifyError(null)
+    setEmailCode("")
+    try {
+      await requestEmailChange(email.trim())
+    } catch (err) {
+      setEmailVerifyError(err instanceof Error ? err.message : t("settings.codeSendFailed"))
+      throw err
+    }
+  }
+
+  async function handleResendPhoneCode() {
+    setPhoneVerifyError(null)
+    setPhoneCode("")
+    try {
+      await requestPhoneChange(toE164(phoneCountryCode, businessPhone))
+    } catch (err) {
+      setPhoneVerifyError(err instanceof Error ? err.message : t("settings.codeSendFailed"))
+      throw err
+    }
+  }
+
   function handleCancelEmailChange() {
     setEmailVerifyOpen(false)
     setEmailCode("")
@@ -340,11 +462,17 @@ export function SettingsView({
               id="businessName"
               value={businessName}
               onChange={(e) => setBusinessName(e.target.value)}
+              className={cn(errors.businessName && "border-destructive focus-visible:ring-destructive")}
+              aria-invalid={!!errors.businessName}
+              aria-describedby={errors.businessName ? "businessName-error" : undefined}
             />
+            {errors.businessName && (
+              <p id="businessName-error" className="text-xs text-destructive">{errors.businessName}</p>
+            )}
           </Field>
           <Field label={t("settings.businessCategory")} htmlFor="category">
             <Select value={categoryId} onValueChange={(v) => v && setCategoryId(v)}>
-              <SelectTrigger id="category">
+              <SelectTrigger id="category" className={cn(errors.category && "border-destructive focus-visible:ring-destructive")}>
                 <SelectValue>
                   {businessCategories[Number(categoryId) - 1]
                     ? t(`categories.${businessCategoryKeys[businessCategories[Number(categoryId) - 1]]}`)
@@ -359,6 +487,9 @@ export function SettingsView({
                 ))}
               </SelectContent>
             </Select>
+            {errors.category && (
+              <p className="text-xs text-destructive">{errors.category}</p>
+            )}
           </Field>
           <Field label={t("settings.businessPhone")} htmlFor="businessPhone">
             <PhoneInput
@@ -405,12 +536,15 @@ export function SettingsView({
               waitingLabel={t("settings.waitingForConfirmation")}
               cancelLabel={t("settings.cancel")}
               confirmLabel={t("settings.confirm")}
+              resendLabel={t("settings.resendCode")}
+              codeSentLabel={t("settings.codeSent")}
               code={phoneCode}
               setCode={setPhoneCode}
               busy={phoneVerifyBusy}
               error={phoneVerifyError}
               onCancel={handleCancelPhoneChange}
               onConfirm={handleConfirmPhoneChange}
+              onResend={handleResendPhoneCode}
             />
           </Field>
           <Field label={t("settings.email")} htmlFor="email">
@@ -419,7 +553,13 @@ export function SettingsView({
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className={cn(errors.email && "border-destructive focus-visible:ring-destructive")}
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? "email-error" : undefined}
             />
+            {errors.email && (
+              <p id="email-error" className="text-xs text-destructive">{errors.email}</p>
+            )}
             {emailVerified && (
               <span className="flex items-center gap-1.5 text-sm text-emerald-600">
                 <CheckCircle2 className="h-4 w-4" />
@@ -456,12 +596,15 @@ export function SettingsView({
               waitingLabel={t("settings.waitingForConfirmation")}
               cancelLabel={t("settings.cancel")}
               confirmLabel={t("settings.confirm")}
+              resendLabel={t("settings.resendCode")}
+              codeSentLabel={t("settings.codeSent")}
               code={emailCode}
               setCode={setEmailCode}
               busy={emailVerifyBusy}
               error={emailVerifyError}
               onCancel={handleCancelEmailChange}
               onConfirm={handleConfirmEmailChange}
+              onResend={handleResendEmailCode}
             />
           </Field>
           <Field label={t("settings.websiteUrl")} htmlFor="websiteUrl">
@@ -503,7 +646,13 @@ export function SettingsView({
                 onChange={(e) => setAddressLine1(e.target.value)}
                 placeholder={t("settings.addressLine1Placeholder")}
                 autoComplete="address-line1"
+                className={cn(errors.addressLine1 && "border-destructive focus-visible:ring-destructive")}
+                aria-invalid={!!errors.addressLine1}
+                aria-describedby={errors.addressLine1 ? "addressLine1-error" : undefined}
               />
+              {errors.addressLine1 && (
+                <p id="addressLine1-error" className="text-xs text-destructive">{errors.addressLine1}</p>
+              )}
             </Field>
           </div>
           <div className="sm:col-span-2">
@@ -523,12 +672,18 @@ export function SettingsView({
               value={city}
               onChange={(e) => setCity(e.target.value)}
               autoComplete="address-level2"
+              className={cn(errors.city && "border-destructive focus-visible:ring-destructive")}
+              aria-invalid={!!errors.city}
+              aria-describedby={errors.city ? "city-error" : undefined}
             />
+            {errors.city && (
+              <p id="city-error" className="text-xs text-destructive">{errors.city}</p>
+            )}
           </Field>
           <Field label={t("settings.region")} htmlFor="region">
             {hasRegions ? (
               <Select value={regionId} onValueChange={(v) => v && setRegionId(v)}>
-                <SelectTrigger id="region">
+                <SelectTrigger id="region" className={cn(errors.region && "border-destructive focus-visible:ring-destructive")}>
                   <SelectValue>
                     {regions.find((r) => String(r.id) === regionId)?.name || t("settings.selectRegion")}
                   </SelectValue>
@@ -548,7 +703,13 @@ export function SettingsView({
                 onChange={(e) => setRegionCustom(e.target.value)}
                 placeholder={t("settings.regionPlaceholder")}
                 autoComplete="address-level1"
+                className={cn(errors.region && "border-destructive focus-visible:ring-destructive")}
+                aria-invalid={!!errors.region}
+                aria-describedby={errors.region ? "region-error" : undefined}
               />
+            )}
+            {errors.region && (
+              <p id="region-error" className="text-xs text-destructive">{errors.region}</p>
             )}
           </Field>
           <Field label={t("settings.postalCode")} htmlFor="postalCode">
@@ -557,11 +718,17 @@ export function SettingsView({
               value={postalCode}
               onChange={(e) => setPostalCode(e.target.value)}
               autoComplete="postal-code"
+              className={cn(errors.postalCode && "border-destructive focus-visible:ring-destructive")}
+              aria-invalid={!!errors.postalCode}
+              aria-describedby={errors.postalCode ? "postalCode-error" : undefined}
             />
+            {errors.postalCode && (
+              <p id="postalCode-error" className="text-xs text-destructive">{errors.postalCode}</p>
+            )}
           </Field>
           <Field label={t("settings.country")} htmlFor="country">
             <Select value={countryId} onValueChange={(v) => v && handleCountryChange(v)}>
-              <SelectTrigger id="country">
+              <SelectTrigger id="country" className={cn(errors.country && "border-destructive focus-visible:ring-destructive")}>
                 <SelectValue>
                   {countries.find((c) => String(c.id) === countryId)?.name || t("settings.selectCountry")}
                 </SelectValue>
@@ -574,6 +741,9 @@ export function SettingsView({
                 ))}
               </SelectContent>
             </Select>
+            {errors.country && (
+              <p className="text-xs text-destructive">{errors.country}</p>
+            )}
           </Field>
         </div>
 

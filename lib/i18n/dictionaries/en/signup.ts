@@ -29,6 +29,10 @@ const signup = {
   planStarterDesc: "Everything in Free, plus 250 minutes/month",
   planBusinessDesc: "Everything in Starter, plus answers service questions · 1,000 minutes/month",
   createAccount: "Create account",
+  agreeProse: "I agree to the",
+  agreeAnd: "and",
+  termsOfService: "Terms of Service",
+  privacyPolicy: "Privacy Policy",
   errEmailInvalid: "Enter a valid email address (e.g. you@example.com)",
   errEmailMissing: "Email not found. Please sign in again.",
   errBusinessNameLong: "Business name is too long",
@@ -51,6 +55,7 @@ const signup = {
   errCityRequired: "Enter your city",
   errRegionRequired: "Enter your state / province",
   errPostalCodeRequired: "Enter your postal / ZIP code",
+  errTermsRequired: "Please accept the Terms of Service and Privacy Policy",
 }
 
 export default signup

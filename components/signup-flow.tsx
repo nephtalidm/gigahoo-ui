@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -56,6 +57,7 @@ type FieldErrors = {
   postalCode?: string
   country?: string
   plan?: string
+  terms?: string
   general?: string
 }
 
@@ -108,6 +110,7 @@ export function SignupFlow() {
     (supportedCodes.includes(phoneCountryCode) ? phoneCountryCode : supportedCodes[0])
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
+  const [agreedToTerms, setAgreedToTerms] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState<FieldErrors>({})
   const [email, setEmail] = useState("")
@@ -257,6 +260,8 @@ export function SignupFlow() {
 
     if (!selectedPlan) e.plan = t("signup.errPlanRequired")
 
+    if (!agreedToTerms) e.terms = t("signup.errTermsRequired")
+
     return e
   }
 
@@ -279,6 +284,7 @@ export function SignupFlow() {
         { key: "city", id: "city" },
         { key: "region", id: "region" },
         { key: "postalCode", id: "postalCode" },
+        { key: "terms", id: "agreeToTerms" },
       ]
       const first = order.find((f) => fieldErrors[f.key])
       if (first) focusField(first.id)
@@ -644,6 +650,39 @@ export function SignupFlow() {
         </div>
         {errors.plan && (
           <p className="text-xs text-destructive">{errors.plan}</p>
+        )}
+      </div>
+
+      <div className="mx-auto w-full max-w-md">
+        <div className="flex items-start gap-2">
+          <input
+            type="checkbox"
+            id="agreeToTerms"
+            checked={agreedToTerms}
+            onChange={(e) => {
+              setAgreedToTerms(e.target.checked)
+              if (e.target.checked) setErrors((er) => ({ ...er, terms: undefined }))
+            }}
+            className={cn(
+              "mt-0.5 h-4 w-4 shrink-0 rounded border-border text-primary accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              errors.terms && "border-destructive",
+            )}
+            aria-invalid={!!errors.terms}
+            aria-describedby={errors.terms ? "agreeToTerms-error" : undefined}
+          />
+          <Label htmlFor="agreeToTerms" className="text-sm font-normal leading-snug text-muted-foreground">
+            {t("signup.agreeProse")}{" "}
+            <Link href="/terms" target="_blank" rel="noopener noreferrer" className="text-primary underline">
+              {t("signup.termsOfService")}
+            </Link>{" "}
+            {t("signup.agreeAnd")}{" "}
+            <Link href="/privacy" target="_blank" rel="noopener noreferrer" className="text-primary underline">
+              {t("signup.privacyPolicy")}
+            </Link>
+          </Label>
+        </div>
+        {errors.terms && (
+          <p id="agreeToTerms-error" className="mt-2 text-xs text-destructive">{errors.terms}</p>
         )}
       </div>
 

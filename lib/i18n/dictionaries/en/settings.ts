@@ -50,6 +50,8 @@ const settings = {
   enterPhoneCode: "Enter the 6-digit code sent to your new phone.",
   confirm: "Confirm",
   cancel: "Cancel",
+  resendCode: "Resend code",
+  codeSent: "Code sent",
   emailVerified: "Email verified",
   phoneVerified: "Phone verified",
   codeSendFailed: "Couldn't send verification code",
@@ -75,6 +77,17 @@ const settings = {
   passwordMismatch: "Passwords don't match",
   passwordSaved: "Password updated",
   passwordSaveFailed: "Couldn't update password",
+
+  // Field validation
+  errBusinessNameRequired: "Business name is required",
+  errEmailRequired: "Email address is required",
+  errEmailInvalid: "Enter a valid email address (e.g. you@example.com)",
+  errCategoryRequired: "Select a business category",
+  errCountryRequired: "Select a country",
+  errAddressLine1Required: "Address line 1 is required",
+  errCityRequired: "City is required",
+  errRegionRequired: "State / Province / Region is required",
+  errPostalCodeRequired: "Postal / ZIP code is required",
 
   // Save
   saved: "Saved",

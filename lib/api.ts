@@ -84,6 +84,7 @@ export interface AccountData {
   addressLine2: string | null;
   city: string | null;
   region: string | null;
+  regionId: number | null;
   postalCode: string | null;
   country: string;
   countryId: number;

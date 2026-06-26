@@ -13,6 +13,7 @@ import { useDefaultPhoneCountry } from "@/hooks/use-default-phone-country"
 import { useSupportedCountries } from "@/hooks/use-supported-countries"
 import { verifyMagicLink, api } from "@/lib/api"
 import { toE164 } from "@/lib/data"
+import { cn } from "@/lib/utils"
 import { Mail, MessageSquare, ArrowLeft, Loader2 } from "lucide-react"
 import { z } from "zod"
 
@@ -54,7 +55,33 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [hasPassword, setHasPassword] = useState(false)
+  const [resending, setResending] = useState(false)
+  const [resentNotice, setResentNotice] = useState(false)
   const lastAutoCode = useRef("")
+
+  // Live email-format validation for the email step. Only flags non-empty input
+  // that isn't a valid address; empty clears the error.
+  const emailInvalid = email.length > 0 && !emailSchema.safeParse({ email }).success
+
+  async function handleResend() {
+    setResending(true)
+    setError(null)
+    setResentNotice(false)
+    try {
+      if (mode === "sms") {
+        await sendSmsCode(toE164(phoneCountry, phone))
+      } else {
+        await sendMagicLink(email)
+      }
+      setCode("")
+      lastAutoCode.current = ""
+      setResentNotice(true)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("auth.failedToSendCode"))
+    } finally {
+      setResending(false)
+    }
+  }
 
   function finish() {
     if (onAuthenticated) onAuthenticated()
@@ -231,6 +258,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
           setPassword("")
           setHasPassword(false)
           setError(null)
+          setResentNotice(false)
         }}
         className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
       >
@@ -255,6 +283,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
                 {t("auth.sentTo")}
                 <span className="font-medium text-foreground">{email}</span>
               </p>
+              <ResendCode onResend={handleResend} resending={resending} sent={resentNotice} t={t} />
             </div>
             <Button type="submit" size="lg" disabled={loading || code.length < 6} className="w-full">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -272,7 +301,13 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
                 placeholder={t("auth.emailPlaceholder")}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className={cn(emailInvalid && "border-destructive focus-visible:ring-destructive")}
+                aria-invalid={emailInvalid}
+                aria-describedby={emailInvalid ? "email-error" : undefined}
               />
+              {emailInvalid && (
+                <p id="email-error" className="text-xs text-destructive">{t("auth.invalidEmail")}</p>
+              )}
             </div>
             <Button type="submit" size="lg" disabled={loading} className="w-full">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -334,6 +369,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
                 {t("auth.sentTo")}
                 <span className="font-medium text-foreground">{toE164(phoneCountry, phone)}</span>
               </p>
+              <ResendCode onResend={handleResend} resending={resending} sent={resentNotice} t={t} />
             </div>
             <Button type="submit" size="lg" disabled={loading} className="w-full">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -360,6 +396,33 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
             </Button>
           </form>
         ))}
+    </div>
+  )
+}
+
+function ResendCode({
+  onResend,
+  resending,
+  sent,
+  t,
+}: {
+  onResend: () => void
+  resending: boolean
+  sent: boolean
+  t: (key: string) => string
+}) {
+  return (
+    <div className="flex items-center justify-center gap-2 text-xs">
+      <button
+        type="button"
+        onClick={onResend}
+        disabled={resending}
+        className="inline-flex items-center gap-1.5 font-medium text-primary transition-colors hover:text-primary/80 disabled:opacity-60"
+      >
+        {resending && <Loader2 className="h-3 w-3 animate-spin" />}
+        {t("auth.resendCode")}
+      </button>
+      {sent && !resending && <span className="text-muted-foreground">{t("auth.codeSent")}</span>}
     </div>
   )
 }
