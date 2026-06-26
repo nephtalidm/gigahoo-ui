@@ -62,6 +62,38 @@ const settings = {
   passwordMismatch: "Les mots de passe ne correspondent pas",
   passwordSaved: "Mot de passe mis à jour",
   passwordSaveFailed: "Impossible de mettre à jour le mot de passe",
+  currentPasswordRequired: "Saisissez votre mot de passe actuel",
+
+  // Email / phone verification
+  verifySaveEmail: "Vérifier et enregistrer l'e-mail",
+  verifySavePhone: "Vérifier et enregistrer le téléphone",
+  enterEmailCode: "Saisissez le code à 6 chiffres envoyé à votre nouvel e-mail.",
+  enterPhoneCode: "Saisissez le code à 6 chiffres envoyé à votre nouveau téléphone.",
+  confirm: "Confirmer",
+  cancel: "Annuler",
+  resendCode: "Renvoyer le code",
+  codeSent: "Code envoyé",
+  emailVerified: "E-mail vérifié",
+  phoneVerified: "Téléphone vérifié",
+  codeSendFailed: "Impossible d'envoyer le code de vérification",
+  verifyFailed: "Code invalide ou expiré",
+  verifyBeforeSave: "Vérifiez votre nouvel e-mail ou numéro de téléphone avant d'enregistrer",
+  emailVerifyTitle: "Confirmez votre nouvel e-mail",
+  phoneVerifyTitle: "Confirmez votre nouveau numéro de téléphone",
+  waitingForConfirmation: "En attente de confirmation…",
+  invalidPhone: "Saisissez un numéro de téléphone valide à 10 chiffres",
+  invalidEmail: "Saisissez une adresse e-mail valide (par ex. vous@exemple.com)",
+
+  // Field validation
+  errBusinessNameRequired: "Le nom de l'entreprise est requis",
+  errEmailRequired: "L'adresse e-mail est requise",
+  errEmailInvalid: "Saisissez une adresse e-mail valide (par ex. vous@exemple.com)",
+  errCategoryRequired: "Sélectionnez une catégorie d'entreprise",
+  errCountryRequired: "Sélectionnez un pays",
+  errAddressLine1Required: "L'adresse ligne 1 est requise",
+  errCityRequired: "La ville est requise",
+  errRegionRequired: "L'état / la province / la région est requis",
+  errPostalCodeRequired: "Le code postal est requis",
 }
 
 export default settings

@@ -42,6 +42,27 @@ const settings = {
   change: "ਬਦਲੋ",
   linked: "ਜੁੜਿਆ ਹੋਇਆ",
   googleLinkFailed: "Google ਖਾਤਾ ਜੋੜਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ",
+
+  // Email / phone verification
+  verifySaveEmail: "ਈਮੇਲ ਤਸਦੀਕ ਕਰੋ ਅਤੇ ਸੰਭਾਲੋ",
+  verifySavePhone: "ਫ਼ੋਨ ਤਸਦੀਕ ਕਰੋ ਅਤੇ ਸੰਭਾਲੋ",
+  enterEmailCode: "ਆਪਣੀ ਨਵੀਂ ਈਮੇਲ 'ਤੇ ਭੇਜਿਆ 6-ਅੰਕਾਂ ਦਾ ਕੋਡ ਦਾਖਲ ਕਰੋ।",
+  enterPhoneCode: "ਆਪਣੇ ਨਵੇਂ ਫ਼ੋਨ 'ਤੇ ਭੇਜਿਆ 6-ਅੰਕਾਂ ਦਾ ਕੋਡ ਦਾਖਲ ਕਰੋ।",
+  confirm: "ਪੁਸ਼ਟੀ ਕਰੋ",
+  cancel: "ਰੱਦ ਕਰੋ",
+  resendCode: "ਕੋਡ ਦੁਬਾਰਾ ਭੇਜੋ",
+  codeSent: "ਕੋਡ ਭੇਜਿਆ ਗਿਆ",
+  emailVerified: "ਈਮੇਲ ਤਸਦੀਕ ਹੋਈ",
+  phoneVerified: "ਫ਼ੋਨ ਤਸਦੀਕ ਹੋਇਆ",
+  codeSendFailed: "ਤਸਦੀਕ ਕੋਡ ਭੇਜਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ",
+  verifyFailed: "ਅਜਾਇਜ਼ ਜਾਂ ਮਿਆਦ ਪੁੱਗ ਚੁੱਕਾ ਕੋਡ",
+  verifyBeforeSave: "ਸੰਭਾਲਣ ਤੋਂ ਪਹਿਲਾਂ ਆਪਣੀ ਨਵੀਂ ਈਮੇਲ ਜਾਂ ਫ਼ੋਨ ਨੰਬਰ ਤਸਦੀਕ ਕਰੋ",
+  emailVerifyTitle: "ਆਪਣੀ ਨਵੀਂ ਈਮੇਲ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
+  phoneVerifyTitle: "ਆਪਣੇ ਨਵੇਂ ਫ਼ੋਨ ਨੰਬਰ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
+  waitingForConfirmation: "ਪੁਸ਼ਟੀ ਦੀ ਉਡੀਕ ਵਿੱਚ…",
+  invalidPhone: "ਇੱਕ ਜਾਇਜ਼ 10-ਅੰਕਾਂ ਦਾ ਫ਼ੋਨ ਨੰਬਰ ਦਾਖਲ ਕਰੋ",
+  invalidEmail: "ਇੱਕ ਜਾਇਜ਼ ਈਮੇਲ ਪਤਾ ਦਾਖਲ ਕਰੋ (ਜਿਵੇਂ you@example.com)",
+
   passwordMethod: "ਪਾਸਵਰਡ",
   passwordSetStatus: "ਪਾਸਵਰਡ ਸੈੱਟ ਹੈ",
   passwordNotSet: "ਕੋਈ ਪਾਸਵਰਡ ਸੈੱਟ ਨਹੀਂ ਹੈ",
@@ -53,8 +74,20 @@ const settings = {
   passwordPlaceholder: "ਘੱਟੋ-ਘੱਟ 8 ਅੱਖਰ",
   passwordTooShort: "ਪਾਸਵਰਡ ਘੱਟੋ-ਘੱਟ 8 ਅੱਖਰਾਂ ਦਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ",
   passwordMismatch: "ਪਾਸਵਰਡ ਮੇਲ ਨਹੀਂ ਖਾਂਦੇ",
+  currentPasswordRequired: "ਆਪਣਾ ਮੌਜੂਦਾ ਪਾਸਵਰਡ ਦਾਖਲ ਕਰੋ",
   passwordSaved: "ਪਾਸਵਰਡ ਅੱਪਡੇਟ ਕੀਤਾ ਗਿਆ",
   passwordSaveFailed: "ਪਾਸਵਰਡ ਅੱਪਡੇਟ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ",
+
+  // Field validation
+  errBusinessNameRequired: "ਕਾਰੋਬਾਰ ਦਾ ਨਾਮ ਜ਼ਰੂਰੀ ਹੈ",
+  errEmailRequired: "ਈਮੇਲ ਪਤਾ ਜ਼ਰੂਰੀ ਹੈ",
+  errEmailInvalid: "ਇੱਕ ਜਾਇਜ਼ ਈਮੇਲ ਪਤਾ ਦਾਖਲ ਕਰੋ (ਜਿਵੇਂ you@example.com)",
+  errCategoryRequired: "ਇੱਕ ਕਾਰੋਬਾਰੀ ਸ਼੍ਰੇਣੀ ਚੁਣੋ",
+  errCountryRequired: "ਇੱਕ ਦੇਸ਼ ਚੁਣੋ",
+  errAddressLine1Required: "ਪਤਾ ਲਾਈਨ 1 ਜ਼ਰੂਰੀ ਹੈ",
+  errCityRequired: "ਸ਼ਹਿਰ ਜ਼ਰੂਰੀ ਹੈ",
+  errRegionRequired: "ਰਾਜ / ਪ੍ਰਾਂਤ / ਖੇਤਰ ਜ਼ਰੂਰੀ ਹੈ",
+  errPostalCodeRequired: "ਪੋਸਟਲ / ZIP ਕੋਡ ਜ਼ਰੂਰੀ ਹੈ",
 
   // Save
   saved: "ਸੰਭਾਲਿਆ ਗਿਆ",

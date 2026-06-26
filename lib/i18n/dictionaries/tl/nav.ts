@@ -5,6 +5,8 @@ const nav = {
   contact: "Makipag-ugnayan",
   signIn: "Mag-sign In",
   signUp: "Mag-sign Up",
+  signOut: "Mag-sign Out",
+  dashboard: "Dashboard",
   openMenu: "Buksan ang menu",
   closeMenu: "Isara ang menu",
 }

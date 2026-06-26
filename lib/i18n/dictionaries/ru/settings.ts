@@ -55,6 +55,38 @@ const settings = {
   passwordMismatch: "Пароли не совпадают",
   passwordSaved: "Пароль обновлён",
   passwordSaveFailed: "Не удалось обновить пароль",
+  currentPasswordRequired: "Введите текущий пароль",
+
+  // Email / phone verification
+  verifySaveEmail: "Подтвердить и сохранить эл. почту",
+  verifySavePhone: "Подтвердить и сохранить телефон",
+  enterEmailCode: "Введите 6-значный код, отправленный на вашу новую эл. почту.",
+  enterPhoneCode: "Введите 6-значный код, отправленный на ваш новый телефон.",
+  confirm: "Подтвердить",
+  cancel: "Отмена",
+  resendCode: "Отправить код повторно",
+  codeSent: "Код отправлен",
+  emailVerified: "Эл. почта подтверждена",
+  phoneVerified: "Телефон подтверждён",
+  codeSendFailed: "Не удалось отправить код подтверждения",
+  verifyFailed: "Неверный или истёкший код",
+  verifyBeforeSave: "Подтвердите новую эл. почту или номер телефона перед сохранением",
+  emailVerifyTitle: "Подтвердите вашу новую эл. почту",
+  phoneVerifyTitle: "Подтвердите ваш новый номер телефона",
+  waitingForConfirmation: "Ожидание подтверждения…",
+  invalidPhone: "Введите корректный 10-значный номер телефона",
+  invalidEmail: "Введите корректный адрес эл. почты (напр. you@example.com)",
+
+  // Field validation
+  errBusinessNameRequired: "Название бизнеса обязательно",
+  errEmailRequired: "Адрес электронной почты обязателен",
+  errEmailInvalid: "Введите корректный адрес эл. почты (напр. you@example.com)",
+  errCategoryRequired: "Выберите категорию бизнеса",
+  errCountryRequired: "Выберите страну",
+  errAddressLine1Required: "Адрес, строка 1, обязателен",
+  errCityRequired: "Город обязателен",
+  errRegionRequired: "Штат / область / регион обязателен",
+  errPostalCodeRequired: "Почтовый индекс обязателен",
 
   // Save
   saved: "Сохранено",

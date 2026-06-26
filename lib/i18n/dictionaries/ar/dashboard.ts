@@ -11,6 +11,12 @@ const dashboard = {
   loading: "جارٍ التحميل…",
   planLabel: "خطة {plan}",
 
+  // Idle session timeout
+  idleTitle: "هل ما زلت هنا؟",
+  idleDescription: "لقد كنت غير نشط لفترة. لحماية حسابك، سيتم تسجيل خروجك تلقائيًا عند انتهاء المؤقّت.",
+  idleStay: "البقاء مسجّلاً للدخول",
+  idleLogoutNow: "تسجيل الخروج الآن",
+
   // Overview page
   overviewTitle: "نظرة عامة",
   overviewWelcome: "مرحبًا بعودتك.",

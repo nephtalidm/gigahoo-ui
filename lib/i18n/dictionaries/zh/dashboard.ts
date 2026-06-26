@@ -54,6 +54,10 @@ const dashboard = {
   statusCompleted: "已完成",
   statusMissed: "未接听",
   statusFailed: "失败",
+  idleTitle: "您还在吗？",
+  idleDescription: "您已有一段时间没有操作。为了您的安全，计时结束后将自动退出登录。",
+  idleStay: "保持登录",
+  idleLogoutNow: "立即退出",
 }
 
 export default dashboard

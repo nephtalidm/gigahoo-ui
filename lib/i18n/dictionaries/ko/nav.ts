@@ -7,6 +7,8 @@ const nav = {
   signUp: "회원가입",
   openMenu: "메뉴 열기",
   closeMenu: "메뉴 닫기",
+  signOut: "로그아웃",
+  dashboard: "대시보드",
 }
 
 export default nav

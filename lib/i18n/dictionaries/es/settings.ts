@@ -62,6 +62,38 @@ const settings = {
   passwordMismatch: "Las contraseñas no coinciden",
   passwordSaved: "Contraseña actualizada",
   passwordSaveFailed: "No se pudo actualizar la contraseña",
+  currentPasswordRequired: "Ingresa tu contraseña actual",
+
+  // Email / phone verification
+  verifySaveEmail: "Verificar y guardar correo",
+  verifySavePhone: "Verificar y guardar teléfono",
+  enterEmailCode: "Ingresa el código de 6 dígitos enviado a tu nuevo correo.",
+  enterPhoneCode: "Ingresa el código de 6 dígitos enviado a tu nuevo teléfono.",
+  confirm: "Confirmar",
+  cancel: "Cancelar",
+  resendCode: "Reenviar código",
+  codeSent: "Código enviado",
+  emailVerified: "Correo verificado",
+  phoneVerified: "Teléfono verificado",
+  codeSendFailed: "No se pudo enviar el código de verificación",
+  verifyFailed: "Código inválido o expirado",
+  verifyBeforeSave: "Verifica tu nuevo correo o número de teléfono antes de guardar",
+  emailVerifyTitle: "Confirma tu nuevo correo",
+  phoneVerifyTitle: "Confirma tu nuevo número de teléfono",
+  waitingForConfirmation: "Esperando confirmación…",
+  invalidPhone: "Ingresa un número de teléfono válido de 10 dígitos",
+  invalidEmail: "Ingresa una dirección de correo válida (p. ej. tu@ejemplo.com)",
+
+  // Field validation
+  errBusinessNameRequired: "El nombre del negocio es obligatorio",
+  errEmailRequired: "La dirección de correo es obligatoria",
+  errEmailInvalid: "Ingresa una dirección de correo válida (p. ej. tu@ejemplo.com)",
+  errCategoryRequired: "Selecciona una categoría de negocio",
+  errCountryRequired: "Selecciona un país",
+  errAddressLine1Required: "La dirección línea 1 es obligatoria",
+  errCityRequired: "La ciudad es obligatoria",
+  errRegionRequired: "El estado / provincia / región es obligatorio",
+  errPostalCodeRequired: "El código postal es obligatorio",
 }
 
 export default settings

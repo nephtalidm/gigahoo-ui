@@ -1,5 +1,6 @@
 const auth = {
   // login page
+  signInTitle: "Connectez-vous à Gigahoo",
   createAccountTitle: "Créez votre compte",
   welcomeTitle: "Bienvenue",
   signUpSubtitle: "Commencez à répondre à chaque appel en quelques minutes.",
@@ -41,6 +42,10 @@ const auth = {
   businessPhoneNumber: "Numéro de téléphone professionnel",
   phonePlaceholder: "(555) 000-0000",
   sendVerificationCode: "Envoyer le code de vérification",
+
+  // resend code
+  resendCode: "Renvoyer le code",
+  codeSent: "Code envoyé",
 
   // validation / errors
   invalidEmail: "Veuillez saisir une adresse e-mail valide",

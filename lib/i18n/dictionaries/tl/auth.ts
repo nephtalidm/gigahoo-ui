@@ -1,5 +1,6 @@
 const auth = {
   // login page
+  signInTitle: "Mag-sign in sa Gigahoo",
   createAccountTitle: "Gumawa ng iyong account",
   welcomeTitle: "Maligayang pagdating",
   signUpSubtitle: "Magsimulang sagutin ang bawat tawag sa loob ng ilang minuto.",
@@ -41,6 +42,10 @@ const auth = {
   businessPhoneNumber: "Numero ng Telepono ng Negosyo",
   phonePlaceholder: "(555) 000-0000",
   sendVerificationCode: "Magpadala ng Verification Code",
+
+  // resend code
+  resendCode: "Magpadalang muli ng code",
+  codeSent: "Naipadala ang code",
 
   // validation / errors
   invalidEmail: "Maglagay ng wastong email address",

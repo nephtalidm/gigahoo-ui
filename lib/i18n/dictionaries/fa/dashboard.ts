@@ -11,6 +11,12 @@ const dashboard = {
   loading: "در حال بارگذاری…",
   planLabel: "طرح {plan}",
 
+  // Idle session timeout
+  idleTitle: "هنوز اینجا هستید؟",
+  idleDescription: "مدتی است که غیرفعال بوده‌اید. برای امنیت شما، با پایان زمان‌سنج به‌طور خودکار از حساب خارج خواهید شد.",
+  idleStay: "وارد بمانید",
+  idleLogoutNow: "اکنون خارج شوید",
+
   // Overview page
   overviewTitle: "نمای کلی",
   overviewWelcome: "خوش آمدید.",

@@ -5,6 +5,8 @@ const nav = {
   contact: "Контакты",
   signIn: "Войти",
   signUp: "Регистрация",
+  signOut: "Выйти",
+  dashboard: "Панель управления",
   openMenu: "Открыть меню",
   closeMenu: "Закрыть меню",
 }

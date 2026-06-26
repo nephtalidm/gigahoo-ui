@@ -42,6 +42,27 @@ const settings = {
   change: "बदलें",
   linked: "लिंक किया गया",
   googleLinkFailed: "Google खाता लिंक नहीं किया जा सका",
+
+  // Email / phone verification
+  verifySaveEmail: "ईमेल सत्यापित करें और सहेजें",
+  verifySavePhone: "फ़ोन सत्यापित करें और सहेजें",
+  enterEmailCode: "अपने नए ईमेल पर भेजा गया 6-अंकों का कोड दर्ज करें।",
+  enterPhoneCode: "अपने नए फ़ोन पर भेजा गया 6-अंकों का कोड दर्ज करें।",
+  confirm: "पुष्टि करें",
+  cancel: "रद्द करें",
+  resendCode: "कोड पुनः भेजें",
+  codeSent: "कोड भेजा गया",
+  emailVerified: "ईमेल सत्यापित हुआ",
+  phoneVerified: "फ़ोन सत्यापित हुआ",
+  codeSendFailed: "सत्यापन कोड नहीं भेजा जा सका",
+  verifyFailed: "अमान्य या समाप्त कोड",
+  verifyBeforeSave: "सहेजने से पहले अपना नया ईमेल या फ़ोन नंबर सत्यापित करें",
+  emailVerifyTitle: "अपने नए ईमेल की पुष्टि करें",
+  phoneVerifyTitle: "अपने नए फ़ोन नंबर की पुष्टि करें",
+  waitingForConfirmation: "पुष्टि की प्रतीक्षा में…",
+  invalidPhone: "एक मान्य 10-अंकों का फ़ोन नंबर दर्ज करें",
+  invalidEmail: "एक मान्य ईमेल पता दर्ज करें (उदा. you@example.com)",
+
   passwordMethod: "पासवर्ड",
   passwordSetStatus: "पासवर्ड सेट है",
   passwordNotSet: "कोई पासवर्ड सेट नहीं है",
@@ -53,8 +74,20 @@ const settings = {
   passwordPlaceholder: "कम से कम 8 अक्षर",
   passwordTooShort: "पासवर्ड कम से कम 8 अक्षरों का होना चाहिए",
   passwordMismatch: "पासवर्ड मेल नहीं खाते",
+  currentPasswordRequired: "अपना वर्तमान पासवर्ड दर्ज करें",
   passwordSaved: "पासवर्ड अपडेट किया गया",
   passwordSaveFailed: "पासवर्ड अपडेट नहीं किया जा सका",
+
+  // Field validation
+  errBusinessNameRequired: "व्यवसाय का नाम आवश्यक है",
+  errEmailRequired: "ईमेल पता आवश्यक है",
+  errEmailInvalid: "एक मान्य ईमेल पता दर्ज करें (उदा. you@example.com)",
+  errCategoryRequired: "एक व्यवसाय श्रेणी चुनें",
+  errCountryRequired: "एक देश चुनें",
+  errAddressLine1Required: "पता पंक्ति 1 आवश्यक है",
+  errCityRequired: "शहर आवश्यक है",
+  errRegionRequired: "राज्य / प्रांत / क्षेत्र आवश्यक है",
+  errPostalCodeRequired: "पोस्टल / ZIP कोड आवश्यक है",
 
   // Save
   saved: "सहेजा गया",

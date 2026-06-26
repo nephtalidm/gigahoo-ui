@@ -62,6 +62,9 @@ const auth = {
   backToSignIn: "返回登入",
   verifyingIdentity: "正在驗證你嘅身分…",
   loading: "載入緊…",
+  signInTitle: "登入 Gigahoo",
+  resendCode: "重新發送驗證碼",
+  codeSent: "驗證碼已發送",
 }
 
 export default auth

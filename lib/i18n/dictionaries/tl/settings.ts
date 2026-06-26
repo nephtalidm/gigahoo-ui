@@ -42,6 +42,27 @@ const settings = {
   change: "Baguhin",
   linked: "Naka-link",
   googleLinkFailed: "Hindi ma-link ang Google account",
+
+  // Email / phone verification
+  verifySaveEmail: "I-verify at i-save ang email",
+  verifySavePhone: "I-verify at i-save ang telepono",
+  enterEmailCode: "Ilagay ang 6-digit na code na ipinadala sa iyong bagong email.",
+  enterPhoneCode: "Ilagay ang 6-digit na code na ipinadala sa iyong bagong telepono.",
+  confirm: "Kumpirmahin",
+  cancel: "Kanselahin",
+  resendCode: "Magpadalang muli ng code",
+  codeSent: "Naipadala ang code",
+  emailVerified: "Na-verify ang email",
+  phoneVerified: "Na-verify ang telepono",
+  codeSendFailed: "Hindi makapagpadala ng verification code",
+  verifyFailed: "Hindi wasto o napaso na ang code",
+  verifyBeforeSave: "I-verify ang iyong bagong email o numero ng telepono bago i-save",
+  emailVerifyTitle: "Kumpirmahin ang iyong bagong email",
+  phoneVerifyTitle: "Kumpirmahin ang iyong bagong numero ng telepono",
+  waitingForConfirmation: "Naghihintay ng kumpirmasyon…",
+  invalidPhone: "Maglagay ng wastong 10-digit na numero ng telepono",
+  invalidEmail: "Maglagay ng wastong email address (hal. you@example.com)",
+
   passwordMethod: "Password",
   passwordSetStatus: "Naitakda na ang password",
   passwordNotSet: "Walang nakatakdang password",
@@ -53,8 +74,20 @@ const settings = {
   passwordPlaceholder: "Hindi bababa sa 8 character",
   passwordTooShort: "Ang password ay dapat hindi bababa sa 8 character",
   passwordMismatch: "Hindi magkatugma ang mga password",
+  currentPasswordRequired: "Ilagay ang iyong kasalukuyang password",
   passwordSaved: "Na-update ang password",
   passwordSaveFailed: "Hindi ma-update ang password",
+
+  // Field validation
+  errBusinessNameRequired: "Kailangan ang pangalan ng negosyo",
+  errEmailRequired: "Kailangan ang email address",
+  errEmailInvalid: "Maglagay ng wastong email address (hal. you@example.com)",
+  errCategoryRequired: "Pumili ng kategorya ng negosyo",
+  errCountryRequired: "Pumili ng bansa",
+  errAddressLine1Required: "Kailangan ang linya ng address 1",
+  errCityRequired: "Kailangan ang lungsod",
+  errRegionRequired: "Kailangan ang estado / probinsya / rehiyon",
+  errPostalCodeRequired: "Kailangan ang postal / ZIP code",
 
   // Save
   saved: "Na-save",

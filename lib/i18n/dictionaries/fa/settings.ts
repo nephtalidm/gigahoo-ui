@@ -42,6 +42,27 @@ const settings = {
   change: "تغییر",
   linked: "متصل",
   googleLinkFailed: "اتصال حساب Google ممکن نشد",
+
+  // Email / phone verification
+  verifySaveEmail: "تأیید و ذخیره ایمیل",
+  verifySavePhone: "تأیید و ذخیره شماره تلفن",
+  enterEmailCode: "کد ۶ رقمی ارسال‌شده به ایمیل جدید خود را وارد کنید.",
+  enterPhoneCode: "کد ۶ رقمی ارسال‌شده به شماره تلفن جدید خود را وارد کنید.",
+  confirm: "تأیید",
+  cancel: "لغو",
+  resendCode: "ارسال دوباره کد",
+  codeSent: "کد ارسال شد",
+  emailVerified: "ایمیل تأیید شد",
+  phoneVerified: "شماره تلفن تأیید شد",
+  codeSendFailed: "ارسال کد تأیید ممکن نشد",
+  verifyFailed: "کد نامعتبر یا منقضی‌شده است",
+  verifyBeforeSave: "پیش از ذخیره، ایمیل یا شماره تلفن جدید خود را تأیید کنید",
+  emailVerifyTitle: "ایمیل جدید خود را تأیید کنید",
+  phoneVerifyTitle: "شماره تلفن جدید خود را تأیید کنید",
+  waitingForConfirmation: "در انتظار تأیید…",
+  invalidPhone: "یک شماره تلفن معتبر ۱۰ رقمی وارد کنید",
+  invalidEmail: "یک آدرس ایمیل معتبر وارد کنید (مثلاً you@example.com)",
+
   passwordMethod: "گذرواژه",
   passwordSetStatus: "گذرواژه تنظیم شده است",
   passwordNotSet: "گذرواژه‌ای تنظیم نشده است",
@@ -53,8 +74,20 @@ const settings = {
   passwordPlaceholder: "حداقل ۸ کاراکتر",
   passwordTooShort: "گذرواژه باید حداقل ۸ کاراکتر باشد",
   passwordMismatch: "گذرواژه‌ها مطابقت ندارند",
+  currentPasswordRequired: "گذرواژه فعلی خود را وارد کنید",
   passwordSaved: "گذرواژه به‌روزرسانی شد",
   passwordSaveFailed: "به‌روزرسانی گذرواژه ممکن نشد",
+
+  // Field validation
+  errBusinessNameRequired: "نام کسب‌وکار الزامی است",
+  errEmailRequired: "آدرس ایمیل الزامی است",
+  errEmailInvalid: "یک آدرس ایمیل معتبر وارد کنید (مثلاً you@example.com)",
+  errCategoryRequired: "یک دسته‌بندی کسب‌وکار انتخاب کنید",
+  errCountryRequired: "یک کشور انتخاب کنید",
+  errAddressLine1Required: "آدرس خط ۱ الزامی است",
+  errCityRequired: "شهر الزامی است",
+  errRegionRequired: "استان / ایالت / منطقه الزامی است",
+  errPostalCodeRequired: "کد پستی الزامی است",
 
   // Save
   saved: "ذخیره شد",

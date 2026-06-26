@@ -11,6 +11,12 @@ const dashboard = {
   loading: "लोड हो रहा है…",
   planLabel: "{plan} प्लान",
 
+  // Idle session timeout
+  idleTitle: "क्या आप अब भी यहाँ हैं?",
+  idleDescription: "आप कुछ समय से निष्क्रिय हैं। आपकी सुरक्षा के लिए, टाइमर समाप्त होने पर आपको स्वतः साइन आउट कर दिया जाएगा।",
+  idleStay: "साइन इन बने रहें",
+  idleLogoutNow: "अभी लॉग आउट करें",
+
   // Overview page
   overviewTitle: "अवलोकन",
   overviewWelcome: "वापस स्वागत है।",

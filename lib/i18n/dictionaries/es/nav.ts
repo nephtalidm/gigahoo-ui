@@ -5,6 +5,8 @@ const nav = {
   contact: "Contacto",
   signIn: "Iniciar sesión",
   signUp: "Registrarse",
+  signOut: "Cerrar sesión",
+  dashboard: "Panel",
   openMenu: "Abrir menú",
   closeMenu: "Cerrar menú",
 }

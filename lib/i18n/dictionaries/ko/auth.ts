@@ -62,6 +62,9 @@ const auth = {
   backToSignIn: "로그인으로 돌아가기",
   verifyingIdentity: "신원을 확인하는 중…",
   loading: "불러오는 중…",
+  signInTitle: "Gigahoo에 로그인",
+  resendCode: "코드 재전송",
+  codeSent: "코드가 전송되었습니다",
 }
 
 export default auth

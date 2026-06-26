@@ -1,5 +1,6 @@
 const auth = {
   // login page
+  signInTitle: "Gigahoo में साइन इन करें",
   createAccountTitle: "अपना खाता बनाएँ",
   welcomeTitle: "स्वागत है",
   signUpSubtitle: "मिनटों में हर कॉल का उत्तर देना शुरू करें।",
@@ -41,6 +42,10 @@ const auth = {
   businessPhoneNumber: "व्यवसाय का फ़ोन नंबर",
   phonePlaceholder: "(555) 000-0000",
   sendVerificationCode: "सत्यापन कोड भेजें",
+
+  // resend code
+  resendCode: "कोड पुनः भेजें",
+  codeSent: "कोड भेजा गया",
 
   // validation / errors
   invalidEmail: "कृपया एक मान्य ईमेल पता दर्ज करें",

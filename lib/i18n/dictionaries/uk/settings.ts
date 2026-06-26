@@ -55,6 +55,38 @@ const settings = {
   passwordMismatch: "Паролі не збігаються",
   passwordSaved: "Пароль оновлено",
   passwordSaveFailed: "Не вдалося оновити пароль",
+  currentPasswordRequired: "Введіть поточний пароль",
+
+  // Email / phone verification
+  verifySaveEmail: "Підтвердити та зберегти пошту",
+  verifySavePhone: "Підтвердити та зберегти телефон",
+  enterEmailCode: "Введіть 6-значний код, надісланий на вашу нову електронну пошту.",
+  enterPhoneCode: "Введіть 6-значний код, надісланий на ваш новий телефон.",
+  confirm: "Підтвердити",
+  cancel: "Скасувати",
+  resendCode: "Надіслати код повторно",
+  codeSent: "Код надіслано",
+  emailVerified: "Електронну пошту підтверджено",
+  phoneVerified: "Телефон підтверджено",
+  codeSendFailed: "Не вдалося надіслати код підтвердження",
+  verifyFailed: "Недійсний або прострочений код",
+  verifyBeforeSave: "Підтвердьте нову електронну пошту або номер телефону перед збереженням",
+  emailVerifyTitle: "Підтвердьте вашу нову електронну пошту",
+  phoneVerifyTitle: "Підтвердьте ваш новий номер телефону",
+  waitingForConfirmation: "Очікування підтвердження…",
+  invalidPhone: "Введіть дійсний 10-значний номер телефону",
+  invalidEmail: "Введіть дійсну адресу електронної пошти (напр. you@example.com)",
+
+  // Field validation
+  errBusinessNameRequired: "Назва бізнесу обов'язкова",
+  errEmailRequired: "Адреса електронної пошти обов'язкова",
+  errEmailInvalid: "Введіть дійсну адресу електронної пошти (напр. you@example.com)",
+  errCategoryRequired: "Виберіть категорію бізнесу",
+  errCountryRequired: "Виберіть країну",
+  errAddressLine1Required: "Адресний рядок 1 обов'язковий",
+  errCityRequired: "Місто обов'язкове",
+  errRegionRequired: "Штат / область / регіон обов'язковий",
+  errPostalCodeRequired: "Поштовий індекс обов'язковий",
 
   // Save
   saved: "Збережено",

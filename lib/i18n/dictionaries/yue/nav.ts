@@ -7,6 +7,8 @@ const nav = {
   signUp: "註冊",
   openMenu: "開啟選單",
   closeMenu: "關閉選單",
+  signOut: "登出",
+  dashboard: "儀表板",
 }
 
 export default nav

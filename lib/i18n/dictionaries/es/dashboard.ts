@@ -11,6 +11,12 @@ const dashboard = {
   loading: "Cargando…",
   planLabel: "Plan {plan}",
 
+  // Idle session timeout
+  idleTitle: "¿Sigues ahí?",
+  idleDescription: "Has estado inactivo un rato. Por tu seguridad, cerraremos tu sesión automáticamente cuando se agote el temporizador.",
+  idleStay: "Mantener sesión iniciada",
+  idleLogoutNow: "Cerrar sesión ahora",
+
   // Overview page
   overviewTitle: "Resumen",
   overviewWelcome: "Bienvenido de nuevo.",

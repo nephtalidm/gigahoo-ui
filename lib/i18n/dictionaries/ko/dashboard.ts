@@ -54,6 +54,10 @@ const dashboard = {
   statusCompleted: "완료됨",
   statusMissed: "놓침",
   statusFailed: "실패함",
+  idleTitle: "아직 계신가요?",
+  idleDescription: "한동안 활동이 없었습니다. 보안을 위해 타이머가 종료되면 자동으로 로그아웃됩니다.",
+  idleStay: "로그인 유지",
+  idleLogoutNow: "지금 로그아웃",
 }
 
 export default dashboard

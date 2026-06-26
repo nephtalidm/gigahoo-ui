@@ -54,6 +54,10 @@ const dashboard = {
   statusCompleted: "已完成",
   statusMissed: "未接聽",
   statusFailed: "失敗",
+  idleTitle: "你仲喺度嗎？",
+  idleDescription: "你已經有一段時間冇任何操作。為咗你嘅安全，計時完咗之後會自動登出。",
+  idleStay: "保持登入",
+  idleLogoutNow: "即刻登出",
 }
 
 export default dashboard

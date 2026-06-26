@@ -11,6 +11,12 @@ const dashboard = {
   loading: "Chargement…",
   planLabel: "Forfait {plan}",
 
+  // Idle session timeout
+  idleTitle: "Toujours là ?",
+  idleDescription: "Vous êtes inactif depuis un moment. Pour votre sécurité, vous serez déconnecté automatiquement à la fin du compte à rebours.",
+  idleStay: "Rester connecté",
+  idleLogoutNow: "Se déconnecter maintenant",
+
   // Overview page
   overviewTitle: "Aperçu",
   overviewWelcome: "Bon retour.",

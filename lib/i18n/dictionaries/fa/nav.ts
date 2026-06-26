@@ -5,6 +5,8 @@ const nav = {
   contact: "تماس",
   signIn: "ورود",
   signUp: "ثبت‌نام",
+  signOut: "خروج",
+  dashboard: "داشبورد",
   openMenu: "باز کردن منو",
   closeMenu: "بستن منو",
 }

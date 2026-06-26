@@ -42,6 +42,27 @@ const settings = {
   change: "تغيير",
   linked: "مرتبط",
   googleLinkFailed: "تعذّر ربط حساب Google",
+
+  // Email / phone verification
+  verifySaveEmail: "التحقق وحفظ البريد الإلكتروني",
+  verifySavePhone: "التحقق وحفظ رقم الهاتف",
+  enterEmailCode: "أدخل الرمز المكوّن من 6 أرقام المُرسل إلى بريدك الإلكتروني الجديد.",
+  enterPhoneCode: "أدخل الرمز المكوّن من 6 أرقام المُرسل إلى هاتفك الجديد.",
+  confirm: "تأكيد",
+  cancel: "إلغاء",
+  resendCode: "إعادة إرسال الرمز",
+  codeSent: "تم إرسال الرمز",
+  emailVerified: "تم التحقق من البريد الإلكتروني",
+  phoneVerified: "تم التحقق من رقم الهاتف",
+  codeSendFailed: "تعذّر إرسال رمز التحقق",
+  verifyFailed: "رمز غير صالح أو منتهي الصلاحية",
+  verifyBeforeSave: "تحقّق من بريدك الإلكتروني أو رقم هاتفك الجديد قبل الحفظ",
+  emailVerifyTitle: "أكّد بريدك الإلكتروني الجديد",
+  phoneVerifyTitle: "أكّد رقم هاتفك الجديد",
+  waitingForConfirmation: "في انتظار التأكيد…",
+  invalidPhone: "أدخل رقم هاتف صالحًا مكوّنًا من 10 أرقام",
+  invalidEmail: "أدخل عنوان بريد إلكتروني صالحًا (مثل you@example.com)",
+
   passwordMethod: "كلمة المرور",
   passwordSetStatus: "تم تعيين كلمة المرور",
   passwordNotSet: "لم يتم تعيين كلمة مرور",
@@ -53,8 +74,20 @@ const settings = {
   passwordPlaceholder: "8 أحرف على الأقل",
   passwordTooShort: "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
   passwordMismatch: "كلمتا المرور غير متطابقتين",
+  currentPasswordRequired: "أدخل كلمة المرور الحالية",
   passwordSaved: "تم تحديث كلمة المرور",
   passwordSaveFailed: "تعذّر تحديث كلمة المرور",
+
+  // Field validation
+  errBusinessNameRequired: "اسم النشاط التجاري مطلوب",
+  errEmailRequired: "البريد الإلكتروني مطلوب",
+  errEmailInvalid: "أدخل عنوان بريد إلكتروني صالحًا (مثل you@example.com)",
+  errCategoryRequired: "اختر فئة النشاط التجاري",
+  errCountryRequired: "اختر دولة",
+  errAddressLine1Required: "العنوان السطر 1 مطلوب",
+  errCityRequired: "المدينة مطلوبة",
+  errRegionRequired: "الولاية / المقاطعة / المنطقة مطلوبة",
+  errPostalCodeRequired: "الرمز البريدي مطلوب",
 
   // Save
   saved: "تم الحفظ",

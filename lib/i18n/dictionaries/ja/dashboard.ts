@@ -54,6 +54,10 @@ const dashboard = {
   statusCompleted: "完了",
   statusMissed: "不在",
   statusFailed: "失敗",
+  idleTitle: "まだいらっしゃいますか？",
+  idleDescription: "しばらく操作がありませんでした。セキュリティのため、タイマーが終了すると自動的にログアウトされます。",
+  idleStay: "ログインしたままにする",
+  idleLogoutNow: "今すぐログアウト",
 }
 
 export default dashboard

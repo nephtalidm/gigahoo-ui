@@ -5,6 +5,8 @@ const nav = {
   contact: "ਸੰਪਰਕ",
   signIn: "ਸਾਈਨ ਇਨ ਕਰੋ",
   signUp: "ਸਾਈਨ ਅੱਪ ਕਰੋ",
+  signOut: "ਸਾਈਨ ਆਊਟ ਕਰੋ",
+  dashboard: "ਡੈਸ਼ਬੋਰਡ",
   openMenu: "ਮੇਨੂ ਖੋਲ੍ਹੋ",
   closeMenu: "ਮੇਨੂ ਬੰਦ ਕਰੋ",
 }

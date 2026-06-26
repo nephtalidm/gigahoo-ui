@@ -11,6 +11,12 @@ const dashboard = {
   loading: "Загрузка…",
   planLabel: "Тариф {plan}",
 
+  // Idle session timeout
+  idleTitle: "Вы ещё здесь?",
+  idleDescription: "Вы некоторое время были неактивны. В целях безопасности вы будете автоматически выведены из системы по истечении таймера.",
+  idleStay: "Остаться в системе",
+  idleLogoutNow: "Выйти сейчас",
+
   // Overview page
   overviewTitle: "Обзор",
   overviewWelcome: "С возвращением.",

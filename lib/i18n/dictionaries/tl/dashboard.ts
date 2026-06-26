@@ -11,6 +11,12 @@ const dashboard = {
   loading: "Naglo-load…",
   planLabel: "Planong {plan}",
 
+  // Idle session timeout
+  idleTitle: "Nandiyan ka pa ba?",
+  idleDescription: "Matagal ka nang hindi aktibo. Para sa iyong seguridad, awtomatiko kang mala-log out kapag natapos na ang timer.",
+  idleStay: "Manatiling naka-sign in",
+  idleLogoutNow: "Mag-log out na ngayon",
+
   // Overview page
   overviewTitle: "Pangkalahatang-tanaw",
   overviewWelcome: "Maligayang pagbabalik.",
