@@ -361,7 +361,7 @@ export function SettingsView({
                   type="button"
                   variant="outline"
                   size="sm"
-                  className="self-start"
+                  className="self-start border-indigo-400 text-indigo-600 shadow-[0_0_16px_2px] shadow-indigo-500/50 ring-1 ring-indigo-400 transition-shadow hover:text-indigo-700 hover:shadow-indigo-500/70"
                   onClick={handleRequestPhoneChange}
                   disabled={phoneVerifyBusy}
                 >
@@ -406,7 +406,7 @@ export function SettingsView({
                   type="button"
                   variant="outline"
                   size="sm"
-                  className="self-start"
+                  className="self-start border-indigo-400 text-indigo-600 shadow-[0_0_16px_2px] shadow-indigo-500/50 ring-1 ring-indigo-400 transition-shadow hover:text-indigo-700 hover:shadow-indigo-500/70"
                   onClick={handleRequestEmailChange}
                   disabled={emailVerifyBusy}
                 >

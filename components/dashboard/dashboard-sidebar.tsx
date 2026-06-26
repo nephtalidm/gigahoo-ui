@@ -80,9 +80,9 @@ function UserInfo({ onLogout }: { onLogout: () => void }) {
       <Button
         variant="ghost"
         onClick={onLogout}
-        className="w-full justify-center gap-2 rounded-lg bg-indigo-600 font-medium text-white shadow-sm transition-colors hover:bg-indigo-700 hover:text-white"
+        className="relative w-full justify-center rounded-lg bg-indigo-600 font-medium text-white shadow-sm transition-colors hover:bg-indigo-700 hover:text-white"
       >
-        <LogOut className="h-4 w-4" />
+        <LogOut className="absolute left-4 h-4 w-4" />
         {t("dashboard.signOut")}
       </Button>
     </div>

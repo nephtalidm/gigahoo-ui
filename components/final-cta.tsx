@@ -22,12 +22,6 @@ export function FinalCta() {
             className="text-base"
             render={<a href="#pricing">{t("home.ctaPrimary")}</a>}
           />
-          <Button
-            size="lg"
-            variant="outline"
-            className="border-primary-foreground/30 bg-transparent text-base text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
-            render={<a href="#contact">{t("home.ctaSecondary")}</a>}
-          />
         </div>
       </div>
     </section>
