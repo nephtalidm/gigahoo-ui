@@ -5,11 +5,13 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { LanguageSwitcher } from "@/components/language-switcher"
 import { useTranslation } from "@/contexts/language-context"
-import { Menu, X } from "lucide-react"
+import { useAuth } from "@/contexts/auth-context"
+import { LayoutDashboard, LogOut, Menu, X } from "lucide-react"
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
   const { t } = useTranslation()
+  const { isAuthenticated, logout } = useAuth()
 
   const navLinks = [
     { label: t("nav.features"), href: "/#features" },
@@ -40,7 +42,23 @@ export function SiteHeader() {
 
         <div className="hidden items-center gap-3 md:flex">
           <LanguageSwitcher />
-          <Button size="default" render={<Link href="/login">{t("nav.signIn")}</Link>} />
+          {isAuthenticated ? (
+            <>
+              <Button
+                variant="outline"
+                size="icon"
+                aria-label={t("nav.dashboard")}
+                title={t("nav.dashboard")}
+                render={<Link href="/dashboard"><LayoutDashboard className="h-5 w-5" /></Link>}
+              />
+              <Button size="default" onClick={() => logout()}>
+                <LogOut className="h-4 w-4" />
+                {t("nav.signOut")}
+              </Button>
+            </>
+          ) : (
+            <Button size="default" render={<Link href="/login">{t("nav.signIn")}</Link>} />
+          )}
         </div>
 
         <button
@@ -68,13 +86,31 @@ export function SiteHeader() {
               </a>
             ))}
             <div className="mt-2 flex flex-col gap-2">
-              <Button
-                render={
-                  <Link href="/login" onClick={() => setOpen(false)}>
-                    {t("nav.signIn")}
-                  </Link>
-                }
-              />
+              {isAuthenticated ? (
+                <>
+                  <Button
+                    variant="outline"
+                    render={
+                      <Link href="/dashboard" onClick={() => setOpen(false)}>
+                        <LayoutDashboard className="h-4 w-4" />
+                        {t("nav.dashboard")}
+                      </Link>
+                    }
+                  />
+                  <Button onClick={() => { setOpen(false); logout() }}>
+                    <LogOut className="h-4 w-4" />
+                    {t("nav.signOut")}
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  render={
+                    <Link href="/login" onClick={() => setOpen(false)}>
+                      {t("nav.signIn")}
+                    </Link>
+                  }
+                />
+              )}
               <div className="pt-2">
                 <LanguageSwitcher />
               </div>
