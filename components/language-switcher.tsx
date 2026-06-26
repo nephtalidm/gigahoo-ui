@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils"
 
 function Flags({ codes }: { codes: string[] }) {
   return (
-    <span className="flex items-center gap-0.5">
+    <span className="flex items-center gap-1">
       {codes.map((c) => (
         // Local asset (e.g. "/flags/punjab.svg") or a flagcdn country code.
         // eslint-disable-next-line @next/next/no-img-element
