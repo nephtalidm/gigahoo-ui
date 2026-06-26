@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { useTranslation } from "@/contexts/language-context"
 import { getCurrencyForVisitor } from "@/lib/api"
-import { COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
+import { COMING_SOON_COUNTRY_CODES, PLAN_PRICES } from "@/lib/settings"
 
 export function Pricing() {
   const { t } = useTranslation()
@@ -31,11 +31,15 @@ export function Pricing() {
   // plan CTAs are disabled and labeled accordingly.
   const comingSoon = COMING_SOON_COUNTRY_CODES.includes(country)
 
+  // Per-currency plan amounts, falling back to USD until/unless the visitor's
+  // currency is one we price for.
+  const prices = PLAN_PRICES[currency ?? ""] ?? PLAN_PRICES.USD
+
   const plans = [
     {
       slug: "Free",
       name: t("home.pricingFreeName"),
-      price: t("home.pricingFreePrice"),
+      price: prices.Free,
       period: t("home.pricingPeriod"),
       description: t("home.pricingFreeDescription"),
       features: [
@@ -51,7 +55,7 @@ export function Pricing() {
     {
       slug: "Starter",
       name: t("home.pricingStarterName"),
-      price: t("home.pricingStarterPrice"),
+      price: prices.Starter,
       period: t("home.pricingPeriod"),
       description: t("home.pricingStarterDescription"),
       features: [t("home.pricingStarterFeature1")],
@@ -61,7 +65,7 @@ export function Pricing() {
     {
       slug: "Business",
       name: t("home.pricingBusinessName"),
-      price: t("home.pricingBusinessPrice"),
+      price: prices.Business,
       period: t("home.pricingPeriod"),
       description: t("home.pricingBusinessDescription"),
       features: [t("home.pricingBusinessFeature1"), t("home.pricingBusinessFeature2")],

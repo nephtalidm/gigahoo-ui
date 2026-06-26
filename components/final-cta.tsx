@@ -1,10 +1,23 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { useTranslation } from "@/contexts/language-context"
+import { COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
 
 export function FinalCta() {
   const { t } = useTranslation()
+  // The visitor's country, read from the same cookie middleware sets for geo.
+  const [country, setCountry] = useState<string>("")
+
+  useEffect(() => {
+    const country = (document.cookie.match(/(?:^|;\s*)NEXT_COUNTRY=([^;]+)/)?.[1] ?? "").toUpperCase()
+    setCountry(country)
+  }, [])
+
+  // In "coming soon" markets signup isn't open yet, so the primary CTA is
+  // disabled and labeled accordingly.
+  const comingSoon = COMING_SOON_COUNTRY_CODES.includes(country)
 
   return (
     <section id="contact" className="border-b border-border bg-primary">
@@ -16,12 +29,18 @@ export function FinalCta() {
           {t("home.ctaSubtitle")}
         </p>
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-          <Button
-            size="lg"
-            variant="secondary"
-            className="text-base"
-            render={<a href="#pricing">{t("home.ctaPrimary")}</a>}
-          />
+          {comingSoon ? (
+            <Button size="lg" variant="secondary" className="text-base" disabled>
+              {t("home.comingSoon")}
+            </Button>
+          ) : (
+            <Button
+              size="lg"
+              variant="secondary"
+              className="text-base"
+              render={<a href="#pricing">{t("home.ctaPrimary")}</a>}
+            />
+          )}
         </div>
       </div>
     </section>

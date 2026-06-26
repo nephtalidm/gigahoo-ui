@@ -4,6 +4,7 @@ import {
   LOCALE_COOKIE,
   COUNTRY_COOKIE,
   LOCALE_PICKED_COOKIE,
+  COUNTRY_PICKED_COOKIE,
   localeForAcceptLanguage,
   localeForCountry,
   defaultLocale,
@@ -35,12 +36,14 @@ export function middleware(request: NextRequest) {
 
   const country = (forcedCountry ?? geoCountry)?.toUpperCase();
 
-  // Country cookie: a regional domain always pins its market (overriding geo and
-  // any stale cookie); otherwise record the detected country once.
+  // Country cookie: a regional domain always pins its market. Geo domains
+  // (.ai/.com) reflect the visitor's CURRENT location on every visit — unless
+  // they've explicitly picked a country (NEXT_COUNTRY_PICKED === "1").
+  const countryPicked = request.cookies.get(COUNTRY_PICKED_COOKIE)?.value === "1";
   if (forcedCountry) {
     response.cookies.set(COUNTRY_COOKIE, forcedCountry, COOKIE_OPTIONS);
-  } else if (country && !request.cookies.get(COUNTRY_COOKIE)) {
-    response.cookies.set(COUNTRY_COOKIE, country, COOKIE_OPTIONS);
+  } else if (geoCountry && !countryPicked) {
+    response.cookies.set(COUNTRY_COOKIE, geoCountry.toUpperCase(), COOKIE_OPTIONS);
   }
 
   // Locale cookie: only set the host/geo default while the user has NOT

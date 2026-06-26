@@ -29,6 +29,10 @@ export const COUNTRY_COOKIE = "NEXT_COUNTRY"
 // middleware's host/geo default no longer overrides their choice.
 export const LOCALE_PICKED_COOKIE = "NEXT_LOCALE_PICKED"
 
+// Cookie set to "1" once the user explicitly picks a country, so geo domains
+// (.ai/.com) stop re-detecting and overriding their choice each visit.
+export const COUNTRY_PICKED_COOKIE = "NEXT_COUNTRY_PICKED"
+
 // Native display names + a representative flag (ISO country code) per language.
 export const LOCALE_META: Record<Locale, { native: string; english: string; flags: string[] }> = {
   en: { native: "English", english: "English", flags: ["gb"] },

@@ -1,12 +1,25 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Check, PhoneCall } from "lucide-react"
 import Link from "next/link"
 import { useTranslation } from "@/contexts/language-context"
+import { COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
 
 export function Hero() {
   const { t } = useTranslation()
+  // The visitor's country, read from the same cookie middleware sets for geo.
+  const [country, setCountry] = useState<string>("")
+
+  useEffect(() => {
+    const country = (document.cookie.match(/(?:^|;\s*)NEXT_COUNTRY=([^;]+)/)?.[1] ?? "").toUpperCase()
+    setCountry(country)
+  }, [])
+
+  // In "coming soon" markets signup isn't open yet, so the primary CTA is
+  // disabled and labeled accordingly.
+  const comingSoon = COMING_SOON_COUNTRY_CODES.includes(country)
 
   const bullets = [
     t("home.heroBullet1"),
@@ -34,7 +47,13 @@ export function Hero() {
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button size="lg" className="text-base" render={<Link href="/login">{t("home.heroCtaPrimary")}</Link>} />
+              {comingSoon ? (
+                <Button size="lg" className="text-base" disabled>
+                  {t("home.comingSoon")}
+                </Button>
+              ) : (
+                <Button size="lg" className="text-base" render={<Link href="/login">{t("home.heroCtaPrimary")}</Link>} />
+              )}
               <Button
                 size="lg"
                 variant="outline"

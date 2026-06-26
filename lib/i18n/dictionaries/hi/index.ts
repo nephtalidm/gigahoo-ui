@@ -13,6 +13,7 @@ import features from "./features"
 import settings from "./settings"
 import notifications from "./notifications"
 import categories from "./categories"
+import countries from "./countries"
 
 export const hi = {
   common,
@@ -30,4 +31,5 @@ export const hi = {
   settings,
   notifications,
   categories,
+  countries,
 }

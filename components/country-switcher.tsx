@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import {
   Select,
   SelectContent,
@@ -8,9 +8,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useTranslation } from "@/contexts/language-context"
 import { useSupportedCountries } from "@/hooks/use-supported-countries"
 import { countries } from "@/lib/data"
-import { COUNTRY_COOKIE, LOCALE_COOKIE, LOCALE_PICKED_COOKIE, localeForCountry } from "@/lib/i18n/config"
+import { COUNTRY_COOKIE, COUNTRY_PICKED_COOKIE, LOCALE_COOKIE, LOCALE_PICKED_COOKIE, localeForCountry } from "@/lib/i18n/config"
 import { COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
 import { cn } from "@/lib/utils"
 
@@ -38,26 +39,31 @@ function readCountryCookie(): string | null {
 }
 
 export function CountrySwitcher({ className }: { className?: string }) {
+  const { t } = useTranslation()
   const supported = useSupportedCountries()
-  // Initialize lazily from the cookie so a re-opened menu shows the active
-  // country immediately, with no flicker through options[0].
-  const [current, setCurrent] = useState<string | null>(() =>
-    typeof document !== "undefined" ? readCountryCookie() : null,
-  )
 
-  // Resolve the active country from the cookie on mount, falling back to the
-  // first supported code when absent or unsupported.
-  useEffect(() => {
-    const cookie = readCountryCookie()
-    const fallback = supported[0] ?? null
-    setCurrent(cookie && supported.includes(cookie) ? cookie : fallback)
-  }, [supported])
+  // Translate a country name for the active UI language, falling back to the
+  // lib/data English name if the key resolves to the raw key (i.e. untranslated).
+  function countryName(code: string): string {
+    const key = `countries.${code}`
+    const translated = t(key)
+    if (translated !== key) return translated
+    return COUNTRY_BY_CODE.get(code)?.name ?? code
+  }
 
   // Show supported markets plus "coming soon" ones (so they're selectable even
   // though signup isn't open yet). Supported first, then coming-soon; deduped and
   // limited to codes we can actually label from lib/data.
   const options = [...new Set([...supported, ...COMING_SOON_COUNTRY_CODES])].filter((code) =>
     COUNTRY_BY_CODE.has(code),
+  )
+
+  // The active country comes from the NEXT_COUNTRY cookie (set by middleware per
+  // host/geo, or by this dropdown). Read it lazily so a re-opened menu shows it
+  // immediately. It's validated against the FULL option list (incl. coming-soon)
+  // below — so Mexico isn't reset just because it's not in the "supported" list.
+  const [current] = useState<string | null>(() =>
+    typeof document !== "undefined" ? readCountryCookie() : null,
   )
 
   if (options.length === 0) return null
@@ -73,6 +79,8 @@ export function CountrySwitcher({ className }: { className?: string }) {
     // Picking a country applies that country's default language, so clear the
     // explicit-pick flag.
     document.cookie = `${LOCALE_PICKED_COOKIE}=;path=/;max-age=0`
+    // Mark the country as explicitly chosen so geo domains stop overriding it.
+    document.cookie = `${COUNTRY_PICKED_COOKIE}=1;path=/;max-age=${maxAge};samesite=lax`
     window.location.reload()
   }
 
@@ -86,23 +94,20 @@ export function CountrySwitcher({ className }: { className?: string }) {
           {selected ? (
             <span className="flex items-center gap-2">
               <Flag code={value} />
-              <span>{selected.name}</span>
+              <span>{countryName(value)}</span>
             </span>
           ) : null}
         </SelectValue>
       </SelectTrigger>
       <SelectContent className="w-auto min-w-[12rem] max-w-[min(20rem,90vw)]">
-        {options.map((code) => {
-          const country = COUNTRY_BY_CODE.get(code)!
-          return (
-            <SelectItem key={code} value={code}>
-              <span className="flex items-center gap-2">
-                <Flag code={code} />
-                <span>{country.name}</span>
-              </span>
-            </SelectItem>
-          )
-        })}
+        {options.map((code) => (
+          <SelectItem key={code} value={code}>
+            <span className="flex items-center gap-2">
+              <Flag code={code} />
+              <span>{countryName(code)}</span>
+            </span>
+          </SelectItem>
+        ))}
       </SelectContent>
     </Select>
   )
