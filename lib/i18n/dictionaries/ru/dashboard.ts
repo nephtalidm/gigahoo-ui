@@ -20,7 +20,7 @@ const dashboard = {
 
   // Overview page
   overviewTitle: "Обзор",
-  overviewWelcome: "С возвращением.",
+  overviewWelcome: "С возвращением!",
   loadFailed: "Не удалось загрузить панель управления.",
   tryAgain: "Повторить попытку",
   currentPlan: "Текущий тариф",

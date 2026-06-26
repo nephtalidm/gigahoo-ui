@@ -20,7 +20,7 @@ const dashboard = {
 
   // Overview page
   overviewTitle: "Overview",
-  overviewWelcome: "Welcome back.",
+  overviewWelcome: "Welcome back!",
   loadFailed: "Failed to load dashboard.",
   tryAgain: "Try again",
   currentPlan: "Current Plan",

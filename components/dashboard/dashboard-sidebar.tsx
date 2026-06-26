@@ -46,7 +46,7 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
             href={item.href}
             onClick={onNavigate}
             className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+              "flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors",
               active
                 ? "bg-primary/10 text-primary"
                 : "text-muted-foreground hover:bg-accent hover:text-foreground",
@@ -121,15 +121,15 @@ export function DashboardSidebar() {
               <BrandLogo />
             </div>
             <div className="flex flex-col gap-2 border-t border-border px-4 pt-4 pb-2">
-              <CountrySwitcher className="w-full" />
-              <LanguageSwitcher className="w-full" />
+              <CountrySwitcher className="h-11 w-full" />
+              <LanguageSwitcher className="h-11 w-full" />
             </div>
             <div className="px-4 pb-4 pt-1">
               <NavLinks onNavigate={() => setOpen(false)} />
             </div>
             <div className="flex flex-col gap-4 border-t border-border p-4">
               <UserInfo />
-              <Button onClick={() => { setOpen(false); logout() }}>
+              <Button className="h-11" onClick={() => { setOpen(false); logout() }}>
                 <LogOut className="h-4 w-4" />
                 {t("dashboard.signOut")}
               </Button>

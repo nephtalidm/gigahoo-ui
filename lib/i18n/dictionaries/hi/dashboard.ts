@@ -20,7 +20,7 @@ const dashboard = {
 
   // Overview page
   overviewTitle: "अवलोकन",
-  overviewWelcome: "वापस स्वागत है।",
+  overviewWelcome: "वापस स्वागत है!",
   loadFailed: "डैशबोर्ड लोड करने में विफल।",
   tryAgain: "पुनः प्रयास करें",
   currentPlan: "वर्तमान प्लान",

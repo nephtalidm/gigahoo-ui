@@ -20,7 +20,7 @@ const dashboard = {
 
   // Overview page
   overviewTitle: "Pangkalahatang-tanaw",
-  overviewWelcome: "Maligayang pagbabalik.",
+  overviewWelcome: "Maligayang pagbabalik!",
   loadFailed: "Nabigong i-load ang dashboard.",
   tryAgain: "Subukan muli",
   currentPlan: "Kasalukuyang Plano",

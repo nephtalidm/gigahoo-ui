@@ -14,7 +14,7 @@ const dashboard = {
 
   // Overview page
   overviewTitle: "概览",
-  overviewWelcome: "欢迎回来。",
+  overviewWelcome: "欢迎回来！",
   loadFailed: "仪表盘加载失败。",
   tryAgain: "重试",
   currentPlan: "当前套餐",

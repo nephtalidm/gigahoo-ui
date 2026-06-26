@@ -1,6 +1,5 @@
 "use client"
 
-import { Globe } from "lucide-react"
 import {
   Select,
   SelectContent,
@@ -11,6 +10,22 @@ import {
 import { useTranslation } from "@/contexts/language-context"
 import { locales, isLocale, LOCALE_META } from "@/lib/i18n/config"
 import { cn } from "@/lib/utils"
+
+// The single, most-common flag for a language (e.g. UK for English, Spain for
+// Spanish, Punjab for Punjabi). Country selection lives in its own dropdown.
+function Flag({ code }: { code: string }) {
+  return (
+    // Local asset (e.g. "/flags/punjab.svg") or a flagcdn country code.
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={code.startsWith("/") ? code : `https://flagcdn.com/${code}.svg`}
+      alt=""
+      width={18}
+      height={13}
+      className="h-[13px] w-[18px] shrink-0 rounded-[2px] object-cover shadow-sm ring-1 ring-black/5"
+    />
+  )
+}
 
 export function LanguageSwitcher({ className }: { className?: string }) {
   const { locale, setLocale } = useTranslation()
@@ -24,7 +39,7 @@ export function LanguageSwitcher({ className }: { className?: string }) {
       >
         <SelectValue>
           <span className="flex items-center gap-2">
-            <Globe className="h-4 w-4 shrink-0" />
+            <Flag code={current.flags[0]} />
             <span>{current.native}</span>
           </span>
         </SelectValue>
@@ -35,6 +50,7 @@ export function LanguageSwitcher({ className }: { className?: string }) {
           return (
             <SelectItem key={l} value={l}>
               <span className="flex items-center gap-2">
+                <Flag code={meta.flags[0]} />
                 <span>{meta.native}</span>
                 <span className="text-xs text-muted-foreground">{meta.english}</span>
               </span>

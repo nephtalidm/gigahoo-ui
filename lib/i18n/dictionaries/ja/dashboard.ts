@@ -14,7 +14,7 @@ const dashboard = {
 
   // Overview page
   overviewTitle: "概要",
-  overviewWelcome: "おかえりなさい。",
+  overviewWelcome: "おかえりなさい！",
   loadFailed: "ダッシュボードの読み込みに失敗しました。",
   tryAgain: "再試行",
   currentPlan: "現在のプラン",

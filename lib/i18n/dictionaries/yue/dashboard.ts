@@ -14,7 +14,7 @@ const dashboard = {
 
   // Overview page
   overviewTitle: "概覽",
-  overviewWelcome: "歡迎返嚟。",
+  overviewWelcome: "歡迎返嚟！",
   loadFailed: "載入儀表板失敗。",
   tryAgain: "再試一次",
   currentPlan: "目前方案",

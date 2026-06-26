@@ -20,7 +20,7 @@ const dashboard = {
 
   // Overview page
   overviewTitle: "Aperçu",
-  overviewWelcome: "Bon retour.",
+  overviewWelcome: "Bon retour !",
   loadFailed: "Échec du chargement du tableau de bord.",
   tryAgain: "Réessayer",
   currentPlan: "Forfait actuel",

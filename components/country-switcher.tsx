@@ -13,8 +13,23 @@ import { countries } from "@/lib/data"
 import { COUNTRY_COOKIE, LOCALE_COOKIE, localeForCountry } from "@/lib/i18n/config"
 import { cn } from "@/lib/utils"
 
-// Lookup a country's name + emoji flag from its ISO-2 code.
+// Lookup a country's name from its ISO-2 code.
 const COUNTRY_BY_CODE = new Map(countries.map((c) => [c.code, c]))
+
+// Image-based flag (flagcdn) — renders consistently across OSes, unlike emoji
+// flags which show as letters (e.g. "CA") on Windows.
+function Flag({ code }: { code: string }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={`https://flagcdn.com/${code.toLowerCase()}.svg`}
+      alt=""
+      width={18}
+      height={13}
+      className="h-[13px] w-[18px] shrink-0 rounded-[2px] object-cover shadow-sm ring-1 ring-black/5"
+    />
+  )
+}
 
 function readCountryCookie(): string | null {
   const match = document.cookie.match(/(?:^|;\s*)NEXT_COUNTRY=([^;]+)/)
@@ -58,7 +73,7 @@ export function CountrySwitcher({ className }: { className?: string }) {
         <SelectValue>
           {selected ? (
             <span className="flex items-center gap-2">
-              <span>{selected.flag}</span>
+              <Flag code={value} />
               <span>{selected.name}</span>
             </span>
           ) : null}
@@ -70,7 +85,7 @@ export function CountrySwitcher({ className }: { className?: string }) {
           return (
             <SelectItem key={code} value={code}>
               <span className="flex items-center gap-2">
-                <span>{country.flag}</span>
+                <Flag code={code} />
                 <span>{country.name}</span>
               </span>
             </SelectItem>

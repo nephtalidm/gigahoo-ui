@@ -20,7 +20,7 @@ const dashboard = {
 
   // Overview page
   overviewTitle: "نظرة عامة",
-  overviewWelcome: "مرحبًا بعودتك.",
+  overviewWelcome: "مرحبًا بعودتك!",
   loadFailed: "فشل تحميل لوحة التحكم.",
   tryAgain: "حاول مرة أخرى",
   currentPlan: "الخطة الحالية",

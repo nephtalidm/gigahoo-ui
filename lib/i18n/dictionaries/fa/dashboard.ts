@@ -20,7 +20,7 @@ const dashboard = {
 
   // Overview page
   overviewTitle: "نمای کلی",
-  overviewWelcome: "خوش آمدید.",
+  overviewWelcome: "خوش آمدید!",
   loadFailed: "بارگذاری داشبورد ناموفق بود.",
   tryAgain: "تلاش دوباره",
   currentPlan: "طرح فعلی",
