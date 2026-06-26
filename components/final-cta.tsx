@@ -8,7 +8,7 @@ export function FinalCta() {
 
   return (
     <section id="contact" className="border-b border-border bg-primary">
-      <div className="mx-auto max-w-4xl px-4 py-16 text-center sm:px-6 sm:py-24">
+      <div className="mx-auto max-w-4xl px-4 pt-8 pb-16 text-center sm:px-6 sm:pt-12 sm:pb-24">
         <h2 className="text-pretty text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl">
           {t("home.ctaTitle")}
         </h2>
