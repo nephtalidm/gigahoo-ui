@@ -377,18 +377,23 @@ export function SettingsView({
             )}
             {phoneChanged && !phoneVerifyOpen && (
               <div className="flex flex-col gap-1.5">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className="self-start border-indigo-400 text-indigo-600 shadow-[0_0_16px_2px] shadow-indigo-500/50 ring-1 ring-indigo-400 transition-shadow hover:text-indigo-700 hover:shadow-indigo-500/70"
-                  id="verify-phone-btn"
-                  onClick={handleRequestPhoneChange}
-                  disabled={phoneVerifyBusy}
-                >
-                  {phoneVerifyBusy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {t("settings.verifySavePhone")}
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="border-indigo-400 text-indigo-600 shadow-[0_0_16px_2px] shadow-indigo-500/50 ring-1 ring-indigo-400 transition-shadow hover:text-indigo-700 hover:shadow-indigo-500/70"
+                    id="verify-phone-btn"
+                    onClick={handleRequestPhoneChange}
+                    disabled={phoneVerifyBusy}
+                  >
+                    {phoneVerifyBusy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {t("settings.verifySavePhone")}
+                  </Button>
+                  <Button type="button" variant="ghost" size="sm" onClick={handleCancelPhoneChange} disabled={phoneVerifyBusy}>
+                    {t("settings.cancel")}
+                  </Button>
+                </div>
                 {phoneVerifyError && <span className="text-sm text-destructive">{phoneVerifyError}</span>}
               </div>
             )}
@@ -423,18 +428,23 @@ export function SettingsView({
             )}
             {emailChanged && !emailVerifyOpen && (
               <div className="flex flex-col gap-1.5">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className="self-start border-indigo-400 text-indigo-600 shadow-[0_0_16px_2px] shadow-indigo-500/50 ring-1 ring-indigo-400 transition-shadow hover:text-indigo-700 hover:shadow-indigo-500/70"
-                  id="verify-email-btn"
-                  onClick={handleRequestEmailChange}
-                  disabled={emailVerifyBusy}
-                >
-                  {emailVerifyBusy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {t("settings.verifySaveEmail")}
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="border-indigo-400 text-indigo-600 shadow-[0_0_16px_2px] shadow-indigo-500/50 ring-1 ring-indigo-400 transition-shadow hover:text-indigo-700 hover:shadow-indigo-500/70"
+                    id="verify-email-btn"
+                    onClick={handleRequestEmailChange}
+                    disabled={emailVerifyBusy}
+                  >
+                    {emailVerifyBusy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {t("settings.verifySaveEmail")}
+                  </Button>
+                  <Button type="button" variant="ghost" size="sm" onClick={handleCancelEmailChange} disabled={emailVerifyBusy}>
+                    {t("settings.cancel")}
+                  </Button>
+                </div>
                 {emailVerifyError && <span className="text-sm text-destructive">{emailVerifyError}</span>}
               </div>
             )}
