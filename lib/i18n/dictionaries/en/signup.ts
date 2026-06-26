@@ -38,6 +38,7 @@ const signup = {
   errBusinessNameLong: "Business name is too long",
   errPhoneInvalid: "Enter a valid phone number (at least 7 digits)",
   errPhoneLong: "Phone number is too long",
+  errAreaCodeMismatch: "This phone number's area code doesn't match the selected country.",
   errPasswordShort: "Password must be at least 8 characters",
   errAddressLong: "This value is too long",
   errCategoryInvalid: "Please select a valid category",
@@ -56,6 +57,9 @@ const signup = {
   errRegionRequired: "Enter your state / province",
   errPostalCodeRequired: "Enter your postal / ZIP code",
   errTermsRequired: "Please accept the Terms of Service and Privacy Policy",
+  comingSoonTitle: "Coming soon to your region",
+  comingSoonBody: "Sign-ups aren't available in your country yet. Log in if you already have an account.",
+  logIn: "Log in",
   errorTitle: "Something went wrong",
   tryAgain: "Try again",
 }

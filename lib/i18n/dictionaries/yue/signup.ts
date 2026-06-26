@@ -22,6 +22,7 @@ const signup = {
   errBusinessNameLong: "商號名稱太長",
   errPhoneInvalid: "請輸入有效嘅電話號碼（最少 7 個數字）",
   errPhoneLong: "電話號碼太長",
+  errAreaCodeMismatch: "呢個電話號碼嘅區號同所揀嘅國家／地區唔啱。",
   errPasswordShort: "密碼最少要 8 個字元",
   errCategoryInvalid: "請揀一個有效嘅類別",
   errEmailTaken: "呢個電郵已經註冊咗。請改為登入。",
@@ -56,6 +57,9 @@ const signup = {
   errRegionRequired: "請填寫省/州",
   errPostalCodeRequired: "請填寫郵政編碼",
   errTermsRequired: "請接受服務條款同私隱政策",
+  comingSoonTitle: "即將喺你所在嘅地區推出",
+  comingSoonBody: "你所在嘅國家／地區暫時未可以註冊。如果你已經有帳戶，請登入。",
+  logIn: "登入",
   errorTitle: "出咗啲問題",
   tryAgain: "再試一次",
 }

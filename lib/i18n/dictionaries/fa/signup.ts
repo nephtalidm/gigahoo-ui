@@ -38,6 +38,7 @@ const signup = {
   errBusinessNameLong: "نام کسب‌وکار بیش از حد طولانی است",
   errPhoneInvalid: "یک شماره تلفن معتبر وارد کنید (حداقل ۷ رقم)",
   errPhoneLong: "شماره تلفن بیش از حد طولانی است",
+  errAreaCodeMismatch: "کد منطقه‌ی این شماره تلفن با کشور انتخاب‌شده مطابقت ندارد.",
   errPasswordShort: "رمز عبور باید حداقل ۸ کاراکتر باشد",
   errAddressLong: "این مقدار بیش از حد طولانی است",
   errCategoryInvalid: "لطفاً یک دسته‌بندی معتبر انتخاب کنید",
@@ -56,6 +57,9 @@ const signup = {
   errRegionRequired: "استان / ایالت خود را وارد کنید",
   errPostalCodeRequired: "کد پستی خود را وارد کنید",
   errTermsRequired: "لطفاً شرایط خدمات و سیاست حفظ حریم خصوصی را بپذیرید",
+  comingSoonTitle: "به‌زودی در منطقه شما",
+  comingSoonBody: "ثبت‌نام هنوز در کشور شما در دسترس نیست. اگر از قبل حساب دارید وارد شوید.",
+  logIn: "ورود",
   errorTitle: "مشکلی پیش آمد",
   tryAgain: "دوباره تلاش کنید",
 }

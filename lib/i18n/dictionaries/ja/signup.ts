@@ -22,6 +22,7 @@ const signup = {
   errBusinessNameLong: "ビジネス名が長すぎます",
   errPhoneInvalid: "有効な電話番号を入力してください（7桁以上）",
   errPhoneLong: "電話番号が長すぎます",
+  errAreaCodeMismatch: "この電話番号の市外局番が選択した国と一致しません。",
   errPasswordShort: "パスワードは8文字以上で入力してください",
   errCategoryInvalid: "有効なカテゴリを選択してください",
   errEmailTaken: "このメールアドレスはすでに登録されています。ログインしてください。",
@@ -56,6 +57,9 @@ const signup = {
   errRegionRequired: "都道府県・州を入力してください",
   errPostalCodeRequired: "郵便番号を入力してください",
   errTermsRequired: "利用規約とプライバシーポリシーに同意してください",
+  comingSoonTitle: "お住まいの地域で近日提供予定",
+  comingSoonBody: "お住まいの国ではまだ新規登録をご利用いただけません。すでにアカウントをお持ちの場合はログインしてください。",
+  logIn: "ログイン",
   errorTitle: "問題が発生しました",
   tryAgain: "もう一度お試しください",
 }

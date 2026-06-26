@@ -22,9 +22,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { PhoneInput } from "@/components/phone-input"
-import { businessCategories, businessCategoryKeys, countries, type Plan } from "@/lib/data"
+import { businessCategories, businessCategoryKeys, countries, areaCodeMatchesCountry, type Plan } from "@/lib/data"
 import { getAccount, getCategories, api, createCheckout, getCurrencyForVisitor } from "@/lib/api"
-import { PLAN_PRICES } from "@/lib/settings"
+import { PLAN_PRICES, COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
 import { useAuth } from "@/contexts/auth-context"
 import { useTranslation } from "@/contexts/language-context"
 import { useDefaultPhoneCountry } from "@/hooks/use-default-phone-country"
@@ -97,6 +97,14 @@ export function SignupFlow() {
       ? (document.cookie.match(/(?:^|;\s*)NEXT_CURRENCY=([^;]+)/)?.[1] ?? null)
       : null,
   )
+  // The visitor's geo country (NEXT_COUNTRY cookie), read synchronously on first
+  // render. Used to block the signup form in coming-soon markets (e.g. Mexico).
+  const [country] = useState<string>(() =>
+    typeof document !== "undefined"
+      ? (document.cookie.match(/(?:^|;\s*)NEXT_COUNTRY=([^;]+)/)?.[1] ?? "").toUpperCase()
+      : "",
+  )
+  const comingSoon = COMING_SOON_COUNTRY_CODES.includes(country)
   const [category, setCategory] = useState("")
   const [businessName, setBusinessName] = useState("")
   const [businessPhone, setBusinessPhone] = useState("")
@@ -281,6 +289,9 @@ export function SignupFlow() {
     if (phoneDigits.length < 1) e.businessPhone = t("signup.errPhoneRequired")
     else if (phoneDigits.length < 7) e.businessPhone = t("signup.errPhoneInvalid")
     else if (phoneDigits.length > 15) e.businessPhone = t("signup.errPhoneLong")
+    // For +1 (US/CA) numbers the area code must match the selected phone country
+    // (e.g. a US area code can't sign up as Canada, and vice versa).
+    else if (!areaCodeMatchesCountry(phoneDigits, phoneCountryCode)) e.businessPhone = t("signup.errAreaCodeMismatch")
 
     if (!addressCountry) e.country = t("signup.errCountryRequired")
 
@@ -397,6 +408,21 @@ export function SignupFlow() {
     } finally {
       setLoading(false)
     }
+  }
+
+  // Block the signup form entirely in coming-soon markets (e.g. Mexico). This is
+  // placed after every hook (and after the early checkingAccount return) so it
+  // doesn't change hook order. Logins are unaffected — this only gates /signup.
+  if (comingSoon) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="mx-auto flex w-full max-w-md flex-col items-center gap-4 rounded-2xl border border-border bg-card p-8 text-center">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">{t("signup.comingSoonTitle")}</h1>
+          <p className="text-sm text-muted-foreground">{t("signup.comingSoonBody")}</p>
+          <Button size="lg" render={<Link href="/login">{t("signup.logIn")}</Link>} />
+        </div>
+      </div>
+    )
   }
 
   return (

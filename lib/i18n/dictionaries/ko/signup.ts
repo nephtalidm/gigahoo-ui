@@ -22,6 +22,7 @@ const signup = {
   errBusinessNameLong: "비즈니스 이름이 너무 깁니다",
   errPhoneInvalid: "유효한 전화번호를 입력하세요 (최소 7자리)",
   errPhoneLong: "전화번호가 너무 깁니다",
+  errAreaCodeMismatch: "이 전화번호의 지역 번호가 선택한 국가와 일치하지 않습니다.",
   errPasswordShort: "비밀번호는 최소 8자 이상이어야 합니다",
   errCategoryInvalid: "유효한 카테고리를 선택하세요",
   errEmailTaken: "이미 등록된 이메일입니다. 대신 로그인해 주세요.",
@@ -56,6 +57,9 @@ const signup = {
   errRegionRequired: "주/도를 입력하세요",
   errPostalCodeRequired: "우편번호를 입력하세요",
   errTermsRequired: "서비스 약관 및 개인정보 처리방침에 동의해 주세요",
+  comingSoonTitle: "곧 해당 지역에서 제공됩니다",
+  comingSoonBody: "아직 해당 국가에서는 가입할 수 없습니다. 이미 계정이 있으시면 로그인하세요.",
+  logIn: "로그인",
   errorTitle: "문제가 발생했습니다",
   tryAgain: "다시 시도",
 }

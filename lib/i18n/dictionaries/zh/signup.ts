@@ -22,6 +22,7 @@ const signup = {
   errBusinessNameLong: "企业名称过长",
   errPhoneInvalid: "请输入有效的电话号码（至少 7 位）",
   errPhoneLong: "电话号码过长",
+  errAreaCodeMismatch: "此电话号码的区号与所选国家/地区不匹配。",
   errPasswordShort: "密码至少需要 8 个字符",
   errCategoryInvalid: "请选择有效的类别",
   errEmailTaken: "该邮箱已注册，请直接登录。",
@@ -56,6 +57,9 @@ const signup = {
   errRegionRequired: "请填写省/州",
   errPostalCodeRequired: "请填写邮政编码",
   errTermsRequired: "请接受服务条款和隐私政策",
+  comingSoonTitle: "即将在您所在的地区推出",
+  comingSoonBody: "您所在的国家/地区暂时无法注册。如果您已有账户，请登录。",
+  logIn: "登录",
   errorTitle: "出了点问题",
   tryAgain: "重试",
 }

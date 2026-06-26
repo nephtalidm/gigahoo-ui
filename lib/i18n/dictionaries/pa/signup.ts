@@ -38,6 +38,7 @@ const signup = {
   errBusinessNameLong: "ਕਾਰੋਬਾਰ ਦਾ ਨਾਮ ਬਹੁਤ ਲੰਮਾ ਹੈ",
   errPhoneInvalid: "ਇੱਕ ਜਾਇਜ਼ ਫ਼ੋਨ ਨੰਬਰ ਦਾਖਲ ਕਰੋ (ਘੱਟੋ-ਘੱਟ 7 ਅੰਕ)",
   errPhoneLong: "ਫ਼ੋਨ ਨੰਬਰ ਬਹੁਤ ਲੰਮਾ ਹੈ",
+  errAreaCodeMismatch: "ਇਸ ਫ਼ੋਨ ਨੰਬਰ ਦਾ ਏਰੀਆ ਕੋਡ ਚੁਣੇ ਗਏ ਦੇਸ਼ ਨਾਲ ਮੇਲ ਨਹੀਂ ਖਾਂਦਾ।",
   errPasswordShort: "ਪਾਸਵਰਡ ਘੱਟੋ-ਘੱਟ 8 ਅੱਖਰਾਂ ਦਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ",
   errAddressLong: "ਇਹ ਮੁੱਲ ਬਹੁਤ ਲੰਮਾ ਹੈ",
   errCategoryInvalid: "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਜਾਇਜ਼ ਸ਼੍ਰੇਣੀ ਚੁਣੋ",
@@ -56,6 +57,9 @@ const signup = {
   errRegionRequired: "ਆਪਣਾ ਰਾਜ / ਪ੍ਰਾਂਤ ਦਾਖਲ ਕਰੋ",
   errPostalCodeRequired: "ਆਪਣਾ ਪੋਸਟਲ / ZIP ਕੋਡ ਦਾਖਲ ਕਰੋ",
   errTermsRequired: "ਕਿਰਪਾ ਕਰਕੇ ਸੇਵਾ ਦੀਆਂ ਸ਼ਰਤਾਂ ਅਤੇ ਪਰਾਈਵੇਸੀ ਨੀਤੀ ਨੂੰ ਸਵੀਕਾਰ ਕਰੋ",
+  comingSoonTitle: "ਜਲਦੀ ਹੀ ਤੁਹਾਡੇ ਖੇਤਰ ਵਿੱਚ",
+  comingSoonBody: "ਤੁਹਾਡੇ ਦੇਸ਼ ਵਿੱਚ ਅਜੇ ਸਾਈਨ-ਅੱਪ ਉਪਲਬਧ ਨਹੀਂ ਹੈ। ਜੇ ਤੁਹਾਡੇ ਕੋਲ ਪਹਿਲਾਂ ਹੀ ਖਾਤਾ ਹੈ ਤਾਂ ਸਾਈਨ ਇਨ ਕਰੋ।",
+  logIn: "ਸਾਈਨ ਇਨ ਕਰੋ",
   errorTitle: "ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ",
   tryAgain: "ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ",
 }

@@ -38,6 +38,7 @@ const signup = {
   errBusinessNameLong: "El nombre del negocio es demasiado largo",
   errPhoneInvalid: "Ingresa un teléfono válido (al menos 7 dígitos)",
   errPhoneLong: "El número de teléfono es demasiado largo",
+  errAreaCodeMismatch: "El código de área de este número de teléfono no coincide con el país seleccionado.",
   errPasswordShort: "La contraseña debe tener al menos 8 caracteres",
   errCategoryInvalid: "Selecciona una categoría válida",
   errEmailTaken: "Este correo ya está registrado. Inicia sesión.",
@@ -56,6 +57,9 @@ const signup = {
   errRegionRequired: "Ingresa tu estado / provincia",
   errPostalCodeRequired: "Ingresa tu código postal",
   errTermsRequired: "Acepta los Términos de Servicio y la Política de Privacidad",
+  comingSoonTitle: "Próximamente en tu región",
+  comingSoonBody: "Los registros aún no están disponibles en tu país. Inicia sesión si ya tienes una cuenta.",
+  logIn: "Iniciar sesión",
   errorTitle: "Algo salió mal",
   tryAgain: "Inténtalo de nuevo",
 }

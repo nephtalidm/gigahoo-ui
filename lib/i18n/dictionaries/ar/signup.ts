@@ -38,6 +38,7 @@ const signup = {
   errBusinessNameLong: "اسم النشاط التجاري طويل جدًا",
   errPhoneInvalid: "أدخل رقم هاتف صالح (7 أرقام على الأقل)",
   errPhoneLong: "رقم الهاتف طويل جدًا",
+  errAreaCodeMismatch: "رمز المنطقة لرقم الهاتف هذا لا يتطابق مع الدولة المحددة.",
   errPasswordShort: "يجب أن تتكوّن كلمة المرور من 8 أحرف على الأقل",
   errAddressLong: "هذه القيمة طويلة جدًا",
   errCategoryInvalid: "يرجى اختيار فئة صالحة",
@@ -56,6 +57,9 @@ const signup = {
   errRegionRequired: "أدخل الولاية / المقاطعة",
   errPostalCodeRequired: "أدخل الرمز البريدي",
   errTermsRequired: "يرجى قبول شروط الخدمة وسياسة الخصوصية",
+  comingSoonTitle: "قريبًا في منطقتك",
+  comingSoonBody: "التسجيل غير متاح في بلدك بعد. سجّل الدخول إذا كان لديك حساب بالفعل.",
+  logIn: "تسجيل الدخول",
   errorTitle: "حدث خطأ ما",
   tryAgain: "حاول مرة أخرى",
 }

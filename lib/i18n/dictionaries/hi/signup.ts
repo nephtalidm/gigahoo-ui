@@ -38,6 +38,7 @@ const signup = {
   errBusinessNameLong: "व्यवसाय का नाम बहुत लंबा है",
   errPhoneInvalid: "एक मान्य फ़ोन नंबर दर्ज करें (कम से कम 7 अंक)",
   errPhoneLong: "फ़ोन नंबर बहुत लंबा है",
+  errAreaCodeMismatch: "इस फ़ोन नंबर का एरिया कोड चयनित देश से मेल नहीं खाता।",
   errPasswordShort: "पासवर्ड कम से कम 8 अक्षरों का होना चाहिए",
   errAddressLong: "यह मान बहुत लंबा है",
   errCategoryInvalid: "कृपया एक मान्य श्रेणी चुनें",
@@ -56,6 +57,9 @@ const signup = {
   errRegionRequired: "अपना राज्य / प्रांत दर्ज करें",
   errPostalCodeRequired: "अपना पोस्टल / ZIP कोड दर्ज करें",
   errTermsRequired: "कृपया सेवा की शर्तें और गोपनीयता नीति स्वीकार करें",
+  comingSoonTitle: "जल्द ही आपके क्षेत्र में",
+  comingSoonBody: "आपके देश में अभी साइन-अप उपलब्ध नहीं है। यदि आपके पास पहले से खाता है तो साइन इन करें।",
+  logIn: "साइन इन करें",
   errorTitle: "कुछ गलत हो गया",
   tryAgain: "फिर से प्रयास करें",
 }

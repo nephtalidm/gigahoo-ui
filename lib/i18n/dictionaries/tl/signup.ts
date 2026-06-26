@@ -38,6 +38,7 @@ const signup = {
   errBusinessNameLong: "Masyadong mahaba ang pangalan ng negosyo",
   errPhoneInvalid: "Maglagay ng wastong numero ng telepono (hindi bababa sa 7 digit)",
   errPhoneLong: "Masyadong mahaba ang numero ng telepono",
+  errAreaCodeMismatch: "Ang area code ng numero ng teleponong ito ay hindi tumutugma sa napiling bansa.",
   errPasswordShort: "Ang password ay dapat na hindi bababa sa 8 karakter",
   errAddressLong: "Masyadong mahaba ang halagang ito",
   errCategoryInvalid: "Pumili ng wastong kategorya",
@@ -56,6 +57,9 @@ const signup = {
   errRegionRequired: "Ilagay ang iyong estado / probinsya",
   errPostalCodeRequired: "Ilagay ang iyong postal / ZIP code",
   errTermsRequired: "Pakitanggap ang Mga Tuntunin ng Serbisyo at Patakaran sa Privacy",
+  comingSoonTitle: "Malapit nang dumating sa iyong rehiyon",
+  comingSoonBody: "Hindi pa available ang sign-up sa iyong bansa. Mag-log in kung mayroon ka nang account.",
+  logIn: "Mag-log in",
   errorTitle: "May nangyaring mali",
   tryAgain: "Subukan muli",
 }
