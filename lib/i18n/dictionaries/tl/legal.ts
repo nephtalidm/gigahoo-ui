@@ -23,10 +23,10 @@ const legal = {
     "Pinapanatili namin ang iyong impormasyon hangga't aktibo ang iyong account o ayon sa kinakailangan para ibigay ang Mga Serbisyo. Maaari kang humiling ng pagtanggal ng iyong data anumang oras, alinsunod sa mga legal at operasyonal na kinakailangan.",
   privacyRightsHeading: "Ang Iyong mga Karapatan",
   privacyRightsBody:
-    "Depende sa iyong lokasyon, maaaring may karapatan kang i-access, itama, o tanggalin ang iyong personal na impormasyon, at tumutol o limitahan ang ilang pagproseso. Para gamitin ang mga karapatang ito, makipag-ugnayan sa amin sa privacy@gigahoo.com.",
+    "Depende sa iyong lokasyon, maaaring may karapatan kang i-access, itama, o tanggalin ang iyong personal na impormasyon, at tumutol o limitahan ang ilang pagproseso. Para gamitin ang mga karapatang ito, makipag-ugnayan sa amin sa legal@gigahoo.ai.",
   privacyContactHeading: "Makipag-ugnayan sa Amin",
   privacyContactBody:
-    "Kung may mga tanong ka tungkol sa Patakaran sa Privacy na ito, makipag-ugnayan sa amin sa privacy@gigahoo.com.",
+    "Kung may mga tanong ka tungkol sa Patakaran sa Privacy na ito, makipag-ugnayan sa amin sa legal@gigahoo.ai.",
 
   // Terms of Service
   termsTitle: "Mga Tuntunin ng Serbisyo",
@@ -54,7 +54,7 @@ const legal = {
   termsLiabilityBody:
     'Sa pinakamataas na lawak na pinapahintulutan ng batas, hindi mananagot ang Gigahoo sa anumang hindi tuwiran, hindi sinasadya, o magkakasunod na pinsalang nagmumula sa iyong paggamit ng Mga Serbisyo. Ang Mga Serbisyo ay ibinibigay "kung ano ito" nang walang anumang uri ng garantiya.',
   termsContactHeading: "Makipag-ugnayan sa Amin",
-  termsContactBody: "Kung may mga tanong ka tungkol sa Mga Tuntuning ito, makipag-ugnayan sa amin sa legal@gigahoo.com.",
+  termsContactBody: "Kung may mga tanong ka tungkol sa Mga Tuntuning ito, makipag-ugnayan sa amin sa legal@gigahoo.ai.",
 }
 
 export default legal

@@ -23,10 +23,10 @@ const legal = {
     "당사는 귀하의 계정이 활성 상태인 동안 또는 서비스 제공에 필요한 기간 동안 귀하의 정보를 보관합니다. 귀하는 법적 및 운영상의 요건을 조건으로 언제든지 데이터 삭제를 요청할 수 있습니다.",
   privacyRightsHeading: "귀하의 권리",
   privacyRightsBody:
-    "귀하의 거주 지역에 따라 귀하는 개인정보에 접근, 정정 또는 삭제하고 특정 처리에 대해 이의를 제기하거나 제한할 권리를 가질 수 있습니다. 이러한 권리를 행사하려면 privacy@gigahoo.com으로 연락해 주세요.",
+    "귀하의 거주 지역에 따라 귀하는 개인정보에 접근, 정정 또는 삭제하고 특정 처리에 대해 이의를 제기하거나 제한할 권리를 가질 수 있습니다. 이러한 권리를 행사하려면 legal@gigahoo.ai으로 연락해 주세요.",
   privacyContactHeading: "문의하기",
   privacyContactBody:
-    "본 개인정보 처리방침에 대해 궁금한 점이 있으시면 privacy@gigahoo.com으로 연락해 주세요.",
+    "본 개인정보 처리방침에 대해 궁금한 점이 있으시면 legal@gigahoo.ai으로 연락해 주세요.",
 
   // Terms of Service
   termsTitle: "이용약관",
@@ -54,7 +54,7 @@ const legal = {
   termsLiabilityBody:
     '법률이 허용하는 최대 범위 내에서, Gigahoo는 귀하의 서비스 이용으로 인해 발생하는 어떠한 간접적, 부수적 또는 결과적 손해에 대해서도 책임을 지지 않습니다. 서비스는 어떠한 종류의 보증도 없이 "있는 그대로" 제공됩니다.',
   termsContactHeading: "문의하기",
-  termsContactBody: "본 약관에 대해 궁금한 점이 있으시면 legal@gigahoo.com으로 연락해 주세요.",
+  termsContactBody: "본 약관에 대해 궁금한 점이 있으시면 legal@gigahoo.ai으로 연락해 주세요.",
 }
 
 export default legal

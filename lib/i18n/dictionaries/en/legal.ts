@@ -23,10 +23,10 @@ const legal = {
     "We retain your information for as long as your account is active or as needed to provide the Services. You may request deletion of your data at any time, subject to legal and operational requirements.",
   privacyRightsHeading: "Your Rights",
   privacyRightsBody:
-    "Depending on your location, you may have the right to access, correct, or delete your personal information, and to object to or restrict certain processing. To exercise these rights, contact us at privacy@gigahoo.com.",
+    "Depending on your location, you may have the right to access, correct, or delete your personal information, and to object to or restrict certain processing. To exercise these rights, contact us at legal@gigahoo.ai.",
   privacyContactHeading: "Contact Us",
   privacyContactBody:
-    "If you have questions about this Privacy Policy, please reach out to us at privacy@gigahoo.com.",
+    "If you have questions about this Privacy Policy, please reach out to us at legal@gigahoo.ai.",
 
   // Terms of Service
   termsTitle: "Terms of Service",
@@ -54,7 +54,7 @@ const legal = {
   termsLiabilityBody:
     'To the maximum extent permitted by law, Gigahoo is not liable for any indirect, incidental, or consequential damages arising from your use of the Services. The Services are provided "as is" without warranties of any kind.',
   termsContactHeading: "Contact Us",
-  termsContactBody: "If you have questions about these Terms, contact us at legal@gigahoo.com.",
+  termsContactBody: "If you have questions about these Terms, contact us at legal@gigahoo.ai.",
 }
 
 export default legal

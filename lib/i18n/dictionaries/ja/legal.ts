@@ -23,10 +23,10 @@ const legal = {
     "当社は、お客様のアカウントが有効である限り、または本サービスの提供に必要な期間、お客様の情報を保持します。お客様は、法的および運用上の要件に従って、いつでもご自身のデータの削除を請求できます。",
   privacyRightsHeading: "お客様の権利",
   privacyRightsBody:
-    "お住まいの地域によっては、お客様はご自身の個人情報へのアクセス、訂正、または削除を行う権利、および特定の処理に異議を申し立てる権利または制限する権利を有する場合があります。これらの権利を行使するには、privacy@gigahoo.com までご連絡ください。",
+    "お住まいの地域によっては、お客様はご自身の個人情報へのアクセス、訂正、または削除を行う権利、および特定の処理に異議を申し立てる権利または制限する権利を有する場合があります。これらの権利を行使するには、legal@gigahoo.ai までご連絡ください。",
   privacyContactHeading: "お問い合わせ",
   privacyContactBody:
-    "このプライバシーポリシーについてご質問がある場合は、privacy@gigahoo.com までご連絡ください。",
+    "このプライバシーポリシーについてご質問がある場合は、legal@gigahoo.ai までご連絡ください。",
 
   // Terms of Service
   termsTitle: "利用規約",
@@ -54,7 +54,7 @@ const legal = {
   termsLiabilityBody:
     '法律で認められる最大限の範囲において、Gigahooは、お客様の本サービスの利用に起因する間接的、付随的、または結果的な損害について一切責任を負いません。本サービスは、いかなる種類の保証もなく「現状有姿」で提供されます。',
   termsContactHeading: "お問い合わせ",
-  termsContactBody: "本規約についてご質問がある場合は、legal@gigahoo.com までご連絡ください。",
+  termsContactBody: "本規約についてご質問がある場合は、legal@gigahoo.ai までご連絡ください。",
 }
 
 export default legal

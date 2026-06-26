@@ -23,10 +23,10 @@ const legal = {
     "喺你嘅帳戶仍然啟用期間，或者喺提供本服務所需嘅期間內，我哋會保留你嘅資料。你可以隨時要求刪除你嘅資料，但須符合法律同營運上嘅要求。",
   privacyRightsHeading: "你嘅權利",
   privacyRightsBody:
-    "視乎你嘅所在地，你可能有權查閱、更正或刪除你嘅個人資料，以及反對或限制某啲處理。如要行使呢啲權利，請透過 privacy@gigahoo.com 聯絡我哋。",
+    "視乎你嘅所在地，你可能有權查閱、更正或刪除你嘅個人資料，以及反對或限制某啲處理。如要行使呢啲權利，請透過 legal@gigahoo.ai 聯絡我哋。",
   privacyContactHeading: "聯絡我哋",
   privacyContactBody:
-    "如你對本私隱政策有任何疑問，請透過 privacy@gigahoo.com 聯絡我哋。",
+    "如你對本私隱政策有任何疑問，請透過 legal@gigahoo.ai 聯絡我哋。",
 
   // Terms of Service
   termsTitle: "服務條款",
@@ -54,7 +54,7 @@ const legal = {
   termsLiabilityBody:
     '在法律允許嘅最大範圍內，Gigahoo 對因你使用本服務而引起嘅任何間接、附帶或衍生損害概不負責。本服務按「現狀」提供，不附帶任何形式嘅保證。',
   termsContactHeading: "聯絡我哋",
-  termsContactBody: "如你對本條款有任何疑問，請透過 legal@gigahoo.com 聯絡我哋。",
+  termsContactBody: "如你對本條款有任何疑問，請透過 legal@gigahoo.ai 聯絡我哋。",
 }
 
 export default legal
