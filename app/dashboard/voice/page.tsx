@@ -7,12 +7,21 @@ import { useTranslation } from "@/contexts/language-context"
 import { cn } from "@/lib/utils"
 import { Loader2, CheckCircle2, Play } from "lucide-react"
 
-const VOICES: { id: string; labelKey: string }[] = [
-  { id: "cherry", labelKey: "dashboard.voiceCherry" },
-  { id: "ethan", labelKey: "dashboard.voiceEthan" },
-  { id: "chelsie", labelKey: "dashboard.voiceChelsie" },
-  { id: "serena", labelKey: "dashboard.voiceSerena" },
+// Real qwen3.5-omni-plus-realtime English voices. `apiName` is the capitalized
+// name the realtime API expects and is what gets saved to the account; `id` is the
+// lowercased sample-audio filename (/voice-samples/<id>.mp3). Tina is first + the
+// default selection when the account hasn't chosen a voice.
+const VOICES: { id: string; apiName: string; label: string }[] = [
+  { id: "tina", apiName: "Tina", label: "Tina (warm, friendly female)" },
+  { id: "ethan", apiName: "Ethan", label: "Ethan (youthful male)" },
+  { id: "jennifer", apiName: "Jennifer", label: "Jennifer (American female)" },
+  { id: "ryan", apiName: "Ryan", label: "Ryan (energetic male)" },
+  { id: "aiden", apiName: "Aiden", label: "Aiden (friendly American male)" },
+  { id: "cindy", apiName: "Cindy", label: "Cindy (bright female)" },
+  { id: "raymond", apiName: "Raymond", label: "Raymond (clear male)" },
 ]
+
+const DEFAULT_VOICE = VOICES[0].apiName
 
 export default function VoiceAgentPage() {
   const { t } = useTranslation()
@@ -29,7 +38,8 @@ export default function VoiceAgentPage() {
         // Show the account's custom greeting if set; otherwise pre-fill with the
         // site-wide default so an un-customized account has an editable starting point.
         setGreetingMessage(account.greetingMessage ?? settings?.defaultGreeting ?? "")
-        setVoice(account.agentVoice ?? null)
+        // Preselect Tina when the account hasn't chosen a voice yet.
+        setVoice(account.agentVoice ?? DEFAULT_VOICE)
       })
       .catch(() => {})
       .finally(() => setLoading(false))
@@ -96,17 +106,17 @@ export default function VoiceAgentPage() {
         </div>
         <div className="flex flex-col gap-2">
           {VOICES.map((v) => {
-            const selected = voice === v.id
+            const selected = voice === v.apiName
             return (
               <div
                 key={v.id}
                 role="button"
                 tabIndex={0}
-                onClick={() => setVoice(v.id)}
+                onClick={() => setVoice(v.apiName)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault()
-                    setVoice(v.id)
+                    setVoice(v.apiName)
                   }
                 }}
                 className={cn(
@@ -125,7 +135,7 @@ export default function VoiceAgentPage() {
                   >
                     {selected && <span className="h-2 w-2 rounded-full bg-primary" />}
                   </span>
-                  <span className="truncate text-sm font-medium text-foreground">{t(v.labelKey)}</span>
+                  <span className="truncate text-sm font-medium text-foreground">{v.label}</span>
                 </div>
                 <button
                   type="button"
