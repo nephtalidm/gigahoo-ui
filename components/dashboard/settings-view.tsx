@@ -165,6 +165,16 @@ export function SettingsView({
   }
 
   async function handleSave() {
+    // A pending email/phone change must be verified (or cancelled) first — instead of
+    // saving, guide the user to the relevant verify button.
+    if (emailChanged || phoneChanged) {
+      const btn = phoneChanged
+        ? document.getElementById("verify-phone-btn")
+        : document.getElementById("verify-email-btn")
+      btn?.scrollIntoView({ behavior: "smooth", block: "center" })
+      btn?.focus()
+      return
+    }
     setSaving(true)
     setError(null)
     setSaved(false)
@@ -232,6 +242,10 @@ export function SettingsView({
   async function handleRequestEmailChange() {
     setEmailVerifyError(null)
     setEmailVerified(false)
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setEmailVerifyError(t("settings.invalidEmail"))
+      return
+    }
     setEmailVerifyBusy(true)
     try {
       await requestEmailChange(email.trim())
@@ -279,6 +293,12 @@ export function SettingsView({
   async function handleRequestPhoneChange() {
     setPhoneVerifyError(null)
     setPhoneVerified(false)
+    // US/CA numbers are 10 digits; reject letters or wrong length before sending a code.
+    const phoneDigits = businessPhone.replace(/\D/g, "")
+    if (/[a-zA-Z]/.test(businessPhone) || phoneDigits.length !== 10) {
+      setPhoneVerifyError(t("settings.invalidPhone"))
+      return
+    }
     setPhoneVerifyBusy(true)
     try {
       await requestPhoneChange(toE164(phoneCountryCode, businessPhone))
@@ -362,6 +382,7 @@ export function SettingsView({
                   variant="outline"
                   size="sm"
                   className="self-start border-indigo-400 text-indigo-600 shadow-[0_0_16px_2px] shadow-indigo-500/50 ring-1 ring-indigo-400 transition-shadow hover:text-indigo-700 hover:shadow-indigo-500/70"
+                  id="verify-phone-btn"
                   onClick={handleRequestPhoneChange}
                   disabled={phoneVerifyBusy}
                 >
@@ -407,6 +428,7 @@ export function SettingsView({
                   variant="outline"
                   size="sm"
                   className="self-start border-indigo-400 text-indigo-600 shadow-[0_0_16px_2px] shadow-indigo-500/50 ring-1 ring-indigo-400 transition-shadow hover:text-indigo-700 hover:shadow-indigo-500/70"
+                  id="verify-email-btn"
                   onClick={handleRequestEmailChange}
                   disabled={emailVerifyBusy}
                 >
@@ -667,7 +689,7 @@ export function SettingsView({
             <span className="text-sm text-amber-600">{t("settings.verifyBeforeSave")}</span>
           )}
           {error && <span className="text-sm text-destructive">{error}</span>}
-          <Button onClick={handleSave} disabled={saving || emailChanged || phoneChanged}>
+          <Button onClick={handleSave} disabled={saving}>
             {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {t("settings.saveChanges")}
           </Button>

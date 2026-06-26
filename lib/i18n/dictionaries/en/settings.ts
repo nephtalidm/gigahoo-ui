@@ -58,6 +58,8 @@ const settings = {
   emailVerifyTitle: "Confirm your new email",
   phoneVerifyTitle: "Confirm your new phone number",
   waitingForConfirmation: "Waiting for confirmation…",
+  invalidPhone: "Enter a valid 10-digit phone number",
+  invalidEmail: "Enter a valid email address (e.g. you@example.com)",
 
   // Password
   passwordMethod: "Password",

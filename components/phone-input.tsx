@@ -144,7 +144,7 @@ export function PhoneInput({
         type="tel"
         inputMode="tel"
         value={value}
-        onChange={(e) => onValueChange(e.target.value)}
+        onChange={(e) => onValueChange(e.target.value.replace(/[^\d\s\-()]/g, ""))}
         placeholder={placeholder}
         className={cn("flex-1", invalid && "border-destructive focus-visible:ring-destructive")}
         aria-invalid={invalid}
