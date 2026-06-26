@@ -65,13 +65,14 @@ export function SiteHeader() {
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger
             render={
-              <button
-                type="button"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-md text-foreground md:hidden"
+              <Button
+                variant="outline"
+                size="icon"
                 aria-label={t("nav.openMenu")}
+                className="h-11 w-11 md:hidden"
               >
-                <Menu className="h-6 w-6" />
-              </button>
+                <Menu className="h-7 w-7" />
+              </Button>
             }
           />
           <SheetContent side="right" className="w-72 p-0">

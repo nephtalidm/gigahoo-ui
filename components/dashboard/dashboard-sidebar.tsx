@@ -110,7 +110,7 @@ export function DashboardSidebar() {
           <SheetTrigger
             render={
               <Button variant="outline" size="icon" aria-label={t("dashboard.openMenu")} className="h-11 w-11">
-                <Menu className="h-6 w-6" />
+                <Menu className="h-7 w-7" />
               </Button>
             }
           />
