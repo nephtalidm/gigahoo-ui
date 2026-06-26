@@ -91,8 +91,8 @@ export default function ContactPage() {
               <ContactDetail
                 icon={<Mail className="h-5 w-5" />}
                 label={t("contact.emailLabel")}
-                value="support@gigahoo.com"
-                href="mailto:support@gigahoo.com"
+                value="contact@gigahoo.ai"
+                href="mailto:contact@gigahoo.ai"
               />
               <ContactDetail
                 icon={<Phone className="h-5 w-5" />}
