@@ -88,7 +88,7 @@ const home = {
 
   // FAQ
   faqEyebrow: "FAQ",
-  faqTitle: "Frequently Asked Questions",
+  faqTitle: "Frequently asked questions",
   faqQ1: "Can I keep my current phone number?",
   faqA1: "Yes. Simply forward your existing business phone number.",
   faqQ2: "Does the AI sound natural?",
@@ -99,7 +99,7 @@ const home = {
   faqA4: "Most businesses can be set up within a day.",
 
   // Final CTA
-  ctaTitle: "Stop Missing Customer Calls!",
+  ctaTitle: "Stop missing customer calls!",
   ctaSubtitle:
     "Start using an AI receptionist today and capture more leads without hiring additional staff.",
   ctaPrimary: "Start Free",
