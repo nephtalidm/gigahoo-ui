@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { submitContact } from "@/lib/api"
 import { useTranslation } from "@/contexts/language-context"
 import { cn } from "@/lib/utils"
-import { Mail, Phone, MapPin, CheckCircle2, Loader2 } from "lucide-react"
+import { Mail, Phone, CheckCircle2, Loader2 } from "lucide-react"
 import { z } from "zod"
 
 type ContactField = "name" | "email" | "subject" | "message"
@@ -97,13 +97,8 @@ export default function ContactPage() {
               <ContactDetail
                 icon={<Phone className="h-5 w-5" />}
                 label={t("contact.phoneLabel")}
-                value="+1 (888) 555-0142"
-                href="tel:+18885550142"
-              />
-              <ContactDetail
-                icon={<MapPin className="h-5 w-5" />}
-                label={t("contact.officeLabel")}
-                value={t("contact.officeValue")}
+                value="+1 778 392 3021"
+                href="tel:+17783923021"
               />
             </div>
 
