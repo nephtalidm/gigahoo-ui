@@ -14,6 +14,9 @@ const calls = {
 
   // Detail dialog
   detailsTitle: "会話の詳細",
+
+  // Empty state
+  empty: "通話履歴はまだありません。",
 }
 
 export default calls

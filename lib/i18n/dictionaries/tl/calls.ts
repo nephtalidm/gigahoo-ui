@@ -14,6 +14,9 @@ const calls = {
 
   // Detail dialog
   detailsTitle: "Mga Detalye ng Pag-uusap",
+
+  // Empty state
+  empty: "Wala ka pang anumang kasaysayan ng tawag.",
 }
 
 export default calls

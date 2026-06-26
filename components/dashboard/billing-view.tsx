@@ -11,7 +11,7 @@ import {
   changePlan,
   createBillingPortal,
   createCheckout,
-  getCurrencyForVisitor,
+  getPublicPrices,
   type BillingSummary,
   type PlanData,
   type InvoiceData,
@@ -41,24 +41,63 @@ export function BillingView({
       ? (document.cookie.match(/(?:^|;\s*)NEXT_CURRENCY=([^;]+)/)?.[1] ?? null)
       : null,
   )
+  // Per-currency DB plan amounts keyed by plan slug (e.g. { Free: "$0",
+  // Starter: "$49", Business: "$499" }) — the SAME source the homepage Pricing
+  // uses, so logged-in users see prices matching their currency/the homepage
+  // instead of the base-USD plan.priceMonthly.
+  const [prices, setPrices] = useState<Record<string, string>>({})
   const { toast } = useToast()
   const { t } = useTranslation()
 
   useEffect(() => {
-    // Only fetch when the NEXT_CURRENCY cookie isn't already present; cache the
-    // result so subsequent renders have it synchronously.
-    const cached = document.cookie.match(/(?:^|;\s*)NEXT_CURRENCY=([^;]+)/)?.[1]
-    if (cached) return
+    // Resolve the visitor's geo country the same way the homepage Pricing does
+    // (NEXT_COUNTRY cookie) and fetch the per-currency public prices once.
     const country = (document.cookie.match(/(?:^|;\s*)NEXT_COUNTRY=([^;]+)/)?.[1] ?? "").toUpperCase()
-    getCurrencyForVisitor(country)
-      .then((c) => {
-        if (c.currency) {
-          setCurrency(c.currency)
-          document.cookie = `NEXT_CURRENCY=${c.currency};path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`
+    getPublicPrices(country)
+      .then((data) => {
+        const map: Record<string, string> = {}
+        for (const p of data.plans) {
+          map[p.slug] = `$${Math.round(p.amount)}`
+        }
+        setPrices(map)
+        if (data.currency) {
+          setCurrency(data.currency)
+          document.cookie = `NEXT_CURRENCY=${data.currency};path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`
         }
       })
       .catch(() => {})
   }, [])
+
+  // Translated plan name / description / feature bullets keyed by plan slug —
+  // identical to components/pricing.tsx so the dashboard cards match the public
+  // homepage in every language (replaces the API's hardcoded English features).
+  const planContent: Record<string, { name: string; description: string; features: string[] }> = {
+    Free: {
+      name: t("home.pricingFreeName"),
+      description: t("home.pricingFreeDescription"),
+      features: [
+        t("home.pricingFreeFeature1"),
+        t("home.pricingFreeFeature2"),
+        t("home.pricingFreeFeature3"),
+        t("home.pricingFreeFeature4"),
+        t("home.pricingFreeFeature5"),
+      ],
+    },
+    Starter: {
+      name: t("home.pricingStarterName"),
+      description: t("home.pricingStarterDescription"),
+      features: [t("home.pricingStarterFeature1")],
+    },
+    Business: {
+      name: t("home.pricingBusinessName"),
+      description: t("home.pricingBusinessDescription"),
+      features: [
+        t("home.pricingBusinessFeature1"),
+        t("home.pricingBusinessFeatureConcurrent"),
+        t("home.pricingBusinessFeature2"),
+      ],
+    },
+  }
 
   const currentPlan = summary?.plan ?? "Free"
   const onFreePlan = currentPlan === "Free"
@@ -156,6 +195,13 @@ export function BillingView({
             const isCurrent = plan.name === currentPlan
             const isUpgrade = planOrder.indexOf(plan.name) > planOrder.indexOf(currentPlan)
             const isLoading = loadingPlan === plan.name
+            // Translated name/description/features + per-currency DB price,
+            // keyed off plan.name ("Free"/"Starter"/"Business"). Falls back to
+            // the API values if a plan slug is unknown.
+            const content = planContent[plan.name]
+            const displayName = content?.name ?? plan.name
+            const displayFeatures = content?.features ?? plan.features
+            const displayPrice = prices[plan.name] ?? `$${plan.priceMonthly}`
             return (
               <div
                 key={plan.name}
@@ -169,18 +215,21 @@ export function BillingView({
                     {t("billing.currentPlanBadge")}
                   </span>
                 )}
-                <h3 className="text-lg font-semibold text-foreground">{plan.name}</h3>
+                <h3 className="text-lg font-semibold text-foreground">{displayName}</h3>
                 <div className="mt-3 flex items-baseline gap-1">
                   <span className="text-4xl font-bold tracking-tight text-foreground">
-                    ${plan.priceMonthly}
+                    {displayPrice}
                   </span>
                   {plan.priceMonthly !== 0 && currency && (
                     <span className="text-sm font-medium text-muted-foreground">{currency}</span>
                   )}
                   <span className="text-sm text-muted-foreground">{t("billing.perMonth")}</span>
                 </div>
+                {content?.description && (
+                  <p className="mt-3 text-sm text-muted-foreground">{content.description}</p>
+                )}
                 <ul className="mt-6 flex-1 space-y-3">
-                  {plan.features.map((feature) => (
+                  {displayFeatures.map((feature) => (
                     <li key={feature} className="flex items-start gap-2.5 text-sm text-foreground">
                       <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-accent text-accent-foreground">
                         <Check className="h-3 w-3" />
@@ -197,7 +246,7 @@ export function BillingView({
                   className="mt-8 w-full"
                 >
                   {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {isCurrent ? t("billing.currentPlanBadge") : isUpgrade ? t("billing.upgradeTo", { plan: plan.name }) : t("billing.switchTo", { plan: plan.name })}
+                  {isCurrent ? t("billing.currentPlanBadge") : isUpgrade ? t("billing.upgradeTo", { plan: displayName }) : t("billing.switchTo", { plan: displayName })}
                 </Button>
               </div>
             )

@@ -14,6 +14,9 @@ const calls = {
 
   // Detail dialog
   detailsTitle: "Detalles de la conversación",
+
+  // Empty state
+  empty: "Aún no tienes historial de llamadas.",
 }
 
 export default calls

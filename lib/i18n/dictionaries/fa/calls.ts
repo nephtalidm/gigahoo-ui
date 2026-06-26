@@ -14,6 +14,9 @@ const calls = {
 
   // Detail dialog
   detailsTitle: "جزئیات مکالمه",
+
+  // Empty state
+  empty: "شما هنوز هیچ سابقه تماسی ندارید.",
 }
 
 export default calls

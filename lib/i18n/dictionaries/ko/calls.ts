@@ -14,6 +14,9 @@ const calls = {
 
   // Detail dialog
   detailsTitle: "대화 세부 정보",
+
+  // Empty state
+  empty: "아직 통화 기록이 없습니다.",
 }
 
 export default calls
