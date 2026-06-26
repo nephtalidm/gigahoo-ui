@@ -59,22 +59,24 @@ export default function NotificationsPage() {
               </span>
             )}
           </div>
-          <div className="mt-2 flex items-center justify-between gap-4 rounded-xl border border-border p-7">
+          <div className="mt-2 flex items-center justify-between gap-4 rounded-lg border border-border p-4">
             <div className="min-w-0">
-              <p className="text-lg font-semibold text-foreground">{t("notifications.summaryLabel")}</p>
-              <p className="mt-1 text-sm text-muted-foreground">{t("notifications.summaryHint")}</p>
+              <p className="text-sm font-medium text-foreground">{t("notifications.summaryLabel")}</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">{t("notifications.summaryHint")}</p>
             </div>
             <div className="flex shrink-0 items-center gap-8">
-              <div className="flex flex-col items-center gap-2">
-                <span className="text-sm font-medium text-muted-foreground">{t("notifications.email")}</span>
+              <div className="flex flex-col items-center gap-2.5">
+                <span className="text-xs font-medium text-muted-foreground">{t("notifications.email")}</span>
                 <Switch
+                  className="scale-125"
                   checked={settings.emailCallNotifications}
                   onCheckedChange={(v) => update({ ...settings, emailCallNotifications: v })}
                 />
               </div>
-              <div className="flex flex-col items-center gap-2">
-                <span className="text-sm font-medium text-muted-foreground">{t("notifications.sms")}</span>
+              <div className="flex flex-col items-center gap-2.5">
+                <span className="text-xs font-medium text-muted-foreground">{t("notifications.sms")}</span>
                 <Switch
+                  className="scale-125"
                   checked={settings.smsCallNotifications}
                   onCheckedChange={(v) => update({ ...settings, smsCallNotifications: v })}
                 />
