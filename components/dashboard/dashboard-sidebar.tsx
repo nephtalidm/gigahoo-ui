@@ -7,9 +7,10 @@ import { cn } from "@/lib/utils"
 import { BrandLogo } from "@/components/brand-logo"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { TopbarActions } from "@/components/dashboard/topbar-actions"
+import { LanguageSwitcher } from "@/components/language-switcher"
 import { getAccount, type AccountData } from "@/lib/api"
 import { useTranslation } from "@/contexts/language-context"
+import { useAuth } from "@/contexts/auth-context"
 import {
   LayoutDashboard,
   PhoneCall,
@@ -18,6 +19,7 @@ import {
   Bell,
   Settings,
   Menu,
+  LogOut,
 } from "lucide-react"
 
 const navItems = [
@@ -83,6 +85,7 @@ function UserInfo() {
 export function DashboardSidebar() {
   const [open, setOpen] = useState(false)
   const { t } = useTranslation()
+  const { logout } = useAuth()
 
   return (
     <>
@@ -111,17 +114,23 @@ export function DashboardSidebar() {
               </Button>
             }
           />
-          <SheetContent side="left" className="w-72 p-0">
+          <SheetContent side="right" className="w-1/2 p-0">
             <SheetTitle className="sr-only">{t("dashboard.navigation")}</SheetTitle>
-            <div className="flex h-16 items-center border-b border-border px-6">
+            <div className="flex h-16 items-center px-6">
               <BrandLogo />
+            </div>
+            <div className="border-t border-border p-4">
+              <LanguageSwitcher />
             </div>
             <div className="p-4">
               <NavLinks onNavigate={() => setOpen(false)} />
             </div>
             <div className="flex flex-col gap-4 border-t border-border p-4">
               <UserInfo />
-              <TopbarActions />
+              <Button onClick={() => { setOpen(false); logout() }}>
+                <LogOut className="h-4 w-4" />
+                {t("dashboard.signOut")}
+              </Button>
             </div>
           </SheetContent>
           </Sheet>
