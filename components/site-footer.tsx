@@ -17,7 +17,7 @@ export function SiteFooter() {
 
   return (
     <footer className="bg-background">
-      <div className="mx-auto max-w-6xl px-4 pt-0 pb-12 sm:px-6">
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
         <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:justify-between sm:text-left">
           <div className="flex items-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
