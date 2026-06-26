@@ -11,7 +11,8 @@ import {
 import { useTranslation } from "@/contexts/language-context"
 import { useSupportedCountries } from "@/hooks/use-supported-countries"
 import { countries } from "@/lib/data"
-import { COUNTRY_COOKIE, COUNTRY_PICKED_COOKIE, LOCALE_COOKIE, LOCALE_PICKED_COOKIE, localeForCountry } from "@/lib/i18n/config"
+import { COUNTRY_COOKIE, COUNTRY_PICKED_COOKIE, CURRENCY_COOKIE, LOCALE_COOKIE, LOCALE_PICKED_COOKIE, localeForCountry } from "@/lib/i18n/config"
+import { getCurrencyForVisitor } from "@/lib/api"
 import { COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
 import { cn } from "@/lib/utils"
 
@@ -71,7 +72,7 @@ export function CountrySwitcher({ className }: { className?: string }) {
   const value = current && options.includes(current) ? current : options[0]
   const selected = COUNTRY_BY_CODE.get(value)
 
-  function onChange(code: string | null) {
+  async function onChange(code: string | null) {
     if (!code) return
     const maxAge = 60 * 60 * 24 * 365
     document.cookie = `${COUNTRY_COOKIE}=${code};path=/;max-age=${maxAge};samesite=lax`
@@ -81,6 +82,12 @@ export function CountrySwitcher({ className }: { className?: string }) {
     document.cookie = `${LOCALE_PICKED_COOKIE}=;path=/;max-age=0`
     // Mark the country as explicitly chosen so geo domains stop overriding it.
     document.cookie = `${COUNTRY_PICKED_COOKIE}=1;path=/;max-age=${maxAge};samesite=lax`
+    // Cache the currency for the newly chosen country so the reloaded page
+    // renders the new prices with no flicker.
+    try {
+      const c = await getCurrencyForVisitor(code)
+      if (c.currency) document.cookie = `${CURRENCY_COOKIE}=${c.currency};path=/;max-age=${maxAge};samesite=lax`
+    } catch {}
     window.location.reload()
   }
 

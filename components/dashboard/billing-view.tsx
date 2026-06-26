@@ -34,15 +34,29 @@ export function BillingView({
   const [portalLoading, setPortalLoading] = useState(false)
   // Billing currency for the plan amounts. The summary/plan data carries no
   // currency, so (like the homepage Pricing) resolve it from the visitor's geo
-  // country (Country.Currency via the API). Null until it loads.
-  const [currency, setCurrency] = useState<string | null>(null)
+  // country (Country.Currency via the API). Initialized from the NEXT_CURRENCY
+  // cookie so it renders immediately without a flicker.
+  const [currency, setCurrency] = useState<string | null>(() =>
+    typeof document !== "undefined"
+      ? (document.cookie.match(/(?:^|;\s*)NEXT_CURRENCY=([^;]+)/)?.[1] ?? null)
+      : null,
+  )
   const { toast } = useToast()
   const { t } = useTranslation()
 
   useEffect(() => {
+    // Only fetch when the NEXT_CURRENCY cookie isn't already present; cache the
+    // result so subsequent renders have it synchronously.
+    const cached = document.cookie.match(/(?:^|;\s*)NEXT_CURRENCY=([^;]+)/)?.[1]
+    if (cached) return
     const country = (document.cookie.match(/(?:^|;\s*)NEXT_COUNTRY=([^;]+)/)?.[1] ?? "").toUpperCase()
     getCurrencyForVisitor(country)
-      .then((c) => setCurrency(c.currency))
+      .then((c) => {
+        if (c.currency) {
+          setCurrency(c.currency)
+          document.cookie = `NEXT_CURRENCY=${c.currency};path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`
+        }
+      })
       .catch(() => {})
   }, [])
 

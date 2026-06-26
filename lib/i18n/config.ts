@@ -33,6 +33,11 @@ export const LOCALE_PICKED_COOKIE = "NEXT_LOCALE_PICKED"
 // (.ai/.com) stop re-detecting and overriding their choice each visit.
 export const COUNTRY_PICKED_COOKIE = "NEXT_COUNTRY_PICKED"
 
+// Cookie caching the visitor's resolved billing currency (Country.Currency via
+// the API), so plan prices render with the currency synchronously and don't
+// flicker in a second later. Refreshed when the visitor switches country.
+export const CURRENCY_COOKIE = "NEXT_CURRENCY"
+
 // Native display names + a representative flag (ISO country code) per language.
 export const LOCALE_META: Record<Locale, { native: string; english: string; flags: string[] }> = {
   en: { native: "English", english: "English", flags: ["gb"] },

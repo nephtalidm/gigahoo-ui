@@ -90,8 +90,13 @@ export function SignupFlow() {
   const [checkingAccount, setCheckingAccount] = useState(true)
   const [selectedPlan, setSelectedPlan] = useState<Plan>("Starter")
   // Billing currency for the plan amounts, resolved from the visitor's geo
-  // country (the same source the homepage Pricing uses). Null until it loads.
-  const [currency, setCurrency] = useState<string | null>(null)
+  // country (the same source the homepage Pricing uses). Initialized from the
+  // NEXT_CURRENCY cookie so it renders immediately without a flicker.
+  const [currency, setCurrency] = useState<string | null>(() =>
+    typeof document !== "undefined"
+      ? (document.cookie.match(/(?:^|;\s*)NEXT_CURRENCY=([^;]+)/)?.[1] ?? null)
+      : null,
+  )
   const [category, setCategory] = useState("")
   const [businessName, setBusinessName] = useState("")
   const [businessPhone, setBusinessPhone] = useState("")
@@ -141,9 +146,18 @@ export function SignupFlow() {
   // Show plan amounts in the visitor's currency (Country.Currency via the API),
   // resolved from the geo country middleware records in a cookie.
   useEffect(() => {
+    // Only fetch when the NEXT_CURRENCY cookie isn't already present; cache the
+    // result so subsequent renders have it synchronously.
+    const cached = document.cookie.match(/(?:^|;\s*)NEXT_CURRENCY=([^;]+)/)?.[1]
+    if (cached) return
     const country = (document.cookie.match(/(?:^|;\s*)NEXT_COUNTRY=([^;]+)/)?.[1] ?? "").toUpperCase()
     getCurrencyForVisitor(country)
-      .then((c) => setCurrency(c.currency))
+      .then((c) => {
+        if (c.currency) {
+          setCurrency(c.currency)
+          document.cookie = `NEXT_CURRENCY=${c.currency};path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`
+        }
+      })
       .catch(() => {})
   }, [])
 

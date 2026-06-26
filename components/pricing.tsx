@@ -11,20 +11,36 @@ import { COMING_SOON_COUNTRY_CODES, PLAN_PRICES } from "@/lib/settings"
 
 export function Pricing() {
   const { t } = useTranslation()
-  const [currency, setCurrency] = useState<string | null>(null)
+  // Initialize from the NEXT_CURRENCY cookie so a returning/just-switched
+  // visitor renders the currency immediately (no flicker); only a brand-new
+  // visitor has to fetch it.
+  const [currency, setCurrency] = useState<string | null>(() =>
+    typeof document !== "undefined"
+      ? (document.cookie.match(/(?:^|;\s*)NEXT_CURRENCY=([^;]+)/)?.[1] ?? null)
+      : null,
+  )
   // The visitor's country, read from the same cookie middleware sets for geo.
   const [country, setCountry] = useState<string>("")
 
   useEffect(() => {
     // Show prices in the visitor's currency, taken from the DB (Country.Currency):
     // middleware records their geo country in a cookie; we resolve the currency
-    // via the API. No currency is hardcoded here — until it loads we show the
-    // amount without a code.
+    // via the API. Cache the result in NEXT_CURRENCY so subsequent renders have
+    // it synchronously.
     const country = (document.cookie.match(/(?:^|;\s*)NEXT_COUNTRY=([^;]+)/)?.[1] ?? "").toUpperCase()
     setCountry(country)
-    getCurrencyForVisitor(country)
-      .then((c) => setCurrency(c.currency))
-      .catch(() => {})
+    // Only fetch when the cookie wasn't already present.
+    const cached = document.cookie.match(/(?:^|;\s*)NEXT_CURRENCY=([^;]+)/)?.[1]
+    if (!cached) {
+      getCurrencyForVisitor(country)
+        .then((c) => {
+          if (c.currency) {
+            setCurrency(c.currency)
+            document.cookie = `NEXT_CURRENCY=${c.currency};path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`
+          }
+        })
+        .catch(() => {})
+    }
   }, [])
 
   // In "coming soon" markets the product isn't open for signup yet, so the
