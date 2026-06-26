@@ -793,16 +793,16 @@ export function SettingsView({
         </p>
         <div className="mt-5 space-y-4">
           {/* Password — set (no password yet, e.g. Google accounts) or change */}
-          <div className="rounded-lg border border-border p-5">
+          <div className="rounded-lg border border-border p-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-base font-medium text-foreground">{t("settings.passwordMethod")}</p>
+                  <p className="text-sm font-medium text-foreground">{t("settings.passwordMethod")}</p>
                   <p className="text-xs text-muted-foreground">
                     {account.hasPassword ? t("settings.passwordSetStatus") : t("settings.passwordNotSet")}
                   </p>
@@ -886,10 +886,10 @@ export function SettingsView({
             )}
           </div>
 
-          <div className="flex items-center justify-between rounded-lg border border-border p-5">
-            <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <svg className="h-6 w-6" viewBox="0 0 24 24">
+          <div className="flex items-center justify-between rounded-lg border border-border p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <svg className="h-5 w-5" viewBox="0 0 24 24">
                   <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                   <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                   <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
@@ -897,7 +897,7 @@ export function SettingsView({
                 </svg>
               </div>
               <div>
-                <p className="text-base font-medium text-foreground">{t("settings.google")}</p>
+                <p className="text-sm font-medium text-foreground">{t("settings.google")}</p>
                 <p className="text-xs text-muted-foreground">{account.hasGoogle ? t("settings.linked") : t("settings.notLinked")}</p>
               </div>
             </div>
@@ -910,30 +910,30 @@ export function SettingsView({
             )}
           </div>
 
-          <div className="flex items-center justify-between rounded-lg border border-border p-5">
-            <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="flex items-center justify-between rounded-lg border border-border p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
               <div>
-                <p className="text-base font-medium text-foreground">{t("settings.emailMethod")}</p>
+                <p className="text-sm font-medium text-foreground">{t("settings.emailMethod")}</p>
                 <p className="text-xs text-muted-foreground">{account.email}</p>
               </div>
             </div>
             <Button variant="outline" size="sm" onClick={() => focusField("email")}>{t("settings.change")}</Button>
           </div>
 
-          <div className="flex items-center justify-between rounded-lg border border-border p-5">
-            <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="flex items-center justify-between rounded-lg border border-border p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
               </div>
               <div>
-                <p className="text-base font-medium text-foreground">{t("settings.phoneNumber")}</p>
+                <p className="text-sm font-medium text-foreground">{t("settings.phoneNumber")}</p>
                 <p className="text-xs text-muted-foreground">{account.businessPhone}</p>
               </div>
             </div>
