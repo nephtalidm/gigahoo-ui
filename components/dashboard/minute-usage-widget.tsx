@@ -96,7 +96,7 @@ export function MinuteUsageWidget({
           <div className="grid grid-cols-3 gap-4">
             <Stat label={t("dashboard.statUsed")} value={Math.round(animatedUsed).toLocaleString()} />
             <Stat label={t("dashboard.statRemaining")} value={Math.round(animatedRemaining).toLocaleString()} />
-            <Stat label={t("dashboard.statUsedPct")} value={`${animatedPct.toFixed(1)}%`} />
+            <Stat label={t("dashboard.statUsedPct")} value={`${animatedPct < 0.05 ? "0" : animatedPct.toFixed(1)}%`} />
           </div>
 
           <div>
