@@ -27,7 +27,7 @@ export const COUNTRY_COOKIE = "NEXT_COUNTRY"
 
 // Native display names + a representative flag (ISO country code) per language.
 export const LOCALE_META: Record<Locale, { native: string; english: string; flags: string[] }> = {
-  en: { native: "English", english: "English", flags: ["us", "ca"] },
+  en: { native: "English", english: "English", flags: ["ca", "us"] },
   es: { native: "Español", english: "Spanish", flags: ["mx"] },
   fr: { native: "Français", english: "French", flags: ["fr"] },
   zh: { native: "中文", english: "Mandarin", flags: ["cn"] },

@@ -257,6 +257,14 @@ export function getPlans() {
   return api.get<PlanData[]>("/api/billing/plans");
 }
 
+// The visitor's pricing currency (from Country.Currency in the DB), resolved from
+// their geo country. Returns { currency: null } if it can't be determined.
+export function getCurrencyForVisitor(countryCode: string) {
+  return api.get<{ currency: string | null }>(
+    `/api/countries/currency?code=${encodeURIComponent(countryCode)}`,
+  );
+}
+
 export function changePlan(planId: number) {
   return api.post<{ message: string; plan: string }>("/api/billing/change-plan", { planId });
 }

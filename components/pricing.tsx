@@ -1,13 +1,27 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Check } from "lucide-react"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { useTranslation } from "@/contexts/language-context"
+import { getCurrencyForVisitor } from "@/lib/api"
 
 export function Pricing() {
   const { t } = useTranslation()
+  const [currency, setCurrency] = useState<string | null>(null)
+
+  useEffect(() => {
+    // Show prices in the visitor's currency, taken from the DB (Country.Currency):
+    // middleware records their geo country in a cookie; we resolve the currency
+    // via the API. No currency is hardcoded here — until it loads we show the
+    // amount without a code.
+    const country = (document.cookie.match(/(?:^|;\s*)NEXT_COUNTRY=([^;]+)/)?.[1] ?? "").toUpperCase()
+    getCurrencyForVisitor(country)
+      .then((c) => setCurrency(c.currency))
+      .catch(() => {})
+  }, [])
 
   const plans = [
     {
@@ -82,6 +96,9 @@ export function Pricing() {
                 <span className="text-4xl font-bold tracking-tight text-foreground">
                   {plan.price}
                 </span>
+                {plan.slug !== "Free" && currency && (
+                  <span className="text-sm font-medium text-muted-foreground">{currency}</span>
+                )}
                 <span className="text-sm text-muted-foreground">{plan.period}</span>
               </div>
               <p className="mt-3 text-sm text-muted-foreground">{plan.description}</p>
