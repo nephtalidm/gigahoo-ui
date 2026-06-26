@@ -38,7 +38,7 @@ export function LanguageSwitcher({ className }: { className?: string }) {
     <Select value={locale} onValueChange={(v) => { if (isLocale(v)) setLocale(v) }}>
       <SelectTrigger
         aria-label="Language"
-        className={cn("h-9 w-auto gap-2 rounded-full text-sm font-medium", className)}
+        className={cn("h-9 w-auto cursor-pointer gap-2 rounded-full text-sm font-medium", className)}
       >
         <SelectValue>
           <span className="flex items-center gap-2">
