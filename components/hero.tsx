@@ -270,13 +270,13 @@ export function Hero() {
                     }`}
                     aria-hidden={!connected}
                   >
-                    <span className="h-1.5 w-1.5 rounded-full bg-primary motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
+                    <span className="h-[5px] w-[5px] rounded-full bg-primary motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
                     {t("home.heroCardLive")}
                   </span>
                 )}
               </div>
 
-              <div ref={scrollRef} className="mt-4 space-y-3">
+              <div ref={scrollRef} className="mt-4 max-h-72 space-y-3 overflow-y-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {messages.map((m, i) => {
                   const revealed = i < visibleCount
                   const isAssistant = m.role === "assistant"
