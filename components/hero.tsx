@@ -293,16 +293,17 @@ export function Hero() {
                   )
                 })}
 
-                {typing && (
-                  <div
-                    className="flex max-w-[85%] items-center gap-1 rounded-2xl rounded-tl-sm bg-muted px-4 py-3"
-                    aria-hidden
-                  >
-                    <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce [animation-delay:-0.3s]" />
-                    <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce [animation-delay:-0.15s]" />
-                    <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce" />
-                  </div>
-                )}
+                {/* Always rendered (space reserved) so toggling typing never resizes the card. */}
+                <div
+                  className={`flex max-w-[85%] items-center gap-1 rounded-2xl rounded-tl-sm bg-muted px-4 py-3 transition-opacity duration-200 ${
+                    typing ? "opacity-100" : "opacity-0"
+                  }`}
+                  aria-hidden
+                >
+                  <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce [animation-delay:-0.3s]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce [animation-delay:-0.15s]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce" />
+                </div>
               </div>
 
               <div className="mt-5 grid grid-cols-3 gap-3 border-t border-border pt-4 text-center">
