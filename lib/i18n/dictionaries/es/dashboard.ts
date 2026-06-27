@@ -12,7 +12,7 @@ const dashboard = {
   // Voice Agent page
   voiceAgentTitle: "Agente de voz con IA",
   voiceAgentDescription: "Personaliza cómo saluda y suena tu recepcionista de IA con las personas que llaman.",
-  greetingLabel: "Saludo",
+  greetingLabel: "Mensaje de saludo",
   greetingHint: "Lo que dice la IA al contestar una llamada. Déjalo en blanco para usar el saludo predeterminado.",
   voiceLabel: "Voz del agente",
   voiceHint: "Elige la voz con la que habla tu recepcionista de IA. Reproduce una muestra para escuchar cada una.",
@@ -79,6 +79,9 @@ const dashboard = {
   statusCompleted: "Completada",
   statusMissed: "Perdida",
   statusFailed: "Fallida",
+
+  // Home page link
+  homePage: "Página de inicio",
 }
 
 export default dashboard

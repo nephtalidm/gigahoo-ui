@@ -12,7 +12,7 @@ const dashboard = {
   // Voice Agent page
   voiceAgentTitle: "Голосовий ШІ-агент",
   voiceAgentDescription: "Налаштуйте, як ШІ-секретар вітає тих, хто телефонує, і як звучить його голос.",
-  greetingLabel: "Привітання",
+  greetingLabel: "Привітальне повідомлення",
   greetingHint: "Що каже ШІ, відповідаючи на дзвінок. Залиште порожнім, щоб використовувати привітання за замовчуванням.",
   voiceLabel: "Голос агента",
   voiceHint: "Виберіть голос, яким говорить ваш ШІ-секретар. Прослухайте зразок кожного голосу.",
@@ -79,6 +79,9 @@ const dashboard = {
   statusCompleted: "Завершено",
   statusMissed: "Пропущено",
   statusFailed: "Помилка",
+
+  // Home page link
+  homePage: "Головна сторінка",
 }
 
 export default dashboard

@@ -12,7 +12,7 @@ const dashboard = {
   // Voice Agent page
   voiceAgentTitle: "دستیار صوتی هوش مصنوعی",
   voiceAgentDescription: "تنظیم کنید که منشی هوش مصنوعی شما چگونه به تماس‌گیرندگان خوش‌آمد بگوید و صدایش چگونه باشد.",
-  greetingLabel: "خوش‌آمدگویی",
+  greetingLabel: "پیام خوش‌آمدگویی",
   greetingHint: "آنچه هوش مصنوعی هنگام پاسخ به تماس می‌گوید. برای استفاده از خوش‌آمدگویی پیش‌فرض، خالی بگذارید.",
   voiceLabel: "صدای دستیار",
   voiceHint: "صدایی را که منشی هوش مصنوعی شما با آن صحبت می‌کند انتخاب کنید. برای شنیدن هر کدام، نمونه را پخش کنید.",
@@ -79,6 +79,9 @@ const dashboard = {
   statusCompleted: "تکمیل‌شده",
   statusMissed: "از دست رفته",
   statusFailed: "ناموفق",
+
+  // Home page link
+  homePage: "صفحه اصلی",
 }
 
 export default dashboard

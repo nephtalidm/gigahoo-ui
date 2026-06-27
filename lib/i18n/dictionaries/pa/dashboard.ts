@@ -12,7 +12,7 @@ const dashboard = {
   // Voice Agent page
   voiceAgentTitle: "AI ਵੌਇਸ ਏਜੰਟ",
   voiceAgentDescription: "ਆਪਣੇ AI ਰਿਸੈਪਸ਼ਨਿਸਟ ਦੇ ਕਾਲ ਕਰਨ ਵਾਲਿਆਂ ਨੂੰ ਨਮਸਕਾਰ ਕਰਨ ਦੇ ਢੰਗ ਅਤੇ ਆਵਾਜ਼ ਨੂੰ ਅਨੁਕੂਲਿਤ ਕਰੋ।",
-  greetingLabel: "ਨਮਸਕਾਰ",
+  greetingLabel: "ਨਮਸਕਾਰ ਸੁਨੇਹਾ",
   greetingHint: "ਕਾਲ ਦਾ ਜਵਾਬ ਦਿੰਦੇ ਸਮੇਂ AI ਸਭ ਤੋਂ ਪਹਿਲਾਂ ਕੀ ਕਹਿੰਦਾ ਹੈ। ਡਿਫੌਲਟ ਨਮਸਕਾਰ ਵਰਤਣ ਲਈ ਖਾਲੀ ਛੱਡੋ।",
   voiceLabel: "ਏਜੰਟ ਦੀ ਆਵਾਜ਼",
   voiceHint: "ਉਹ ਆਵਾਜ਼ ਚੁਣੋ ਜਿਸ ਵਿੱਚ ਤੁਹਾਡਾ AI ਰਿਸੈਪਸ਼ਨਿਸਟ ਬੋਲਦਾ ਹੈ। ਹਰ ਇੱਕ ਨੂੰ ਸੁਣਨ ਲਈ ਨਮੂਨਾ ਚਲਾਓ।",
@@ -79,6 +79,9 @@ const dashboard = {
   statusCompleted: "ਪੂਰੀ ਹੋਈ",
   statusMissed: "ਖੁੰਝੀ",
   statusFailed: "ਅਸਫਲ",
+
+  // Home page link
+  homePage: "ਮੁੱਖ ਪੰਨਾ",
 }
 
 export default dashboard

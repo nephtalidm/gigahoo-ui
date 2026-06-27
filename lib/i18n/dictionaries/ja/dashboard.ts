@@ -12,7 +12,7 @@ const dashboard = {
   // Voice Agent page
   voiceAgentTitle: "AI音声エージェント",
   voiceAgentDescription: "AI受付係が発信者に挨拶する方法や声をカスタマイズします。",
-  greetingLabel: "あいさつ",
+  greetingLabel: "あいさつメッセージ",
   greetingHint: "AIが電話に出たときに最初に話す内容です。空欄にするとデフォルトのあいさつが使われます。",
   voiceLabel: "エージェントの声",
   voiceHint: "AI受付係が話す声を選択します。サンプルを再生して各声を確認できます。",
@@ -73,6 +73,9 @@ const dashboard = {
   statusCompleted: "完了",
   statusMissed: "不在",
   statusFailed: "失敗",
+
+  // Home page link
+  homePage: "ホームページ",
   idleTitle: "まだいらっしゃいますか？",
   idleDescription: "しばらく操作がありませんでした。セキュリティのため、タイマーが終了すると自動的にログアウトされます。",
   idleStay: "ログインしたままにする",

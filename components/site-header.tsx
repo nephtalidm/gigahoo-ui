@@ -109,7 +109,7 @@ export function SiteHeader() {
                   <>
                     <Button
                       variant="outline"
-                      className="h-11"
+                      className="h-10"
                       render={
                         <Link href="/dashboard" onClick={() => setOpen(false)}>
                           <LayoutDashboard className="h-4 w-4" />
@@ -117,7 +117,7 @@ export function SiteHeader() {
                         </Link>
                       }
                     />
-                    <Button className="h-11" onClick={() => { setOpen(false); logout() }}>
+                    <Button className="h-10" onClick={() => { setOpen(false); logout() }}>
                       <LogOut className="h-4 w-4" />
                       {t("nav.signOut")}
                     </Button>

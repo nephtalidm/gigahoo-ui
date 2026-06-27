@@ -12,7 +12,7 @@ const dashboard = {
   // Voice Agent page
   voiceAgentTitle: "وكيل صوتي بالذكاء الاصطناعي",
   voiceAgentDescription: "خصّص كيف يرحّب موظف الاستقبال بالذكاء الاصطناعي بالمتصلين وكيف يبدو صوته.",
-  greetingLabel: "التحية",
+  greetingLabel: "رسالة التحية",
   greetingHint: "ما يقوله الذكاء الاصطناعي عند الرد على المكالمة. اتركه فارغًا لاستخدام التحية الافتراضية.",
   voiceLabel: "صوت الوكيل",
   voiceHint: "اختر الصوت الذي يتحدث به موظف الاستقبال بالذكاء الاصطناعي. شغّل عينة لسماع كل صوت.",
@@ -79,6 +79,9 @@ const dashboard = {
   statusCompleted: "مكتملة",
   statusMissed: "فائتة",
   statusFailed: "فاشلة",
+
+  // Home page link
+  homePage: "الصفحة الرئيسية",
 }
 
 export default dashboard

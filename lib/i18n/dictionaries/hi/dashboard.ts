@@ -12,7 +12,7 @@ const dashboard = {
   // Voice Agent page
   voiceAgentTitle: "AI वॉइस एजेंट",
   voiceAgentDescription: "अपने AI रिसेप्शनिस्ट के कॉल करने वालों का अभिवादन करने के तरीके और आवाज़ को अनुकूलित करें।",
-  greetingLabel: "अभिवादन",
+  greetingLabel: "अभिवादन संदेश",
   greetingHint: "कॉल का जवाब देते समय AI सबसे पहले क्या कहता है। डिफ़ॉल्ट अभिवादन उपयोग करने के लिए खाली छोड़ें।",
   voiceLabel: "एजेंट की आवाज़",
   voiceHint: "वह आवाज़ चुनें जिसमें आपका AI रिसेप्शनिस्ट बोलता है। हर एक को सुनने के लिए नमूना चलाएँ।",
@@ -79,6 +79,9 @@ const dashboard = {
   statusCompleted: "पूर्ण",
   statusMissed: "छूट गई",
   statusFailed: "विफल",
+
+  // Home page link
+  homePage: "मुख्य पृष्ठ",
 }
 
 export default dashboard

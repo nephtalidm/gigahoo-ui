@@ -12,7 +12,7 @@ const dashboard = {
   // Voice Agent page
   voiceAgentTitle: "AI Voice Agent",
   voiceAgentDescription: "I-customize kung paano bumabati at tumutunog ang iyong AI receptionist sa mga tumatawag.",
-  greetingLabel: "Pagbati",
+  greetingLabel: "Mensahe ng Pagbati",
   greetingHint: "Ang sinasabi ng AI kapag sumagot ito sa isang tawag. Iwanang blangko para gamitin ang default na pagbati.",
   voiceLabel: "Boses ng Agent",
   voiceHint: "Piliin ang boses na gagamitin ng iyong AI receptionist. Magpatugtog ng sample para marinig ang bawat isa.",
@@ -79,6 +79,9 @@ const dashboard = {
   statusCompleted: "Natapos",
   statusMissed: "Hindi Nasagot",
   statusFailed: "Nabigo",
+
+  // Home page link
+  homePage: "Home Page",
 }
 
 export default dashboard

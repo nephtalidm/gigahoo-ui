@@ -12,7 +12,7 @@ const dashboard = {
   // Voice Agent page
   voiceAgentTitle: "AI 語音助手",
   voiceAgentDescription: "自訂你嘅 AI 接待員點樣同來電者打招呼同把聲。",
-  greetingLabel: "招呼語",
+  greetingLabel: "招呼語訊息",
   greetingHint: "AI 接聽電話時最先講嘅嘢。留空就會用預設招呼語。",
   voiceLabel: "助手聲音",
   voiceHint: "揀你嘅 AI 接待員用邊把聲。播放樣本就可以試聽每把聲。",
@@ -73,6 +73,9 @@ const dashboard = {
   statusCompleted: "已完成",
   statusMissed: "未接聽",
   statusFailed: "失敗",
+
+  // Home page link
+  homePage: "主頁",
   idleTitle: "你仲喺度嗎？",
   idleDescription: "你已經有一段時間冇任何操作。為咗你嘅安全，計時完咗之後會自動登出。",
   idleStay: "保持登入",

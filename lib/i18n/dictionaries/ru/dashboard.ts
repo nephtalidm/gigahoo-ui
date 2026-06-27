@@ -12,7 +12,7 @@ const dashboard = {
   // Voice Agent page
   voiceAgentTitle: "Голосовой ИИ-агент",
   voiceAgentDescription: "Настройте, как ИИ-секретарь приветствует звонящих и как звучит его голос.",
-  greetingLabel: "Приветствие",
+  greetingLabel: "Приветственное сообщение",
   greetingHint: "Что говорит ИИ, отвечая на звонок. Оставьте пустым, чтобы использовать приветствие по умолчанию.",
   voiceLabel: "Голос агента",
   voiceHint: "Выберите голос, которым говорит ваш ИИ-секретарь. Прослушайте образец каждого голоса.",
@@ -79,6 +79,9 @@ const dashboard = {
   statusCompleted: "Завершено",
   statusMissed: "Пропущено",
   statusFailed: "Сбой",
+
+  // Home page link
+  homePage: "Главная страница",
 }
 
 export default dashboard

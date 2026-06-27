@@ -79,6 +79,9 @@ const dashboard = {
   statusCompleted: "Terminé",
   statusMissed: "Manqué",
   statusFailed: "Échoué",
+
+  // Home page link
+  homePage: "Page d'accueil",
 }
 
 export default dashboard

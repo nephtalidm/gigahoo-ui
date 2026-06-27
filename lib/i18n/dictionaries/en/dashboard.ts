@@ -12,7 +12,7 @@ const dashboard = {
   // Voice Agent page
   voiceAgentTitle: "AI Voice Agent",
   voiceAgentDescription: "Customize how your AI receptionist greets and sounds to callers.",
-  greetingLabel: "Greeting",
+  greetingLabel: "Greeting Message",
   greetingHint: "What the AI says when it first answers a call. Leave blank to use the default greeting.",
   voiceLabel: "Agent Voice",
   voiceHint: "Pick the voice your AI receptionist speaks with. Play a sample to hear each one.",
@@ -79,6 +79,9 @@ const dashboard = {
   statusCompleted: "Completed",
   statusMissed: "Missed",
   statusFailed: "Failed",
+
+  // Home page link
+  homePage: "Home Page",
 }
 
 export default dashboard

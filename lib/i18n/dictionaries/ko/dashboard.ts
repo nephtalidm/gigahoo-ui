@@ -12,7 +12,7 @@ const dashboard = {
   // Voice Agent page
   voiceAgentTitle: "AI 음성 에이전트",
   voiceAgentDescription: "AI 안내원이 발신자에게 인사하는 방식과 목소리를 맞춤 설정하세요.",
-  greetingLabel: "인사말",
+  greetingLabel: "인사말 메시지",
   greetingHint: "AI가 전화를 받을 때 처음 하는 말입니다. 비워 두면 기본 인사말이 사용됩니다.",
   voiceLabel: "에이전트 음성",
   voiceHint: "AI 안내원이 사용할 음성을 선택하세요. 샘플을 재생해 각 음성을 들어볼 수 있습니다.",
@@ -73,6 +73,9 @@ const dashboard = {
   statusCompleted: "완료됨",
   statusMissed: "놓침",
   statusFailed: "실패함",
+
+  // Home page link
+  homePage: "홈페이지",
   idleTitle: "아직 계신가요?",
   idleDescription: "한동안 활동이 없었습니다. 보안을 위해 타이머가 종료되면 자동으로 로그아웃됩니다.",
   idleStay: "로그인 유지",
