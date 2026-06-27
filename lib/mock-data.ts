@@ -129,6 +129,7 @@ export const mockPlans: PlanData[] = [
   {
     id: 1,
     name: "Free",
+    displayOrder: 1,
     priceMonthly: 0,
     includedMinutes: 25,
     hasOptionalFeatures: false,
@@ -143,6 +144,7 @@ export const mockPlans: PlanData[] = [
   {
     id: 2,
     name: "Starter",
+    displayOrder: 2,
     priceMonthly: 49,
     includedMinutes: 250,
     hasOptionalFeatures: false,
@@ -157,6 +159,7 @@ export const mockPlans: PlanData[] = [
   {
     id: 3,
     name: "Business",
+    displayOrder: 3,
     priceMonthly: 99,
     includedMinutes: 1000,
     hasOptionalFeatures: true,

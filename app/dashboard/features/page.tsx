@@ -34,7 +34,7 @@ export default function FeaturesPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <PageHeader title="Optional Features" description="Configure premium features for your AI receptionist." />
+      <PageHeader title={t("features.title")} description={t("features.description")} />
       <OptionalFeatures
         plan={(account?.plan ?? "Free") as Plan}
         initialSettings={settings}

@@ -42,7 +42,7 @@ export default function BillingPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <PageHeader title="Plan & Billing" description="Manage your subscription, usage, and payment details." />
+      <PageHeader title={t("billing.title")} description={t("billing.description")} />
       <BillingView
         summary={summary}
         plans={plans}

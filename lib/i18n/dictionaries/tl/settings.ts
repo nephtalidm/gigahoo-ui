@@ -1,6 +1,6 @@
 const settings = {
   // Page header
-  title: "Mga Setting",
+  title: "Mga Pangkalahatang Setting",
   description: "Pamahalaan ang impormasyon ng iyong negosyo.",
 
   // General business information

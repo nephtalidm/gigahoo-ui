@@ -1,6 +1,6 @@
 const settings = {
   // Page header
-  title: "تنظیمات",
+  title: "تنظیمات عمومی",
   description: "اطلاعات کسب‌وکار خود را مدیریت کنید.",
 
   // General business information

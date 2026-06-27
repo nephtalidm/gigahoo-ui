@@ -1,6 +1,6 @@
 const settings = {
   // Page header
-  title: "设置",
+  title: "常规设置",
   description: "管理您的企业信息。",
 
   // General business information

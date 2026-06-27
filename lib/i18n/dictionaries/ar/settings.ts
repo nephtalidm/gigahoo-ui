@@ -1,6 +1,6 @@
 const settings = {
   // Page header
-  title: "الإعدادات",
+  title: "الإعدادات العامة",
   description: "إدارة معلومات نشاطك التجاري.",
 
   // General business information

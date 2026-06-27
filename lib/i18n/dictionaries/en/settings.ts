@@ -1,6 +1,6 @@
 const settings = {
   // Page header
-  title: "Settings",
+  title: "General Settings",
   description: "Manage your business information.",
 
   // General business information

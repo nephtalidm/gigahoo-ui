@@ -20,24 +20,6 @@ import {
 import { formatDate } from "@/lib/data"
 import { ArrowUpRight, Check, Download, Loader2 } from "lucide-react"
 
-const planOrder = ["Free", "Starter", "Business"]
-
-// Cache the account's resolved currency + per-plan amounts so a page refresh renders
-// them immediately (no "price first, CAD label 1s later" flicker); the live fetch
-// then refreshes them in the background.
-const PLAN_PRICE_CACHE = "gigahoo_plan_price_cache"
-function readPlanPriceCache(): { currency: string | null; prices: Record<string, string> } {
-  if (typeof window === "undefined") return { currency: null, prices: {} }
-  try {
-    const raw = window.localStorage.getItem(PLAN_PRICE_CACHE)
-    if (raw) {
-      const v = JSON.parse(raw)
-      return { currency: v.currency ?? null, prices: v.prices ?? {} }
-    }
-  } catch {}
-  return { currency: null, prices: {} }
-}
-
 export function BillingView({
   summary,
   plans,
@@ -50,12 +32,10 @@ export function BillingView({
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null)
   const [portalLoading, setPortalLoading] = useState(false)
   // Billing currency/amounts follow the ACCOUNT's country (where they signed up),
-  // NOT the top-menu country/language switcher. Resolved from account.countryCode
-  // via public-prices; initialized from the localStorage cache so a refresh shows
-  // the right currency/amounts immediately (no flicker).
-  const cachedPrice = readPlanPriceCache()
-  const [currency, setCurrency] = useState<string | null>(cachedPrice.currency)
-  const [prices, setPrices] = useState<Record<string, string>>(cachedPrice.prices)
+  // NOT the top-menu country/language switcher. Fetched fresh from the DB each load
+  // (no caching); the price and its currency label render together once loaded.
+  const [currency, setCurrency] = useState<string | null>(null)
+  const [prices, setPrices] = useState<Record<string, string>>({})
   const { toast } = useToast()
   const { t } = useTranslation()
 
@@ -71,12 +51,6 @@ export function BillingView({
         }
         setPrices(map)
         if (data.currency) setCurrency(data.currency)
-        try {
-          window.localStorage.setItem(
-            PLAN_PRICE_CACHE,
-            JSON.stringify({ currency: data.currency ?? null, prices: map }),
-          )
-        } catch {}
       })
       .catch(() => {})
   }, [])
@@ -113,6 +87,8 @@ export function BillingView({
   }
 
   const currentPlan = summary?.plan ?? "Free"
+  // Plan ordering is data-driven (Plan.DisplayOrder from the API), not a hardcoded list.
+  const currentPlanOrder = plans.find((p) => p.name === currentPlan)?.displayOrder ?? 0
   const onFreePlan = currentPlan === "Free"
   const includedMinutes = summary?.includedMinutes ?? 25
   const minutesUsed = summary?.minutesUsed ?? 0
@@ -206,7 +182,7 @@ export function BillingView({
         <div className="mt-4 grid gap-6 lg:grid-cols-3">
           {plans.map((plan) => {
             const isCurrent = plan.name === currentPlan
-            const isUpgrade = planOrder.indexOf(plan.name) > planOrder.indexOf(currentPlan)
+            const isUpgrade = plan.displayOrder > currentPlanOrder
             const isLoading = loadingPlan === plan.name
             // Translated name/description/features + per-currency DB price,
             // keyed off plan.name ("Free"/"Starter"/"Business"). Falls back to
@@ -214,7 +190,11 @@ export function BillingView({
             const content = planContent[plan.name]
             const displayName = content?.name ?? plan.name
             const displayFeatures = content?.features ?? plan.features
-            const displayPrice = prices[plan.name] ?? `$${plan.priceMonthly}`
+            const isFree = plan.priceMonthly === 0
+            // Show the amount only once its currency is known, so price + currency
+            // label appear together (no "price first, label later" flicker).
+            const priceReady = isFree || (currency !== null && prices[plan.name] !== undefined)
+            const displayPrice = prices[plan.name] ?? (isFree ? "$0" : "")
             return (
               <div
                 key={plan.name}
@@ -229,14 +209,20 @@ export function BillingView({
                   </span>
                 )}
                 <h3 className="text-lg font-semibold text-foreground">{displayName}</h3>
-                <div className="mt-3 flex items-baseline gap-1">
-                  <span className="text-4xl font-bold tracking-tight text-foreground">
-                    {displayPrice}
-                  </span>
-                  {plan.priceMonthly !== 0 && currency && (
-                    <span className="text-sm font-medium text-muted-foreground">{currency}</span>
+                <div className="mt-3 flex h-10 items-baseline gap-1">
+                  {priceReady ? (
+                    <>
+                      <span className="text-4xl font-bold tracking-tight text-foreground">
+                        {displayPrice}
+                      </span>
+                      {!isFree && currency && (
+                        <span className="text-sm font-medium text-muted-foreground">{currency}</span>
+                      )}
+                      <span className="text-sm text-muted-foreground">{t("billing.perMonth")}</span>
+                    </>
+                  ) : (
+                    <span className="h-9 w-24 animate-pulse rounded-md bg-muted" aria-hidden />
                   )}
-                  <span className="text-sm text-muted-foreground">{t("billing.perMonth")}</span>
                 </div>
                 {content?.description && (
                   <p className="mt-3 text-sm text-muted-foreground">{content.description}</p>

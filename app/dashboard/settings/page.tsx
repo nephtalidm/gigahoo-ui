@@ -42,7 +42,7 @@ export default function SettingsPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <PageHeader title="Settings" description="Manage your business information." />
+      <PageHeader title={t("settings.title")} description={t("settings.description")} />
       {account && (
         <SettingsView
           account={account}

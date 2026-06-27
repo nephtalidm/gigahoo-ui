@@ -277,6 +277,7 @@ export interface PlanData {
   priceMonthly: number;
   includedMinutes: number;
   hasOptionalFeatures: boolean;
+  displayOrder: number;
   features: string[];
 }
 
