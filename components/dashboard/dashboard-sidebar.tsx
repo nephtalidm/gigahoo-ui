@@ -27,12 +27,12 @@ import {
 
 const navItems = [
   { labelKey: "dashboard.navOverview", href: "/dashboard", icon: LayoutDashboard },
+  { labelKey: "dashboard.navSettings", href: "/dashboard/settings", icon: Settings },
   { labelKey: "dashboard.navVoiceAgent", href: "/dashboard/voice", icon: AudioLines },
   { labelKey: "dashboard.navCallHistory", href: "/dashboard/calls", icon: PhoneCall },
   { labelKey: "dashboard.navOptionalFeatures", href: "/dashboard/features", icon: Sparkles },
   { labelKey: "dashboard.navPlanBilling", href: "/dashboard/billing", icon: CreditCard },
   { labelKey: "dashboard.navNotifications", href: "/dashboard/notifications", icon: Bell },
-  { labelKey: "dashboard.navSettings", href: "/dashboard/settings", icon: Settings },
   { labelKey: "dashboard.navBilling", href: "/dashboard/billing-methods", icon: Wallet },
 ]
 
