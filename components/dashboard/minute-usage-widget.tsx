@@ -54,7 +54,7 @@ export function MinuteUsageWidget({
         </div>
       </div>
 
-      <div className="grid items-center gap-8 px-6 py-8 sm:px-8 md:grid-cols-[auto_1fr]">
+      <div className="grid items-center gap-8 px-6 py-8 sm:px-8 lg:grid-cols-[auto_1fr]">
         {/* Circular progress ring */}
         <div className="mx-auto flex items-center justify-center">
           <div className="relative" style={{ width: size, height: size }}>
