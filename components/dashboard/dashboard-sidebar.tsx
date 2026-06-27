@@ -8,7 +8,6 @@ import { BrandLogo } from "@/components/brand-logo"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { LanguageSwitcher } from "@/components/language-switcher"
-import { CountrySwitcher } from "@/components/country-switcher"
 import { getAccount, type AccountData } from "@/lib/api"
 import { useTranslation } from "@/contexts/language-context"
 import { useAuth } from "@/contexts/auth-context"
@@ -123,7 +122,6 @@ export function DashboardSidebar() {
               <BrandLogo />
             </div>
             <div className="flex flex-col gap-2 border-t border-border px-4 pt-4 pb-2">
-              <CountrySwitcher className="h-11 w-full data-[size=default]:h-11" />
               <LanguageSwitcher className="h-11 w-full data-[size=default]:h-11" />
             </div>
             <div className="px-4 pb-4 pt-1">
