@@ -12,10 +12,6 @@ const RINGING_MS = 1500
 const TYPING_MS = 800
 const MESSAGE_GAP_MS = 1000
 const HOLD_MS = 2500
-// Duration of the "connected" phase (2 assistant messages with a typing delay + gap,
-// 1 caller message with a gap, then the hold). The missed-calls countdown is spread
-// across this so it reaches 0 right as the loop ends.
-const CONNECTED_MS = 2 * (TYPING_MS + MESSAGE_GAP_MS) + MESSAGE_GAP_MS + HOLD_MS
 
 type CallPhase = "ringing" | "connected"
 
@@ -52,6 +48,8 @@ function useCallAnimation(messageCount: number, reducedMotion: boolean) {
   const [visibleCount, setVisibleCount] = useState(0)
   // Whether the typing indicator is showing (before an assistant message).
   const [typing, setTyping] = useState(false)
+  // True once the whole conversation has played — the call has wrapped up.
+  const [ended, setEnded] = useState(false)
   const timers = useRef<ReturnType<typeof setTimeout>[]>([])
 
   useEffect(() => {
@@ -59,6 +57,7 @@ function useCallAnimation(messageCount: number, reducedMotion: boolean) {
       setPhase("connected")
       setVisibleCount(messageCount)
       setTyping(false)
+      setEnded(false)
       return
     }
 
@@ -76,6 +75,7 @@ function useCallAnimation(messageCount: number, reducedMotion: boolean) {
       setPhase("ringing")
       setVisibleCount(0)
       setTyping(false)
+      setEnded(false)
 
       // Ringing -> connected.
       schedule(() => {
@@ -88,6 +88,8 @@ function useCallAnimation(messageCount: number, reducedMotion: boolean) {
     // indicator first. After the last message, hold then loop.
     const revealNext = (index: number) => {
       if (index >= messageCount) {
+        // Whole conversation played → mark the call ended, hold, then loop.
+        setEnded(true)
         schedule(runLoop, HOLD_MS)
         return
       }
@@ -111,7 +113,7 @@ function useCallAnimation(messageCount: number, reducedMotion: boolean) {
     return clearTimers
   }, [messageCount, reducedMotion])
 
-  return { phase, visibleCount, typing }
+  return { phase, visibleCount, typing, ended }
 }
 
 export function Hero() {
@@ -141,11 +143,20 @@ export function Hero() {
     { role: "assistant" as const, text: t("home.heroCardMsg1") },
     { role: "caller" as const, text: t("home.heroCardMsg2") },
     { role: "assistant" as const, text: t("home.heroCardMsg3") },
+    { role: "caller" as const, text: t("home.heroCardMsg4") },
+    { role: "assistant" as const, text: t("home.heroCardMsg5") },
+    { role: "caller" as const, text: t("home.heroCardMsg6") },
+    { role: "assistant" as const, text: t("home.heroCardMsg7") },
   ]
 
   const reducedMotion = usePrefersReducedMotion()
-  const { phase, visibleCount, typing } = useCallAnimation(messages.length, reducedMotion)
+  const { phase, visibleCount, typing, ended } = useCallAnimation(messages.length, reducedMotion)
   const connected = phase === "connected"
+
+  // Duration of the connected phase (typing+gap for each assistant message, gap for
+  // each caller message, plus the hold), so the missed-calls countdown spans one loop.
+  const connectedMs =
+    messages.reduce((sum, _m, i) => sum + (i % 2 === 0 ? TYPING_MS + MESSAGE_GAP_MS : MESSAGE_GAP_MS), 0) + HOLD_MS
 
   // Keep the newest message in view when the area overflows.
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -159,10 +170,11 @@ export function Hero() {
   useEffect(() => {
     if (reducedMotion) { setElapsed(8); return }
     if (!connected) { setElapsed(0); return }
+    if (ended) return // call wrapped up → freeze the timer at its final value
     setElapsed(1)
     const iv = setInterval(() => setElapsed((s) => s + 1), 1000)
     return () => clearInterval(iv)
-  }, [connected, reducedMotion])
+  }, [connected, ended, reducedMotion])
 
   // Missed-calls counter: drops from 120 to 0 once the call is answered,
   // resetting on each loop — the "we catch every call" payoff.
@@ -178,9 +190,9 @@ export function Hero() {
       current = Math.max(0, current - 1)
       setMissed(current)
       if (current === 0) clearInterval(iv)
-    }, CONNECTED_MS / 120)
+    }, connectedMs / 120)
     return () => clearInterval(iv)
-  }, [connected, reducedMotion])
+  }, [connected, reducedMotion, connectedMs])
 
   return (
     <section className="relative overflow-hidden border-b border-border">
@@ -247,15 +259,21 @@ export function Hero() {
                     {connected && <> · {formatTime(elapsed)}</>}
                   </p>
                 </div>
-                <span
-                  className={`ml-auto flex items-center gap-1.5 rounded-full bg-accent px-2.5 py-1 text-xs font-medium text-accent-foreground transition-opacity duration-300 ${
-                    connected ? "opacity-100" : "opacity-0"
-                  }`}
-                  aria-hidden={!connected}
-                >
-                  <span className="h-2 w-2 rounded-full bg-primary motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
-                  {t("home.heroCardLive")}
-                </span>
+                {ended ? (
+                  <span className="ml-auto flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">
+                    {t("home.heroCardEnded")}
+                  </span>
+                ) : (
+                  <span
+                    className={`ml-auto flex items-center gap-1.5 rounded-full bg-accent px-2.5 py-1 text-xs font-medium text-accent-foreground transition-opacity duration-300 ${
+                      connected ? "opacity-100" : "opacity-0"
+                    }`}
+                    aria-hidden={!connected}
+                  >
+                    <span className="h-1 w-1 rounded-full bg-primary motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
+                    {t("home.heroCardLive")}
+                  </span>
+                )}
               </div>
 
               <div ref={scrollRef} className="mt-4 max-h-56 space-y-3 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">

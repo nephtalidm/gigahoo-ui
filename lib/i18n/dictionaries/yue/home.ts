@@ -18,6 +18,13 @@ const home = {
   heroCardMsg1: "你好，多謝你致電 Summit Plumbing！有咩可以幫到你？",
   heroCardMsg2: "我個熱水爐漏水，今日有冇人可以上嚟睇吓？",
   heroCardMsg3: "梗係得啦。可唔可以畀你個名同地址我，等我哋安排人手上門？",
+  heroCardMsg4: "好呀，我叫 James Carter，地址係 42 Maple Avenue。",
+  heroCardMsg5:
+    "收到——我已經幫你預約咗今日下晝3點嘅技師。等我同你核對一下：James Carter，42 Maple Avenue，熱水爐漏水。以上資料係咪都啱晒？",
+  heroCardMsg6: "係呀，啱晒。",
+  heroCardMsg7:
+    "好嘢，一切搞掂！我哋下晝3點見。多謝你致電 Summit Plumbing，祝你有美好嘅一日！",
+  heroCardEnded: "通話結束",
   heroStat1Value: "24/7",
   heroStat1Label: "全天候服務",
   heroStat2Value: "6+",

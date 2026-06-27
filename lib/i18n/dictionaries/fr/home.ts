@@ -18,6 +18,13 @@ const home = {
   heroCardMsg1: "Bonjour, merci d'appeler Plomberie Summit ! Comment puis-je vous aider aujourd'hui ?",
   heroCardMsg2: "Mon chauffe-eau fuit. Quelqu'un peut-il passer aujourd'hui ?",
   heroCardMsg3: "Bien sûr. Puis-je avoir votre nom et votre adresse afin que nous puissions envoyer quelqu'un ?",
+  heroCardMsg4: "Bien sûr, c'est James Carter, 42 Maple Avenue.",
+  heroCardMsg5:
+    "C'est noté — j'ai réservé un technicien pour aujourd'hui à 15 h. Laissez-moi confirmer : James Carter, 42 Maple Avenue, chauffe-eau qui fuit. Est-ce bien exact ?",
+  heroCardMsg6: "Oui, c'est exact.",
+  heroCardMsg7:
+    "Parfait, tout est réglé ! On se voit à 15 h. Merci d'avoir appelé Summit Plumbing, passez une excellente journée !",
+  heroCardEnded: "Appel terminé",
   heroStat1Value: "24/7",
   heroStat1Label: "Disponibilité",
   heroStat2Value: "6+",

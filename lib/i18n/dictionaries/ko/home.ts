@@ -18,6 +18,13 @@ const home = {
   heroCardMsg1: "안녕하세요, Summit Plumbing에 전화 주셔서 감사합니다! 무엇을 도와드릴까요?",
   heroCardMsg2: "온수기에서 물이 새고 있어요. 오늘 누가 와 줄 수 있나요?",
   heroCardMsg3: "물론입니다. 기사를 보내드릴 수 있도록 성함과 주소를 알려주시겠어요?",
+  heroCardMsg4: "네, James Carter이고 주소는 42 Maple Avenue입니다.",
+  heroCardMsg5:
+    "확인했습니다 — 오늘 오후 3시로 기사님을 예약해 드렸어요. 다시 한번 확인하겠습니다: James Carter, 42 Maple Avenue, 누수되는 온수기. 모두 맞으실까요?",
+  heroCardMsg6: "네, 맞습니다.",
+  heroCardMsg7:
+    "완벽합니다, 모든 준비가 끝났어요! 오후 3시에 뵙겠습니다. Summit Plumbing에 전화 주셔서 감사합니다 — 좋은 하루 되세요!",
+  heroCardEnded: "통화 종료",
   heroStat1Value: "24/7",
   heroStat1Label: "이용 가능 시간",
   heroStat2Value: "6+",

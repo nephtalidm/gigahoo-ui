@@ -18,6 +18,13 @@ const home = {
   heroCardMsg1: "您好，感谢致电 Summit Plumbing！请问有什么可以帮您？",
   heroCardMsg2: "我家的热水器漏水了。今天能派人过来吗？",
   heroCardMsg3: "当然可以。能告诉我您的姓名和地址吗？这样我们就能安排人员上门。",
+  heroCardMsg4: "好的，我是 James Carter，地址是 42 Maple Avenue。",
+  heroCardMsg5:
+    "好的——我已经为您预约了今天下午3点的技师。让我确认一下：James Carter，42 Maple Avenue，热水器漏水。以上信息都正确吗？",
+  heroCardMsg6: "对，没错。",
+  heroCardMsg7:
+    "太好了，都安排好了！我们下午3点见。感谢您致电 Summit Plumbing，祝您有美好的一天！",
+  heroCardEnded: "通话结束",
   heroStat1Value: "24/7",
   heroStat1Label: "全天候服务",
   heroStat2Value: "6+",
