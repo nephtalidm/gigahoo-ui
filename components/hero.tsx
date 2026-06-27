@@ -319,13 +319,13 @@ export function Hero() {
 
               {/* Live-call controls — between the "Incoming call" header and the conversation. */}
               <div className="mt-4 border-b border-border pb-4">
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                <div className="flex flex-col gap-2">
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                     disabled={liveActive}
                     aria-label={t("settings.businessCategory")}
-                    className="h-9 rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 sm:w-auto"
+                    className="h-9 w-full rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50"
                   >
                     {businessCategories.map((cat) => (
                       <option key={cat} value={cat}>
@@ -335,16 +335,16 @@ export function Hero() {
                   </select>
 
                   {live.status === "live" ? (
-                    <Button variant="destructive" className="h-9 sm:flex-1" onClick={() => live.stop()}>
+                    <Button variant="destructive" className="h-auto min-h-9 w-full whitespace-normal py-1.5 text-center leading-tight" onClick={() => live.stop()}>
                       {t("home.heroEndCall")}
                     </Button>
                   ) : live.status === "connecting" ? (
-                    <Button className="h-9 sm:flex-1" disabled>
+                    <Button className="h-auto min-h-9 w-full whitespace-normal py-1.5 text-center leading-tight" disabled>
                       <Loader2 className="h-4 w-4 animate-spin" />
                       {t("home.heroConnecting")}
                     </Button>
                   ) : (
-                    <Button className="h-9 sm:flex-1" onClick={() => live.start(category, "Serena")}>
+                    <Button className="h-auto min-h-9 w-full whitespace-normal py-1.5 text-center leading-tight" onClick={() => live.start(category, "Serena")}>
                       {t("home.heroTryLive")}
                     </Button>
                   )}
