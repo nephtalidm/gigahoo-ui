@@ -82,7 +82,10 @@ export function CodeBoxes({
           }}
           inputMode="numeric"
           autoComplete={i === 0 ? "one-time-code" : "off"}
-          maxLength={1}
+          // The first box is the OS autofill target (one-time-code). It must accept
+          // the WHOLE code so place() can spread it across the boxes — maxLength={1}
+          // would truncate the autofilled value to a single digit. Other boxes keep 1.
+          maxLength={i === 0 ? length : 1}
           autoFocus={autoFocus && i === 0}
           value={value[i] ?? ""}
           onChange={(e) => place(i, e.target.value)}

@@ -17,7 +17,15 @@ export function useSupportedCountries(): string[] {
     let cancelled = false
     getSupportedCountryCodes()
       .then((result) => {
-        if (!cancelled && result.length > 0) setCodes(result)
+        if (!cancelled && result.length > 0) {
+          // Order by the SUPPORTED_COUNTRY_CODES preference (Canada first), so the
+          // pickers list/default to Canada regardless of the API's row order.
+          const rank = (c: string) => {
+            const i = SUPPORTED_COUNTRY_CODES.indexOf(c)
+            return i === -1 ? SUPPORTED_COUNTRY_CODES.length : i
+          }
+          setCodes([...result].sort((a, b) => rank(a) - rank(b)))
+        }
       })
       .catch(() => {
         // Keep the settings fallback on error.

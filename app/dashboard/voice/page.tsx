@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { PageHeader } from "@/components/dashboard/page-header"
+import { Button } from "@/components/ui/button"
 import { getAccount, getSettings, updateVoiceSettings, generateVoiceSample } from "@/lib/api"
 import { useTranslation } from "@/contexts/language-context"
 import { cn } from "@/lib/utils"
@@ -222,15 +223,10 @@ export default function VoiceAgentPage() {
             {t("dashboard.voiceSaved")}
           </span>
         )}
-        <button
-          type="button"
-          onClick={save}
-          disabled={saving}
-          className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 disabled:opacity-60"
-        >
-          {saving && <Loader2 className="h-4 w-4 animate-spin" />}
-          {t("dashboard.save")}
-        </button>
+        <Button type="button" onClick={save} disabled={saving} className="h-11">
+          {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {t("settings.saveChanges")}
+        </Button>
       </div>
     </div>
   )

@@ -9,7 +9,6 @@ import { CodeBoxes } from "@/components/code-boxes"
 import { PhoneInput } from "@/components/phone-input"
 import { useAuth } from "@/contexts/auth-context"
 import { useTranslation } from "@/contexts/language-context"
-import { useDefaultPhoneCountry } from "@/hooks/use-default-phone-country"
 import { useSupportedCountries } from "@/hooks/use-supported-countries"
 import { verifyMagicLink, api, ApiError } from "@/lib/api"
 import { toE164 } from "@/lib/data"
@@ -48,16 +47,12 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
   const [mode, setMode] = useState<Mode>("menu")
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
-  const defaultPhoneCountry = useDefaultPhoneCountry()
   // Supported (served) countries come from the API (Country.IsSupported), with a
   // settings.ts fallback while loading.
   const supportedCodes = useSupportedCountries()
   const [phoneCountryPicked, setPhoneCountryPicked] = useState<string | null>(null)
-  // Clamp the geo-detected default to a supported country when the visitor isn't
-  // in one.
-  const phoneCountry =
-    phoneCountryPicked ??
-    (supportedCodes.includes(defaultPhoneCountry) ? defaultPhoneCountry : supportedCodes[0])
+  // Default to the first supported country (Canada) unless the user picks another.
+  const phoneCountry = phoneCountryPicked ?? supportedCodes[0]
   const [code, setCode] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
@@ -264,6 +259,15 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
   }, [code, loading, mode, emailSent, codeSent])
 
   if (mode === "menu") {
+    // Google sign-in is verifying (handleGoogle in flight) — show a spinner right
+    // away so the screen doesn't look frozen during the token exchange + redirect.
+    if (loading) {
+      return (
+        <div className="flex items-center justify-center py-16">
+          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        </div>
+      )
+    }
     return (
       <div className="flex flex-col gap-3">
         {error && <p className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">{error}</p>}
@@ -455,7 +459,7 @@ function ResendCode({
   t: (key: string) => string
 }) {
   return (
-    <div className="flex items-center justify-center gap-2 text-xs">
+    <div className="flex items-center justify-center gap-2 text-sm">
       <button
         type="button"
         onClick={onResend}

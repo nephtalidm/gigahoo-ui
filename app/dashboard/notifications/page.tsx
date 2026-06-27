@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { PageHeader } from "@/components/dashboard/page-header"
+import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import {
   getNotificationSettings,
@@ -15,6 +16,7 @@ export default function NotificationsPage() {
   const { t } = useTranslation()
   const [settings, setSettings] = useState<NotificationSettings | null>(null)
   const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
 
   useEffect(() => {
@@ -24,14 +26,18 @@ export default function NotificationsPage() {
       .finally(() => setLoading(false))
   }, [])
 
-  async function update(next: NotificationSettings) {
-    setSettings(next)
+  // Toggles update local state only; persistence happens on Save Changes.
+  async function save() {
+    if (!settings) return
+    setSaving(true)
     try {
-      await updateNotificationSettings(next)
+      await updateNotificationSettings(settings)
       setSaved(true)
       setTimeout(() => setSaved(false), 2000)
     } catch {
-      // Leave the optimistic toggle in place; the user can retry.
+      // Leave the current values in place so the user can retry.
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -50,13 +56,7 @@ export default function NotificationsPage() {
     <div className="flex flex-col gap-6">
       <PageHeader title={t("notifications.title")} description={t("notifications.description")} />
       {settings && (
-        <div className="relative rounded-2xl border border-border bg-card p-6 shadow-sm">
-          {saved && (
-            <span className="absolute top-2 right-6 flex items-center gap-1.5 text-sm text-emerald-600">
-              <CheckCircle2 className="h-4 w-4" />
-              {t("notifications.saved")}
-            </span>
-          )}
+        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
           <div className="flex items-center justify-between gap-4 rounded-lg border border-border p-4">
             <div className="min-w-0">
               <p className="text-sm font-medium text-foreground">{t("notifications.summaryLabel")}</p>
@@ -68,7 +68,7 @@ export default function NotificationsPage() {
                 <Switch
                   className="scale-125"
                   checked={settings.emailCallNotifications}
-                  onCheckedChange={(v) => update({ ...settings, emailCallNotifications: v })}
+                  onCheckedChange={(v) => setSettings({ ...settings, emailCallNotifications: v })}
                 />
               </div>
               <div className="flex flex-col items-center gap-2.5">
@@ -76,11 +76,25 @@ export default function NotificationsPage() {
                 <Switch
                   className="scale-125"
                   checked={settings.smsCallNotifications}
-                  onCheckedChange={(v) => update({ ...settings, smsCallNotifications: v })}
+                  onCheckedChange={(v) => setSettings({ ...settings, smsCallNotifications: v })}
                 />
               </div>
             </div>
           </div>
+        </div>
+      )}
+      {settings && (
+        <div className="flex items-center justify-end gap-3">
+          {saved && (
+            <span className="flex items-center gap-1.5 text-sm text-emerald-600">
+              <CheckCircle2 className="h-4 w-4" />
+              {t("notifications.saved")}
+            </span>
+          )}
+          <Button type="button" onClick={save} disabled={saving} className="h-11">
+            {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {t("settings.saveChanges")}
+          </Button>
         </div>
       )}
     </div>
