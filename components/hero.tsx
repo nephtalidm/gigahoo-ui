@@ -344,7 +344,7 @@ export function Hero() {
                       {t("home.heroConnecting")}
                     </Button>
                   ) : (
-                    <Button className="h-auto min-h-9 min-w-0 flex-1 whitespace-normal py-1.5 text-center text-xs leading-tight" onClick={() => live.start(category, "Serena", locale)}>
+                    <Button className="h-auto min-h-9 min-w-0 flex-1 whitespace-normal bg-black py-1.5 text-center text-xs leading-tight text-white hover:bg-black/90" onClick={() => live.start(category, "Serena", locale)}>
                       {t("home.heroTryLive")}
                     </Button>
                   )}
