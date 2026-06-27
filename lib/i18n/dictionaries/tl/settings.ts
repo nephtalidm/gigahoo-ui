@@ -15,8 +15,8 @@ const settings = {
   websiteUrlPlaceholder: "https://yourbusiness.com",
   forwardingPhone: "Numero ng Forwarding Phone",
   forwardingPhoneHint: "Pinamamahalaan ng Gigahoo ang numerong ito at hindi maaaring i-edit.",
-  websiteLanguage: "Wika ng Website",
-  websiteLanguageHint: "Ang wikang ginagamit sa buong dashboard mo.",
+  websiteLanguage: "Wika ng Account",
+  websiteLanguageHint: "Ang wikang ginagamit sa buong dashboard ng iyong account.",
 
   // Business address
   addressTitle: "Address ng Negosyo",

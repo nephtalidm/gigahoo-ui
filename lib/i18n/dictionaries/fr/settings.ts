@@ -15,8 +15,8 @@ const settings = {
   websiteUrlPlaceholder: "https://votreentreprise.com",
   forwardingPhone: "Numéro de transfert d'appel",
   forwardingPhoneHint: "Ce numéro est géré par Gigahoo et ne peut pas être modifié.",
-  websiteLanguage: "Langue du site",
-  websiteLanguageHint: "La langue utilisée dans tout votre tableau de bord.",
+  websiteLanguage: "Langue du compte",
+  websiteLanguageHint: "La langue utilisée dans tout le tableau de bord de votre compte.",
 
   // Business address
   addressTitle: "Adresse de l'entreprise",

@@ -15,8 +15,8 @@ const settings = {
   websiteUrlPlaceholder: "https://yourbusiness.com",
   forwardingPhone: "رقم هاتف إعادة التوجيه",
   forwardingPhoneHint: "هذا الرقم تُديره Gigahoo ولا يمكن تعديله.",
-  websiteLanguage: "لغة الموقع",
-  websiteLanguageHint: "اللغة المستخدمة في جميع أنحاء لوحة التحكم.",
+  websiteLanguage: "لغة الحساب",
+  websiteLanguageHint: "اللغة المستخدمة في جميع أنحاء لوحة تحكم حسابك.",
 
   // Business address
   addressTitle: "عنوان النشاط التجاري",

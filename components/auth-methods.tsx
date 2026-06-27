@@ -360,7 +360,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
                 placeholder={t("auth.emailPlaceholder")}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className={cn(emailInvalid && "border-destructive focus-visible:ring-destructive")}
+                className={cn("h-12", emailInvalid && "border-destructive focus-visible:ring-destructive")}
                 aria-invalid={emailInvalid}
                 aria-describedby={emailInvalid ? "email-error" : undefined}
               />
@@ -368,7 +368,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
                 <p id="email-error" className="text-xs text-destructive">{t("auth.invalidEmail")}</p>
               )}
             </div>
-            <Button type="submit" size="lg" disabled={loading} className="w-full">
+            <Button type="submit" size="lg" disabled={loading} className="h-12 w-full">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {t("auth.continue")}
             </Button>
@@ -387,7 +387,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
                 placeholder={t("auth.passwordPlaceholder")}
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); if (error) setError(null) }}
-                className={cn("pr-10", passwordInvalid && "border-destructive focus-visible:ring-destructive")}
+                className={cn("h-12 pr-10", passwordInvalid && "border-destructive focus-visible:ring-destructive")}
                 aria-invalid={passwordInvalid}
                 aria-describedby={passwordInvalid ? "login-password-error" : undefined}
               />
@@ -411,7 +411,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
               {t("auth.signingInAs")}<span className="font-medium text-foreground">{email}</span>
             </p>
           </div>
-          <Button type="submit" size="lg" disabled={loading} className="w-full">
+          <Button type="submit" size="lg" disabled={loading} className="h-12 w-full">
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {t("auth.signIn")}
           </Button>

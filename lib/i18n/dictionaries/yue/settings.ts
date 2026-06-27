@@ -15,8 +15,8 @@ const settings = {
   websiteUrlPlaceholder: "https://yourbusiness.com",
   forwardingPhone: "轉駁電話號碼",
   forwardingPhoneHint: "呢個號碼由 Gigahoo 管理，唔可以修改。",
-  websiteLanguage: "網站語言",
-  websiteLanguageHint: "成個儀表板使用嘅語言。",
+  websiteLanguage: "帳戶語言",
+  websiteLanguageHint: "你個帳戶儀表板使用嘅語言。",
 
   // Business address
   addressTitle: "商業地址",

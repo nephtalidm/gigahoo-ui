@@ -242,7 +242,7 @@ export function BillingView({
                   disabled={isCurrent || isLoading}
                   variant={isCurrent ? "outline" : isUpgrade ? "default" : "outline"}
                   size="lg"
-                  className="mt-8 w-full"
+                  className="mt-8 h-12 w-full"
                 >
                   {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   {isCurrent ? t("billing.currentPlanBadge") : isUpgrade ? t("billing.upgradeTo", { plan: displayName }) : t("billing.switchTo", { plan: displayName })}

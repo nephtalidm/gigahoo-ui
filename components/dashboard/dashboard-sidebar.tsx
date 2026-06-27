@@ -99,13 +99,25 @@ function UserInfo() {
   }, [setLocale])
 
   return (
-    <div className="min-w-0 px-2">
-      <p className="truncate text-sm font-medium text-foreground">
-        {account?.businessName ?? t("dashboard.loading")}
-      </p>
-      <p className="truncate text-xs text-muted-foreground">
-        {account ? t("dashboard.planLabel", { plan: account.plan }) : ""}
-      </p>
+    <div className="flex min-w-0 items-center gap-2.5 px-2">
+      {account?.countryCode && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={`https://flagcdn.com/${account.countryCode.toLowerCase()}.svg`}
+          alt=""
+          width={24}
+          height={18}
+          className="h-[18px] w-[24px] shrink-0 rounded-[2px] object-cover shadow-sm ring-1 ring-black/5"
+        />
+      )}
+      <div className="min-w-0">
+        <p className="truncate text-sm font-medium text-foreground">
+          {account?.businessName ?? t("dashboard.loading")}
+        </p>
+        <p className="truncate text-xs text-muted-foreground">
+          {account ? t("dashboard.planLabel", { plan: account.plan }) : ""}
+        </p>
+      </div>
     </div>
   )
 }
