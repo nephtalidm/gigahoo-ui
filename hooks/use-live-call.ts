@@ -44,6 +44,8 @@ export function useLiveCall() {
   const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null)
   // Schedule clock for back-to-back playback buffers.
   const nextStartRef = useRef(0)
+  // Active playback sources, so a barge-in can stop them instantly.
+  const sourcesRef = useRef<AudioBufferSourceNode[]>([])
   // Whether the current agent turn is still streaming (append deltas) or done.
   const agentTurnOpenRef = useRef(false)
 
@@ -69,6 +71,16 @@ export function useLiveCall() {
     setStatus((s) => (s === "error" ? s : "ended"))
   }, [])
 
+  // Barge-in: stop and flush any agent audio currently playing or queued.
+  const stopAgentAudio = useCallback(() => {
+    for (const s of sourcesRef.current) {
+      try { s.onended = null; s.stop() } catch {}
+    }
+    sourcesRef.current = []
+    if (playCtxRef.current) nextStartRef.current = playCtxRef.current.currentTime
+    setAgentSpeaking(false)
+  }, [])
+
   const playPcm = useCallback((pcm: Int16Array) => {
     const ctx = playCtxRef.current
     if (!ctx || pcm.length === 0) return
@@ -81,8 +93,10 @@ export function useLiveCall() {
     const startAt = Math.max(ctx.currentTime + 0.02, nextStartRef.current)
     src.start(startAt)
     nextStartRef.current = startAt + buf.duration
+    sourcesRef.current.push(src)
     setAgentSpeaking(true)
     src.onended = () => {
+      sourcesRef.current = sourcesRef.current.filter((s) => s !== src)
       // Last buffer in the queue finished -> agent stopped speaking.
       if (nextStartRef.current <= (playCtxRef.current?.currentTime ?? 0) + 0.06) {
         setAgentSpeaking(false)
@@ -104,10 +118,14 @@ export function useLiveCall() {
       })
     } else if (msg.type === "agent_done") {
       agentTurnOpenRef.current = false
+    } else if (msg.type === "speech_started") {
+      stopAgentAudio() // barge-in: caller started talking — cut the agent off immediately
+    } else if (msg.type === "call_ended") {
+      stop()
     } else if (msg.type === "error") {
       setStatus("error")
     }
-  }, [])
+  }, [stopAgentAudio, stop])
 
   const start = useCallback(
     async (category: string, voice: string) => {
