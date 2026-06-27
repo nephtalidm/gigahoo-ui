@@ -35,6 +35,21 @@ const billing = {
   checkoutFailed: "Не удалось начать оформление оплаты",
   portalFailed: "Не удалось открыть платёжный портал",
   tryAgain: "Пожалуйста, повторите попытку.",
+  // Payment methods (embedded Stripe Elements)
+  paymentMethodsTitle: "Способы оплаты",
+  paymentMethodsDescription: "Добавляйте и управляйте картами, которые используются для оплаты подписки.",
+  addPaymentMethod: "Добавить способ оплаты",
+  addPaymentMethodHint: "Безопасно добавьте новую карту. Ваши данные обрабатывает наш платёжный провайдер.",
+  save: "Сохранить карту",
+  cancel: "Отмена",
+  remove: "Удалить",
+  removeConfirm: "Удалить этот способ оплаты?",
+  noPaymentMethods: "Способы оплаты ещё не сохранены.",
+  cardSaved: "Карта сохранена",
+  cardExpires: "Действует до {date}",
+  cardError: "Не удалось сохранить карту. Пожалуйста, попробуйте ещё раз.",
+  addCardFailed: "Не удалось начать добавление карты. Пожалуйста, попробуйте ещё раз.",
+  providerUnsupported: "Этот платёжный провайдер пока не поддерживается.",
 }
 
 export default billing

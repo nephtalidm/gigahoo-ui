@@ -35,6 +35,21 @@ const billing = {
   checkoutFailed: "Failed to start checkout",
   portalFailed: "Failed to open billing portal",
   tryAgain: "Please try again.",
+  // Payment methods (embedded Stripe Elements)
+  paymentMethodsTitle: "Payment Methods",
+  paymentMethodsDescription: "Add and manage the cards used to pay for your subscription.",
+  addPaymentMethod: "Add payment method",
+  addPaymentMethodHint: "Securely add a new card. Your details are handled by our payment provider.",
+  save: "Save card",
+  cancel: "Cancel",
+  remove: "Remove",
+  removeConfirm: "Remove this payment method?",
+  noPaymentMethods: "No payment methods saved yet.",
+  cardSaved: "Card saved",
+  cardExpires: "Expires {date}",
+  cardError: "Could not save your card. Please try again.",
+  addCardFailed: "Could not start adding a card. Please try again.",
+  providerUnsupported: "This payment provider isn't supported yet.",
 }
 
 export default billing

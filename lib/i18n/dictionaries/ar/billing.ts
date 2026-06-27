@@ -35,6 +35,21 @@ const billing = {
   checkoutFailed: "فشل بدء عملية الدفع",
   portalFailed: "فشل فتح بوابة الفوترة",
   tryAgain: "يرجى المحاولة مرة أخرى.",
+  // Payment methods (embedded Stripe Elements)
+  paymentMethodsTitle: "طرق الدفع",
+  paymentMethodsDescription: "أضف وأدر البطاقات المستخدمة لدفع اشتراكك.",
+  addPaymentMethod: "إضافة طريقة دفع",
+  addPaymentMethodHint: "أضف بطاقة جديدة بأمان. تتم معالجة بياناتك من قبل مزوّد الدفع لدينا.",
+  save: "حفظ البطاقة",
+  cancel: "إلغاء",
+  remove: "إزالة",
+  removeConfirm: "إزالة طريقة الدفع هذه؟",
+  noPaymentMethods: "لا توجد طرق دفع محفوظة بعد.",
+  cardSaved: "تم حفظ البطاقة",
+  cardExpires: "تنتهي في {date}",
+  cardError: "تعذّر حفظ بطاقتك. يرجى المحاولة مرة أخرى.",
+  addCardFailed: "تعذّر بدء إضافة بطاقة. يرجى المحاولة مرة أخرى.",
+  providerUnsupported: "مزوّد الدفع هذا غير مدعوم بعد.",
 }
 
 export default billing

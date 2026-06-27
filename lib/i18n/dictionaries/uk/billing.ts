@@ -35,6 +35,21 @@ const billing = {
   checkoutFailed: "Не вдалося розпочати оплату",
   portalFailed: "Не вдалося відкрити платіжний портал",
   tryAgain: "Будь ласка, спробуйте ще раз.",
+  // Payment methods (embedded Stripe Elements)
+  paymentMethodsTitle: "Способи оплати",
+  paymentMethodsDescription: "Додавайте та керуйте картками, які використовуються для оплати підписки.",
+  addPaymentMethod: "Додати спосіб оплати",
+  addPaymentMethodHint: "Безпечно додайте нову картку. Ваші дані обробляє наш платіжний провайдер.",
+  save: "Зберегти картку",
+  cancel: "Скасувати",
+  remove: "Видалити",
+  removeConfirm: "Видалити цей спосіб оплати?",
+  noPaymentMethods: "Способи оплати ще не збережено.",
+  cardSaved: "Картку збережено",
+  cardExpires: "Діє до {date}",
+  cardError: "Не вдалося зберегти вашу картку. Будь ласка, спробуйте ще раз.",
+  addCardFailed: "Не вдалося розпочати додавання картки. Будь ласка, спробуйте ще раз.",
+  providerUnsupported: "Цей платіжний провайдер поки що не підтримується.",
 }
 
 export default billing

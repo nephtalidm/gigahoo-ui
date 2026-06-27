@@ -35,6 +35,21 @@ const billing = {
   checkoutFailed: "चेकआउट शुरू करने में विफल",
   portalFailed: "बिलिंग पोर्टल खोलने में विफल",
   tryAgain: "कृपया पुनः प्रयास करें।",
+  // Payment methods (embedded Stripe Elements)
+  paymentMethodsTitle: "भुगतान के तरीके",
+  paymentMethodsDescription: "अपनी सदस्यता का भुगतान करने के लिए उपयोग किए जाने वाले कार्ड जोड़ें और प्रबंधित करें।",
+  addPaymentMethod: "भुगतान विधि जोड़ें",
+  addPaymentMethodHint: "नया कार्ड सुरक्षित रूप से जोड़ें। आपकी जानकारी हमारे भुगतान प्रदाता द्वारा संभाली जाती है।",
+  save: "कार्ड सहेजें",
+  cancel: "रद्द करें",
+  remove: "हटाएँ",
+  removeConfirm: "इस भुगतान विधि को हटाएँ?",
+  noPaymentMethods: "अभी तक कोई भुगतान विधि सहेजी नहीं गई है।",
+  cardSaved: "कार्ड सहेजा गया",
+  cardExpires: "समाप्ति {date}",
+  cardError: "आपका कार्ड सहेजा नहीं जा सका। कृपया पुनः प्रयास करें।",
+  addCardFailed: "कार्ड जोड़ना शुरू नहीं किया जा सका। कृपया पुनः प्रयास करें।",
+  providerUnsupported: "यह भुगतान प्रदाता अभी समर्थित नहीं है।",
 }
 
 export default billing

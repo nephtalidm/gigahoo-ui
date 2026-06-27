@@ -35,6 +35,21 @@ const billing = {
   checkoutFailed: "Échec du démarrage du paiement",
   portalFailed: "Échec de l'ouverture du portail de facturation",
   tryAgain: "Veuillez réessayer.",
+  // Payment methods (embedded Stripe Elements)
+  paymentMethodsTitle: "Moyens de paiement",
+  paymentMethodsDescription: "Ajoutez et gérez les cartes utilisées pour payer votre abonnement.",
+  addPaymentMethod: "Ajouter un moyen de paiement",
+  addPaymentMethodHint: "Ajoutez une carte en toute sécurité. Vos données sont traitées par notre prestataire de paiement.",
+  save: "Enregistrer la carte",
+  cancel: "Annuler",
+  remove: "Supprimer",
+  removeConfirm: "Supprimer ce moyen de paiement ?",
+  noPaymentMethods: "Aucun moyen de paiement enregistré pour le moment.",
+  cardSaved: "Carte enregistrée",
+  cardExpires: "Expire le {date}",
+  cardError: "Impossible d'enregistrer votre carte. Veuillez réessayer.",
+  addCardFailed: "Impossible de lancer l'ajout d'une carte. Veuillez réessayer.",
+  providerUnsupported: "Ce prestataire de paiement n'est pas encore pris en charge.",
 }
 
 export default billing

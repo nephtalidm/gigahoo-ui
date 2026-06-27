@@ -17,6 +17,7 @@ import {
   PhoneCall,
   Sparkles,
   CreditCard,
+  Wallet,
   Bell,
   AudioLines,
   Settings,
@@ -32,6 +33,7 @@ const navItems = [
   { labelKey: "dashboard.navPlanBilling", href: "/dashboard/billing", icon: CreditCard },
   { labelKey: "dashboard.navNotifications", href: "/dashboard/notifications", icon: Bell },
   { labelKey: "dashboard.navSettings", href: "/dashboard/settings", icon: Settings },
+  { labelKey: "dashboard.navBilling", href: "/dashboard/billing-methods", icon: Wallet },
 ]
 
 function NavLinks({ onNavigate }: { onNavigate?: () => void }) {

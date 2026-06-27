@@ -35,6 +35,21 @@ const billing = {
   checkoutFailed: "No se pudo iniciar el pago",
   portalFailed: "No se pudo abrir el portal de facturación",
   tryAgain: "Inténtalo de nuevo.",
+  // Payment methods (embedded Stripe Elements)
+  paymentMethodsTitle: "Métodos de pago",
+  paymentMethodsDescription: "Agrega y administra las tarjetas que usas para pagar tu suscripción.",
+  addPaymentMethod: "Agregar método de pago",
+  addPaymentMethodHint: "Agrega una tarjeta de forma segura. Tus datos los gestiona nuestro proveedor de pagos.",
+  save: "Guardar tarjeta",
+  cancel: "Cancelar",
+  remove: "Eliminar",
+  removeConfirm: "¿Eliminar este método de pago?",
+  noPaymentMethods: "Aún no hay métodos de pago guardados.",
+  cardSaved: "Tarjeta guardada",
+  cardExpires: "Vence {date}",
+  cardError: "No se pudo guardar tu tarjeta. Inténtalo de nuevo.",
+  addCardFailed: "No se pudo iniciar el proceso para agregar una tarjeta. Inténtalo de nuevo.",
+  providerUnsupported: "Este proveedor de pagos aún no es compatible.",
 }
 
 export default billing

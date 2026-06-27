@@ -35,6 +35,21 @@ const billing = {
   checkoutFailed: "شروع فرآیند پرداخت ناموفق بود",
   portalFailed: "باز کردن پورتال صورت‌حساب ناموفق بود",
   tryAgain: "لطفاً دوباره تلاش کنید.",
+  // Payment methods (embedded Stripe Elements)
+  paymentMethodsTitle: "روش‌های پرداخت",
+  paymentMethodsDescription: "کارت‌هایی را که برای پرداخت اشتراک خود استفاده می‌کنید اضافه و مدیریت کنید.",
+  addPaymentMethod: "افزودن روش پرداخت",
+  addPaymentMethodHint: "یک کارت جدید را به‌صورت ایمن اضافه کنید. اطلاعات شما توسط ارائه‌دهنده پرداخت ما مدیریت می‌شود.",
+  save: "ذخیره کارت",
+  cancel: "لغو",
+  remove: "حذف",
+  removeConfirm: "این روش پرداخت حذف شود؟",
+  noPaymentMethods: "هنوز هیچ روش پرداختی ذخیره نشده است.",
+  cardSaved: "کارت ذخیره شد",
+  cardExpires: "انقضا {date}",
+  cardError: "ذخیره کارت شما ممکن نشد. لطفاً دوباره تلاش کنید.",
+  addCardFailed: "شروع افزودن کارت ممکن نشد. لطفاً دوباره تلاش کنید.",
+  providerUnsupported: "این ارائه‌دهنده پرداخت هنوز پشتیبانی نمی‌شود.",
 }
 
 export default billing

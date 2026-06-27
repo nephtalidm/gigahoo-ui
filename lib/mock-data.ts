@@ -20,6 +20,7 @@ export const mockAccount: AccountData = {
   postalCode: "94102",
   country: "United States",
   countryId: 1,
+  countryCode: "US",
   plan: "Starter",
   planId: 2,
   includedMinutes: 250,

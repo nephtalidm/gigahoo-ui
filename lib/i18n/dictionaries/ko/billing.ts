@@ -35,6 +35,21 @@ const billing = {
   checkoutFailed: "결제 시작에 실패했습니다",
   portalFailed: "결제 포털을 여는 데 실패했습니다",
   tryAgain: "다시 시도해 주세요.",
+  // Payment methods (embedded Stripe Elements)
+  paymentMethodsTitle: "결제 수단",
+  paymentMethodsDescription: "구독 결제에 사용되는 카드를 추가하고 관리하세요.",
+  addPaymentMethod: "결제 수단 추가",
+  addPaymentMethodHint: "새 카드를 안전하게 추가하세요. 고객님의 정보는 결제 제공업체가 처리합니다.",
+  save: "카드 저장",
+  cancel: "취소",
+  remove: "삭제",
+  removeConfirm: "이 결제 수단을 삭제할까요?",
+  noPaymentMethods: "아직 저장된 결제 수단이 없습니다.",
+  cardSaved: "카드가 저장되었습니다",
+  cardExpires: "만료 {date}",
+  cardError: "카드를 저장할 수 없습니다. 다시 시도해 주세요.",
+  addCardFailed: "카드 추가를 시작할 수 없습니다. 다시 시도해 주세요.",
+  providerUnsupported: "이 결제 제공업체는 아직 지원되지 않습니다.",
 }
 
 export default billing

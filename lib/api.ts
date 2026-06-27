@@ -109,6 +109,7 @@ export interface AccountData {
   postalCode: string | null;
   country: string;
   countryId: number;
+  countryCode: string;
   plan: string;
   planId: number;
   includedMinutes: number;
@@ -332,6 +333,39 @@ export function getInvoices() {
 
 export function createBillingPortal() {
   return api.post<{ url: string }>("/api/billing/portal");
+}
+
+// ── Payment methods (Stripe Elements, embedded in the dashboard) ──
+
+export interface SetupIntent {
+  provider: string;
+  clientSecret: string;
+}
+
+export interface PaymentMethod {
+  id: string;
+  brand: string;
+  last4: string;
+  expMonth: number;
+  expYear: number;
+  provider: string;
+}
+
+// Creates a provider SetupIntent so the dashboard can collect & save a card
+// with Stripe Elements. The returned clientSecret is passed to <Elements>.
+export function createSetupIntent() {
+  return api.post<SetupIntent>("/api/billing/setup-intent");
+}
+
+export function getPaymentMethods() {
+  return api.get<PaymentMethod[]>("/api/billing/payment-methods");
+}
+
+export function removePaymentMethod(id: string, provider: string) {
+  return apiRequest<void>(
+    `/api/billing/payment-methods/${encodeURIComponent(id)}?provider=${encodeURIComponent(provider)}`,
+    { method: "DELETE" },
+  );
 }
 
 // ── Feature Settings ──

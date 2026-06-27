@@ -35,6 +35,21 @@ const billing = {
   checkoutFailed: "開始結帳失敗",
   portalFailed: "開啟帳單入口失敗",
   tryAgain: "請再試一次。",
+  // Payment methods (embedded Stripe Elements)
+  paymentMethodsTitle: "付款方式",
+  paymentMethodsDescription: "新增同管理用嚟支付訂閱嘅信用卡。",
+  addPaymentMethod: "新增付款方式",
+  addPaymentMethodHint: "安全噉新增一張新卡。你嘅資料由我哋嘅付款服務商處理。",
+  save: "儲存卡片",
+  cancel: "取消",
+  remove: "移除",
+  removeConfirm: "移除呢個付款方式？",
+  noPaymentMethods: "仲未儲存任何付款方式。",
+  cardSaved: "卡片已儲存",
+  cardExpires: "有效期至 {date}",
+  cardError: "無法儲存你嘅卡片。請再試一次。",
+  addCardFailed: "無法開始新增卡片。請再試一次。",
+  providerUnsupported: "暫時未支援呢個付款服務商。",
 }
 
 export default billing

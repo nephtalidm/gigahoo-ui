@@ -35,6 +35,21 @@ const billing = {
   checkoutFailed: "结账启动失败",
   portalFailed: "计费门户打开失败",
   tryAgain: "请重试。",
+  // Payment methods (embedded Stripe Elements)
+  paymentMethodsTitle: "支付方式",
+  paymentMethodsDescription: "添加并管理用于支付订阅的银行卡。",
+  addPaymentMethod: "添加支付方式",
+  addPaymentMethodHint: "安全地添加新卡。您的信息由我们的支付服务商处理。",
+  save: "保存卡片",
+  cancel: "取消",
+  remove: "移除",
+  removeConfirm: "移除此支付方式？",
+  noPaymentMethods: "尚未保存任何支付方式。",
+  cardSaved: "卡片已保存",
+  cardExpires: "有效期至 {date}",
+  cardError: "无法保存您的卡片。请重试。",
+  addCardFailed: "无法开始添加卡片。请重试。",
+  providerUnsupported: "尚不支持此支付服务商。",
 }
 
 export default billing

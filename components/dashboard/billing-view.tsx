@@ -11,6 +11,7 @@ import {
   changePlan,
   createBillingPortal,
   createCheckout,
+  getAccount,
   getPublicPrices,
   type BillingSummary,
   type PlanData,
@@ -32,15 +33,10 @@ export function BillingView({
 }) {
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null)
   const [portalLoading, setPortalLoading] = useState(false)
-  // Billing currency for the plan amounts. The summary/plan data carries no
-  // currency, so (like the homepage Pricing) resolve it from the visitor's geo
-  // country (Country.Currency via the API). Initialized from the NEXT_CURRENCY
-  // cookie so it renders immediately without a flicker.
-  const [currency, setCurrency] = useState<string | null>(() =>
-    typeof document !== "undefined"
-      ? (document.cookie.match(/(?:^|;\s*)NEXT_CURRENCY=([^;]+)/)?.[1] ?? null)
-      : null,
-  )
+  // Billing currency/amounts follow the ACCOUNT's country (where they signed up),
+  // NOT the top-menu country/language switcher. Resolved from account.countryCode
+  // via the per-currency public-prices endpoint (Country.Currency + PlanPrice).
+  const [currency, setCurrency] = useState<string | null>(null)
   // Per-currency DB plan amounts keyed by plan slug (e.g. { Free: "$0",
   // Starter: "$49", Business: "$499" }) — the SAME source the homepage Pricing
   // uses, so logged-in users see prices matching their currency/the homepage
@@ -50,20 +46,17 @@ export function BillingView({
   const { t } = useTranslation()
 
   useEffect(() => {
-    // Resolve the visitor's geo country the same way the homepage Pricing does
-    // (NEXT_COUNTRY cookie) and fetch the per-currency public prices once.
-    const country = (document.cookie.match(/(?:^|;\s*)NEXT_COUNTRY=([^;]+)/)?.[1] ?? "").toUpperCase()
-    getPublicPrices(country)
+    // Tie plan prices/currency to the account's own country (not the switcher):
+    // fetch the account, then the per-currency public prices for its country.
+    getAccount()
+      .then((account) => getPublicPrices((account.countryCode || "").toUpperCase()))
       .then((data) => {
         const map: Record<string, string> = {}
         for (const p of data.plans) {
           map[p.slug] = `$${Math.round(p.amount)}`
         }
         setPrices(map)
-        if (data.currency) {
-          setCurrency(data.currency)
-          document.cookie = `NEXT_CURRENCY=${data.currency};path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`
-        }
+        if (data.currency) setCurrency(data.currency)
       })
       .catch(() => {})
   }, [])

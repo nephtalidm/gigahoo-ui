@@ -35,6 +35,21 @@ const billing = {
   checkoutFailed: "チェックアウトの開始に失敗しました",
   portalFailed: "請求ポータルを開けませんでした",
   tryAgain: "もう一度お試しください。",
+  // Payment methods (embedded Stripe Elements)
+  paymentMethodsTitle: "お支払い方法",
+  paymentMethodsDescription: "サブスクリプションの支払いに使用するカードを追加・管理します。",
+  addPaymentMethod: "お支払い方法を追加",
+  addPaymentMethodHint: "新しいカードを安全に追加します。お客様の情報は決済プロバイダーが処理します。",
+  save: "カードを保存",
+  cancel: "キャンセル",
+  remove: "削除",
+  removeConfirm: "このお支払い方法を削除しますか？",
+  noPaymentMethods: "保存されたお支払い方法はまだありません。",
+  cardSaved: "カードを保存しました",
+  cardExpires: "有効期限 {date}",
+  cardError: "カードを保存できませんでした。もう一度お試しください。",
+  addCardFailed: "カードの追加を開始できませんでした。もう一度お試しください。",
+  providerUnsupported: "この決済プロバイダーはまだサポートされていません。",
 }
 
 export default billing
