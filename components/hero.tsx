@@ -195,7 +195,7 @@ export function Hero() {
   return (
     <section className="relative overflow-hidden border-b border-border">
       <div className="mx-auto max-w-6xl px-4 pt-8 pb-8 sm:px-6 sm:pt-12 sm:pb-12 lg:pt-14 lg:pb-14">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <div className="grid items-stretch gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="flex flex-col items-start">
             <span className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
               <span className="flex h-1.5 w-1.5 rounded-full bg-primary" />
@@ -240,8 +240,10 @@ export function Hero() {
             </ul>
           </div>
 
-          <div className="relative">
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+          <div className="relative flex flex-col">
+            {/* Spacer so the card's top lines up with the H1 (below the badge) on the 2-col layout. */}
+            <div aria-hidden className="hidden lg:block lg:h-[3.25rem]" />
+            <div className="flex flex-1 flex-col rounded-2xl border border-border bg-card p-6 shadow-sm">
               <div className="flex items-center gap-3 border-b border-border pb-4">
                 <span
                   className={`flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground ${
@@ -278,7 +280,7 @@ export function Hero() {
                   (mt-auto) and auto-scroll to the newest; scrollbar hidden. */}
               <div
                 ref={scrollRef}
-                className="mt-4 flex h-56 flex-col overflow-y-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                className="mt-4 flex h-56 flex-col overflow-y-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:h-auto lg:min-h-0 lg:flex-1"
               >
                 <div className="mt-auto space-y-3">
                   {messages.slice(0, visibleCount).map((m, i) => {
