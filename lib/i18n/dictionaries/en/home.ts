@@ -20,10 +20,10 @@ const home = {
   heroCardMsg3: "Absolutely. Can I grab your name and address so we can send someone out?",
   heroCardMsg4: "Sure, it's James Carter, 42 Maple Avenue.",
   heroCardMsg5:
-    "Got it — I've booked a technician for 3 PM today. Let me confirm: James Carter, 42 Maple Avenue, leaking water heater. Is that all correct?",
+    "Got it — let me confirm I have this right: James Carter, 42 Maple Avenue, leaking water heater. Is that all correct?",
   heroCardMsg6: "Yes, that's right.",
   heroCardMsg7:
-    "Perfect, you're all set! We'll see you at 3 PM. Thanks for calling Summit Plumbing — have a great day!",
+    "Perfect, you're all set! I'll get this to our team right away. Thanks for calling Summit Plumbing — have a great day!",
   heroCardEnded: "Call ended",
   heroStat1Value: "24/7",
   heroStat1Label: "Availability",
