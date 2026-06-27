@@ -45,6 +45,7 @@ const auth = {
 
   // resend code
   resendCode: "Надіслати код повторно",
+  resendInSeconds: "Повторне надсилання через {seconds} с",
   codeSent: "Код надіслано",
 
   // validation / errors

@@ -65,6 +65,7 @@ const auth = {
   loading: "불러오는 중…",
   signInTitle: "Gigahoo에 로그인",
   resendCode: "코드 재전송",
+  resendInSeconds: "{seconds}초 후 재전송",
   codeSent: "코드가 전송되었습니다",
 }
 

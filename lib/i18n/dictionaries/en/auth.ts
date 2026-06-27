@@ -45,6 +45,7 @@ const auth = {
 
   // resend code
   resendCode: "Resend code",
+  resendInSeconds: "Resend in {seconds}s",
   codeSent: "Code sent",
 
   // validation / errors

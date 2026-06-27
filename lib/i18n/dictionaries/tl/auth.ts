@@ -45,6 +45,7 @@ const auth = {
 
   // resend code
   resendCode: "Magpadalang muli ng code",
+  resendInSeconds: "Ipadalang muli sa {seconds}s",
   codeSent: "Naipadala ang code",
 
   // validation / errors

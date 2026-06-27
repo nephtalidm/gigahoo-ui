@@ -65,6 +65,7 @@ const auth = {
   loading: "読み込み中…",
   signInTitle: "Gigahooにログイン",
   resendCode: "コードを再送信",
+  resendInSeconds: "{seconds}秒後に再送信",
   codeSent: "コードを送信しました",
 }
 

@@ -65,6 +65,25 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
   const [resentNotice, setResentNotice] = useState(false)
   const lastAutoCode = useRef("")
 
+  // Resend cooldown: after a code is sent the resend stays locked for 60s (matching
+  // the server's 1/min limit), counting down so the button shows when it's available.
+  const [resendIn, setResendIn] = useState(0)
+  const resendTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const startResendCountdown = (seconds = 60) => {
+    setResendIn(seconds)
+    if (resendTimerRef.current) clearInterval(resendTimerRef.current)
+    resendTimerRef.current = setInterval(() => {
+      setResendIn((s) => {
+        if (s <= 1) {
+          if (resendTimerRef.current) clearInterval(resendTimerRef.current)
+          return 0
+        }
+        return s - 1
+      })
+    }, 1000)
+  }
+  useEffect(() => () => { if (resendTimerRef.current) clearInterval(resendTimerRef.current) }, [])
+
   // Live email-format validation for the email step. Only flags non-empty input
   // that isn't a valid address; empty clears the error.
   const emailInvalid = email.length > 0 && !emailSchema.safeParse({ email }).success
@@ -92,6 +111,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
       setCode("")
       lastAutoCode.current = ""
       setResentNotice(true)
+      startResendCountdown()
     } catch (err) {
       if (isRegionRestricted(err)) {
         setError(t("auth.regionRestricted"))
@@ -163,6 +183,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
       }
       await sendMagicLink(email, selectedCountry())
       setEmailSent(true)
+      startResendCountdown()
     } catch (err) {
       if (isRegionRestricted(err)) {
         setError(t("auth.regionRestricted"))
@@ -208,6 +229,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
     try {
       await sendSmsCode(toE164(phoneCountry, phone), selectedCountry())
       setCodeSent(true)
+      startResendCountdown()
     } catch (err) {
       if (isRegionRestricted(err)) {
         setError(t("auth.regionRestricted"))
@@ -320,7 +342,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
                 {t("auth.sentTo")}
                 <span className="font-medium text-foreground">{email}</span>
               </p>
-              <ResendCode onResend={handleResend} resending={resending} sent={resentNotice} t={t} />
+              <ResendCode onResend={handleResend} resending={resending} sent={resentNotice} countdown={resendIn} t={t} />
             </div>
             <Button type="submit" size="lg" disabled={loading || code.length < 6} className="w-full">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -411,7 +433,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
                 {t("auth.sentTo")}
                 <span className="font-medium text-foreground">{toE164(phoneCountry, phone)}</span>
               </p>
-              <ResendCode onResend={handleResend} resending={resending} sent={resentNotice} t={t} />
+              <ResendCode onResend={handleResend} resending={resending} sent={resentNotice} countdown={resendIn} t={t} />
             </div>
             <Button type="submit" size="lg" disabled={loading} className="h-12 w-full">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -451,25 +473,28 @@ function ResendCode({
   onResend,
   resending,
   sent,
+  countdown,
   t,
 }: {
   onResend: () => void
   resending: boolean
   sent: boolean
-  t: (key: string) => string
+  countdown: number
+  t: (key: string, params?: Record<string, string | number>) => string
 }) {
+  const waiting = countdown > 0
   return (
     <div className="flex items-center justify-center gap-2 text-sm">
       <button
         type="button"
         onClick={onResend}
-        disabled={resending}
-        className="inline-flex items-center gap-1.5 font-medium text-primary transition-colors hover:text-primary/80 disabled:opacity-60"
+        disabled={resending || waiting}
+        className="inline-flex items-center gap-1.5 font-medium text-primary transition-colors hover:text-primary/80 disabled:opacity-60 disabled:hover:text-primary"
       >
         {resending && <Loader2 className="h-3 w-3 animate-spin" />}
-        {t("auth.resendCode")}
+        {waiting ? t("auth.resendInSeconds", { seconds: countdown }) : t("auth.resendCode")}
       </button>
-      {sent && !resending && <span className="text-muted-foreground">{t("auth.codeSent")}</span>}
+      {sent && !resending && !waiting && <span className="text-muted-foreground">{t("auth.codeSent")}</span>}
     </div>
   )
 }

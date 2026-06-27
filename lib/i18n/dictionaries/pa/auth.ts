@@ -45,6 +45,7 @@ const auth = {
 
   // resend code
   resendCode: "ਕੋਡ ਦੁਬਾਰਾ ਭੇਜੋ",
+  resendInSeconds: "{seconds} ਸਕਿੰਟ ਵਿੱਚ ਦੁਬਾਰਾ ਭੇਜੋ",
   codeSent: "ਕੋਡ ਭੇਜਿਆ ਗਿਆ",
 
   // validation / errors

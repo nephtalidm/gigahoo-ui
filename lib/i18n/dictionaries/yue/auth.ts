@@ -65,6 +65,7 @@ const auth = {
   loading: "載入緊…",
   signInTitle: "登入 Gigahoo",
   resendCode: "重新發送驗證碼",
+  resendInSeconds: "{seconds}秒後重新發送",
   codeSent: "驗證碼已發送",
 }
 
