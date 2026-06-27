@@ -1,7 +1,7 @@
 const dashboard = {
   // Sidebar nav
   navOverview: "概覽",
-  navCallHistory: "通話記錄",
+  navCallHistory: "對話記錄",
   navOptionalFeatures: "選用功能",
   navPlanBilling: "方案",
   navBilling: "付款方式",
@@ -17,6 +17,7 @@ const dashboard = {
   voiceLabel: "助手聲音",
   voiceHint: "揀你嘅 AI 接待員用邊把聲。播放樣本就可以試聽每把聲。",
   playSample: "播放樣本",
+  pauseSample: "暫停",
   voiceSaved: "已儲存",
   voiceCherry: "Cherry（溫暖女聲）",
   voiceEthan: "Ethan（友善男聲）",

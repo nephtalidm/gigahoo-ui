@@ -1,7 +1,7 @@
 const dashboard = {
   // Sidebar nav
   navOverview: "Pangkalahatang-tanaw",
-  navCallHistory: "Kasaysayan ng Tawag",
+  navCallHistory: "Kasaysayan ng Pag-uusap",
   navOptionalFeatures: "Mga Opsyonal na Feature",
   navPlanBilling: "Plano",
   navBilling: "Pagbabayad",
@@ -17,6 +17,7 @@ const dashboard = {
   voiceLabel: "Boses ng Agent",
   voiceHint: "Piliin ang boses na gagamitin ng iyong AI receptionist. Magpatugtog ng sample para marinig ang bawat isa.",
   playSample: "I-play ang sample",
+  pauseSample: "I-pause",
   voiceSaved: "Na-save",
   voiceCherry: "Cherry (mainit na babae)",
   voiceEthan: "Ethan (palakaibigang lalaki)",

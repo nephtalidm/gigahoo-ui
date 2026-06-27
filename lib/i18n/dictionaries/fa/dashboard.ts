@@ -1,7 +1,7 @@
 const dashboard = {
   // Sidebar nav
   navOverview: "نمای کلی",
-  navCallHistory: "تاریخچه تماس‌ها",
+  navCallHistory: "تاریخچه مکالمات",
   navOptionalFeatures: "امکانات اختیاری",
   navPlanBilling: "طرح",
   navBilling: "پرداخت",
@@ -17,6 +17,7 @@ const dashboard = {
   voiceLabel: "صدای دستیار",
   voiceHint: "صدایی را که منشی هوش مصنوعی شما با آن صحبت می‌کند انتخاب کنید. برای شنیدن هر کدام، نمونه را پخش کنید.",
   playSample: "پخش نمونه",
+  pauseSample: "توقف موقت",
   voiceSaved: "ذخیره شد",
   voiceCherry: "Cherry (زنانه گرم)",
   voiceEthan: "Ethan (مردانه دوستانه)",

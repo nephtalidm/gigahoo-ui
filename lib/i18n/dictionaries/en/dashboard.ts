@@ -1,7 +1,7 @@
 const dashboard = {
   // Sidebar nav
   navOverview: "Overview",
-  navCallHistory: "Call History",
+  navCallHistory: "Conversation History",
   navOptionalFeatures: "Optional Features",
   navPlanBilling: "Plan",
   navBilling: "Billing",
@@ -17,6 +17,7 @@ const dashboard = {
   voiceLabel: "Agent Voice",
   voiceHint: "Pick the voice your AI receptionist speaks with. Play a sample to hear each one.",
   playSample: "Play sample",
+  pauseSample: "Pause",
   voiceSaved: "Saved",
   voiceCherry: "Cherry (warm female)",
   voiceEthan: "Ethan (friendly male)",

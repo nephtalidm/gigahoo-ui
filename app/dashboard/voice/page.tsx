@@ -5,7 +5,7 @@ import { PageHeader } from "@/components/dashboard/page-header"
 import { getAccount, getSettings, updateVoiceSettings } from "@/lib/api"
 import { useTranslation } from "@/contexts/language-context"
 import { cn } from "@/lib/utils"
-import { Loader2, CheckCircle2, Play } from "lucide-react"
+import { Loader2, CheckCircle2, Play, Pause } from "lucide-react"
 
 // Real qwen3.5-omni-plus-realtime English voices. `apiName` is the capitalized
 // name the realtime API expects and is what gets saved to the account; `id` is the
@@ -30,6 +30,7 @@ export default function VoiceAgentPage() {
   const [saved, setSaved] = useState(false)
   const [greetingMessage, setGreetingMessage] = useState("")
   const [voice, setVoice] = useState<string | null>(null)
+  const [playingId, setPlayingId] = useState<string | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
@@ -46,11 +47,21 @@ export default function VoiceAgentPage() {
   }, [])
 
   function playSample(id: string) {
+    // Clicking the currently-playing voice pauses it.
+    if (playingId === id) {
+      audioRef.current?.pause()
+      audioRef.current = null
+      setPlayingId(null)
+      return
+    }
+    // Stop any other sample that's playing, then play this one (in the listener's
+    // current dashboard language). Revert to "play" when it ends.
     audioRef.current?.pause()
-    // Play the sample in the listener's current dashboard language.
     const audio = new Audio(`/voice-samples/${id}-${locale}.mp3`)
     audioRef.current = audio
-    audio.play().catch(() => {})
+    audio.onended = () => setPlayingId(null)
+    setPlayingId(id)
+    audio.play().catch(() => setPlayingId(null))
   }
 
   async function save() {
@@ -146,8 +157,8 @@ export default function VoiceAgentPage() {
                   }}
                   className="flex shrink-0 cursor-pointer items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent"
                 >
-                  <Play className="h-3.5 w-3.5" />
-                  {t("dashboard.playSample")}
+                  {playingId === v.id ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
+                  {playingId === v.id ? t("dashboard.pauseSample") : t("dashboard.playSample")}
                 </button>
               </div>
             )

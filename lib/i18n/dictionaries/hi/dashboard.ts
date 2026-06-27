@@ -1,7 +1,7 @@
 const dashboard = {
   // Sidebar nav
   navOverview: "अवलोकन",
-  navCallHistory: "कॉल इतिहास",
+  navCallHistory: "वार्तालाप इतिहास",
   navOptionalFeatures: "वैकल्पिक विशेषताएँ",
   navPlanBilling: "प्लान",
   navBilling: "भुगतान",
@@ -17,6 +17,7 @@ const dashboard = {
   voiceLabel: "एजेंट की आवाज़",
   voiceHint: "वह आवाज़ चुनें जिसमें आपका AI रिसेप्शनिस्ट बोलता है। हर एक को सुनने के लिए नमूना चलाएँ।",
   playSample: "नमूना चलाएँ",
+  pauseSample: "रोकें",
   voiceSaved: "सहेजा गया",
   voiceCherry: "Cherry (गर्मजोश महिला)",
   voiceEthan: "Ethan (मित्रवत पुरुष)",

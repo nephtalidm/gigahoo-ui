@@ -1,7 +1,7 @@
 const dashboard = {
   // Sidebar nav
   navOverview: "نظرة عامة",
-  navCallHistory: "سجل المكالمات",
+  navCallHistory: "سجل المحادثات",
   navOptionalFeatures: "الميزات الاختيارية",
   navPlanBilling: "الخطة",
   navBilling: "المدفوعات",
@@ -17,6 +17,7 @@ const dashboard = {
   voiceLabel: "صوت الوكيل",
   voiceHint: "اختر الصوت الذي يتحدث به موظف الاستقبال بالذكاء الاصطناعي. شغّل عينة لسماع كل صوت.",
   playSample: "تشغيل عينة",
+  pauseSample: "إيقاف مؤقت",
   voiceSaved: "تم الحفظ",
   voiceCherry: "Cherry (صوت أنثوي دافئ)",
   voiceEthan: "Ethan (صوت ذكوري ودود)",

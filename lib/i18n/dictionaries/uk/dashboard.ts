@@ -1,7 +1,7 @@
 const dashboard = {
   // Sidebar nav
   navOverview: "Огляд",
-  navCallHistory: "Історія дзвінків",
+  navCallHistory: "Історія розмов",
   navOptionalFeatures: "Додаткові можливості",
   navPlanBilling: "Тариф",
   navBilling: "Оплата",
@@ -17,6 +17,7 @@ const dashboard = {
   voiceLabel: "Голос агента",
   voiceHint: "Виберіть голос, яким говорить ваш ШІ-секретар. Прослухайте зразок кожного голосу.",
   playSample: "Прослухати зразок",
+  pauseSample: "Пауза",
   voiceSaved: "Збережено",
   voiceCherry: "Cherry (теплий жіночий)",
   voiceEthan: "Ethan (дружній чоловічий)",

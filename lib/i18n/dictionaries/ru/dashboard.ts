@@ -1,7 +1,7 @@
 const dashboard = {
   // Sidebar nav
   navOverview: "Обзор",
-  navCallHistory: "История звонков",
+  navCallHistory: "История разговоров",
   navOptionalFeatures: "Дополнительные функции",
   navPlanBilling: "Тариф",
   navBilling: "Оплата",
@@ -17,6 +17,7 @@ const dashboard = {
   voiceLabel: "Голос агента",
   voiceHint: "Выберите голос, которым говорит ваш ИИ-секретарь. Прослушайте образец каждого голоса.",
   playSample: "Прослушать образец",
+  pauseSample: "Пауза",
   voiceSaved: "Сохранено",
   voiceCherry: "Cherry (тёплый женский)",
   voiceEthan: "Ethan (дружелюбный мужской)",

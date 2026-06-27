@@ -1,7 +1,7 @@
 const dashboard = {
   // Sidebar nav
   navOverview: "개요",
-  navCallHistory: "통화 기록",
+  navCallHistory: "대화 기록",
   navOptionalFeatures: "선택 기능",
   navPlanBilling: "요금제",
   navBilling: "결제 수단",
@@ -17,6 +17,7 @@ const dashboard = {
   voiceLabel: "에이전트 음성",
   voiceHint: "AI 안내원이 사용할 음성을 선택하세요. 샘플을 재생해 각 음성을 들어볼 수 있습니다.",
   playSample: "샘플 재생",
+  pauseSample: "일시정지",
   voiceSaved: "저장됨",
   voiceCherry: "Cherry (따뜻한 여성)",
   voiceEthan: "Ethan (친근한 남성)",
