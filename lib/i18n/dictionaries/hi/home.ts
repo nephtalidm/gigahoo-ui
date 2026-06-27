@@ -13,7 +13,7 @@ const home = {
   heroBullet3: "ग्राहक जानकारी स्वचालित रूप से कैप्चर करता है",
   heroBullet4: "होम-सर्विस व्यवसायों के लिए निर्मित",
   heroCardIncoming: "आने वाली कॉल",
-  heroCardAnswered: "Gigahoo द्वारा उत्तर दिया गया · 0:08",
+  heroCardAnswered: "Gigahoo द्वारा उत्तर दिया गया",
   heroCardLive: "लाइव",
   heroCardMsg1: "नमस्ते, Summit Plumbing को कॉल करने के लिए धन्यवाद! आज मैं आपकी कैसे मदद कर सकता हूँ?",
   heroCardMsg2: "मेरा वॉटर हीटर लीक हो रहा है। क्या कोई आज आ सकता है?",

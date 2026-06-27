@@ -454,6 +454,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
                 allowedCodes={supportedCodes}
                 invalid={phoneInvalid}
                 describedBy={phoneInvalid ? "phone-error" : undefined}
+                tall
               />
               {phoneInvalid && (
                 <p id="phone-error" className="text-xs text-destructive">{t("auth.invalidPhone")}</p>

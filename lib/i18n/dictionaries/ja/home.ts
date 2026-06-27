@@ -13,7 +13,7 @@ const home = {
   heroBullet3: "お客様情報を自動で収集",
   heroBullet4: "ホームサービス事業者向けに設計",
   heroCardIncoming: "着信中",
-  heroCardAnswered: "Gigahooが応答 · 0:08",
+  heroCardAnswered: "Gigahooが応答",
   heroCardLive: "通話中",
   heroCardMsg1: "Summit Plumbingにお電話ありがとうございます！本日はどのようなご用件でしょうか？",
   heroCardMsg2: "給湯器が水漏れしています。本日中に来ていただけますか？",

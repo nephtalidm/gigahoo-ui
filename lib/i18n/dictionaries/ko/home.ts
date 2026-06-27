@@ -13,7 +13,7 @@ const home = {
   heroBullet3: "고객 정보 자동 수집",
   heroBullet4: "홈 서비스 비즈니스를 위해 설계됨",
   heroCardIncoming: "수신 전화",
-  heroCardAnswered: "Gigahoo가 응대함 · 0:08",
+  heroCardAnswered: "Gigahoo가 응대함",
   heroCardLive: "실시간",
   heroCardMsg1: "안녕하세요, Summit Plumbing에 전화 주셔서 감사합니다! 무엇을 도와드릴까요?",
   heroCardMsg2: "온수기에서 물이 새고 있어요. 오늘 누가 와 줄 수 있나요?",

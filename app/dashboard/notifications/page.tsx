@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { PageHeader } from "@/components/dashboard/page-header"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
@@ -10,21 +10,37 @@ import {
   type NotificationSettings,
 } from "@/lib/api"
 import { useTranslation } from "@/contexts/language-context"
+import { useUnsavedChanges } from "@/contexts/unsaved-changes-context"
 import { Loader2, CheckCircle2 } from "lucide-react"
 
 export default function NotificationsPage() {
   const { t } = useTranslation()
+  const { setDirty } = useUnsavedChanges()
   const [settings, setSettings] = useState<NotificationSettings | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  // Snapshot of the last loaded/saved settings; dirty = current differs from this.
+  const baselineRef = useRef<string | null>(null)
 
   useEffect(() => {
     getNotificationSettings()
-      .then(setSettings)
+      .then((s) => {
+        setSettings(s)
+        baselineRef.current = JSON.stringify(s)
+      })
       .catch(() => {})
       .finally(() => setLoading(false))
   }, [])
+
+  // Report dirty state whenever the toggles diverge from the loaded baseline.
+  useEffect(() => {
+    if (baselineRef.current == null) return
+    setDirty(JSON.stringify(settings) !== baselineRef.current)
+  }, [settings, setDirty])
+
+  // Clear the guard when leaving the page.
+  useEffect(() => () => setDirty(false), [setDirty])
 
   // Toggles update local state only; persistence happens on Save Changes.
   async function save() {
@@ -32,6 +48,9 @@ export default function NotificationsPage() {
     setSaving(true)
     try {
       await updateNotificationSettings(settings)
+      // The saved values are now the clean baseline → clears the dirty guard.
+      baselineRef.current = JSON.stringify(settings)
+      setDirty(false)
       setSaved(true)
       setTimeout(() => setSaved(false), 2000)
     } catch {

@@ -13,7 +13,7 @@ const home = {
   heroBullet3: "自动采集客户信息",
   heroBullet4: "专为家庭服务企业打造",
   heroCardIncoming: "来电中",
-  heroCardAnswered: "已由 Gigahoo 接听 · 0:08",
+  heroCardAnswered: "已由 Gigahoo 接听",
   heroCardLive: "实时",
   heroCardMsg1: "您好，感谢致电 Summit Plumbing！请问有什么可以帮您？",
   heroCardMsg2: "我家的热水器漏水了。今天能派人过来吗？",

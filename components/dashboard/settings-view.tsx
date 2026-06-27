@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -17,6 +17,7 @@ import { GoogleSignInButton } from "@/components/google-signin-button"
 import { CodeBoxes } from "@/components/code-boxes"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import { useTranslation } from "@/contexts/language-context"
+import { useUnsavedChanges } from "@/contexts/unsaved-changes-context"
 import { LanguageSwitcher } from "@/components/language-switcher"
 import {
   updateAccount,
@@ -167,6 +168,7 @@ export function SettingsView({
   onCountryChange: (countryId: number) => void
 }) {
   const { t } = useTranslation()
+  const { setDirty } = useUnsavedChanges()
   // Supported (served) countries from the API (Country.IsSupported), settings.ts fallback.
   const supportedCodes = useSupportedCountries()
   const [businessName, setBusinessName] = useState(account.businessName)
@@ -225,6 +227,39 @@ export function SettingsView({
 
   const selectedCountry = countries.find((c) => String(c.id) === countryId)
   const hasRegions = regions.length > 0
+
+  // ----- Unsaved-changes tracking -----------------------------------------
+  // Snapshot of every editable value the user can change on this form. Email
+  // and business phone changes persist through their own verify flows (which
+  // update `account.*` and reset the inputs), so they're part of the snapshot
+  // too — the baseline's email/phone keys are refreshed in those confirm
+  // handlers below, leaving any other unsaved edits intact.
+  const snapshot = JSON.stringify({
+    businessName, categoryId, businessPhone, phoneCountryCode, email,
+    websiteUrl, addressLine1, addressLine2, city, regionId, regionCustom,
+    postalCode, countryId,
+  })
+  // Captured once on mount as the clean baseline; updated after a successful save.
+  const baselineRef = useRef<string>(snapshot)
+
+  // Report dirty state whenever the form diverges from the baseline.
+  useEffect(() => {
+    setDirty(snapshot !== baselineRef.current)
+  }, [snapshot, setDirty])
+
+  // Clear the guard when the settings view unmounts.
+  useEffect(() => () => setDirty(false), [setDirty])
+
+  // Re-point one field of the saved baseline (used after the email/phone verify
+  // flows persist a value out-of-band), so that verified change no longer reads
+  // as "unsaved" while leaving any other pending edits flagged.
+  function patchBaseline(patch: Record<string, string>) {
+    try {
+      baselineRef.current = JSON.stringify({ ...JSON.parse(baselineRef.current), ...patch })
+    } catch {
+      // Baseline is always valid JSON we produced; ignore if somehow not.
+    }
+  }
 
   // Build a specific field error for every required-but-empty or invalid field.
   function validateAll(): FieldErrors {
@@ -325,6 +360,9 @@ export function SettingsView({
         postalCode: postalCode || null,
         countryId: Number(countryId),
       })
+      // The saved values are now the clean baseline → clears the dirty guard.
+      baselineRef.current = snapshot
+      setDirty(false)
       setSaved(true)
       setTimeout(() => setSaved(false), 3000)
     } catch (err) {
@@ -407,6 +445,8 @@ export function SettingsView({
       await confirmEmailChange(email.trim(), emailCode)
       account.email = email.trim()
       setEmail(account.email)
+      // The new email is now persisted — fold it into the baseline.
+      patchBaseline({ email: account.email })
       setEmailVerifyOpen(false)
       setEmailVerified(true)
       setTimeout(() => setEmailVerified(false), 3000)
@@ -489,6 +529,8 @@ export function SettingsView({
       await confirmPhoneChange(toE164(phoneCountryCode, businessPhone), phoneCountryCode, phoneCode)
       account.businessPhone = businessPhone
       account.phoneCountryCode = phoneCountryCode
+      // The new phone is now persisted — fold it into the baseline.
+      patchBaseline({ businessPhone, phoneCountryCode })
       setPhoneVerifyOpen(false)
       setPhoneVerified(true)
       setTimeout(() => setPhoneVerified(false), 3000)

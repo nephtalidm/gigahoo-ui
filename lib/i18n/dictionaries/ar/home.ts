@@ -13,7 +13,7 @@ const home = {
   heroBullet3: "يلتقط معلومات العملاء تلقائيًا",
   heroBullet4: "مصمَّم لشركات الخدمات المنزلية",
   heroCardIncoming: "مكالمة واردة",
-  heroCardAnswered: "تم الرد بواسطة Gigahoo · 0:08",
+  heroCardAnswered: "تم الرد بواسطة Gigahoo",
   heroCardLive: "مباشر",
   heroCardMsg1: "مرحبًا، شكرًا لاتصالك بشركة Summit Plumbing! كيف يمكنني مساعدتك اليوم؟",
   heroCardMsg2: "سخّان المياه لديّ يُسرّب. هل يمكن أن يأتي أحدهم اليوم؟",

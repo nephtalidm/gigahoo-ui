@@ -82,6 +82,12 @@ const dashboard = {
 
   // Home page link
   homePage: "Home Page",
+
+  // Unsaved-changes guard
+  unsavedTitle: "Unsaved changes",
+  unsavedMessage: "You have unsaved changes. Leave without saving?",
+  unsavedLeave: "Leave without saving",
+  unsavedStay: "Stay on page",
 }
 
 export default dashboard

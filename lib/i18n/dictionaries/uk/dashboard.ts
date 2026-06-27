@@ -82,6 +82,12 @@ const dashboard = {
 
   // Home page link
   homePage: "Головна сторінка",
+
+  // Unsaved-changes guard
+  unsavedTitle: "Незбережені зміни",
+  unsavedMessage: "У вас є незбережені зміни. Вийти без збереження?",
+  unsavedLeave: "Вийти без збереження",
+  unsavedStay: "Залишитися на сторінці",
 }
 
 export default dashboard

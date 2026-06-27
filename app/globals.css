@@ -9,6 +9,13 @@
   50% { caret-color: transparent; }
 }
 
+/* Strong "LIVE" indicator blink for the hero call demo — a full on/off swing
+   with a scale pulse, far more pronounced than animate-pulse. */
+@keyframes heroLiveBlink {
+  0%, 100% { opacity: 1; transform: scale(1.5); }
+  50% { opacity: 0.05; transform: scale(0.9); }
+}
+
 @theme inline {
   --font-heading: var(--font-sans);
   --font-sans: var(--font-geist-sans), 'Geist Fallback';

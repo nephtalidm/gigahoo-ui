@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/dashboard/page-header"
 import { Button } from "@/components/ui/button"
 import { getAccount, getSettings, updateVoiceSettings, generateVoiceSample } from "@/lib/api"
 import { useTranslation } from "@/contexts/language-context"
+import { useUnsavedChanges } from "@/contexts/unsaved-changes-context"
 import { cn } from "@/lib/utils"
 import { Loader2, CheckCircle2, Play, Pause } from "lucide-react"
 
@@ -32,11 +33,14 @@ const DEFAULT_VOICE = VOICES[0].apiName
 
 export default function VoiceAgentPage() {
   const { t } = useTranslation()
+  const { setDirty } = useUnsavedChanges()
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [greetingMessage, setGreetingMessage] = useState("")
   const [voice, setVoice] = useState<string | null>(null)
+  // Snapshot of the last loaded/saved values; dirty = current differs from this.
+  const baselineRef = useRef<string>("")
   const [playingId, setPlayingId] = useState<string | null>(null)
   const [loadingId, setLoadingId] = useState<string | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
@@ -59,11 +63,22 @@ export default function VoiceAgentPage() {
         }
         setGreetingMessage(greeting)
         // Preselect the first voice when the account hasn't chosen one yet.
-        setVoice(account.agentVoice ?? DEFAULT_VOICE)
+        const initialVoice = account.agentVoice ?? DEFAULT_VOICE
+        setVoice(initialVoice)
+        // Capture the loaded values as the clean baseline.
+        baselineRef.current = JSON.stringify({ greetingMessage: greeting, voice: initialVoice })
       })
       .catch(() => {})
       .finally(() => setLoading(false))
   }, [])
+
+  // Report dirty state whenever the editable values diverge from the baseline.
+  useEffect(() => {
+    setDirty(JSON.stringify({ greetingMessage, voice }) !== baselineRef.current)
+  }, [greetingMessage, voice, setDirty])
+
+  // Clear the guard when leaving the page.
+  useEffect(() => () => setDirty(false), [setDirty])
 
   // Stop whatever's playing and clean up its audio element + object URL.
   function stopPlayback() {
@@ -119,6 +134,9 @@ export default function VoiceAgentPage() {
         greetingMessage: greetingMessage.trim() ? greetingMessage.trim() : null,
         agentVoice: voice,
       })
+      // The saved values are now the clean baseline → clears the dirty guard.
+      baselineRef.current = JSON.stringify({ greetingMessage, voice })
+      setDirty(false)
       setSaved(true)
       setTimeout(() => setSaved(false), 2000)
     } catch {

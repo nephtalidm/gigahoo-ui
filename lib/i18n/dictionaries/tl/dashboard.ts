@@ -82,6 +82,12 @@ const dashboard = {
 
   // Home page link
   homePage: "Home Page",
+
+  // Unsaved-changes guard
+  unsavedTitle: "Mga hindi pa na-save na pagbabago",
+  unsavedMessage: "May mga hindi pa na-save na pagbabago ka. Aalis nang hindi nagsi-save?",
+  unsavedLeave: "Umalis nang hindi nagsi-save",
+  unsavedStay: "Manatili sa pahina",
 }
 
 export default dashboard

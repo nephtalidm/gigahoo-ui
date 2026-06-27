@@ -82,6 +82,12 @@ const dashboard = {
 
   // Home page link
   homePage: "الصفحة الرئيسية",
+
+  // Unsaved-changes guard
+  unsavedTitle: "تغييرات غير محفوظة",
+  unsavedMessage: "لديك تغييرات غير محفوظة. هل تريد المغادرة دون حفظ؟",
+  unsavedLeave: "المغادرة دون حفظ",
+  unsavedStay: "البقاء في الصفحة",
 }
 
 export default dashboard

@@ -13,7 +13,7 @@ const home = {
   heroBullet3: "Awtomatikong kinukuha ang impormasyon ng customer",
   heroBullet4: "Ginawa para sa mga negosyong home-service",
   heroCardIncoming: "Papasok na tawag",
-  heroCardAnswered: "Sinagot ng Gigahoo · 0:08",
+  heroCardAnswered: "Sinagot ng Gigahoo",
   heroCardLive: "Live",
   heroCardMsg1: "Hi, salamat sa pagtawag sa Summit Plumbing! Paano kita matutulungan ngayon?",
   heroCardMsg2: "Tumutulo ang water heater ko. May puwede bang pumunta ngayong araw?",

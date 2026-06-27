@@ -82,6 +82,12 @@ const dashboard = {
 
   // Home page link
   homePage: "ਮੁੱਖ ਪੰਨਾ",
+
+  // Unsaved-changes guard
+  unsavedTitle: "ਨਾ-ਸੰਭਾਲੇ ਬਦਲਾਅ",
+  unsavedMessage: "ਤੁਹਾਡੇ ਕੋਲ ਨਾ-ਸੰਭਾਲੇ ਬਦਲਾਅ ਹਨ। ਸੰਭਾਲੇ ਬਿਨਾਂ ਛੱਡਣਾ ਹੈ?",
+  unsavedLeave: "ਸੰਭਾਲੇ ਬਿਨਾਂ ਛੱਡੋ",
+  unsavedStay: "ਪੰਨੇ 'ਤੇ ਰਹੋ",
 }
 
 export default dashboard

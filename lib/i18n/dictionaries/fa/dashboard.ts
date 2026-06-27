@@ -82,6 +82,12 @@ const dashboard = {
 
   // Home page link
   homePage: "صفحه اصلی",
+
+  // Unsaved-changes guard
+  unsavedTitle: "تغییرات ذخیره‌نشده",
+  unsavedMessage: "تغییرات ذخیره‌نشده‌ای دارید. بدون ذخیره خارج می‌شوید؟",
+  unsavedLeave: "خروج بدون ذخیره",
+  unsavedStay: "ماندن در صفحه",
 }
 
 export default dashboard

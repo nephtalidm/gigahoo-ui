@@ -13,7 +13,7 @@ const home = {
   heroBullet3: "Capture automatiquement les informations des clients",
   heroBullet4: "Conçu pour les entreprises de services à domicile",
   heroCardIncoming: "Appel entrant",
-  heroCardAnswered: "Répondu par Gigahoo · 0:08",
+  heroCardAnswered: "Répondu par Gigahoo",
   heroCardLive: "En direct",
   heroCardMsg1: "Bonjour, merci d'appeler Plomberie Summit ! Comment puis-je vous aider aujourd'hui ?",
   heroCardMsg2: "Mon chauffe-eau fuit. Quelqu'un peut-il passer aujourd'hui ?",

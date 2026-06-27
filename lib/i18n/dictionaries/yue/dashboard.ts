@@ -80,6 +80,12 @@ const dashboard = {
   idleDescription: "你已經有一段時間冇任何操作。為咗你嘅安全，計時完咗之後會自動登出。",
   idleStay: "保持登入",
   idleLogoutNow: "即刻登出",
+
+  // Unsaved-changes guard
+  unsavedTitle: "未儲存嘅更改",
+  unsavedMessage: "你有未儲存嘅更改。係咪唔儲存就離開？",
+  unsavedLeave: "唔儲存就離開",
+  unsavedStay: "留喺呢一頁",
 }
 
 export default dashboard

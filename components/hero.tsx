@@ -15,6 +15,13 @@ const HOLD_MS = 2500
 
 type CallPhase = "ringing" | "connected"
 
+// mm:ss for the live call timer.
+function formatTime(totalSeconds: number) {
+  const m = Math.floor(totalSeconds / 60)
+  const s = totalSeconds % 60
+  return `${m}:${s.toString().padStart(2, "0")}`
+}
+
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false)
   useEffect(() => {
@@ -143,6 +150,32 @@ export function Hero() {
     if (el) el.scrollTop = el.scrollHeight
   }, [visibleCount, typing])
 
+  // Live call timer: counts up while connected, resets when the call ends/loops.
+  const [elapsed, setElapsed] = useState(0)
+  useEffect(() => {
+    if (reducedMotion) { setElapsed(8); return }
+    if (!connected) { setElapsed(0); return }
+    setElapsed(1)
+    const iv = setInterval(() => setElapsed((s) => s + 1), 1000)
+    return () => clearInterval(iv)
+  }, [connected, reducedMotion])
+
+  // Missed-calls counter: drops from 120 to 0 once the call is answered,
+  // resetting on each loop — the "we catch every call" payoff.
+  const [missed, setMissed] = useState(120)
+  useEffect(() => {
+    if (reducedMotion) { setMissed(0); return }
+    if (!connected) { setMissed(120); return }
+    let current = 120
+    setMissed(120)
+    const iv = setInterval(() => {
+      current = Math.max(0, current - 2)
+      setMissed(current)
+      if (current === 0) clearInterval(iv)
+    }, 30)
+    return () => clearInterval(iv)
+  }, [connected, reducedMotion])
+
   return (
     <section className="relative overflow-hidden border-b border-border">
       <div className="mx-auto max-w-6xl px-4 pt-8 pb-8 sm:px-6 sm:pt-12 sm:pb-12 lg:pt-14 lg:pb-14">
@@ -203,7 +236,10 @@ export function Hero() {
                 </span>
                 <div>
                   <p className="text-sm font-semibold text-foreground">{t("home.heroCardIncoming")}</p>
-                  <p className="text-xs text-muted-foreground">{t("home.heroCardAnswered")}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {t("home.heroCardAnswered")}
+                    {connected && <> · {formatTime(elapsed)}</>}
+                  </p>
                 </div>
                 <span
                   className={`ml-auto flex items-center gap-1.5 rounded-full bg-accent px-2.5 py-1 text-xs font-medium text-accent-foreground transition-opacity duration-300 ${
@@ -211,12 +247,12 @@ export function Hero() {
                   }`}
                   aria-hidden={!connected}
                 >
-                  <span className="h-1.5 w-1.5 rounded-full bg-primary motion-safe:animate-pulse" />
+                  <span className="h-2 w-2 rounded-full bg-primary motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
                   {t("home.heroCardLive")}
                 </span>
               </div>
 
-              <div ref={scrollRef} className="mt-4 max-h-56 space-y-3 overflow-y-auto">
+              <div ref={scrollRef} className="mt-4 max-h-56 space-y-3 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {messages.map((m, i) => {
                   const revealed = i < visibleCount
                   const isAssistant = m.role === "assistant"
@@ -257,7 +293,7 @@ export function Hero() {
                   <p className="text-xs text-muted-foreground">{t("home.heroStat2Label")}</p>
                 </div>
                 <div>
-                  <p className="text-lg font-semibold text-foreground">{t("home.heroStat3Value")}</p>
+                  <p className="text-lg font-semibold text-foreground">{missed}</p>
                   <p className="text-xs text-muted-foreground">{t("home.heroStat3Label")}</p>
                 </div>
               </div>

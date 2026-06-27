@@ -13,7 +13,7 @@ const home = {
   heroBullet3: "Автоматически собирает информацию о клиентах",
   heroBullet4: "Создан для бизнеса в сфере бытовых услуг",
   heroCardIncoming: "Входящий звонок",
-  heroCardAnswered: "Ответ от Gigahoo · 0:08",
+  heroCardAnswered: "Ответ от Gigahoo",
   heroCardLive: "В эфире",
   heroCardMsg1: "Здравствуйте, спасибо, что позвонили в Summit Plumbing! Чем я могу вам помочь сегодня?",
   heroCardMsg2: "У меня протекает водонагреватель. Может ли кто-нибудь приехать сегодня?",

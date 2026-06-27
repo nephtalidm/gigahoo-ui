@@ -82,6 +82,12 @@ const dashboard = {
 
   // Home page link
   homePage: "Page d'accueil",
+
+  // Unsaved-changes guard
+  unsavedTitle: "Modifications non enregistrées",
+  unsavedMessage: "Vous avez des modifications non enregistrées. Quitter sans enregistrer ?",
+  unsavedLeave: "Quitter sans enregistrer",
+  unsavedStay: "Rester sur la page",
 }
 
 export default dashboard

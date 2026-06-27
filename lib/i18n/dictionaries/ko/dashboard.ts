@@ -80,6 +80,12 @@ const dashboard = {
   idleDescription: "한동안 활동이 없었습니다. 보안을 위해 타이머가 종료되면 자동으로 로그아웃됩니다.",
   idleStay: "로그인 유지",
   idleLogoutNow: "지금 로그아웃",
+
+  // Unsaved-changes guard
+  unsavedTitle: "저장되지 않은 변경 사항",
+  unsavedMessage: "저장되지 않은 변경 사항이 있습니다. 저장하지 않고 나가시겠어요?",
+  unsavedLeave: "저장하지 않고 나가기",
+  unsavedStay: "페이지에 머무르기",
 }
 
 export default dashboard
