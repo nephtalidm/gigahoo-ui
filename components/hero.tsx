@@ -12,6 +12,10 @@ const RINGING_MS = 1500
 const TYPING_MS = 800
 const MESSAGE_GAP_MS = 1000
 const HOLD_MS = 2500
+// Duration of the "connected" phase (2 assistant messages with a typing delay + gap,
+// 1 caller message with a gap, then the hold). The missed-calls countdown is spread
+// across this so it reaches 0 right as the loop ends.
+const CONNECTED_MS = 2 * (TYPING_MS + MESSAGE_GAP_MS) + MESSAGE_GAP_MS + HOLD_MS
 
 type CallPhase = "ringing" | "connected"
 
@@ -166,13 +170,15 @@ export function Hero() {
   useEffect(() => {
     if (reducedMotion) { setMissed(0); return }
     if (!connected) { setMissed(120); return }
+    // Spread the 120 -> 0 countdown across the whole connected phase so it lands on
+    // 0 just as the loop ends, then resets to 120 on the next ring.
     let current = 120
     setMissed(120)
     const iv = setInterval(() => {
-      current = Math.max(0, current - 2)
+      current = Math.max(0, current - 1)
       setMissed(current)
       if (current === 0) clearInterval(iv)
-    }, 30)
+    }, CONNECTED_MS / 120)
     return () => clearInterval(iv)
   }, [connected, reducedMotion])
 
