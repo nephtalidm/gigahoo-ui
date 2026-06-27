@@ -35,6 +35,12 @@ const home = {
   heroStat2Label: "ਭਾਸ਼ਾਵਾਂ",
   heroStat3Value: "0",
   heroStat3Label: "ਖੁੰਝੀਆਂ ਕਾਲਾਂ",
+  heroTryLive: "ਏਜੰਟ ਨਾਲ ਗੱਲ ਕਰੋ — ਲਾਈਵ",
+  heroConnecting: "ਕਨੈਕਟ ਹੋ ਰਿਹਾ ਹੈ…",
+  heroEndCall: "ਕਾਲ ਖਤਮ ਕਰੋ",
+  heroLiveCall: "ਲਾਈਵ ਕਾਲ",
+  heroListening: "ਸੁਣ ਰਿਹਾ ਹੈ…",
+  heroMicError: "ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਜਾਂ ਕਨੈਕਸ਼ਨ ਫੇਲ੍ਹ ਹੋ ਗਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਮਾਈਕ ਪਹੁੰਚ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
 
   // Features
   featuresEyebrow: "ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ",

@@ -35,6 +35,12 @@ const home = {
   heroStat2Label: "言語",
   heroStat3Value: "0",
   heroStat3Label: "不在着信",
+  heroTryLive: "エージェントとライブで話す",
+  heroConnecting: "接続中…",
+  heroEndCall: "通話を終了",
+  heroLiveCall: "ライブ通話",
+  heroListening: "聞いています…",
+  heroMicError: "マイクまたは接続に失敗しました。マイクへのアクセスを許可して、もう一度お試しください。",
 
   // Features
   featuresEyebrow: "機能",

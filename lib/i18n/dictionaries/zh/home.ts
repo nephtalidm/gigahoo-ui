@@ -35,6 +35,12 @@ const home = {
   heroStat2Label: "种语言",
   heroStat3Value: "0",
   heroStat3Label: "未接来电",
+  heroTryLive: "与智能助理实时通话",
+  heroConnecting: "连接中…",
+  heroEndCall: "结束通话",
+  heroLiveCall: "实时通话",
+  heroListening: "正在聆听…",
+  heroMicError: "麦克风或连接失败。请允许麦克风访问权限后重试。",
 
   // Features
   featuresEyebrow: "功能",

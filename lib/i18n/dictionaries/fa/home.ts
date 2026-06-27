@@ -35,6 +35,12 @@ const home = {
   heroStat2Label: "زبان",
   heroStat3Value: "۰",
   heroStat3Label: "تماس‌های از دست رفته",
+  heroTryLive: "با دستیار صحبت کنید — زنده",
+  heroConnecting: "در حال اتصال…",
+  heroEndCall: "پایان تماس",
+  heroLiveCall: "تماس زنده",
+  heroListening: "در حال شنیدن…",
+  heroMicError: "میکروفون یا اتصال ناموفق بود. لطفاً دسترسی به میکروفون را مجاز کرده و دوباره تلاش کنید.",
 
   // Features
   featuresEyebrow: "امکانات",

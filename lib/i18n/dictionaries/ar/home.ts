@@ -35,6 +35,12 @@ const home = {
   heroStat2Label: "اللغات",
   heroStat3Value: "0",
   heroStat3Label: "المكالمات الفائتة",
+  heroTryLive: "تحدث إلى الوكيل — مباشرة",
+  heroConnecting: "جارٍ الاتصال…",
+  heroEndCall: "إنهاء المكالمة",
+  heroLiveCall: "مكالمة مباشرة",
+  heroListening: "يستمع…",
+  heroMicError: "فشل الميكروفون أو الاتصال. يُرجى السماح بالوصول إلى الميكروفون والمحاولة مرة أخرى.",
 
   // Features
   featuresEyebrow: "المميزات",

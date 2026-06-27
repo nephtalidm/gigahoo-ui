@@ -36,6 +36,12 @@ const home = {
   heroStat2Label: "Idiomas",
   heroStat3Value: "0",
   heroStat3Label: "Llamadas perdidas",
+  heroTryLive: "Habla con el agente — en vivo",
+  heroConnecting: "Conectando…",
+  heroEndCall: "Finalizar llamada",
+  heroLiveCall: "Llamada en vivo",
+  heroListening: "Escuchando…",
+  heroMicError: "Error de micrófono o de conexión. Permite el acceso al micrófono e inténtalo de nuevo.",
 
   // Features
   featuresEyebrow: "Funciones",

@@ -35,6 +35,12 @@ const home = {
   heroStat2Label: "種語言",
   heroStat3Value: "0",
   heroStat3Label: "未接來電",
+  heroTryLive: "同AI助理即時通話",
+  heroConnecting: "連接緊…",
+  heroEndCall: "結束通話",
+  heroLiveCall: "即時通話",
+  heroListening: "聆聽緊…",
+  heroMicError: "麥克風或者連接失敗。請允許麥克風存取權限再試一次。",
 
   // Features
   featuresEyebrow: "功能",

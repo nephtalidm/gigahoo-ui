@@ -35,6 +35,12 @@ const home = {
   heroStat2Label: "Языков",
   heroStat3Value: "0",
   heroStat3Label: "Пропущенных звонков",
+  heroTryLive: "Поговорите с агентом — вживую",
+  heroConnecting: "Подключение…",
+  heroEndCall: "Завершить звонок",
+  heroLiveCall: "Живой звонок",
+  heroListening: "Слушаю…",
+  heroMicError: "Сбой микрофона или подключения. Разрешите доступ к микрофону и попробуйте снова.",
 
   // Features
   featuresEyebrow: "Возможности",

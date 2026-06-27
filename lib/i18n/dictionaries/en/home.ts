@@ -35,6 +35,12 @@ const home = {
   heroStat2Label: "Languages",
   heroStat3Value: "0",
   heroStat3Label: "Missed calls",
+  heroTryLive: "Talk to the agent — live",
+  heroConnecting: "Connecting…",
+  heroEndCall: "End call",
+  heroLiveCall: "Live call",
+  heroListening: "Listening…",
+  heroMicError: "Microphone or connection failed. Please allow mic access and try again.",
 
   // Features
   featuresEyebrow: "Features",

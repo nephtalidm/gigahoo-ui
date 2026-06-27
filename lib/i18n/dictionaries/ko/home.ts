@@ -35,6 +35,12 @@ const home = {
   heroStat2Label: "언어",
   heroStat3Value: "0",
   heroStat3Label: "놓친 전화",
+  heroTryLive: "상담원과 실시간 통화하기",
+  heroConnecting: "연결 중…",
+  heroEndCall: "통화 종료",
+  heroLiveCall: "실시간 통화",
+  heroListening: "듣는 중…",
+  heroMicError: "마이크 또는 연결에 실패했습니다. 마이크 액세스를 허용한 후 다시 시도해 주세요.",
 
   // Features
   featuresEyebrow: "기능",

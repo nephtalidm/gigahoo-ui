@@ -35,6 +35,12 @@ const home = {
   heroStat2Label: "Mga Wika",
   heroStat3Value: "0",
   heroStat3Label: "Hindi nasagot na tawag",
+  heroTryLive: "Kausapin ang ahente — live",
+  heroConnecting: "Kumokonekta…",
+  heroEndCall: "Tapusin ang tawag",
+  heroLiveCall: "Live na tawag",
+  heroListening: "Nakikinig…",
+  heroMicError: "Nabigo ang mikropono o koneksyon. Mangyaring payagan ang access sa mic at subukang muli.",
 
   // Features
   featuresEyebrow: "Mga Feature",

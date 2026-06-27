@@ -35,6 +35,12 @@ const home = {
   heroStat2Label: "भाषाएँ",
   heroStat3Value: "0",
   heroStat3Label: "छूटी हुई कॉल",
+  heroTryLive: "एजेंट से बात करें — लाइव",
+  heroConnecting: "कनेक्ट हो रहा है…",
+  heroEndCall: "कॉल समाप्त करें",
+  heroLiveCall: "लाइव कॉल",
+  heroListening: "सुन रहा है…",
+  heroMicError: "माइक्रोफ़ोन या कनेक्शन विफल रहा। कृपया माइक एक्सेस की अनुमति दें और फिर से प्रयास करें।",
 
   // Features
   featuresEyebrow: "विशेषताएँ",
