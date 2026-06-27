@@ -329,7 +329,13 @@ export function Hero() {
                   <p className="text-xs text-muted-foreground">{t("home.heroStat2Label")}</p>
                 </div>
                 <div>
-                  <p className="text-lg font-semibold text-foreground">{missed}</p>
+                  <p
+                    className={`text-lg font-semibold tabular-nums transition-all duration-300 ${
+                      missed === 0 ? "scale-125 font-bold text-emerald-600" : "text-foreground"
+                    }`}
+                  >
+                    {missed}
+                  </p>
                   <p className="text-xs text-muted-foreground">{t("home.heroStat3Label")}</p>
                 </div>
               </div>
