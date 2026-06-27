@@ -106,12 +106,26 @@ export function useLiveCall() {
 
   const handleEvent = useCallback((msg: { type: string; text?: string; message?: string }) => {
     if (msg.type === "user" && msg.text) {
-      setMessages((m) => [...m, { role: "user", text: msg.text! }])
-    } else if (msg.type === "agent" && msg.text) {
+      // Merge consecutive caller fragments (VAD can split one utterance) into one bubble.
       setMessages((m) => {
         const last = m[m.length - 1]
-        if (last && last.role === "agent" && agentTurnOpenRef.current) {
-          return [...m.slice(0, -1), { role: "agent", text: last.text + msg.text! }]
+        if (last && last.role === "user") {
+          return [...m.slice(0, -1), { role: "user", text: `${last.text} ${msg.text!}`.trim() }]
+        }
+        return [...m, { role: "user", text: msg.text! }]
+      })
+    } else if (msg.type === "agent" && msg.text) {
+      setMessages((m) => {
+        // While the agent turn is open, append to the agent's CURRENT bubble even if a
+        // (late) caller transcript landed after it — so one sentence never splits in two.
+        if (agentTurnOpenRef.current) {
+          for (let i = m.length - 1; i >= 0; i--) {
+            if (m[i].role === "agent") {
+              const copy = m.slice()
+              copy[i] = { role: "agent", text: copy[i].text + msg.text! }
+              return copy
+            }
+          }
         }
         agentTurnOpenRef.current = true
         return [...m, { role: "agent", text: msg.text! }]
