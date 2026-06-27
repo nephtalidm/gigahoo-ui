@@ -274,35 +274,39 @@ export function Hero() {
                 )}
               </div>
 
-              <div ref={scrollRef} className="mt-4 space-y-3">
-                {messages.map((m, i) => {
-                  const revealed = i < visibleCount
-                  const isAssistant = m.role === "assistant"
-                  return (
-                    <div
-                      key={i}
-                      className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm transition-all duration-500 ease-out ${
-                        isAssistant
-                          ? "rounded-tl-sm bg-muted text-foreground"
-                          : "ml-auto rounded-tr-sm bg-primary text-primary-foreground"
-                      } ${revealed ? "opacity-100 translate-y-0" : "pointer-events-none translate-y-2 opacity-0"}`}
-                      aria-hidden={!revealed}
-                    >
-                      {m.text}
-                    </div>
-                  )
-                })}
+              {/* Fixed-height chat viewport: never resizes the card; messages bottom-anchor
+                  (mt-auto) and auto-scroll to the newest; scrollbar hidden. */}
+              <div
+                ref={scrollRef}
+                className="mt-4 flex h-56 flex-col overflow-y-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              >
+                <div className="mt-auto space-y-3">
+                  {messages.slice(0, visibleCount).map((m, i) => {
+                    const isAssistant = m.role === "assistant"
+                    return (
+                      <div
+                        key={i}
+                        className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-bottom-2 motion-safe:duration-500 ${
+                          isAssistant
+                            ? "rounded-tl-sm bg-muted text-foreground"
+                            : "ml-auto rounded-tr-sm bg-primary text-primary-foreground"
+                        }`}
+                      >
+                        {m.text}
+                      </div>
+                    )
+                  })}
 
-                {/* Always rendered (space reserved) so toggling typing never resizes the card. */}
-                <div
-                  className={`flex max-w-[85%] items-center gap-1 rounded-2xl rounded-tl-sm bg-muted px-4 py-3 transition-opacity duration-200 ${
-                    typing ? "opacity-100" : "opacity-0"
-                  }`}
-                  aria-hidden
-                >
-                  <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce [animation-delay:-0.3s]" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce [animation-delay:-0.15s]" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce" />
+                  {typing && (
+                    <div
+                      className="flex max-w-[85%] items-center gap-1 rounded-2xl rounded-tl-sm bg-muted px-4 py-3 motion-safe:animate-in motion-safe:fade-in-0"
+                      aria-hidden
+                    >
+                      <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce [animation-delay:-0.3s]" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce [animation-delay:-0.15s]" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce" />
+                    </div>
+                  )}
                 </div>
               </div>
 
