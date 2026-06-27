@@ -9,9 +9,12 @@ import { COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
 
 // Timing (ms) for the looping live-call demo animation.
 const RINGING_MS = 1500
-const TYPING_MS = 800
-const MESSAGE_GAP_MS = 1000
+const TYPING_MS = 1000
+const MESSAGE_GAP_MS = 2700
 const HOLD_MS = 3000
+// Messages shown instantly when the call connects (we join mid-call), so the chat
+// is already populated instead of starting empty.
+const PREROLL = 2
 
 type CallPhase = "ringing" | "connected"
 
@@ -77,10 +80,11 @@ function useCallAnimation(messageCount: number, reducedMotion: boolean) {
       setTyping(false)
       setEnded(false)
 
-      // Ringing -> connected.
+      // Ringing -> connected, already a few messages into the call.
       schedule(() => {
         setPhase("connected")
-        revealNext(0)
+        setVisibleCount(PREROLL)
+        revealNext(PREROLL)
       }, RINGING_MS)
     }
 
@@ -151,10 +155,13 @@ export function Hero() {
   const { phase, visibleCount, typing, ended } = useCallAnimation(messages.length, reducedMotion)
   const connected = phase === "connected"
 
-  // Duration of the spoken conversation (answer → last message), so the missed-calls
-  // countdown reaches 0 exactly when the call wraps up — before the hold/pause.
+  // Duration from connect to the last message (only the streamed messages after the
+  // preroll), so the missed-calls countdown reaches 0 exactly when the call wraps up.
   const conversationMs =
-    messages.reduce((sum, _m, i) => sum + (i % 2 === 0 ? TYPING_MS + MESSAGE_GAP_MS : MESSAGE_GAP_MS), 0)
+    messages.slice(PREROLL).reduce((sum, _m, idx) => {
+      const i = idx + PREROLL
+      return sum + (i % 2 === 0 ? TYPING_MS + MESSAGE_GAP_MS : MESSAGE_GAP_MS)
+    }, 0)
 
   // Keep the newest message in view when the area overflows.
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -166,10 +173,10 @@ export function Hero() {
   // Live call timer: counts up while connected, resets when the call ends/loops.
   const [elapsed, setElapsed] = useState(0)
   useEffect(() => {
-    if (reducedMotion) { setElapsed(8); return }
+    if (reducedMotion) { setElapsed(10); return }
     if (!connected) { setElapsed(0); return }
     if (ended) return // call wrapped up → freeze the timer at its final value
-    setElapsed(1)
+    setElapsed(3) // join mid-call: the timer starts at 0:03, not 0:00
     const iv = setInterval(() => setElapsed((s) => s + 1), 1000)
     return () => clearInterval(iv)
   }, [connected, ended, reducedMotion])
