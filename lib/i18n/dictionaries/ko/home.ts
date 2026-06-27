@@ -20,7 +20,7 @@ const home = {
   heroCardMsg3: "물론입니다. 기사를 보내드릴 수 있도록 성함과 주소를 알려주시겠어요?",
   heroCardMsg4: "네, James Carter이고 주소는 42 Maple Avenue입니다.",
   heroCardMsg5:
-    "확인했습니다 — 정보가 맞는지 다시 한번 확인하겠습니다: James Carter, 42 Maple Avenue, 누수되는 온수기. 모두 맞으실까요?",
+    "확인했습니다 — James Carter, 42 Maple Avenue, 누수되는 온수기. 바로 저희 팀에 전달하겠습니다. Summit Plumbing에 전화 주셔서 감사합니다 — 좋은 하루 보내세요!",
   heroCardMsg6: "네, 맞습니다.",
   heroCardMsg7:
     "완벽합니다, 모든 준비가 끝났어요! 이 내용을 바로 저희 팀에 전달하겠습니다. Summit Plumbing에 전화 주셔서 감사합니다 — 좋은 하루 되세요!",

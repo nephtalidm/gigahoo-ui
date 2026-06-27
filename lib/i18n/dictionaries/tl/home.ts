@@ -20,7 +20,7 @@ const home = {
   heroCardMsg3: "Sige po. Pakibigay ang inyong pangalan at address para makapagpadala kami ng tao?",
   heroCardMsg4: "Sige po, si James Carter ito, 42 Maple Avenue.",
   heroCardMsg5:
-    "Nakuha ko po — kumpirmahin ko lang na tama ang lahat: James Carter, 42 Maple Avenue, tumutulong water heater. Tama po ba lahat?",
+    "Nakuha ko po — James Carter, 42 Maple Avenue, tumutulong water heater. Ipapasa ko agad ito sa aming team. Salamat po sa pagtawag sa Summit Plumbing — magandang araw po sa inyo!",
   heroCardMsg6: "Opo, tama po.",
   heroCardMsg7:
     "Perpekto, ayos na po lahat! Ipapasa ko agad ito sa aming team. Salamat sa pagtawag sa Summit Plumbing — magandang araw po sa inyo!",

@@ -20,7 +20,7 @@ const home = {
   heroCardMsg3: "もちろんです。担当者を派遣できるよう、お名前とご住所を伺ってもよろしいですか？",
   heroCardMsg4: "はい、James Carter、住所は 42 Maple Avenue です。",
   heroCardMsg5:
-    "承知しました — 内容に間違いがないか確認させてください：James Carter、42 Maple Avenue、水漏れしている給湯器、ということでお間違いないでしょうか？",
+    "承知しました — James Carter、42 Maple Avenue、水漏れしている給湯器ですね。すぐに担当チームへお伝えします。Summit Plumbing にお電話いただきありがとうございました。よい一日をお過ごしください！",
   heroCardMsg6: "はい、その通りです。",
   heroCardMsg7:
     "完璧です、これで承りました！この内容をすぐに担当チームへお伝えします。Summit Plumbing にお電話いただきありがとうございました — どうぞ素敵な一日をお過ごしください！",

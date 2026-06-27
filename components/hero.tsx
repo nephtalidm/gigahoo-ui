@@ -11,7 +11,7 @@ import { COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
 const RINGING_MS = 1500
 const TYPING_MS = 800
 const MESSAGE_GAP_MS = 1000
-const HOLD_MS = 2500
+const HOLD_MS = 3000
 
 type CallPhase = "ringing" | "connected"
 
@@ -145,18 +145,16 @@ export function Hero() {
     { role: "assistant" as const, text: t("home.heroCardMsg3") },
     { role: "caller" as const, text: t("home.heroCardMsg4") },
     { role: "assistant" as const, text: t("home.heroCardMsg5") },
-    { role: "caller" as const, text: t("home.heroCardMsg6") },
-    { role: "assistant" as const, text: t("home.heroCardMsg7") },
   ]
 
   const reducedMotion = usePrefersReducedMotion()
   const { phase, visibleCount, typing, ended } = useCallAnimation(messages.length, reducedMotion)
   const connected = phase === "connected"
 
-  // Duration of the connected phase (typing+gap for each assistant message, gap for
-  // each caller message, plus the hold), so the missed-calls countdown spans one loop.
-  const connectedMs =
-    messages.reduce((sum, _m, i) => sum + (i % 2 === 0 ? TYPING_MS + MESSAGE_GAP_MS : MESSAGE_GAP_MS), 0) + HOLD_MS
+  // Duration of the spoken conversation (answer → last message), so the missed-calls
+  // countdown reaches 0 exactly when the call wraps up — before the hold/pause.
+  const conversationMs =
+    messages.reduce((sum, _m, i) => sum + (i % 2 === 0 ? TYPING_MS + MESSAGE_GAP_MS : MESSAGE_GAP_MS), 0)
 
   // Keep the newest message in view when the area overflows.
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -190,9 +188,9 @@ export function Hero() {
       current = Math.max(0, current - 1)
       setMissed(current)
       if (current === 0) clearInterval(iv)
-    }, connectedMs / 120)
+    }, conversationMs / 120)
     return () => clearInterval(iv)
-  }, [connected, reducedMotion, connectedMs])
+  }, [connected, reducedMotion, conversationMs])
 
   return (
     <section className="relative overflow-hidden border-b border-border">
@@ -276,7 +274,7 @@ export function Hero() {
                 )}
               </div>
 
-              <div ref={scrollRef} className="mt-4 max-h-72 space-y-3 overflow-y-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div ref={scrollRef} className="mt-4 space-y-3">
                 {messages.map((m, i) => {
                   const revealed = i < visibleCount
                   const isAssistant = m.role === "assistant"
