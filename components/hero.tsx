@@ -325,7 +325,7 @@ export function Hero() {
                     onChange={(e) => setCategory(e.target.value)}
                     disabled={liveActive}
                     aria-label={t("settings.businessCategory")}
-                    className="h-10 rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 sm:w-auto"
+                    className="h-9 rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 sm:w-auto"
                   >
                     {businessCategories.map((cat) => (
                       <option key={cat} value={cat}>
@@ -335,16 +335,16 @@ export function Hero() {
                   </select>
 
                   {live.status === "live" ? (
-                    <Button variant="destructive" className="h-10 sm:flex-1" onClick={() => live.stop()}>
+                    <Button variant="destructive" className="h-9 sm:flex-1" onClick={() => live.stop()}>
                       {t("home.heroEndCall")}
                     </Button>
                   ) : live.status === "connecting" ? (
-                    <Button className="h-10 sm:flex-1" disabled>
+                    <Button className="h-9 sm:flex-1" disabled>
                       <Loader2 className="h-4 w-4 animate-spin" />
                       {t("home.heroConnecting")}
                     </Button>
                   ) : (
-                    <Button className="h-10 sm:flex-1" onClick={() => live.start(category, "Serena")}>
+                    <Button className="h-9 sm:flex-1" onClick={() => live.start(category, "Serena")}>
                       {t("home.heroTryLive")}
                     </Button>
                   )}
