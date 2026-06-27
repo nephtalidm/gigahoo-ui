@@ -35,7 +35,7 @@ const home = {
   heroStat2Label: "言語",
   heroStat3Value: "0",
   heroStat3Label: "不在着信",
-  heroTryLive: "エージェントとライブで話す",
+  heroTryLive: "今すぐAIエージェントと話してみよう！",
   heroConnecting: "接続中…",
   heroEndCall: "通話を終了",
   heroLiveCall: "ライブ通話",

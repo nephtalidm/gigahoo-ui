@@ -35,7 +35,7 @@ const home = {
   heroStat2Label: "Мов",
   heroStat3Value: "0",
   heroStat3Label: "Пропущених дзвінків",
-  heroTryLive: "Поговоріть з агентом — наживо",
+  heroTryLive: "Поговоріть з нашим ШІ-агентом просто зараз!",
   heroConnecting: "З'єднання…",
   heroEndCall: "Завершити дзвінок",
   heroLiveCall: "Живий дзвінок",

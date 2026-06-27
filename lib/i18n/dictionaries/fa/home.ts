@@ -35,7 +35,7 @@ const home = {
   heroStat2Label: "زبان",
   heroStat3Value: "۰",
   heroStat3Label: "تماس‌های از دست رفته",
-  heroTryLive: "با دستیار صحبت کنید — زنده",
+  heroTryLive: "همین حالا با دستیار هوش مصنوعی ما صحبت کنید!",
   heroConnecting: "در حال اتصال…",
   heroEndCall: "پایان تماس",
   heroLiveCall: "تماس زنده",

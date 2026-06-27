@@ -35,7 +35,7 @@ const home = {
   heroStat2Label: "ਭਾਸ਼ਾਵਾਂ",
   heroStat3Value: "0",
   heroStat3Label: "ਖੁੰਝੀਆਂ ਕਾਲਾਂ",
-  heroTryLive: "ਏਜੰਟ ਨਾਲ ਗੱਲ ਕਰੋ — ਲਾਈਵ",
+  heroTryLive: "ਹੁਣੇ ਸਾਡੇ AI ਏਜੰਟ ਨਾਲ ਗੱਲ ਕਰਕੇ ਦੇਖੋ!",
   heroConnecting: "ਕਨੈਕਟ ਹੋ ਰਿਹਾ ਹੈ…",
   heroEndCall: "ਕਾਲ ਖਤਮ ਕਰੋ",
   heroLiveCall: "ਲਾਈਵ ਕਾਲ",

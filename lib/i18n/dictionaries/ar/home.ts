@@ -35,7 +35,7 @@ const home = {
   heroStat2Label: "اللغات",
   heroStat3Value: "0",
   heroStat3Label: "المكالمات الفائتة",
-  heroTryLive: "تحدث إلى الوكيل — مباشرة",
+  heroTryLive: "تحدث الآن مع وكيل الذكاء الاصطناعي لدينا!",
   heroConnecting: "جارٍ الاتصال…",
   heroEndCall: "إنهاء المكالمة",
   heroLiveCall: "مكالمة مباشرة",

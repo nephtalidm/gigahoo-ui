@@ -35,7 +35,7 @@ const home = {
   heroStat2Label: "भाषाएँ",
   heroStat3Value: "0",
   heroStat3Label: "छूटी हुई कॉल",
-  heroTryLive: "एजेंट से बात करें — लाइव",
+  heroTryLive: "अभी हमारे AI एजेंट से बात करके देखें!",
   heroConnecting: "कनेक्ट हो रहा है…",
   heroEndCall: "कॉल समाप्त करें",
   heroLiveCall: "लाइव कॉल",

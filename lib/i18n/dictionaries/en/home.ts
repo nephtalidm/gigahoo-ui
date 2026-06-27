@@ -35,7 +35,7 @@ const home = {
   heroStat2Label: "Languages",
   heroStat3Value: "0",
   heroStat3Label: "Missed calls",
-  heroTryLive: "Talk to the agent — live",
+  heroTryLive: "Try talking to our AI agent now!",
   heroConnecting: "Connecting…",
   heroEndCall: "End call",
   heroLiveCall: "Live call",

@@ -35,7 +35,7 @@ const home = {
   heroStat2Label: "Langues",
   heroStat3Value: "0",
   heroStat3Label: "Appels manqués",
-  heroTryLive: "Parlez à l'agent — en direct",
+  heroTryLive: "Parlez dès maintenant à notre agent IA !",
   heroConnecting: "Connexion…",
   heroEndCall: "Terminer l'appel",
   heroLiveCall: "Appel en direct",

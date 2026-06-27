@@ -35,7 +35,7 @@ const home = {
   heroStat2Label: "種語言",
   heroStat3Value: "0",
   heroStat3Label: "未接來電",
-  heroTryLive: "同AI助理即時通話",
+  heroTryLive: "即刻同我哋嘅 AI 助理傾偈啦！",
   heroConnecting: "連接緊…",
   heroEndCall: "結束通話",
   heroLiveCall: "即時通話",

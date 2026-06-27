@@ -36,7 +36,7 @@ const home = {
   heroStat2Label: "Idiomas",
   heroStat3Value: "0",
   heroStat3Label: "Llamadas perdidas",
-  heroTryLive: "Habla con el agente — en vivo",
+  heroTryLive: "¡Habla ahora con nuestro agente de IA!",
   heroConnecting: "Conectando…",
   heroEndCall: "Finalizar llamada",
   heroLiveCall: "Llamada en vivo",

@@ -35,7 +35,7 @@ const home = {
   heroStat2Label: "Mga Wika",
   heroStat3Value: "0",
   heroStat3Label: "Hindi nasagot na tawag",
-  heroTryLive: "Kausapin ang ahente — live",
+  heroTryLive: "Subukang kausapin ang aming AI agent ngayon!",
   heroConnecting: "Kumokonekta…",
   heroEndCall: "Tapusin ang tawag",
   heroLiveCall: "Live na tawag",

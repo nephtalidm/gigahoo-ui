@@ -317,6 +317,43 @@ export function Hero() {
                 )}
               </div>
 
+              {/* Live-call controls — between the "Incoming call" header and the conversation. */}
+              <div className="mt-4">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                  <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    disabled={liveActive}
+                    aria-label={t("settings.businessCategory")}
+                    className="h-10 rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 sm:w-auto"
+                  >
+                    {businessCategories.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {t(`categories.${businessCategoryKeys[cat]}`)}
+                      </option>
+                    ))}
+                  </select>
+
+                  {live.status === "live" ? (
+                    <Button variant="destructive" className="sm:flex-1" onClick={() => live.stop()}>
+                      {t("home.heroEndCall")}
+                    </Button>
+                  ) : live.status === "connecting" ? (
+                    <Button className="sm:flex-1" disabled>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      {t("home.heroConnecting")}
+                    </Button>
+                  ) : (
+                    <Button className="sm:flex-1" onClick={() => live.start(category, "Serena")}>
+                      {t("home.heroTryLive")}
+                    </Button>
+                  )}
+                </div>
+                {live.status === "error" && (
+                  <p className="mt-2 text-xs text-destructive">{t("home.heroMicError")}</p>
+                )}
+              </div>
+
               {/* Fixed-height chat viewport: never resizes the card; messages bottom-anchor
                   (mt-auto) and auto-scroll to the newest; scrollbar hidden. */}
               <div
@@ -408,51 +445,6 @@ export function Hero() {
                   <p className="text-xs text-muted-foreground">{t("home.heroStat3Label")}</p>
                 </div>
               </div>
-            </div>
-
-            {/* Live-demo control row. In normal flow on mobile (under the card); on lg the
-                card is absolute, so this is pinned just below the card's bottom edge. */}
-            <div className="mt-4 lg:absolute lg:inset-x-0 lg:top-full lg:mt-4">
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-                <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  disabled={liveActive}
-                  aria-label={t("settings.businessCategory")}
-                  className="h-10 rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 sm:w-auto"
-                >
-                  {businessCategories.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {t(`categories.${businessCategoryKeys[cat]}`)}
-                    </option>
-                  ))}
-                </select>
-
-                {live.status === "live" ? (
-                  <Button
-                    variant="destructive"
-                    className="sm:flex-1"
-                    onClick={() => live.stop()}
-                  >
-                    {t("home.heroEndCall")}
-                  </Button>
-                ) : live.status === "connecting" ? (
-                  <Button className="sm:flex-1" disabled>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    {t("home.heroConnecting")}
-                  </Button>
-                ) : (
-                  <Button
-                    className="sm:flex-1"
-                    onClick={() => live.start(category, "Serena")}
-                  >
-                    {t("home.heroTryLive")}
-                  </Button>
-                )}
-              </div>
-              {live.status === "error" && (
-                <p className="mt-2 text-xs text-destructive">{t("home.heroMicError")}</p>
-              )}
             </div>
           </div>
         </div>

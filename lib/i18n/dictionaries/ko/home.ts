@@ -35,7 +35,7 @@ const home = {
   heroStat2Label: "언어",
   heroStat3Value: "0",
   heroStat3Label: "놓친 전화",
-  heroTryLive: "상담원과 실시간 통화하기",
+  heroTryLive: "지금 바로 AI 상담원과 통화해 보세요!",
   heroConnecting: "연결 중…",
   heroEndCall: "통화 종료",
   heroLiveCall: "실시간 통화",
