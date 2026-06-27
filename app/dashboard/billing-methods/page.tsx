@@ -64,14 +64,14 @@ function AddCardForm({
           type="button"
           onClick={onCancel}
           disabled={submitting}
-          className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent disabled:opacity-60"
+          className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground cursor-pointer transition-colors hover:bg-accent disabled:opacity-60"
         >
           {t("billing.cancel")}
         </button>
         <button
           type="submit"
           disabled={!stripe || submitting}
-          className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 disabled:opacity-60"
+          className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm cursor-pointer transition-colors hover:bg-primary/90 disabled:opacity-60"
         >
           {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
           {t("billing.save")}
@@ -209,7 +209,7 @@ export default function BillingMethodsPage() {
                   type="button"
                   onClick={() => handleRemove(m)}
                   disabled={removingId === m.id}
-                  className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-destructive transition-colors hover:bg-destructive/10 disabled:opacity-60"
+                  className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-destructive cursor-pointer transition-colors hover:bg-destructive/10 disabled:opacity-60"
                 >
                   {removingId === m.id ? (
                     <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -237,7 +237,7 @@ export default function BillingMethodsPage() {
           <button
             type="button"
             onClick={openAddCard}
-            className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
+            className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm cursor-pointer transition-colors hover:bg-primary/90"
           >
             <Plus className="h-4 w-4" />
             {t("billing.addPaymentMethod")}
@@ -252,7 +252,7 @@ export default function BillingMethodsPage() {
             <button
               type="button"
               onClick={openAddCard}
-              className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+              className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground cursor-pointer transition-colors hover:bg-accent"
             >
               {t("billing.tryAgain")}
             </button>

@@ -22,6 +22,22 @@ import { ArrowUpRight, Check, Download, Loader2 } from "lucide-react"
 
 const planOrder = ["Free", "Starter", "Business"]
 
+// Cache the account's resolved currency + per-plan amounts so a page refresh renders
+// them immediately (no "price first, CAD label 1s later" flicker); the live fetch
+// then refreshes them in the background.
+const PLAN_PRICE_CACHE = "gigahoo_plan_price_cache"
+function readPlanPriceCache(): { currency: string | null; prices: Record<string, string> } {
+  if (typeof window === "undefined") return { currency: null, prices: {} }
+  try {
+    const raw = window.localStorage.getItem(PLAN_PRICE_CACHE)
+    if (raw) {
+      const v = JSON.parse(raw)
+      return { currency: v.currency ?? null, prices: v.prices ?? {} }
+    }
+  } catch {}
+  return { currency: null, prices: {} }
+}
+
 export function BillingView({
   summary,
   plans,
@@ -35,13 +51,11 @@ export function BillingView({
   const [portalLoading, setPortalLoading] = useState(false)
   // Billing currency/amounts follow the ACCOUNT's country (where they signed up),
   // NOT the top-menu country/language switcher. Resolved from account.countryCode
-  // via the per-currency public-prices endpoint (Country.Currency + PlanPrice).
-  const [currency, setCurrency] = useState<string | null>(null)
-  // Per-currency DB plan amounts keyed by plan slug (e.g. { Free: "$0",
-  // Starter: "$49", Business: "$499" }) — the SAME source the homepage Pricing
-  // uses, so logged-in users see prices matching their currency/the homepage
-  // instead of the base-USD plan.priceMonthly.
-  const [prices, setPrices] = useState<Record<string, string>>({})
+  // via public-prices; initialized from the localStorage cache so a refresh shows
+  // the right currency/amounts immediately (no flicker).
+  const cachedPrice = readPlanPriceCache()
+  const [currency, setCurrency] = useState<string | null>(cachedPrice.currency)
+  const [prices, setPrices] = useState<Record<string, string>>(cachedPrice.prices)
   const { toast } = useToast()
   const { t } = useTranslation()
 
@@ -57,6 +71,12 @@ export function BillingView({
         }
         setPrices(map)
         if (data.currency) setCurrency(data.currency)
+        try {
+          window.localStorage.setItem(
+            PLAN_PRICE_CACHE,
+            JSON.stringify({ currency: data.currency ?? null, prices: map }),
+          )
+        } catch {}
       })
       .catch(() => {})
   }, [])
