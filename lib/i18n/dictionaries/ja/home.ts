@@ -1,4 +1,8 @@
 const home = {
+  // SEO
+  metaTitle: "Gigahoo — ホームサービス事業者向けAI電話受付",
+  metaDescription:
+    "Gigahooは24時間365日お電話に対応し、お客様情報を収集し、複数の言語に対応します。お客様からの電話を二度と逃しません。",
   // Hero
   heroBadge: "ホームサービス事業者向けAI受付",
   heroTitle: "お客様からの電話を二度と逃さない!",

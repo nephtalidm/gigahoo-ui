@@ -1,4 +1,8 @@
 const home = {
+  // SEO
+  metaTitle: "Gigahoo — 面向家庭服务企业的 AI 电话接待员",
+  metaDescription:
+    "Gigahoo 全天候 24/7 接听您的来电，收集客户信息，并支持多种语言。再也不错过任何一通客户来电。",
   // Hero
   heroBadge: "面向家庭服务企业的 AI 接待员",
   heroTitle: "再也不错过任何一通客户来电!",

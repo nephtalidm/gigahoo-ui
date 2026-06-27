@@ -3,14 +3,14 @@
 import { useEffect } from "react"
 import { useTranslation } from "@/contexts/language-context"
 
-// Keeps the browser tab title in the active UI language. The static metadata
-// title (English) is used for SSR/SEO; this updates it client-side to match the
-// visitor's chosen/derived language.
+// Keeps the browser tab title in the active UI language. generateMetadata sets the
+// correct localized title for SSR/SEO; this re-applies it on client-side language
+// switches (which don't reload the page).
 export function LocalizedTitle() {
   const { t, locale } = useTranslation()
 
   useEffect(() => {
-    document.title = `Gigahoo — ${t("home.heroBadge")}`
+    document.title = t("home.metaTitle")
   }, [t, locale])
 
   return null

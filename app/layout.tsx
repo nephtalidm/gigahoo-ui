@@ -7,6 +7,7 @@ import { LanguageProvider } from '@/contexts/language-context'
 import { LocalizedTitle } from '@/components/localized-title'
 import { ToastProvider } from '@/components/ui/toaster'
 import { LOCALE_COOKIE, COUNTRY_COOKIE, defaultLocale, dirForLocale, isLocale } from '@/lib/i18n/config'
+import { dictionaries } from '@/lib/i18n/dictionaries'
 import './globals.css'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
@@ -15,14 +16,21 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-export const metadata: Metadata = {
-  title: 'Gigahoo — AI Phone Receptionist for Home Service Businesses',
-  description:
-    'Gigahoo answers your calls 24/7, collects customer info, and speaks multiple languages. Never miss another customer call.',
-  icons: {
-    icon: '/gigahoo-icon.png',
-    apple: '/gigahoo-icon.png',
-  },
+// Localize the tab title + SEO description to the visitor's language (from the
+// NEXT_LOCALE cookie), so e.g. a Spanish visitor gets a Spanish <title> on first paint.
+export async function generateMetadata(): Promise<Metadata> {
+  const cookieStore = await cookies()
+  const cookieLocale = cookieStore.get(LOCALE_COOKIE)?.value
+  const locale = isLocale(cookieLocale) ? cookieLocale : defaultLocale
+  const home = dictionaries[locale].home
+  return {
+    title: home.metaTitle,
+    description: home.metaDescription,
+    icons: {
+      icon: '/gigahoo-icon.png',
+      apple: '/gigahoo-icon.png',
+    },
+  }
 }
 
 export default async function RootLayout({

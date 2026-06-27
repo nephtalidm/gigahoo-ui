@@ -1,4 +1,8 @@
 const home = {
+  // SEO
+  metaTitle: "Gigahoo — AI Phone Receptionist for Home Service Businesses",
+  metaDescription:
+    "Gigahoo answers your calls 24/7, collects customer info, and speaks multiple languages. Never miss another customer call.",
   // Hero
   heroBadge: "AI receptionist for home service businesses",
   heroTitle: "Never Miss Another Customer Call!",

@@ -1,4 +1,8 @@
 const home = {
+  // SEO
+  metaTitle: "Gigahoo — 홈 서비스 비즈니스를 위한 AI 전화 응대원",
+  metaDescription:
+    "Gigahoo는 연중무휴 24/7 전화를 받고, 고객 정보를 수집하며, 여러 언어를 구사합니다. 다시는 고객 전화를 놓치지 마세요.",
   // Hero
   heroBadge: "홈 서비스 비즈니스를 위한 AI 응대원",
   heroTitle: "다시는 고객 전화를 놓치지 마세요!",
