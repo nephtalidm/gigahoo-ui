@@ -189,6 +189,26 @@ export function updateVoiceSettings(s: { greetingMessage: string | null; agentVo
   return api.put<VoiceSettings>("/api/account/voice-settings", s);
 }
 
+// Synthesize a live voice sample of `text` spoken in `voice` and return the audio
+// as a Blob. Uses fetch directly (not the JSON `api` client) so we can request a
+// binary response, but reuses the same Bearer-token auth header.
+export async function generateVoiceSample(text: string, voice: string): Promise<Blob> {
+  const token = typeof window !== "undefined" ? localStorage.getItem("gigahoo_token") : null;
+  const res = await fetch(`${API_BASE}/api/voice/sample`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: JSON.stringify({ text, voice }),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new ApiError(body.error || `Request failed (${res.status})`, res.status);
+  }
+  return res.blob();
+}
+
 export interface SiteSettings {
   defaultGreeting: string | null;
 }

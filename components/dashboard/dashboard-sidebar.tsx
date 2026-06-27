@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils"
 import { BrandLogo } from "@/components/brand-logo"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { LanguageSwitcher } from "@/components/language-switcher"
 import { getAccount, type AccountData } from "@/lib/api"
 import { useTranslation } from "@/contexts/language-context"
 import { useAuth } from "@/contexts/auth-context"
@@ -28,8 +27,8 @@ const navItems = [
   { labelKey: "dashboard.navSettings", href: "/dashboard/settings", icon: Settings },
   { labelKey: "dashboard.navVoiceAgent", href: "/dashboard/voice", icon: AudioLines },
   { labelKey: "dashboard.navCallHistory", href: "/dashboard/calls", icon: PhoneCall },
-  { labelKey: "dashboard.navPlanBilling", href: "/dashboard/billing", icon: CreditCard },
   { labelKey: "dashboard.navNotifications", href: "/dashboard/notifications", icon: Bell },
+  { labelKey: "dashboard.navPlanBilling", href: "/dashboard/billing", icon: CreditCard },
   { labelKey: "dashboard.navBilling", href: "/dashboard/billing-methods", icon: Wallet },
 ]
 
@@ -121,10 +120,7 @@ export function DashboardSidebar() {
             <div className="flex h-16 items-center px-4">
               <BrandLogo />
             </div>
-            <div className="flex flex-col gap-2 border-t border-border px-4 pt-4 pb-2">
-              <LanguageSwitcher className="h-11 w-full data-[size=default]:h-11" />
-            </div>
-            <div className="px-4 pb-4 pt-1">
+            <div className="border-t border-border px-4 py-4">
               <NavLinks onNavigate={() => setOpen(false)} />
             </div>
             <div className="flex flex-col gap-4 border-t border-border p-4">

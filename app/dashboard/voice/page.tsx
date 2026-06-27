@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { PageHeader } from "@/components/dashboard/page-header"
-import { getAccount, getSettings, updateVoiceSettings } from "@/lib/api"
+import { getAccount, getSettings, updateVoiceSettings, generateVoiceSample } from "@/lib/api"
 import { useTranslation } from "@/contexts/language-context"
 import { cn } from "@/lib/utils"
 import { Loader2, CheckCircle2, Play, Pause } from "lucide-react"
@@ -24,21 +24,30 @@ const VOICES: { id: string; apiName: string; label: string }[] = [
 const DEFAULT_VOICE = VOICES[0].apiName
 
 export default function VoiceAgentPage() {
-  const { t, locale } = useTranslation()
+  const { t } = useTranslation()
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [greetingMessage, setGreetingMessage] = useState("")
   const [voice, setVoice] = useState<string | null>(null)
   const [playingId, setPlayingId] = useState<string | null>(null)
+  const [loadingId, setLoadingId] = useState<string | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  // The object URL of the currently-playing sample, so we can revoke it on end/stop.
+  const objectUrlRef = useRef<string | null>(null)
 
   useEffect(() => {
     Promise.all([getAccount(), getSettings().catch(() => null)])
       .then(([account, settings]) => {
         // Show the account's custom greeting if set; otherwise pre-fill with the
-        // site-wide default so an un-customized account has an editable starting point.
-        setGreetingMessage(account.greetingMessage ?? settings?.defaultGreeting ?? "")
+        // site-wide default so an un-customized account has an editable starting
+        // point — with the "[Name of business]" placeholder swapped for the
+        // account's real business name so the user sees their own name.
+        let greeting = account.greetingMessage ?? settings?.defaultGreeting ?? ""
+        if (account.greetingMessage == null && account.businessName) {
+          greeting = greeting.replaceAll("[Name of business]", account.businessName)
+        }
+        setGreetingMessage(greeting)
         // Preselect Tina when the account hasn't chosen a voice yet.
         setVoice(account.agentVoice ?? DEFAULT_VOICE)
       })
@@ -46,22 +55,46 @@ export default function VoiceAgentPage() {
       .finally(() => setLoading(false))
   }, [])
 
-  function playSample(id: string) {
-    // Clicking the currently-playing voice pauses it.
+  // Stop whatever's playing and clean up its audio element + object URL.
+  function stopPlayback() {
+    audioRef.current?.pause()
+    audioRef.current = null
+    if (objectUrlRef.current) {
+      URL.revokeObjectURL(objectUrlRef.current)
+      objectUrlRef.current = null
+    }
+    setPlayingId(null)
+  }
+
+  // Synthesize the CURRENT greeting text in the given voice (apiName) on demand,
+  // then play it. `id` is the row id, used only for the per-row play/loading state.
+  async function playSample(id: string, apiName: string) {
+    // Clicking the currently-playing voice pauses/stops it.
     if (playingId === id) {
-      audioRef.current?.pause()
-      audioRef.current = null
-      setPlayingId(null)
+      stopPlayback()
       return
     }
-    // Stop any other sample that's playing, then play this one (in the listener's
-    // current dashboard language). Revert to "play" when it ends.
-    audioRef.current?.pause()
-    const audio = new Audio(`/voice-samples/${id}-${locale}.mp3`)
-    audioRef.current = audio
-    audio.onended = () => setPlayingId(null)
-    setPlayingId(id)
-    audio.play().catch(() => setPlayingId(null))
+    // Nothing to synthesize if the greeting is empty.
+    const text = greetingMessage.trim()
+    if (!text) return
+
+    // Stop any other sample first, then generate this one.
+    stopPlayback()
+    setLoadingId(id)
+    try {
+      const blob = await generateVoiceSample(text, apiName)
+      const url = URL.createObjectURL(blob)
+      objectUrlRef.current = url
+      const audio = new Audio(url)
+      audioRef.current = audio
+      audio.onended = () => stopPlayback()
+      setPlayingId(id)
+      await audio.play().catch(() => stopPlayback())
+    } catch {
+      stopPlayback()
+    } finally {
+      setLoadingId(null)
+    }
   }
 
   async function save() {
@@ -151,13 +184,20 @@ export default function VoiceAgentPage() {
                 </div>
                 <button
                   type="button"
+                  disabled={loadingId === v.id}
                   onClick={(e) => {
                     e.stopPropagation()
-                    playSample(v.id)
+                    playSample(v.id, v.apiName)
                   }}
-                  className="flex shrink-0 cursor-pointer items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent"
+                  className="flex shrink-0 cursor-pointer items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent disabled:opacity-60"
                 >
-                  {playingId === v.id ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
+                  {loadingId === v.id ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : playingId === v.id ? (
+                    <Pause className="h-3.5 w-3.5" />
+                  ) : (
+                    <Play className="h-3.5 w-3.5" />
+                  )}
                   {playingId === v.id ? t("dashboard.pauseSample") : t("dashboard.playSample")}
                 </button>
               </div>
