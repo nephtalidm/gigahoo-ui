@@ -413,7 +413,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
               </p>
               <ResendCode onResend={handleResend} resending={resending} sent={resentNotice} t={t} />
             </div>
-            <Button type="submit" size="lg" disabled={loading} className="w-full">
+            <Button type="submit" size="lg" disabled={loading} className="h-12 w-full">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {t("auth.verifyAndContinue")}
             </Button>
@@ -437,7 +437,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
                 <p id="phone-error" className="text-xs text-destructive">{t("auth.invalidPhone")}</p>
               )}
             </div>
-            <Button type="submit" size="lg" disabled={loading} className="w-full">
+            <Button type="submit" size="lg" disabled={loading} className="h-12 w-full">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {t("auth.sendVerificationCode")}
             </Button>
