@@ -8,18 +8,24 @@ import { useTranslation } from "@/contexts/language-context"
 import { cn } from "@/lib/utils"
 import { Loader2, CheckCircle2, Play, Pause } from "lucide-react"
 
-// Real qwen3.5-omni-plus-realtime English voices. `apiName` is the capitalized
-// name the realtime API expects and is what gets saved to the account; `id` is the
-// lowercased sample-audio filename (/voice-samples/<id>.mp3). Tina is first + the
-// default selection when the account hasn't chosen a voice.
+// Voices valid on BOTH the live agent (qwen omni-realtime) and the on-demand sample
+// TTS (qwen3-tts-flash), so the sample you hear is the exact voice the agent uses.
+// `apiName` is what both APIs expect and what's saved to the account; `id` is just the
+// per-row key. The FIRST entry is the default when the account hasn't chosen a voice.
 const VOICES: { id: string; apiName: string; label: string }[] = [
-  { id: "tina", apiName: "Tina", label: "Tina (warm, friendly female)" },
-  { id: "ethan", apiName: "Ethan", label: "Ethan (youthful male)" },
+  { id: "serena", apiName: "Serena", label: "Serena (warm female)" },
   { id: "jennifer", apiName: "Jennifer", label: "Jennifer (American female)" },
+  { id: "katerina", apiName: "Katerina", label: "Katerina (female)" },
+  { id: "kiki", apiName: "Kiki", label: "Kiki (female)" },
+  { id: "sunny", apiName: "Sunny", label: "Sunny (female)" },
+  { id: "ethan", apiName: "Ethan", label: "Ethan (warm male)" },
   { id: "ryan", apiName: "Ryan", label: "Ryan (energetic male)" },
-  { id: "aiden", apiName: "Aiden", label: "Aiden (friendly American male)" },
-  { id: "cindy", apiName: "Cindy", label: "Cindy (bright female)" },
-  { id: "raymond", apiName: "Raymond", label: "Raymond (clear male)" },
+  { id: "aiden", apiName: "Aiden", label: "Aiden (American male)" },
+  { id: "marcus", apiName: "Marcus", label: "Marcus (male)" },
+  { id: "peter", apiName: "Peter", label: "Peter (male)" },
+  { id: "dylan", apiName: "Dylan", label: "Dylan (male)" },
+  { id: "rocky", apiName: "Rocky", label: "Rocky (male)" },
+  { id: "eric", apiName: "Eric", label: "Eric (male)" },
 ]
 
 const DEFAULT_VOICE = VOICES[0].apiName
@@ -52,7 +58,7 @@ export default function VoiceAgentPage() {
           greeting = greeting.replaceAll("[Name of business]", account.businessName)
         }
         setGreetingMessage(greeting)
-        // Preselect Tina when the account hasn't chosen a voice yet.
+        // Preselect the first voice when the account hasn't chosen one yet.
         setVoice(account.agentVoice ?? DEFAULT_VOICE)
       })
       .catch(() => {})

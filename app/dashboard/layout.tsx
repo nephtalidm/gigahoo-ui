@@ -11,11 +11,11 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       <div className="lg:pl-64">
         {/* Desktop top bar — sign-out, right-aligned to the same width as the page content. */}
         <header className="sticky top-0 z-30 hidden h-16 items-center border-b border-border bg-background/90 backdrop-blur-md lg:flex">
-          <div className="mx-auto flex w-full max-w-6xl items-center justify-end px-6">
+          <div className="mx-auto flex w-full max-w-7xl items-center justify-end px-6">
             <TopbarActions />
           </div>
         </header>
-        <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">{children}</main>
+        <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">{children}</main>
       </div>
     </div>
   )
