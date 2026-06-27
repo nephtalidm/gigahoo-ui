@@ -36,7 +36,7 @@ const billing = {
   portalFailed: "Échec de l'ouverture du portail de facturation",
   tryAgain: "Veuillez réessayer.",
   // Payment methods (embedded Stripe Elements)
-  paymentMethodsTitle: "Moyens de paiement",
+  paymentMethodsTitle: "Paiement",
   paymentMethodsDescription: "Ajoutez et gérez les cartes utilisées pour payer votre abonnement.",
   addPaymentMethod: "Ajouter un moyen de paiement",
   addPaymentMethodHint: "Ajoutez une carte en toute sécurité. Vos données sont traitées par notre prestataire de paiement.",

@@ -36,7 +36,7 @@ const billing = {
   portalFailed: "ਬਿਲਿੰਗ ਪੋਰਟਲ ਖੋਲ੍ਹਣ ਵਿੱਚ ਅਸਫਲ",
   tryAgain: "ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
   // Payment methods (embedded Stripe Elements)
-  paymentMethodsTitle: "ਭੁਗਤਾਨ ਦੇ ਤਰੀਕੇ",
+  paymentMethodsTitle: "ਭੁਗਤਾਨ",
   paymentMethodsDescription: "ਆਪਣੀ ਮੈਂਬਰਸ਼ਿਪ ਦਾ ਭੁਗਤਾਨ ਕਰਨ ਲਈ ਵਰਤੇ ਜਾਂਦੇ ਕਾਰਡ ਸ਼ਾਮਲ ਕਰੋ ਅਤੇ ਪ੍ਰਬੰਧਿਤ ਕਰੋ।",
   addPaymentMethod: "ਭੁਗਤਾਨ ਵਿਧੀ ਸ਼ਾਮਲ ਕਰੋ",
   addPaymentMethodHint: "ਨਵਾਂ ਕਾਰਡ ਸੁਰੱਖਿਅਤ ਤਰੀਕੇ ਨਾਲ ਸ਼ਾਮਲ ਕਰੋ। ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ ਸਾਡੇ ਭੁਗਤਾਨ ਪ੍ਰਦਾਤਾ ਵੱਲੋਂ ਸੰਭਾਲੀ ਜਾਂਦੀ ਹੈ।",

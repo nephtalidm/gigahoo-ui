@@ -36,7 +36,7 @@ const billing = {
   portalFailed: "बिलिंग पोर्टल खोलने में विफल",
   tryAgain: "कृपया पुनः प्रयास करें।",
   // Payment methods (embedded Stripe Elements)
-  paymentMethodsTitle: "भुगतान के तरीके",
+  paymentMethodsTitle: "भुगतान",
   paymentMethodsDescription: "अपनी सदस्यता का भुगतान करने के लिए उपयोग किए जाने वाले कार्ड जोड़ें और प्रबंधित करें।",
   addPaymentMethod: "भुगतान विधि जोड़ें",
   addPaymentMethodHint: "नया कार्ड सुरक्षित रूप से जोड़ें। आपकी जानकारी हमारे भुगतान प्रदाता द्वारा संभाली जाती है।",

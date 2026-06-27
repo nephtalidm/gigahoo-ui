@@ -36,7 +36,7 @@ const billing = {
   portalFailed: "請求ポータルを開けませんでした",
   tryAgain: "もう一度お試しください。",
   // Payment methods (embedded Stripe Elements)
-  paymentMethodsTitle: "お支払い方法",
+  paymentMethodsTitle: "お支払い",
   paymentMethodsDescription: "サブスクリプションの支払いに使用するカードを追加・管理します。",
   addPaymentMethod: "お支払い方法を追加",
   addPaymentMethodHint: "新しいカードを安全に追加します。お客様の情報は決済プロバイダーが処理します。",

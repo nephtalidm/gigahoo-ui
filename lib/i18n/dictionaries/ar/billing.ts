@@ -36,7 +36,7 @@ const billing = {
   portalFailed: "فشل فتح بوابة الفوترة",
   tryAgain: "يرجى المحاولة مرة أخرى.",
   // Payment methods (embedded Stripe Elements)
-  paymentMethodsTitle: "طرق الدفع",
+  paymentMethodsTitle: "المدفوعات",
   paymentMethodsDescription: "أضف وأدر البطاقات المستخدمة لدفع اشتراكك.",
   addPaymentMethod: "إضافة طريقة دفع",
   addPaymentMethodHint: "أضف بطاقة جديدة بأمان. تتم معالجة بياناتك من قبل مزوّد الدفع لدينا.",

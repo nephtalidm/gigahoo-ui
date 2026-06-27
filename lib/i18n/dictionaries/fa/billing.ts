@@ -36,7 +36,7 @@ const billing = {
   portalFailed: "باز کردن پورتال صورت‌حساب ناموفق بود",
   tryAgain: "لطفاً دوباره تلاش کنید.",
   // Payment methods (embedded Stripe Elements)
-  paymentMethodsTitle: "روش‌های پرداخت",
+  paymentMethodsTitle: "پرداخت",
   paymentMethodsDescription: "کارت‌هایی را که برای پرداخت اشتراک خود استفاده می‌کنید اضافه و مدیریت کنید.",
   addPaymentMethod: "افزودن روش پرداخت",
   addPaymentMethodHint: "یک کارت جدید را به‌صورت ایمن اضافه کنید. اطلاعات شما توسط ارائه‌دهنده پرداخت ما مدیریت می‌شود.",

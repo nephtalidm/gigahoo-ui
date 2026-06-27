@@ -36,7 +36,7 @@ const billing = {
   portalFailed: "Failed to open billing portal",
   tryAgain: "Please try again.",
   // Payment methods (embedded Stripe Elements)
-  paymentMethodsTitle: "Payment Methods",
+  paymentMethodsTitle: "Billing",
   paymentMethodsDescription: "Add and manage the cards used to pay for your subscription.",
   addPaymentMethod: "Add payment method",
   addPaymentMethodHint: "Securely add a new card. Your details are handled by our payment provider.",

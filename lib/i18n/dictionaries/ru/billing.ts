@@ -36,7 +36,7 @@ const billing = {
   portalFailed: "Не удалось открыть платёжный портал",
   tryAgain: "Пожалуйста, повторите попытку.",
   // Payment methods (embedded Stripe Elements)
-  paymentMethodsTitle: "Способы оплаты",
+  paymentMethodsTitle: "Оплата",
   paymentMethodsDescription: "Добавляйте и управляйте картами, которые используются для оплаты подписки.",
   addPaymentMethod: "Добавить способ оплаты",
   addPaymentMethodHint: "Безопасно добавьте новую карту. Ваши данные обрабатывает наш платёжный провайдер.",

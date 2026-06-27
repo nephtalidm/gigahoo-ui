@@ -36,7 +36,7 @@ const billing = {
   portalFailed: "Nabigong buksan ang billing portal",
   tryAgain: "Pakisubukan muli.",
   // Payment methods (embedded Stripe Elements)
-  paymentMethodsTitle: "Mga Paraan ng Pagbabayad",
+  paymentMethodsTitle: "Pagbabayad",
   paymentMethodsDescription: "Magdagdag at pamahalaan ang mga card na ginagamit para bayaran ang iyong subscription.",
   addPaymentMethod: "Magdagdag ng paraan ng pagbabayad",
   addPaymentMethodHint: "Ligtas na magdagdag ng bagong card. Ang iyong mga detalye ay pinangangasiwaan ng aming payment provider.",

@@ -36,7 +36,7 @@ const billing = {
   portalFailed: "No se pudo abrir el portal de facturación",
   tryAgain: "Inténtalo de nuevo.",
   // Payment methods (embedded Stripe Elements)
-  paymentMethodsTitle: "Métodos de pago",
+  paymentMethodsTitle: "Pagos",
   paymentMethodsDescription: "Agrega y administra las tarjetas que usas para pagar tu suscripción.",
   addPaymentMethod: "Agregar método de pago",
   addPaymentMethodHint: "Agrega una tarjeta de forma segura. Tus datos los gestiona nuestro proveedor de pagos.",
