@@ -318,7 +318,7 @@ export function Hero() {
               </div>
 
               {/* Live-call controls — between the "Incoming call" header and the conversation. */}
-              <div className="mt-4">
+              <div className="mt-4 border-b border-border pb-4">
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                   <select
                     value={category}
@@ -335,16 +335,16 @@ export function Hero() {
                   </select>
 
                   {live.status === "live" ? (
-                    <Button variant="destructive" className="sm:flex-1" onClick={() => live.stop()}>
+                    <Button variant="destructive" className="h-10 sm:flex-1" onClick={() => live.stop()}>
                       {t("home.heroEndCall")}
                     </Button>
                   ) : live.status === "connecting" ? (
-                    <Button className="sm:flex-1" disabled>
+                    <Button className="h-10 sm:flex-1" disabled>
                       <Loader2 className="h-4 w-4 animate-spin" />
                       {t("home.heroConnecting")}
                     </Button>
                   ) : (
-                    <Button className="sm:flex-1" onClick={() => live.start(category, "Serena")}>
+                    <Button className="h-10 sm:flex-1" onClick={() => live.start(category, "Serena")}>
                       {t("home.heroTryLive")}
                     </Button>
                   )}
