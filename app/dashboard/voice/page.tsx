@@ -24,7 +24,7 @@ const VOICES: { id: string; apiName: string; label: string }[] = [
 const DEFAULT_VOICE = VOICES[0].apiName
 
 export default function VoiceAgentPage() {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -47,7 +47,8 @@ export default function VoiceAgentPage() {
 
   function playSample(id: string) {
     audioRef.current?.pause()
-    const audio = new Audio(`/voice-samples/${id}.mp3`)
+    // Play the sample in the listener's current dashboard language.
+    const audio = new Audio(`/voice-samples/${id}-${locale}.mp3`)
     audioRef.current = audio
     audio.play().catch(() => {})
   }
