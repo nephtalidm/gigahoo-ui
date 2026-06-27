@@ -247,10 +247,11 @@ export function Hero() {
             </ul>
           </div>
 
-          <div className="relative flex flex-col">
-            {/* Spacer so the card's top lines up with the H1 (below the badge) on the 2-col layout. */}
-            <div aria-hidden className="hidden lg:block lg:h-[3.25rem]" />
-            <div className="flex flex-1 flex-col rounded-2xl border border-border bg-card p-6 shadow-sm lg:min-h-0">
+          <div className="relative">
+            {/* On lg the card is absolutely positioned to fill the column from the headline
+                (offset past the badge) down to the bullets, so its content can never grow the
+                column — the long final message scrolls inside instead. */}
+            <div className="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-sm lg:absolute lg:inset-0 lg:top-[3.25rem] lg:min-h-0">
               <div className="flex items-center gap-3 border-b border-border pb-4">
                 <span
                   className={`flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground ${
