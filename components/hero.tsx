@@ -250,7 +250,7 @@ export function Hero() {
           <div className="relative flex flex-col">
             {/* Spacer so the card's top lines up with the H1 (below the badge) on the 2-col layout. */}
             <div aria-hidden className="hidden lg:block lg:h-[3.25rem]" />
-            <div className="flex flex-1 flex-col rounded-2xl border border-border bg-card p-6 shadow-sm">
+            <div className="flex flex-1 flex-col rounded-2xl border border-border bg-card p-6 shadow-sm lg:min-h-0">
               <div className="flex items-center gap-3 border-b border-border pb-4">
                 <span
                   className={`flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground ${
