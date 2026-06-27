@@ -28,8 +28,10 @@ import {
   type AccountData,
   type CountryData,
   type RegionData,
+  type FeatureSettings,
 } from "@/lib/api"
-import { areaCodeMatchesCountry, businessCategories, businessCategoryKeys, toE164 } from "@/lib/data"
+import { OptionalFeatures } from "@/components/dashboard/optional-features"
+import { areaCodeMatchesCountry, businessCategories, businessCategoryKeys, toE164, type Plan } from "@/lib/data"
 import { useSupportedCountries } from "@/hooks/use-supported-countries"
 import { cn } from "@/lib/utils"
 import { Loader2, CheckCircle2 } from "lucide-react"
@@ -153,11 +155,13 @@ export function SettingsView({
   account,
   countries,
   regions,
+  featureSettings,
   onCountryChange,
 }: {
   account: AccountData
   countries: CountryData[]
   regions: RegionData[]
+  featureSettings: FeatureSettings | null
   onCountryChange: (countryId: number) => void
 }) {
   const { t } = useTranslation()
@@ -788,6 +792,16 @@ export function SettingsView({
               <p className="text-xs text-destructive">{errors.country}</p>
             )}
           </Field>
+        </div>
+
+        <Separator className="my-6" />
+
+        <h3 className="font-semibold text-foreground">{t("features.title")}</h3>
+        <p className="text-sm text-muted-foreground">
+          {t("features.description")}
+        </p>
+        <div className="mt-5">
+          <OptionalFeatures plan={(account.plan ?? "Free") as Plan} initialSettings={featureSettings} />
         </div>
 
         <Separator className="my-6" />

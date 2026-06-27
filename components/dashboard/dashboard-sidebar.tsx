@@ -15,7 +15,6 @@ import { useAuth } from "@/contexts/auth-context"
 import {
   LayoutDashboard,
   PhoneCall,
-  Sparkles,
   CreditCard,
   Wallet,
   Bell,
@@ -30,7 +29,6 @@ const navItems = [
   { labelKey: "dashboard.navSettings", href: "/dashboard/settings", icon: Settings },
   { labelKey: "dashboard.navVoiceAgent", href: "/dashboard/voice", icon: AudioLines },
   { labelKey: "dashboard.navCallHistory", href: "/dashboard/calls", icon: PhoneCall },
-  { labelKey: "dashboard.navOptionalFeatures", href: "/dashboard/features", icon: Sparkles },
   { labelKey: "dashboard.navPlanBilling", href: "/dashboard/billing", icon: CreditCard },
   { labelKey: "dashboard.navNotifications", href: "/dashboard/notifications", icon: Bell },
   { labelKey: "dashboard.navBilling", href: "/dashboard/billing-methods", icon: Wallet },
