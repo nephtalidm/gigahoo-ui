@@ -51,7 +51,7 @@ const auth = {
   // validation / errors
   invalidEmail: "لطفاً یک آدرس ایمیل معتبر وارد کنید",
   invalidPhone: "لطفاً یک شماره تلفن معتبر وارد کنید",
-  codeMinLength: "کد باید حداقل ۴ رقم باشد",
+  codeMinLength: "لطفاً کد تأیید ۶ رقمی را وارد کنید.",
   passwordRequired: "وارد کردن رمز عبور الزامی است",
   googleSignInFailed: "ورود با Google ناموفق بود",
   invalidOrExpiredCode: "کد نامعتبر یا منقضی‌شده است",

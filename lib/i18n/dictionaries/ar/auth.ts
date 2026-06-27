@@ -51,7 +51,7 @@ const auth = {
   // validation / errors
   invalidEmail: "يرجى إدخال بريد إلكتروني صالح",
   invalidPhone: "يرجى إدخال رقم هاتف صالح",
-  codeMinLength: "يجب أن يتكوّن الرمز من 4 أرقام على الأقل",
+  codeMinLength: "يُرجى إدخال رمز التحقق المكوَّن من 6 أرقام.",
   passwordRequired: "كلمة المرور مطلوبة",
   googleSignInFailed: "فشل تسجيل الدخول عبر Google",
   invalidOrExpiredCode: "رمز غير صالح أو منتهي الصلاحية",

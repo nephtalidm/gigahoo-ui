@@ -51,7 +51,7 @@ const auth = {
   // validation / errors
   invalidEmail: "कृपया एक मान्य ईमेल पता दर्ज करें",
   invalidPhone: "कृपया एक मान्य फ़ोन नंबर दर्ज करें",
-  codeMinLength: "कोड कम से कम 4 अंकों का होना चाहिए",
+  codeMinLength: "कृपया 6 अंकों का सत्यापन कोड दर्ज करें।",
   passwordRequired: "पासवर्ड आवश्यक है",
   googleSignInFailed: "Google साइन-इन विफल रहा",
   invalidOrExpiredCode: "अमान्य या समाप्त कोड",

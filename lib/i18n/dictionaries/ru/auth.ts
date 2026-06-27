@@ -51,7 +51,7 @@ const auth = {
   // validation / errors
   invalidEmail: "Введите корректный адрес электронной почты",
   invalidPhone: "Введите корректный номер телефона",
-  codeMinLength: "Код должен содержать не менее 4 цифр",
+  codeMinLength: "Пожалуйста, введите 6-значный код подтверждения.",
   passwordRequired: "Необходимо указать пароль",
   googleSignInFailed: "Не удалось войти через Google",
   invalidOrExpiredCode: "Неверный или истёкший код",

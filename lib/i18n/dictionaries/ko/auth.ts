@@ -45,7 +45,7 @@ const auth = {
   // validation / errors
   invalidEmail: "유효한 이메일 주소를 입력하세요",
   invalidPhone: "유효한 전화번호를 입력하세요",
-  codeMinLength: "코드는 최소 4자리여야 합니다",
+  codeMinLength: "6자리 인증 코드를 입력해 주세요.",
   passwordRequired: "비밀번호는 필수입니다",
   googleSignInFailed: "Google 로그인에 실패했습니다",
   invalidOrExpiredCode: "잘못되었거나 만료된 코드입니다",

@@ -51,7 +51,7 @@ const auth = {
   // validation / errors
   invalidEmail: "Maglagay ng wastong email address",
   invalidPhone: "Maglagay ng wastong numero ng telepono",
-  codeMinLength: "Ang code ay dapat na hindi bababa sa 4 na digit",
+  codeMinLength: "Mangyaring ilagay ang 6-digit na verification code.",
   passwordRequired: "Kailangan ang password",
   googleSignInFailed: "Nabigo ang pag-sign in gamit ang Google",
   invalidOrExpiredCode: "Hindi wasto o napaso na ang code",

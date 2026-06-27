@@ -51,7 +51,7 @@ const auth = {
   // validation / errors
   invalidEmail: "Veuillez saisir une adresse e-mail valide",
   invalidPhone: "Veuillez saisir un numéro de téléphone valide",
-  codeMinLength: "Le code doit comporter au moins 4 chiffres",
+  codeMinLength: "Veuillez saisir le code de vérification à 6 chiffres.",
   passwordRequired: "Le mot de passe est requis",
   googleSignInFailed: "Échec de la connexion avec Google",
   invalidOrExpiredCode: "Code invalide ou expiré",

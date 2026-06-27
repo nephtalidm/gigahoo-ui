@@ -27,7 +27,7 @@ const phoneSchema = z.object({
 })
 
 const codeSchema = z.object({
-  code: z.string().min(4).max(6),
+  code: z.string().length(6),
 })
 
 // The visitor's selected market (ISO-2), used to gate new-account signups from

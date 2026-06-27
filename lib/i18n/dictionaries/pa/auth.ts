@@ -51,7 +51,7 @@ const auth = {
   // validation / errors
   invalidEmail: "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਜਾਇਜ਼ ਈਮੇਲ ਪਤਾ ਦਾਖਲ ਕਰੋ",
   invalidPhone: "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਜਾਇਜ਼ ਫ਼ੋਨ ਨੰਬਰ ਦਾਖਲ ਕਰੋ",
-  codeMinLength: "ਕੋਡ ਘੱਟੋ-ਘੱਟ 4 ਅੰਕਾਂ ਦਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ",
+  codeMinLength: "ਕਿਰਪਾ ਕਰਕੇ 6 ਅੰਕਾਂ ਵਾਲਾ ਤਸਦੀਕ ਕੋਡ ਦਾਖਲ ਕਰੋ।",
   passwordRequired: "ਪਾਸਵਰਡ ਜ਼ਰੂਰੀ ਹੈ",
   googleSignInFailed: "Google ਸਾਈਨ ਇਨ ਅਸਫਲ ਰਿਹਾ",
   invalidOrExpiredCode: "ਅਜਾਇਜ਼ ਜਾਂ ਮਿਆਦ ਪੁੱਗ ਚੁੱਕਾ ਕੋਡ",

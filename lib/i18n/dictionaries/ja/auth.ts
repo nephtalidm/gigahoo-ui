@@ -45,7 +45,7 @@ const auth = {
   // validation / errors
   invalidEmail: "有効なメールアドレスを入力してください",
   invalidPhone: "有効な電話番号を入力してください",
-  codeMinLength: "コードは4桁以上で入力してください",
+  codeMinLength: "6桁の確認コードを入力してください。",
   passwordRequired: "パスワードは必須です",
   googleSignInFailed: "Googleログインに失敗しました",
   invalidOrExpiredCode: "コードが無効または有効期限切れです",

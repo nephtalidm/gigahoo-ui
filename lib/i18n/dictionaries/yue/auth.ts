@@ -45,7 +45,7 @@ const auth = {
   // validation / errors
   invalidEmail: "請輸入有效嘅電郵地址",
   invalidPhone: "請輸入有效嘅電話號碼",
-  codeMinLength: "驗證碼最少要 4 個數字",
+  codeMinLength: "請輸入 6 位數驗證碼。",
   passwordRequired: "請輸入密碼",
   googleSignInFailed: "Google 登入失敗",
   invalidOrExpiredCode: "驗證碼無效或者已過期",

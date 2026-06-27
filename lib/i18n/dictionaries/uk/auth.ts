@@ -51,7 +51,7 @@ const auth = {
   // validation / errors
   invalidEmail: "Введіть дійсну адресу електронної пошти",
   invalidPhone: "Введіть дійсний номер телефону",
-  codeMinLength: "Код має містити щонайменше 4 цифри",
+  codeMinLength: "Будь ласка, введіть 6-значний код підтвердження.",
   passwordRequired: "Пароль обов'язковий",
   googleSignInFailed: "Не вдалося увійти через Google",
   invalidOrExpiredCode: "Недійсний або прострочений код",
