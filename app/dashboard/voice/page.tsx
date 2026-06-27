@@ -143,7 +143,7 @@ export default function VoiceAgentPage() {
                     e.stopPropagation()
                     playSample(v.id)
                   }}
-                  className="flex shrink-0 items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent"
+                  className="flex shrink-0 cursor-pointer items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent"
                 >
                   <Play className="h-3.5 w-3.5" />
                   {t("dashboard.playSample")}
