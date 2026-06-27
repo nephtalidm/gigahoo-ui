@@ -35,6 +35,9 @@ export default function VoiceAgentPage() {
   const audioRef = useRef<HTMLAudioElement | null>(null)
   // The object URL of the currently-playing sample, so we can revoke it on end/stop.
   const objectUrlRef = useRef<string | null>(null)
+  // Monotonic request counter so a newer Play click cancels older in-flight
+  // generations — only the most recently requested voice should play.
+  const requestRef = useRef(0)
 
   useEffect(() => {
     Promise.all([getAccount(), getSettings().catch(() => null)])
@@ -57,6 +60,7 @@ export default function VoiceAgentPage() {
 
   // Stop whatever's playing and clean up its audio element + object URL.
   function stopPlayback() {
+    requestRef.current++
     audioRef.current?.pause()
     audioRef.current = null
     if (objectUrlRef.current) {
@@ -80,9 +84,13 @@ export default function VoiceAgentPage() {
 
     // Stop any other sample first, then generate this one.
     stopPlayback()
+    const reqId = requestRef.current
     setLoadingId(id)
     try {
       const blob = await generateVoiceSample(text, apiName)
+      // A newer Play click superseded this request — discard its audio so only
+      // the most recently clicked voice ever plays.
+      if (reqId !== requestRef.current) return
       const url = URL.createObjectURL(blob)
       objectUrlRef.current = url
       const audio = new Audio(url)
@@ -91,9 +99,9 @@ export default function VoiceAgentPage() {
       setPlayingId(id)
       await audio.play().catch(() => stopPlayback())
     } catch {
-      stopPlayback()
+      if (reqId === requestRef.current) stopPlayback()
     } finally {
-      setLoadingId(null)
+      if (reqId === requestRef.current) setLoadingId(null)
     }
   }
 

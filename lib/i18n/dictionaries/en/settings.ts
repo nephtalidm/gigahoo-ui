@@ -15,6 +15,8 @@ const settings = {
   websiteUrlPlaceholder: "https://yourbusiness.com",
   forwardingPhone: "Forwarding Phone Number",
   forwardingPhoneHint: "This number is managed by Gigahoo and cannot be edited.",
+  websiteLanguage: "Website Language",
+  websiteLanguageHint: "The language used across your dashboard.",
 
   // Business address
   addressTitle: "Business Address",

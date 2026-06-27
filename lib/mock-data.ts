@@ -34,6 +34,7 @@ export const mockAccount: AccountData = {
   smsCallNotifications: false,
   greetingMessage: null,
   agentVoice: null,
+  accountLanguage: "en",
 };
 
 export const mockConversations: ConversationData[] = [

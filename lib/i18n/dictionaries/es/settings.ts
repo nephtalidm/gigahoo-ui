@@ -15,6 +15,8 @@ const settings = {
   websiteUrlPlaceholder: "https://tunegocio.com",
   forwardingPhone: "Número de desvío de llamadas",
   forwardingPhoneHint: "Este número lo administra Gigahoo y no se puede editar.",
+  websiteLanguage: "Idioma del sitio web",
+  websiteLanguageHint: "El idioma utilizado en todo tu panel.",
 
   // Business address
   addressTitle: "Dirección del negocio",

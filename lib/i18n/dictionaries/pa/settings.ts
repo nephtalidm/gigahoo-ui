@@ -15,6 +15,8 @@ const settings = {
   websiteUrlPlaceholder: "https://yourbusiness.com",
   forwardingPhone: "ਫਾਰਵਰਡਿੰਗ ਫ਼ੋਨ ਨੰਬਰ",
   forwardingPhoneHint: "ਇਹ ਨੰਬਰ Gigahoo ਦੁਆਰਾ ਪ੍ਰਬੰਧਿਤ ਹੈ ਅਤੇ ਇਸ ਨੂੰ ਸੋਧਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ।",
+  websiteLanguage: "ਵੈੱਬਸਾਈਟ ਦੀ ਭਾਸ਼ਾ",
+  websiteLanguageHint: "ਤੁਹਾਡੇ ਪੂਰੇ ਡੈਸ਼ਬੋਰਡ ਵਿੱਚ ਵਰਤੀ ਜਾਂਦੀ ਭਾਸ਼ਾ।",
 
   // Business address
   addressTitle: "ਕਾਰੋਬਾਰੀ ਪਤਾ",

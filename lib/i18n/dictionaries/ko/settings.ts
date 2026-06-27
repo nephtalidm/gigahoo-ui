@@ -15,6 +15,8 @@ const settings = {
   websiteUrlPlaceholder: "https://yourbusiness.com",
   forwardingPhone: "착신 전환 전화번호",
   forwardingPhoneHint: "이 번호는 Gigahoo에서 관리하며 수정할 수 없습니다.",
+  websiteLanguage: "웹사이트 언어",
+  websiteLanguageHint: "대시보드 전체에서 사용되는 언어입니다.",
 
   // Business address
   addressTitle: "비즈니스 주소",

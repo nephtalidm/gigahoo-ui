@@ -15,6 +15,8 @@ const settings = {
   websiteUrlPlaceholder: "https://yourbusiness.com",
   forwardingPhone: "転送先電話番号",
   forwardingPhoneHint: "この番号はGigahooが管理しており、編集できません。",
+  websiteLanguage: "サイトの言語",
+  websiteLanguageHint: "ダッシュボード全体で使用される言語です。",
 
   // Business address
   addressTitle: "ビジネス住所",

@@ -15,7 +15,7 @@ export function MetricsGrid({
 }) {
   const { t } = useTranslation()
   return (
-    <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <MetricCard label={t("dashboard.callsAnswered")} value={callsAnswered} icon={PhoneCall} />
       <MetricCard label={t("dashboard.avgCallDuration")} value={avgDuration} suffix={t("dashboard.secondsSuffix")} icon={Clock} />
       <MetricCard label={t("dashboard.minutesRemaining")} value={minutesRemaining} icon={Gauge} />

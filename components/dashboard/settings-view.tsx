@@ -17,8 +17,10 @@ import { GoogleSignInButton } from "@/components/google-signin-button"
 import { CodeBoxes } from "@/components/code-boxes"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import { useTranslation } from "@/contexts/language-context"
+import { locales, isLocale, LOCALE_PICKED_COOKIE, LOCALE_META, type Locale } from "@/lib/i18n/config"
 import {
   updateAccount,
+  updateAccountLanguage,
   setPassword as apiSetPassword,
   linkGoogle,
   requestEmailChange,
@@ -164,9 +166,14 @@ export function SettingsView({
   featureSettings: FeatureSettings | null
   onCountryChange: (countryId: number) => void
 }) {
-  const { t } = useTranslation()
+  const { t, setLocale } = useTranslation()
   // Supported (served) countries from the API (Country.IsSupported), settings.ts fallback.
   const supportedCodes = useSupportedCountries()
+  // The account's preferred dashboard/website language. Defaults to the stored
+  // AccountLanguage when supported, otherwise English.
+  const [language, setLanguage] = useState<Locale>(
+    isLocale(account.accountLanguage) ? account.accountLanguage : "en",
+  )
   const [businessName, setBusinessName] = useState(account.businessName)
   const [categoryId, setCategoryId] = useState(String(account.categoryId))
   const [businessPhone, setBusinessPhone] = useState(account.businessPhone)
@@ -263,6 +270,24 @@ export function SettingsView({
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newPw, confirmPw])
+
+  // Switch the account language: persist it server-side, then apply the locale
+  // exactly the way the public LanguageSwitcher does — set the NEXT_LOCALE +
+  // NEXT_LOCALE_PICKED cookies and call setLocale (which re-renders without a
+  // reload and flips RTL layout). Marking it "picked" stops the dashboard
+  // default-language effect from overriding the explicit choice this session.
+  async function handleLanguageChange(value: string | null) {
+    if (!isLocale(value) || value === language) return
+    setLanguage(value)
+    account.accountLanguage = value
+    document.cookie = `${LOCALE_PICKED_COOKIE}=1;path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`
+    setLocale(value)
+    try {
+      await updateAccountLanguage(value)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("settings.saveFailed"))
+    }
+  }
 
   function handleCountryChange(value: string) {
     setCountryId(value)
@@ -675,6 +700,24 @@ export function SettingsView({
             <p id="forwardingPhoneHint" className="text-xs text-muted-foreground">
               {t("settings.forwardingPhoneHint")}
             </p>
+          </Field>
+          <Field label={t("settings.websiteLanguage")} htmlFor="websiteLanguage">
+            <Select value={language} onValueChange={handleLanguageChange}>
+              <SelectTrigger id="websiteLanguage">
+                <SelectValue>{LOCALE_META[language].native}</SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {locales.map((l) => (
+                  <SelectItem key={l} value={l}>
+                    <span className="flex items-center gap-2">
+                      <span>{LOCALE_META[l].native}</span>
+                      <span className="text-xs text-muted-foreground">{LOCALE_META[l].english}</span>
+                    </span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">{t("settings.websiteLanguageHint")}</p>
           </Field>
         </div>
 

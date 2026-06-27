@@ -41,8 +41,12 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <CountrySwitcher />
-          <LanguageSwitcher />
+          {!isAuthenticated && (
+            <>
+              <CountrySwitcher />
+              <LanguageSwitcher />
+            </>
+          )}
           {isAuthenticated ? (
             <>
               <Button
@@ -83,10 +87,12 @@ export function SiteHeader() {
               <BrandLogo />
             </div>
             <nav className="flex flex-col gap-1 border-t border-border p-4">
-              <div className="flex flex-col gap-2 pb-2">
-                <CountrySwitcher className="h-11 w-full data-[size=default]:h-11" />
-                <LanguageSwitcher className="h-11 w-full data-[size=default]:h-11" />
-              </div>
+              {!isAuthenticated && (
+                <div className="flex flex-col gap-2 pb-2">
+                  <CountrySwitcher className="h-11 w-full data-[size=default]:h-11" />
+                  <LanguageSwitcher className="h-11 w-full data-[size=default]:h-11" />
+                </div>
+              )}
               {navLinks.map((link) => (
                 <a
                   key={link.href}

@@ -123,6 +123,7 @@ export interface AccountData {
   smsCallNotifications: boolean;
   greetingMessage: string | null;
   agentVoice: string | null;
+  accountLanguage: string | null;
 }
 
 export function createAccount(data: {
@@ -133,8 +134,15 @@ export function createAccount(data: {
   email: string;
   planId: number;
   password: string;
+  language: string;
 }) {
   return api.post<AccountData>("/api/account", data);
+}
+
+// Persist the account's preferred dashboard/website language. Validated against
+// the supported locales server-side (400 otherwise).
+export function updateAccountLanguage(language: string) {
+  return api.put<{ language: string }>("/api/account/language", { language });
 }
 
 export function getAccount() {

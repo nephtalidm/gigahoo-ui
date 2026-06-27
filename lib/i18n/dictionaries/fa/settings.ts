@@ -15,6 +15,8 @@ const settings = {
   websiteUrlPlaceholder: "https://yourbusiness.com",
   forwardingPhone: "شماره تلفن انتقال تماس",
   forwardingPhoneHint: "این شماره توسط Gigahoo مدیریت می‌شود و قابل ویرایش نیست.",
+  websiteLanguage: "زبان وب‌سایت",
+  websiteLanguageHint: "زبانی که در سراسر داشبورد شما استفاده می‌شود.",
 
   // Business address
   addressTitle: "آدرس کسب‌وکار",

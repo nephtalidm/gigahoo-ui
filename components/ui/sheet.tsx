@@ -46,15 +46,6 @@ function SheetContent({
   side?: "top" | "right" | "bottom" | "left"
   showCloseButton?: boolean
 }) {
-  // Lock body scroll while the sheet is open so finger-scrolling inside the menu
-  // doesn't scroll the page behind it (this component only mounts while open).
-  React.useEffect(() => {
-    const prev = document.body.style.overflow
-    document.body.style.overflow = "hidden"
-    return () => {
-      document.body.style.overflow = prev
-    }
-  }, [])
   return (
     <SheetPortal>
       <SheetOverlay />

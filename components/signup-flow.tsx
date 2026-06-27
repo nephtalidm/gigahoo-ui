@@ -368,6 +368,9 @@ export function SignupFlow() {
         // Omit when empty (SMS/Google are passwordless) so the optional,
         // min-length-8 backend field stays null instead of failing on "".
         password: password || undefined,
+        // Default the account's dashboard language to the locale the user signed
+        // up in (the current NEXT_LOCALE cookie); server clamps to a supported one.
+        language: document.cookie.match(/(?:^|;\s*)NEXT_LOCALE=([^;]+)/)?.[1] ?? "en",
       })
 
       try { localStorage.removeItem(SIGNUP_PLAN_KEY) } catch {}

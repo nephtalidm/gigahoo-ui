@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { getAccount, type AccountData } from "@/lib/api"
 import { useTranslation } from "@/contexts/language-context"
+import { isLocale, LOCALE_COOKIE, LOCALE_PICKED_COOKIE } from "@/lib/i18n/config"
 import { useAuth } from "@/contexts/auth-context"
 import {
   LayoutDashboard,
@@ -63,13 +64,39 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
 
 function UserInfo() {
   const [account, setAccount] = useState<AccountData | null>(null)
-  const { t } = useTranslation()
+  const { t, setLocale } = useTranslation()
+  // Apply the account's default language at most once per mount, so the effect
+  // below can never loop (setLocale re-renders this component).
+  const appliedDefaultLanguage = useRef(false)
 
   useEffect(() => {
     getAccount()
-      .then(setAccount)
+      .then((acc) => {
+        setAccount(acc)
+        // Default the dashboard to the user's stored AccountLanguage — but only
+        // when they haven't explicitly picked a language this session
+        // (NEXT_LOCALE_PICKED !== "1"), it differs from the current NEXT_LOCALE
+        // cookie, and we haven't already applied it. The ref guard guarantees
+        // this runs once and can't reload-loop.
+        if (appliedDefaultLanguage.current) return
+        const cookies = typeof document !== "undefined" ? document.cookie : ""
+        const picked = cookies.match(/(?:^|;\s*)NEXT_LOCALE_PICKED=([^;]+)/)?.[1]
+        const current = cookies.match(new RegExp(`(?:^|;\\s*)${LOCALE_COOKIE}=([^;]+)`))?.[1]
+        const lang = acc.accountLanguage
+        if (picked !== "1" && isLocale(lang) && lang !== current) {
+          appliedDefaultLanguage.current = true
+          // setLocale writes the NEXT_LOCALE cookie and re-renders (no reload).
+          setLocale(lang)
+          // setLocale also marks NEXT_LOCALE_PICKED=1; undo that so this remains
+          // an automatic default (not an explicit user choice), keeping future
+          // auto-defaults in play if AccountLanguage later changes.
+          document.cookie = `${LOCALE_PICKED_COOKIE}=;path=/;max-age=0;samesite=lax`
+        } else {
+          appliedDefaultLanguage.current = true
+        }
+      })
       .catch(() => {})
-  }, [])
+  }, [setLocale])
 
   return (
     <div className="min-w-0 px-2">
