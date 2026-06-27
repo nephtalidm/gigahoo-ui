@@ -123,7 +123,7 @@ function useCallAnimation(messageCount: number, reducedMotion: boolean) {
 }
 
 export function Hero() {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   // The visitor's country, read from the same cookie middleware sets for geo.
   const [country, setCountry] = useState<string>("")
 
@@ -344,7 +344,7 @@ export function Hero() {
                       {t("home.heroConnecting")}
                     </Button>
                   ) : (
-                    <Button className="h-auto min-h-9 w-full whitespace-normal py-1.5 text-center leading-tight" onClick={() => live.start(category, "Serena")}>
+                    <Button className="h-auto min-h-9 w-full whitespace-normal py-1.5 text-center leading-tight" onClick={() => live.start(category, "Serena", locale)}>
                       {t("home.heroTryLive")}
                     </Button>
                   )}

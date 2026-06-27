@@ -142,7 +142,7 @@ export function useLiveCall() {
   }, [stopAgentAudio, stop])
 
   const start = useCallback(
-    async (category: string, voice: string) => {
+    async (category: string, voice: string, language: string) => {
       setMessages([])
       setStatus("connecting")
       agentTurnOpenRef.current = false
@@ -159,7 +159,7 @@ export function useLiveCall() {
         nextStartRef.current = playCtx.currentTime
 
         const ws = new WebSocket(
-          `${wsBase()}/api/voice/live?category=${encodeURIComponent(category)}&voice=${encodeURIComponent(voice)}`,
+          `${wsBase()}/api/voice/live?category=${encodeURIComponent(category)}&voice=${encodeURIComponent(voice)}&lang=${encodeURIComponent(language)}`,
         )
         ws.binaryType = "arraybuffer"
         wsRef.current = ws
