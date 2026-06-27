@@ -37,8 +37,11 @@ export function CodeBoxes({
   const place = (start: number, raw: string) => {
     const incoming = raw.replace(/\D/g, "")
     if (!incoming) return
+    // A multi-digit value means an OS autofill or paste landed in some box —
+    // always spread it from the FIRST box, not from wherever it happened to land.
+    const from = incoming.length > 1 ? 0 : start
     const chars = value.padEnd(length, " ").slice(0, length).split("")
-    let i = start
+    let i = from
     for (const c of incoming) {
       if (i >= length) break
       chars[i] = c
@@ -81,11 +84,11 @@ export function CodeBoxes({
             refs.current[i] = el
           }}
           inputMode="numeric"
-          autoComplete={i === 0 ? "one-time-code" : "off"}
-          // The first box is the OS autofill target (one-time-code). It must accept
-          // the WHOLE code so place() can spread it across the boxes — maxLength={1}
-          // would truncate the autofilled value to a single digit. Other boxes keep 1.
-          maxLength={i === 0 ? length : 1}
+          // Every box advertises one-time-code and accepts the WHOLE code, so the OS
+          // autofill works no matter which box is focused; place() spreads it from the
+          // first box. maxLength={1} would truncate the autofilled value to one digit.
+          autoComplete="one-time-code"
+          maxLength={length}
           autoFocus={autoFocus && i === 0}
           value={value[i] ?? ""}
           onChange={(e) => place(i, e.target.value)}

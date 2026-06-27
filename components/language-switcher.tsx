@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useTranslation } from "@/contexts/language-context"
-import { locales, isLocale, LOCALE_META } from "@/lib/i18n/config"
+import { locales, isLocale, LOCALE_META, type Locale } from "@/lib/i18n/config"
 import { cn } from "@/lib/utils"
 
 // The single, most-common flag for a language (e.g. UK for English, Spain for
@@ -27,12 +27,18 @@ function Flag({ code }: { code: string }) {
   )
 }
 
-export function LanguageSwitcher({ className }: { className?: string }) {
+export function LanguageSwitcher({
+  className,
+  onChange,
+}: {
+  className?: string
+  onChange?: (locale: Locale) => void
+}) {
   const { locale, setLocale } = useTranslation()
   const current = LOCALE_META[locale]
 
   return (
-    <Select value={locale} onValueChange={(v) => { if (isLocale(v)) setLocale(v) }}>
+    <Select value={locale} onValueChange={(v) => { if (isLocale(v)) { setLocale(v); onChange?.(v) } }}>
       <SelectTrigger
         aria-label="Language"
         className={cn("h-9 w-auto cursor-pointer gap-2 rounded-full text-sm font-medium", className)}
