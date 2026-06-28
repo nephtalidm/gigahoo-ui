@@ -80,7 +80,7 @@ function CountrySelect({
         aria-label="Country code"
         className={cn(
           "flex h-8 w-[7.5rem] shrink-0 cursor-pointer items-center justify-between gap-1.5 rounded-lg border border-input bg-transparent py-2 pr-2 pl-2.5 text-sm whitespace-nowrap transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30",
-          tall && "h-12",
+          tall && "h-12 sm:h-8",
         )}
       >
         <span className="flex items-center gap-1.5">
@@ -167,7 +167,7 @@ export function PhoneInput({
         value={formatUsPhone(value)}
         onChange={(e) => onValueChange(formatUsPhone(e.target.value))}
         placeholder={placeholder}
-        className={cn("flex-1", tall && "h-12", invalid && "border-destructive focus-visible:ring-destructive")}
+        className={cn("flex-1", tall && "h-12 sm:h-8", invalid && "border-destructive focus-visible:ring-destructive")}
         aria-invalid={invalid}
         aria-describedby={describedBy}
       />
