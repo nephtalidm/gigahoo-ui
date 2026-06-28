@@ -135,9 +135,10 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
     try {
       await loginWithGoogle(idToken)
       finish()
+      // Keep the spinner up through the redirect — clearing loading on success makes the
+      // Google button flash back (and re-prompt the account) before the dashboard loads.
     } catch (err) {
       setError(err instanceof Error ? err.message : t("auth.googleSignInFailed"))
-    } finally {
       setLoading(false)
     }
   }
