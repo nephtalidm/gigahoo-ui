@@ -269,10 +269,12 @@ export function useLiveCall() {
           const processor = captureCtx.createScriptProcessor(4096, 1, 1)
           processorRef.current = processor
           processor.onaudioprocess = (e) => {
-            // Send the mic straight through. No client-side noise gate — it kept suppressing
-            // the caller's voice. Browser echo cancellation + noise suppression (getUserMedia)
-            // and the server VAD handle background noise. We still mute while the ring plays.
             if (ws.readyState !== WebSocket.OPEN || ringRef.current) return
+            // Half-duplex: don't send the mic while the agent's audio is still playing (plus a
+            // short tail) — otherwise the agent's own voice/echo leaks back in and it responds
+            // to itself ("talking to itself"). nextStartRef tracks when agent playback ends.
+            const pctx = playCtxRef.current
+            if (pctx && pctx.currentTime < nextStartRef.current + 0.4) return
             ws.send(floatToPcm16(e.inputBuffer.getChannelData(0)).buffer)
           }
           source.connect(processor)
