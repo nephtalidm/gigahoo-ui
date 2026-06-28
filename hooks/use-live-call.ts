@@ -55,7 +55,7 @@ export function useLiveCall() {
   const pcRef = useRef<RTCPeerConnection[] | null>(null)
   const echoAudioRef = useRef<HTMLAudioElement | null>(null)
   // Elegant call ring played while connecting, stopped the instant the agent answers.
-  const ringRef = useRef<{ master: GainNode; oscs: OscillatorNode[]; lfo: OscillatorNode } | null>(null)
+  const ringRef = useRef<{ master: GainNode; nodes: OscillatorNode[] } | null>(null)
 
   // Fade out and stop the ring.
   const stopRing = useCallback(() => {
@@ -66,9 +66,8 @@ export function useLiveCall() {
       const ctx = playCtxRef.current
       const t = ctx ? ctx.currentTime : 0
       r.master.gain.cancelScheduledValues(t)
-      r.master.gain.setTargetAtTime(0.0001, t, 0.07)
-      r.oscs.forEach((o) => o.stop(t + 0.35))
-      r.lfo.stop(t + 0.35)
+      r.master.gain.setTargetAtTime(0.0001, t, 0.05)
+      r.nodes.forEach((n) => { try { n.stop(t + 0.2) } catch {} })
     } catch {}
   }, [])
 
@@ -237,32 +236,44 @@ export function useLiveCall() {
           playTargetRef.current = null
         }
 
-        // Elegant "futuristic" ring while connecting: a soft two-note sine chime (an octave
-        // + a fifth) with a gentle tremolo, fading in. Stops the instant the agent answers.
+        // Futuristic "robot" ring while connecting: a short rising 3-beep motif (square wave
+        // through a lowpass for a warm digital tone) with a clear pause between repeats —
+        // a real cadence, not one continuous tone. Stops the instant the agent answers.
         try {
           const ringTarget = playTargetRef.current ?? playCtx.destination
-          const t0 = playCtx.currentTime
           const master = playCtx.createGain()
-          master.gain.setValueAtTime(0.0001, t0)
-          master.gain.linearRampToValueAtTime(0.13, t0 + 0.25)
-          master.connect(ringTarget)
-          const oscs = [880, 1320].map((f) => {
-            const o = playCtx.createOscillator()
-            o.type = "sine"
-            o.frequency.value = f
-            o.connect(master)
-            o.start(t0)
-            return o
-          })
-          const lfo = playCtx.createOscillator()
-          lfo.type = "sine"
-          lfo.frequency.value = 2.2
-          const lfoGain = playCtx.createGain()
-          lfoGain.gain.value = 0.07
-          lfo.connect(lfoGain)
-          lfoGain.connect(master.gain)
-          lfo.start(t0)
-          ringRef.current = { master, oscs, lfo }
+          master.gain.value = 0.0001
+          const filter = playCtx.createBiquadFilter()
+          filter.type = "lowpass"
+          filter.frequency.value = 2600
+          master.connect(filter)
+          filter.connect(ringTarget)
+          const osc = playCtx.createOscillator()
+          osc.type = "square"
+          osc.connect(master)
+          const beeps = [
+            { f: 660, on: 0.1 },
+            { f: 990, on: 0.1 },
+            { f: 1480, on: 0.16 },
+          ]
+          const gap = 0.06
+          const pause = 0.55
+          const begin = playCtx.currentTime + 0.05
+          let t = begin
+          for (let cycle = 0; cycle < 8; cycle++) {
+            for (const b of beeps) {
+              osc.frequency.setValueAtTime(b.f, t)
+              master.gain.setValueAtTime(0.0001, t)
+              master.gain.exponentialRampToValueAtTime(0.16, t + 0.012)
+              master.gain.setValueAtTime(0.16, t + b.on)
+              master.gain.exponentialRampToValueAtTime(0.0001, t + b.on + 0.035)
+              t += b.on + gap
+            }
+            t += pause
+          }
+          osc.start(begin)
+          osc.stop(t + 0.1)
+          ringRef.current = { master, nodes: [osc] }
         } catch {}
 
         const ws = new WebSocket(
