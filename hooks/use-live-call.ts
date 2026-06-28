@@ -270,12 +270,18 @@ export function useLiveCall() {
           processorRef.current = processor
           processor.onaudioprocess = (e) => {
             if (ws.readyState !== WebSocket.OPEN || ringRef.current) return
-            // Half-duplex: don't send the mic while the agent's audio is still playing (plus a
-            // short tail) — otherwise the agent's own voice/echo leaks back in and it responds
-            // to itself ("talking to itself"). nextStartRef tracks when agent playback ends.
+            const input = e.inputBuffer.getChannelData(0)
+            // While the agent is still speaking, forward only a CLEAR, loud barge-in: the
+            // agent's own (echo-cancelled, quiet) voice can't trigger it to talk to itself,
+            // but the caller can still interrupt by speaking up. When the agent is silent,
+            // everything is forwarded, so the caller is always heard.
             const pctx = playCtxRef.current
-            if (pctx && pctx.currentTime < nextStartRef.current + 0.4) return
-            ws.send(floatToPcm16(e.inputBuffer.getChannelData(0)).buffer)
+            if (pctx && pctx.currentTime < nextStartRef.current + 0.3) {
+              let sum = 0
+              for (let i = 0; i < input.length; i++) sum += input[i] * input[i]
+              if (Math.sqrt(sum / input.length) < 0.05) return // quiet during agent speech = echo
+            }
+            ws.send(floatToPcm16(input).buffer)
           }
           source.connect(processor)
           // Route through a muted gain so onaudioprocess fires without echoing the mic.
