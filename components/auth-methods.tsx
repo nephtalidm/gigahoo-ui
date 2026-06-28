@@ -361,7 +361,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
                 placeholder={t("auth.emailPlaceholder")}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className={cn("h-12 sm:h-8", emailInvalid && "border-destructive focus-visible:ring-destructive")}
+                className={cn("h-12 sm:h-9", emailInvalid && "border-destructive focus-visible:ring-destructive")}
                 aria-invalid={emailInvalid}
                 aria-describedby={emailInvalid ? "email-error" : undefined}
               />
@@ -388,7 +388,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
                 placeholder={t("auth.passwordPlaceholder")}
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); if (error) setError(null) }}
-                className={cn("h-12 sm:h-8 pr-10", passwordInvalid && "border-destructive focus-visible:ring-destructive")}
+                className={cn("h-12 sm:h-9 pr-10", passwordInvalid && "border-destructive focus-visible:ring-destructive")}
                 aria-invalid={passwordInvalid}
                 aria-describedby={passwordInvalid ? "login-password-error" : undefined}
               />
