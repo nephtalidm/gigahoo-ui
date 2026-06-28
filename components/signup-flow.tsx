@@ -22,6 +22,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { PhoneInput } from "@/components/phone-input"
+import { AddressAutocomplete } from "@/components/address-autocomplete"
 import { businessCategories, businessCategoryKeys, countries, areaCodeMatchesCountry, type Plan } from "@/lib/data"
 import { getAccount, getCategories, api, createCheckout, getCurrencyForVisitor } from "@/lib/api"
 import { PLAN_PRICES, COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
@@ -595,16 +596,20 @@ export function SignupFlow() {
 
       <div className="flex flex-col gap-2">
         <Label htmlFor="addressLine1">{t("signup.addressLine1Label")}</Label>
-        <Input
-          name="addressLine1"
+        <AddressAutocomplete
           id="addressLine1"
           value={addressLine1}
-          onChange={(e) => setAddressLine1(e.target.value)}
+          onChange={setAddressLine1}
+          onSelect={(a) => {
+            setAddressLine1(a.line1)
+            setCity(a.city)
+            setRegion(a.region)
+            setPostalCode(a.postalCode)
+          }}
           placeholder={t("signup.addressLine1Placeholder")}
-          maxLength={200}
           className={cn(errors.addressLine1 && "border-destructive focus-visible:ring-destructive")}
-          aria-invalid={!!errors.addressLine1}
-          aria-describedby={errors.addressLine1 ? "addressLine1-error" : undefined}
+          invalid={!!errors.addressLine1}
+          describedBy={errors.addressLine1 ? "addressLine1-error" : undefined}
         />
         {errors.addressLine1 && (
           <p id="addressLine1-error" className="text-xs text-destructive">{errors.addressLine1}</p>

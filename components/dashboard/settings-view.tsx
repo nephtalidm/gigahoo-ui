@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { PhoneInput } from "@/components/phone-input"
+import { AddressAutocomplete, type ParsedAddress } from "@/components/address-autocomplete"
 import { GoogleSignInButton } from "@/components/google-signin-button"
 import { CodeBoxes } from "@/components/code-boxes"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
@@ -308,6 +309,46 @@ export function SettingsView({
     const id = Number(value)
     if (!isNaN(id)) onCountryChange(id)
   }
+
+  // A Google Places selection may set the country (which reloads the `regions`
+  // prop asynchronously). Stash the picked region name/abbreviation here so the
+  // effect below can match it to a region id once the new list arrives.
+  const pendingRegionRef = useRef<string | null>(null)
+  const pendingRegionShortRef = useRef<string | null>(null)
+
+  function handleAddressSelect(a: ParsedAddress) {
+    setAddressLine1(a.line1)
+    setCity(a.city)
+    setPostalCode(a.postalCode)
+    // Country: map the ISO-2 code to our country id and trigger a region reload.
+    const c = countries.find((x) => x.code === a.countryCode)
+    if (c) {
+      setCountryId(String(c.id))
+      onCountryChange(c.id)
+    }
+    // Region: remember the incoming name so the effect can resolve it to an id
+    // after `regions` reloads; also set the custom text as a fallback for
+    // countries without a region list.
+    pendingRegionRef.current = a.region || null
+    pendingRegionShortRef.current = a.regionShort || null
+    setRegionCustom(a.region)
+  }
+
+  // Resolve a pending region (from a Places selection) once the `regions` list
+  // for the newly selected country has loaded.
+  useEffect(() => {
+    if (regions.length === 0 || !pendingRegionRef.current) return
+    const pending = pendingRegionRef.current.toLowerCase()
+    const pendingShort = (pendingRegionShortRef.current ?? "").toLowerCase()
+    const match = regions.find(
+      (r) =>
+        r.name.toLowerCase() === pending ||
+        (pendingShort && (r.code.toLowerCase() === pendingShort || r.name.toLowerCase() === pendingShort)),
+    )
+    if (match) setRegionId(String(match.id))
+    pendingRegionRef.current = null
+    pendingRegionShortRef.current = null
+  }, [regions])
 
   async function handleSave() {
     // A pending email/phone change must be verified (or cancelled) first — instead of
@@ -735,15 +776,15 @@ export function SettingsView({
         <div className="mt-5 grid gap-5 sm:grid-cols-2">
           <div className="sm:col-span-2">
             <Field label={t("settings.addressLine1")} htmlFor="addressLine1">
-              <Input
+              <AddressAutocomplete
                 id="addressLine1"
                 value={addressLine1}
-                onChange={(e) => setAddressLine1(e.target.value)}
+                onChange={setAddressLine1}
+                onSelect={handleAddressSelect}
                 placeholder={t("settings.addressLine1Placeholder")}
-                autoComplete="address-line1"
                 className={cn(errors.addressLine1 && "border-destructive focus-visible:ring-destructive")}
-                aria-invalid={!!errors.addressLine1}
-                aria-describedby={errors.addressLine1 ? "addressLine1-error" : undefined}
+                invalid={!!errors.addressLine1}
+                describedBy={errors.addressLine1 ? "addressLine1-error" : undefined}
               />
               {errors.addressLine1 && (
                 <p id="addressLine1-error" className="text-xs text-destructive">{errors.addressLine1}</p>
