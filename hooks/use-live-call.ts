@@ -44,6 +44,8 @@ export function useLiveCall() {
   const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null)
   // Schedule clock for back-to-back playback buffers.
   const nextStartRef = useRef(0)
+  // Noise gate: timestamp until which the mic stays open after the last clearly-loud frame.
+  const gateOpenUntilRef = useRef(0)
   // Active playback sources, so a barge-in can stop them instantly.
   const sourcesRef = useRef<AudioBufferSourceNode[]>([])
   // Whether the current agent turn is still streaming (append deltas) or done.
@@ -55,7 +57,7 @@ export function useLiveCall() {
   const pcRef = useRef<RTCPeerConnection[] | null>(null)
   const echoAudioRef = useRef<HTMLAudioElement | null>(null)
   // Elegant call ring played while connecting, stopped the instant the agent answers.
-  const ringRef = useRef<{ master: GainNode; nodes: OscillatorNode[] } | null>(null)
+  const ringRef = useRef<HTMLAudioElement | null>(null)
 
   // Fade out and stop the ring.
   const stopRing = useCallback(() => {
@@ -63,12 +65,14 @@ export function useLiveCall() {
     if (!r) return
     ringRef.current = null
     try {
-      const ctx = playCtxRef.current
-      const t = ctx ? ctx.currentTime : 0
-      r.master.gain.cancelScheduledValues(t)
-      r.master.gain.setTargetAtTime(0.0001, t, 0.05)
-      r.nodes.forEach((n) => { try { n.stop(t + 0.2) } catch {} })
-    } catch {}
+      // Quick fade-out then pause, so there's no click as the agent's greeting begins.
+      let v = r.volume
+      const fade = setInterval(() => {
+        v -= 0.15
+        if (v <= 0) { clearInterval(fade); try { r.pause() } catch {} }
+        else r.volume = v
+      }, 30)
+    } catch { try { r.pause() } catch {} }
   }, [])
 
   const stop = useCallback(() => {
@@ -236,44 +240,14 @@ export function useLiveCall() {
           playTargetRef.current = null
         }
 
-        // Futuristic "robot" ring while connecting: a short rising 3-beep motif (square wave
-        // through a lowpass for a warm digital tone) with a clear pause between repeats —
-        // a real cadence, not one continuous tone. Stops the instant the agent answers.
+        // Robotic ring while connecting (a real looping futuristic beep file, not
+        // synthesized), stopped the instant the agent answers.
         try {
-          const ringTarget = playTargetRef.current ?? playCtx.destination
-          const master = playCtx.createGain()
-          master.gain.value = 0.0001
-          const filter = playCtx.createBiquadFilter()
-          filter.type = "lowpass"
-          filter.frequency.value = 2600
-          master.connect(filter)
-          filter.connect(ringTarget)
-          const osc = playCtx.createOscillator()
-          osc.type = "square"
-          osc.connect(master)
-          const beeps = [
-            { f: 660, on: 0.1 },
-            { f: 990, on: 0.1 },
-            { f: 1480, on: 0.16 },
-          ]
-          const gap = 0.06
-          const pause = 0.55
-          const begin = playCtx.currentTime + 0.05
-          let t = begin
-          for (let cycle = 0; cycle < 8; cycle++) {
-            for (const b of beeps) {
-              osc.frequency.setValueAtTime(b.f, t)
-              master.gain.setValueAtTime(0.0001, t)
-              master.gain.exponentialRampToValueAtTime(0.16, t + 0.012)
-              master.gain.setValueAtTime(0.16, t + b.on)
-              master.gain.exponentialRampToValueAtTime(0.0001, t + b.on + 0.035)
-              t += b.on + gap
-            }
-            t += pause
-          }
-          osc.start(begin)
-          osc.stop(t + 0.1)
-          ringRef.current = { master, nodes: [osc] }
+          const ring = new Audio("/sounds/ring.mp3")
+          ring.loop = true
+          ring.volume = 0.5
+          ringRef.current = ring
+          void ring.play().catch(() => {})
         } catch {}
 
         const ws = new WebSocket(
@@ -291,8 +265,17 @@ export function useLiveCall() {
           processor.onaudioprocess = (e) => {
             // Don't send the mic while the ring is still playing (before the agent answers).
             if (ws.readyState !== WebSocket.OPEN || ringRef.current) return
-            const pcm = floatToPcm16(e.inputBuffer.getChannelData(0))
-            ws.send(pcm.buffer)
+            const input = e.inputBuffer.getChannelData(0)
+            // Noise gate: only send when the level is clearly above the room floor (the
+            // caller near the mic is louder than background TV/chatter). A 250ms hold after
+            // the last loud frame keeps word onsets/tails from being clipped.
+            let sum = 0
+            for (let i = 0; i < input.length; i++) sum += input[i] * input[i]
+            const rms = Math.sqrt(sum / input.length)
+            const now = performance.now()
+            if (rms > 0.03) gateOpenUntilRef.current = now + 250
+            if (now > gateOpenUntilRef.current) return
+            ws.send(floatToPcm16(input).buffer)
           }
           source.connect(processor)
           // Route through a muted gain so onaudioprocess fires without echoing the mic.
