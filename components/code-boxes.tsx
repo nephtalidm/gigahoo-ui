@@ -99,7 +99,7 @@ export function CodeBoxes({
           }}
           onFocus={(e) => e.target.select()}
           className={cn(
-            "h-14 w-12 rounded-lg border bg-secondary/30 text-center font-mono text-2xl text-foreground caret-primary outline-none transition-colors",
+            "h-11 w-11 sm:h-9 sm:w-9 rounded-lg border bg-secondary/30 text-center font-mono text-lg text-foreground caret-primary outline-none transition-colors",
             "focus:border-primary focus:ring-2 focus:ring-primary/30",
             value[i] ? "border-primary bg-primary/5" : "border-border",
           )}
