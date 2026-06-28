@@ -362,7 +362,7 @@ export function Hero() {
               >
                 {liveActive ? (
                   <div className="mt-auto space-y-3">
-                    {live.messages.map((m, i) => {
+                    {live.messages.filter((m) => m.text).map((m, i) => {
                       const isAgent = m.role === "agent"
                       return (
                         <div

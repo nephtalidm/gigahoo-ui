@@ -48,13 +48,39 @@ export function useLiveCall() {
   const sourcesRef = useRef<AudioBufferSourceNode[]>([])
   // Whether the current agent turn is still streaming (append deltas) or done.
   const agentTurnOpenRef = useRef(false)
+  // Agent audio is routed through a WebRTC loopback so the browser's echo canceller
+  // references it and removes it from the mic (full-duplex AEC — the caller can still
+  // interrupt). These hold that playback path.
+  const playTargetRef = useRef<MediaStreamAudioDestinationNode | null>(null)
+  const pcRef = useRef<RTCPeerConnection[] | null>(null)
+  const echoAudioRef = useRef<HTMLAudioElement | null>(null)
+  // Elegant call ring played while connecting, stopped the instant the agent answers.
+  const ringRef = useRef<{ master: GainNode; oscs: OscillatorNode[]; lfo: OscillatorNode } | null>(null)
+
+  // Fade out and stop the ring.
+  const stopRing = useCallback(() => {
+    const r = ringRef.current
+    if (!r) return
+    ringRef.current = null
+    try {
+      const ctx = playCtxRef.current
+      const t = ctx ? ctx.currentTime : 0
+      r.master.gain.cancelScheduledValues(t)
+      r.master.gain.setTargetAtTime(0.0001, t, 0.07)
+      r.oscs.forEach((o) => o.stop(t + 0.35))
+      r.lfo.stop(t + 0.35)
+    } catch {}
+  }, [])
 
   const stop = useCallback(() => {
+    stopRing()
     try { processorRef.current?.disconnect() } catch {}
     try { sourceRef.current?.disconnect() } catch {}
     try { streamRef.current?.getTracks().forEach((t) => t.stop()) } catch {}
     try { captureCtxRef.current?.close() } catch {}
     try { playCtxRef.current?.close() } catch {}
+    try { pcRef.current?.forEach((p) => p.close()) } catch {}
+    try { if (echoAudioRef.current) { echoAudioRef.current.pause(); echoAudioRef.current.srcObject = null } } catch {}
     try {
       if (wsRef.current && wsRef.current.readyState <= WebSocket.OPEN) {
         try { wsRef.current.send(JSON.stringify({ type: "hangup" })) } catch {}
@@ -66,10 +92,13 @@ export function useLiveCall() {
     streamRef.current = null
     captureCtxRef.current = null
     playCtxRef.current = null
+    pcRef.current = null
+    echoAudioRef.current = null
+    playTargetRef.current = null
     wsRef.current = null
     setAgentSpeaking(false)
     setStatus((s) => (s === "error" ? s : "ended"))
-  }, [])
+  }, [stopRing])
 
   // Barge-in: stop and flush any agent audio currently playing or queued.
   const stopAgentAudio = useCallback(() => {
@@ -84,12 +113,13 @@ export function useLiveCall() {
   const playPcm = useCallback((pcm: Int16Array) => {
     const ctx = playCtxRef.current
     if (!ctx || pcm.length === 0) return
+    stopRing() // agent answered — stop the ring on its first audio
     const buf = ctx.createBuffer(1, pcm.length, 24000)
     const ch = buf.getChannelData(0)
     for (let i = 0; i < pcm.length; i++) ch[i] = pcm[i] / 0x8000
     const src = ctx.createBufferSource()
     src.buffer = buf
-    src.connect(ctx.destination)
+    src.connect(playTargetRef.current ?? ctx.destination)
     const startAt = Math.max(ctx.currentTime + 0.02, nextStartRef.current)
     src.start(startAt)
     nextStartRef.current = startAt + buf.duration
@@ -102,12 +132,21 @@ export function useLiveCall() {
         setAgentSpeaking(false)
       }
     }
-  }, [])
+  }, [stopRing])
 
   const handleEvent = useCallback((msg: { type: string; text?: string; message?: string }) => {
     if (msg.type === "user" && msg.text) {
-      // Merge consecutive caller fragments (VAD can split one utterance) into one bubble.
       setMessages((m) => {
+        // Fill the empty placeholder reserved when the caller started speaking, so their
+        // line keeps its place even if its transcript arrives after the agent's reply.
+        for (let i = m.length - 1; i >= 0; i--) {
+          if (m[i].role === "user" && m[i].text === "") {
+            const copy = m.slice()
+            copy[i] = { role: "user", text: msg.text! }
+            return copy
+          }
+        }
+        // Otherwise merge consecutive caller fragments, or append a fresh bubble.
         const last = m[m.length - 1]
         if (last && last.role === "user") {
           return [...m.slice(0, -1), { role: "user", text: `${last.text} ${msg.text!}`.trim() }]
@@ -134,6 +173,14 @@ export function useLiveCall() {
       agentTurnOpenRef.current = false
     } else if (msg.type === "speech_started") {
       stopAgentAudio() // barge-in: caller started talking — cut the agent off immediately
+      agentTurnOpenRef.current = false // the agent's turn is over; the caller is replying
+      // Reserve the caller's slot now (empty) so their line lands in the right order even
+      // though its transcript arrives later.
+      setMessages((m) => {
+        const last = m[m.length - 1]
+        if (last && last.role === "user" && last.text === "") return m
+        return [...m, { role: "user", text: "" }]
+      })
     } else if (msg.type === "call_ended") {
       stop()
     } else if (msg.type === "error") {
@@ -158,6 +205,66 @@ export function useLiveCall() {
         playCtxRef.current = playCtx
         nextStartRef.current = playCtx.currentTime
 
+        // WebRTC loopback for echo cancellation: agent audio -> MediaStream -> a local
+        // RTCPeerConnection pair -> an <audio> element. Playing it through WebRTC lets the
+        // browser's echo canceller (on the mic) use it as the reference and subtract it,
+        // so the agent never hears itself even though the mic stays fully open and the
+        // caller can interrupt. Falls back to direct playback if WebRTC is unavailable.
+        const playDest = playCtx.createMediaStreamDestination()
+        try {
+          const pc1 = new RTCPeerConnection()
+          const pc2 = new RTCPeerConnection()
+          pcRef.current = [pc1, pc2]
+          pc1.onicecandidate = (ev) => { if (ev.candidate) pc2.addIceCandidate(ev.candidate).catch(() => {}) }
+          pc2.onicecandidate = (ev) => { if (ev.candidate) pc1.addIceCandidate(ev.candidate).catch(() => {}) }
+          pc2.ontrack = (ev) => {
+            const el = new Audio()
+            el.srcObject = ev.streams[0]
+            el.autoplay = true
+            echoAudioRef.current = el
+            el.play().catch(() => {})
+          }
+          playDest.stream.getTracks().forEach((tr) => pc1.addTrack(tr, playDest.stream))
+          const offer = await pc1.createOffer()
+          await pc1.setLocalDescription(offer)
+          await pc2.setRemoteDescription(offer)
+          const answer = await pc2.createAnswer()
+          await pc2.setLocalDescription(answer)
+          await pc1.setRemoteDescription(answer)
+          playTargetRef.current = playDest
+        } catch {
+          // WebRTC loopback unavailable -> play directly (echo cancellation still on).
+          playTargetRef.current = null
+        }
+
+        // Elegant "futuristic" ring while connecting: a soft two-note sine chime (an octave
+        // + a fifth) with a gentle tremolo, fading in. Stops the instant the agent answers.
+        try {
+          const ringTarget = playTargetRef.current ?? playCtx.destination
+          const t0 = playCtx.currentTime
+          const master = playCtx.createGain()
+          master.gain.setValueAtTime(0.0001, t0)
+          master.gain.linearRampToValueAtTime(0.13, t0 + 0.25)
+          master.connect(ringTarget)
+          const oscs = [880, 1320].map((f) => {
+            const o = playCtx.createOscillator()
+            o.type = "sine"
+            o.frequency.value = f
+            o.connect(master)
+            o.start(t0)
+            return o
+          })
+          const lfo = playCtx.createOscillator()
+          lfo.type = "sine"
+          lfo.frequency.value = 2.2
+          const lfoGain = playCtx.createGain()
+          lfoGain.gain.value = 0.07
+          lfo.connect(lfoGain)
+          lfoGain.connect(master.gain)
+          lfo.start(t0)
+          ringRef.current = { master, oscs, lfo }
+        } catch {}
+
         const ws = new WebSocket(
           `${wsBase()}/api/voice/live?category=${encodeURIComponent(category)}&voice=${encodeURIComponent(voice)}&lang=${encodeURIComponent(language)}`,
         )
@@ -171,7 +278,8 @@ export function useLiveCall() {
           const processor = captureCtx.createScriptProcessor(4096, 1, 1)
           processorRef.current = processor
           processor.onaudioprocess = (e) => {
-            if (ws.readyState !== WebSocket.OPEN) return
+            // Don't send the mic while the ring is still playing (before the agent answers).
+            if (ws.readyState !== WebSocket.OPEN || ringRef.current) return
             const pcm = floatToPcm16(e.inputBuffer.getChannelData(0))
             ws.send(pcm.buffer)
           }
