@@ -325,7 +325,7 @@ export function Hero() {
                     onChange={(e) => setCategory(e.target.value)}
                     disabled={liveActive}
                     aria-label={t("settings.businessCategory")}
-                    className="h-12 sm:h-9 min-w-0 flex-1 truncate rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50"
+                    className="h-11 sm:h-9 min-w-0 flex-1 truncate rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50"
                   >
                     {businessCategories.map((cat) => (
                       <option key={cat} value={cat}>
