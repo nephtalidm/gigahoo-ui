@@ -43,10 +43,13 @@ export default function VoiceAgentPage() {
         setGreetingMessage(greeting)
         // The API returns the list pre-ordered (Jennifer first); render in that order.
         setVoices(fetchedVoices)
-        // Preselect the API-marked default voice when the account hasn't chosen one
-        // yet (falling back to the first voice in the list).
+        // Preselect the API-marked default voice (Jennifer) when the account hasn't chosen
+        // one. Only honor a saved voice if it's a real value that still exists in the list —
+        // an empty string or a removed/stale voice must NOT beat the default, or the radio
+        // ends up matching nothing and looks unselected.
+        const saved = account.agentVoice?.trim()
         const initialVoice =
-          account.agentVoice ??
+          (saved && fetchedVoices.some((v) => v.apiName === saved) ? saved : null) ??
           fetchedVoices.find((v) => v.isDefault)?.apiName ??
           fetchedVoices[0]?.apiName ??
           null
