@@ -3,33 +3,11 @@
 import { useEffect, useRef, useState } from "react"
 import { PageHeader } from "@/components/dashboard/page-header"
 import { Button } from "@/components/ui/button"
-import { getAccount, getSettings, updateVoiceSettings, generateVoiceSample } from "@/lib/api"
+import { getAccount, getSettings, updateVoiceSettings, generateVoiceSample, getVoices, type AgentVoice } from "@/lib/api"
 import { useTranslation } from "@/contexts/language-context"
 import { useUnsavedChanges } from "@/contexts/unsaved-changes-context"
 import { cn } from "@/lib/utils"
 import { Loader2, CheckCircle2, Play, Pause } from "lucide-react"
-
-// Voices valid on BOTH the live agent (qwen omni-realtime) and the on-demand sample
-// TTS (qwen3-tts-flash), so the sample you hear is the exact voice the agent uses.
-// `apiName` is what both APIs expect and what's saved to the account; `id` is just the
-// per-row key. The FIRST entry is the default when the account hasn't chosen a voice.
-const VOICES: { id: string; apiName: string; label: string }[] = [
-  { id: "serena", apiName: "Serena", label: "Serena (warm female)" },
-  { id: "jennifer", apiName: "Jennifer", label: "Jennifer (American female)" },
-  { id: "katerina", apiName: "Katerina", label: "Katerina (female)" },
-  { id: "kiki", apiName: "Kiki", label: "Kiki (female)" },
-  { id: "sunny", apiName: "Sunny", label: "Sunny (female)" },
-  { id: "ethan", apiName: "Ethan", label: "Ethan (warm male)" },
-  { id: "ryan", apiName: "Ryan", label: "Ryan (energetic male)" },
-  { id: "aiden", apiName: "Aiden", label: "Aiden (American male)" },
-  { id: "marcus", apiName: "Marcus", label: "Marcus (male)" },
-  { id: "peter", apiName: "Peter", label: "Peter (male)" },
-  { id: "dylan", apiName: "Dylan", label: "Dylan (male)" },
-  { id: "rocky", apiName: "Rocky", label: "Rocky (male)" },
-  { id: "eric", apiName: "Eric", label: "Eric (male)" },
-]
-
-const DEFAULT_VOICE = VOICES[0].apiName
 
 export default function VoiceAgentPage() {
   const { t } = useTranslation()
@@ -38,6 +16,7 @@ export default function VoiceAgentPage() {
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [greetingMessage, setGreetingMessage] = useState("")
+  const [voices, setVoices] = useState<AgentVoice[]>([])
   const [voice, setVoice] = useState<string | null>(null)
   // Snapshot of the last loaded/saved values; dirty = current differs from this.
   const baselineRef = useRef<string>("")
@@ -51,8 +30,8 @@ export default function VoiceAgentPage() {
   const requestRef = useRef(0)
 
   useEffect(() => {
-    Promise.all([getAccount(), getSettings().catch(() => null)])
-      .then(([account, settings]) => {
+    Promise.all([getAccount(), getSettings().catch(() => null), getVoices().catch(() => [])])
+      .then(([account, settings, fetchedVoices]) => {
         // Show the account's custom greeting if set; otherwise pre-fill with the
         // site-wide default so an un-customized account has an editable starting
         // point — with the "[Name of business]" placeholder swapped for the
@@ -62,8 +41,15 @@ export default function VoiceAgentPage() {
           greeting = greeting.replaceAll("[Name of business]", account.businessName)
         }
         setGreetingMessage(greeting)
-        // Preselect the first voice when the account hasn't chosen one yet.
-        const initialVoice = account.agentVoice ?? DEFAULT_VOICE
+        // The API returns the list pre-ordered (Jennifer first); render in that order.
+        setVoices(fetchedVoices)
+        // Preselect the API-marked default voice when the account hasn't chosen one
+        // yet (falling back to the first voice in the list).
+        const initialVoice =
+          account.agentVoice ??
+          fetchedVoices.find((v) => v.isDefault)?.apiName ??
+          fetchedVoices[0]?.apiName ??
+          null
         setVoice(initialVoice)
         // Capture the loaded values as the clean baseline.
         baselineRef.current = JSON.stringify({ greetingMessage: greeting, voice: initialVoice })
@@ -183,11 +169,11 @@ export default function VoiceAgentPage() {
           <p className="mt-0.5 text-xs text-muted-foreground">{t("dashboard.voiceHint")}</p>
         </div>
         <div className="flex flex-col gap-2">
-          {VOICES.map((v) => {
+          {voices.map((v) => {
             const selected = voice === v.apiName
             return (
               <div
-                key={v.id}
+                key={v.apiName}
                 role="button"
                 tabIndex={0}
                 onClick={() => setVoice(v.apiName)}
@@ -217,21 +203,21 @@ export default function VoiceAgentPage() {
                 </div>
                 <button
                   type="button"
-                  disabled={loadingId === v.id}
+                  disabled={loadingId === v.apiName}
                   onClick={(e) => {
                     e.stopPropagation()
-                    playSample(v.id, v.apiName)
+                    playSample(v.apiName, v.apiName)
                   }}
                   className="flex shrink-0 cursor-pointer items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent disabled:opacity-60"
                 >
-                  {loadingId === v.id ? (
+                  {loadingId === v.apiName ? (
                     <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                  ) : playingId === v.id ? (
+                  ) : playingId === v.apiName ? (
                     <Pause className="h-3.5 w-3.5" />
                   ) : (
                     <Play className="h-3.5 w-3.5" />
                   )}
-                  {playingId === v.id ? t("dashboard.pauseSample") : t("dashboard.playSample")}
+                  {playingId === v.apiName ? t("dashboard.pauseSample") : t("dashboard.playSample")}
                 </button>
               </div>
             )

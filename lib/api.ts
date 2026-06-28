@@ -197,6 +197,16 @@ export function updateVoiceSettings(s: { greetingMessage: string | null; agentVo
   return api.put<VoiceSettings>("/api/account/voice-settings", s);
 }
 
+export interface AgentVoice {
+  apiName: string;
+  label: string;
+  isDefault: boolean;
+}
+
+export function getVoices(): Promise<AgentVoice[]> {
+  return api.get<AgentVoice[]>("/api/voices");
+}
+
 // Synthesize a live voice sample of `text` spoken in `voice` and return the audio
 // as a Blob. Uses fetch directly (not the JSON `api` client) so we can request a
 // binary response, but reuses the same Bearer-token auth header.
