@@ -74,6 +74,14 @@ export function useLiveCall() {
   }, [])
 
   const stop = useCallback(() => {
+    // Call-end tone — only if a call was actually active (not a bare cleanup/unmount).
+    if (wsRef.current || streamRef.current) {
+      try {
+        const bye = new Audio("/sounds/hangup.mp3")
+        bye.volume = 0.5
+        void bye.play().catch(() => {})
+      } catch {}
+    }
     stopRing()
     try { processorRef.current?.disconnect() } catch {}
     try { sourceRef.current?.disconnect() } catch {}
