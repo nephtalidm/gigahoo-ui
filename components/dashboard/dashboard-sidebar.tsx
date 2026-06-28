@@ -186,7 +186,7 @@ export function DashboardSidebar() {
             </div>
             <div className="flex flex-col gap-4 border-t border-border p-4">
               <UserInfo />
-              <Button className="h-11" onClick={() => { setOpen(false); guard(() => logout()) }}>
+              <Button onClick={() => { setOpen(false); guard(() => logout()) }}>
                 <LogOut className="h-4 w-4" />
                 {t("dashboard.signOut")}
               </Button>

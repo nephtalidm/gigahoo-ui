@@ -1019,7 +1019,7 @@ export function SettingsView({
             <span className="text-sm text-amber-600">{t("settings.verifyBeforeSave")}</span>
           )}
           {error && <span className="text-sm text-destructive">{error}</span>}
-          <Button onClick={handleSave} disabled={saving} className="h-11">
+          <Button onClick={handleSave} disabled={saving}>
             {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {t("settings.saveChanges")}
           </Button>

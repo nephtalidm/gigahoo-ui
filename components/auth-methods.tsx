@@ -361,7 +361,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
                 placeholder={t("auth.emailPlaceholder")}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className={cn("h-12 sm:h-9", emailInvalid && "border-destructive focus-visible:ring-destructive")}
+                className={cn(emailInvalid && "border-destructive focus-visible:ring-destructive")}
                 aria-invalid={emailInvalid}
                 aria-describedby={emailInvalid ? "email-error" : undefined}
               />
@@ -369,7 +369,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
                 <p id="email-error" className="text-xs text-destructive">{t("auth.invalidEmail")}</p>
               )}
             </div>
-            <Button type="submit" size="lg" disabled={loading} className="h-12 w-full sm:h-9">
+            <Button type="submit" size="lg" disabled={loading} className="w-full">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {t("auth.continue")}
             </Button>
@@ -388,7 +388,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
                 placeholder={t("auth.passwordPlaceholder")}
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); if (error) setError(null) }}
-                className={cn("h-12 sm:h-9 pr-10", passwordInvalid && "border-destructive focus-visible:ring-destructive")}
+                className={cn("pr-10", passwordInvalid && "border-destructive focus-visible:ring-destructive")}
                 aria-invalid={passwordInvalid}
                 aria-describedby={passwordInvalid ? "login-password-error" : undefined}
               />
@@ -412,7 +412,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
               {t("auth.signingInAs")}<span className="font-medium text-foreground">{email}</span>
             </p>
           </div>
-          <Button type="submit" size="lg" disabled={loading} className="h-12 w-full sm:h-9">
+          <Button type="submit" size="lg" disabled={loading} className="w-full">
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {t("auth.signIn")}
           </Button>
@@ -436,7 +436,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
               </p>
               <ResendCode onResend={handleResend} resending={resending} sent={resentNotice} countdown={resendIn} t={t} />
             </div>
-            <Button type="submit" size="lg" disabled={loading} className="h-12 w-full sm:h-9">
+            <Button type="submit" size="lg" disabled={loading} className="w-full">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {t("auth.verifyAndContinue")}
             </Button>
@@ -455,13 +455,12 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
                 allowedCodes={supportedCodes}
                 invalid={phoneInvalid}
                 describedBy={phoneInvalid ? "phone-error" : undefined}
-                tall
               />
               {phoneInvalid && (
                 <p id="phone-error" className="text-xs text-destructive">{t("auth.invalidPhone")}</p>
               )}
             </div>
-            <Button type="submit" size="lg" disabled={loading} className="h-12 w-full sm:h-9">
+            <Button type="submit" size="lg" disabled={loading} className="w-full">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {t("auth.sendVerificationCode")}
             </Button>

@@ -43,12 +43,10 @@ function CountrySelect({
   country,
   onCountryChange,
   allowedCodes,
-  tall,
 }: {
   country: string
   onCountryChange: (countryCode: string) => void
   allowedCodes?: string[]
-  tall?: boolean
 }) {
   // When `allowedCodes` is provided, restrict the list to those codes and
   // preserve their given order (e.g. US then CA). Otherwise show all countries.
@@ -78,10 +76,7 @@ function CountrySelect({
     >
       <Combobox.Trigger
         aria-label="Country code"
-        className={cn(
-          "flex h-8 w-[7.5rem] shrink-0 cursor-pointer items-center justify-between gap-1.5 rounded-lg border border-input bg-transparent py-2 pr-2 pl-2.5 text-sm whitespace-nowrap transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30",
-          tall && "h-12 sm:h-9",
-        )}
+        className="flex h-12 sm:h-10 w-[7.5rem] shrink-0 cursor-pointer items-center justify-between gap-1.5 rounded-lg border border-input bg-transparent py-2 pr-2 pl-2.5 text-sm whitespace-nowrap transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30"
       >
         <span className="flex items-center gap-1.5">
           <CountryFlag code={selected.code} />
@@ -144,7 +139,6 @@ export function PhoneInput({
   invalid,
   describedBy,
   allowedCodes,
-  tall,
 }: {
   id?: string
   country: string
@@ -155,11 +149,10 @@ export function PhoneInput({
   invalid?: boolean
   describedBy?: string
   allowedCodes?: string[]
-  tall?: boolean
 }) {
   return (
     <div className="flex gap-2">
-      <CountrySelect country={country} onCountryChange={onCountryChange} allowedCodes={allowedCodes} tall={tall} />
+      <CountrySelect country={country} onCountryChange={onCountryChange} allowedCodes={allowedCodes} />
       <Input
         id={id}
         type="tel"
@@ -167,7 +160,7 @@ export function PhoneInput({
         value={formatUsPhone(value)}
         onChange={(e) => onValueChange(formatUsPhone(e.target.value))}
         placeholder={placeholder}
-        className={cn("flex-1", tall && "h-12 sm:h-9", invalid && "border-destructive focus-visible:ring-destructive")}
+        className={cn("flex-1", invalid && "border-destructive focus-visible:ring-destructive")}
         aria-invalid={invalid}
         aria-describedby={describedBy}
       />

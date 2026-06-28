@@ -110,7 +110,7 @@ export default function NotificationsPage() {
               {t("notifications.saved")}
             </span>
           )}
-          <Button type="button" onClick={save} disabled={saving} className="h-11">
+          <Button type="button" onClick={save} disabled={saving}>
             {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {t("settings.saveChanges")}
           </Button>
