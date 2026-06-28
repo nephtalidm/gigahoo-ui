@@ -30,6 +30,7 @@ import { useAuth } from "@/contexts/auth-context"
 import { useTranslation } from "@/contexts/language-context"
 import { useDefaultPhoneCountry } from "@/hooks/use-default-phone-country"
 import { useSupportedCountries } from "@/hooks/use-supported-countries"
+import { CountryFlag } from "@/components/country-flag"
 import { cn } from "@/lib/utils"
 import { Check, Loader2 } from "lucide-react"
 import { z } from "zod"
@@ -580,12 +581,22 @@ export function SignupFlow() {
         <Select value={addressCountry} onValueChange={(v) => { if (v) { setAddressCountryPicked(v); setErrors((e) => ({ ...e, country: undefined })) } }}>
           <SelectTrigger id="country" className={cn("w-full", errors.country && "border-destructive focus-visible:ring-destructive")}>
             <SelectValue placeholder={t("signup.countryPlaceholder")}>
-              {addressCountry ? countries.find((c) => c.code === addressCountry)?.name : undefined}
+              {addressCountry && (
+                <span className="flex items-center gap-2">
+                  <CountryFlag code={addressCountry} />
+                  {countries.find((c) => c.code === addressCountry)?.name}
+                </span>
+              )}
             </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {supportedCountries.map((c) => (
-              <SelectItem key={c.code} value={c.code}>{c.flag} {c.name}</SelectItem>
+              <SelectItem key={c.code} value={c.code}>
+                <span className="flex items-center gap-2">
+                  <CountryFlag code={c.code} />
+                  {c.name}
+                </span>
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>

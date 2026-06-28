@@ -46,9 +46,6 @@ export function useLiveCall() {
   const nextStartRef = useRef(0)
   // Noise gate: timestamp until which the mic stays open after the last clearly-loud frame.
   const gateOpenUntilRef = useRef(0)
-  // Running estimate of the room's background level, so the gate adapts to the environment
-  // instead of a fixed threshold (which clipped quiet speakers).
-  const noiseFloorRef = useRef(0.005)
   // Active playback sources, so a barge-in can stop them instantly.
   const sourcesRef = useRef<AudioBufferSourceNode[]>([])
   // Whether the current agent turn is still streaming (append deltas) or done.
@@ -269,19 +266,15 @@ export function useLiveCall() {
             // Don't send the mic while the ring is still playing (before the agent answers).
             if (ws.readyState !== WebSocket.OPEN || ringRef.current) return
             const input = e.inputBuffer.getChannelData(0)
-            // Noise gate: only send when the level is clearly above the room floor (the
-            // caller near the mic is louder than background TV/chatter). A 250ms hold after
-            // the last loud frame keeps word onsets/tails from being clipped.
+            // Fixed noise gate: only forward audio clearly above a quiet room's floor, with
+            // a 250ms hold so word onsets/tails aren't clipped. (A fixed threshold is stable;
+            // the earlier adaptive version mis-tracked the floor and fired false barge-ins
+            // that cut the agent's greeting.)
             let sum = 0
             for (let i = 0; i < input.length; i++) sum += input[i] * input[i]
             const rms = Math.sqrt(sum / input.length)
-            const floor = noiseFloorRef.current
-            // Track the room's background level during quiet moments (not while speaking).
-            if (rms < floor * 2.5) noiseFloorRef.current = floor * 0.95 + rms * 0.05
             const now = performance.now()
-            // Open the mic whenever clearly above the background floor — so even a quiet
-            // voice passes, while steady background near the floor does not.
-            if (rms > Math.max(floor * 2, 0.004)) gateOpenUntilRef.current = now + 250
+            if (rms > 0.03) gateOpenUntilRef.current = now + 250
             if (now > gateOpenUntilRef.current) return
             ws.send(floatToPcm16(input).buffer)
           }

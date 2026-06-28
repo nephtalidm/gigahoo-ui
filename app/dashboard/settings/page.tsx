@@ -18,7 +18,9 @@ export default function SettingsPage() {
   useEffect(() => {
     Promise.all([
       getAccount().then(setAccount).catch(() => {}),
-      getCountries().then(setCountries).catch(() => {}),
+      // Address country dropdown is limited to served markets (Country.IsSupported) — the
+      // backend does the filtering via supportedOnly.
+      getCountries(true).then(setCountries).catch(() => {}),
       getFeatureSettings().then(setFeatureSettings).catch(() => {}),
     ]).finally(() => setLoading(false))
   }, [])

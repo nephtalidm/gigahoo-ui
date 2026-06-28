@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select"
 import { PhoneInput } from "@/components/phone-input"
 import { AddressAutocomplete, type ParsedAddress } from "@/components/address-autocomplete"
+import { CountryFlag } from "@/components/country-flag"
 import { GoogleSignInButton } from "@/components/google-signin-button"
 import { CodeBoxes } from "@/components/code-boxes"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
@@ -866,13 +867,23 @@ export function SettingsView({
             <Select value={countryId} onValueChange={(v) => v && handleCountryChange(v)}>
               <SelectTrigger id="country" className={cn(errors.country && "border-destructive focus-visible:ring-destructive")}>
                 <SelectValue>
-                  {countries.find((c) => String(c.id) === countryId)?.name || t("settings.selectCountry")}
+                  {selectedCountry ? (
+                    <span className="flex items-center gap-2">
+                      <CountryFlag code={selectedCountry.code} />
+                      {selectedCountry.name}
+                    </span>
+                  ) : (
+                    t("settings.selectCountry")
+                  )}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {countries.map((c) => (
                   <SelectItem key={c.id} value={String(c.id)}>
-                    {c.name}
+                    <span className="flex items-center gap-2">
+                      <CountryFlag code={c.code} />
+                      {c.name}
+                    </span>
                   </SelectItem>
                 ))}
               </SelectContent>

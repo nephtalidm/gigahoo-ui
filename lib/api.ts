@@ -465,8 +465,8 @@ export interface LanguageData {
   name: string;
 }
 
-export function getCountries() {
-  return api.get<CountryData[]>("/api/lookup/countries");
+export function getCountries(supportedOnly = false) {
+  return api.get<CountryData[]>(`/api/lookup/countries${supportedOnly ? "?supportedOnly=true" : ""}`);
 }
 
 export function getSupportedCountryCodes() {
