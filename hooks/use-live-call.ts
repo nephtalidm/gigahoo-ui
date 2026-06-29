@@ -209,48 +209,52 @@ export function useLiveCall() {
           void ring.play().catch(() => {})
         } catch {}
 
+        // Pre-unlock the echo-loopback <audio> element NOW (in the tap, muted) so iOS reliably
+        // plays the WebRTC agent-audio stream attached to it after negotiation below — without
+        // this, the element is first played post-tap and iOS intermittently blocks it.
+        try {
+          const echo = new Audio("/sounds/hangup.mp3")
+          echo.muted = true
+          echoAudioRef.current = echo
+          void echo.play().then(() => { echo.pause(); echo.currentTime = 0 }).catch(() => {})
+        } catch {}
+
         const stream = await navigator.mediaDevices.getUserMedia({
           audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
         })
         streamRef.current = stream
 
-        // WebRTC loopback for echo cancellation (DESKTOP only): agent audio -> MediaStream -> a
-        // local RTCPeerConnection pair -> an <audio> element, so the mic's echo canceller can
-        // subtract it (enables barge-in without the agent talking to itself). On iOS the loopback
-        // <audio> element is created after connection (past the tap), so iOS often blocks it ->
-        // intermittent/no agent audio. So on iOS we play DIRECTLY (reliable) and rely on the
-        // half-duplex below to keep the agent from hearing itself.
-        const isIOS =
-          /iP(hone|ad|od)/.test(navigator.userAgent) ||
-          (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
-        if (isIOS) {
-          playTargetRef.current = null
-        } else {
-          const playDest = playCtx.createMediaStreamDestination()
-          try {
-            const pc1 = new RTCPeerConnection()
-            const pc2 = new RTCPeerConnection()
-            pcRef.current = [pc1, pc2]
-            pc1.onicecandidate = (ev) => { if (ev.candidate) pc2.addIceCandidate(ev.candidate).catch(() => {}) }
-            pc2.onicecandidate = (ev) => { if (ev.candidate) pc1.addIceCandidate(ev.candidate).catch(() => {}) }
-            pc2.ontrack = (ev) => {
-              const el = new Audio()
-              el.srcObject = ev.streams[0]
-              el.autoplay = true
-              echoAudioRef.current = el
-              void el.play().catch(() => {})
-            }
-            playDest.stream.getTracks().forEach((tr) => pc1.addTrack(tr, playDest.stream))
-            const offer = await pc1.createOffer()
-            await pc1.setLocalDescription(offer)
-            await pc2.setRemoteDescription(offer)
-            const answer = await pc2.createAnswer()
-            await pc2.setLocalDescription(answer)
-            await pc1.setRemoteDescription(answer)
-            playTargetRef.current = playDest
-          } catch {
-            playTargetRef.current = null
+        // WebRTC loopback echo cancellation (BOTH desktop AND iOS): route the agent audio through
+        // a local RTCPeerConnection pair into the <audio> element, so the OS echo canceller can
+        // subtract the agent's own voice from the mic. This is what lets the caller INTERRUPT
+        // (full-duplex) without the agent hearing itself. The <audio> element was pre-unlocked in
+        // the start gesture above, so iOS reliably plays this (post-negotiation) WebRTC stream.
+        // Falls back to direct playback if WebRTC is unavailable.
+        const playDest = playCtx.createMediaStreamDestination()
+        try {
+          const pc1 = new RTCPeerConnection()
+          const pc2 = new RTCPeerConnection()
+          pcRef.current = [pc1, pc2]
+          pc1.onicecandidate = (ev) => { if (ev.candidate) pc2.addIceCandidate(ev.candidate).catch(() => {}) }
+          pc2.onicecandidate = (ev) => { if (ev.candidate) pc1.addIceCandidate(ev.candidate).catch(() => {}) }
+          pc2.ontrack = (ev) => {
+            const el = echoAudioRef.current ?? new Audio()
+            el.srcObject = ev.streams[0]
+            el.muted = false
+            el.autoplay = true
+            echoAudioRef.current = el
+            void el.play().catch(() => {})
           }
+          playDest.stream.getTracks().forEach((tr) => pc1.addTrack(tr, playDest.stream))
+          const offer = await pc1.createOffer()
+          await pc1.setLocalDescription(offer)
+          await pc2.setRemoteDescription(offer)
+          const answer = await pc2.createAnswer()
+          await pc2.setLocalDescription(answer)
+          await pc1.setRemoteDescription(answer)
+          playTargetRef.current = playDest
+        } catch {
+          playTargetRef.current = null
         }
 
         // Preload + unlock the hangup tone now (still within the start gesture) by playing it
@@ -280,16 +284,10 @@ export function useLiveCall() {
           processor.onaudioprocess = (e) => {
             if (ws.readyState !== WebSocket.OPEN || ringRef.current) return
             const input = e.inputBuffer.getChannelData(0)
-            const pctx = playCtxRef.current
-            if (pctx && pctx.currentTime < nextStartRef.current + 0.4) {
-              // Agent is still speaking. On iOS (direct playback, weak AEC) fully mute so its echo
-              // can't make it talk to itself. On desktop the loopback AEC keeps the echo quiet, so
-              // allow a clear LOUD barge-in to interrupt.
-              if (isIOS) return
-              let sum = 0
-              for (let i = 0; i < input.length; i++) sum += input[i] * input[i]
-              if (Math.sqrt(sum / input.length) < 0.05) return // quiet during agent speech = echo
-            }
+            // Full-duplex: always forward the mic so the caller can interrupt at any moment, and
+            // so replies that start right after a question (e.g. a street number) are never
+            // clipped. The WebRTC-loopback echo canceller above keeps the agent from hearing its
+            // own voice, so we do NOT gate the mic on agent playback.
             ws.send(floatToPcm16(input).buffer)
           }
           source.connect(processor)
