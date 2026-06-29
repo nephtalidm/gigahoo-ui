@@ -269,12 +269,13 @@ export function useLiveCall() {
           processor.onaudioprocess = (e) => {
             if (ws.readyState !== WebSocket.OPEN || ringRef.current) return
             const input = e.inputBuffer.getChannelData(0)
-            // While the agent is still speaking, forward only a CLEAR, loud barge-in: the
-            // agent's own (echo-cancelled, quiet) voice can't trigger it to talk to itself,
-            // but the caller can still interrupt by speaking up. When the agent is silent,
-            // everything is forwarded, so the caller is always heard.
             const pctx = playCtxRef.current
-            if (pctx && pctx.currentTime < nextStartRef.current + 0.3) {
+            if (pctx && pctx.currentTime < nextStartRef.current + 0.4) {
+              // Agent is still speaking. On iOS the echo canceller is weak (no loopback), so a
+              // loud echo is indistinguishable from a barge-in — fully mute (strict half-duplex,
+              // no interrupt) so it can't talk to itself. On desktop the loopback AEC keeps the
+              // echo quiet, so allow a clear LOUD barge-in to interrupt.
+              if (isIOS) return
               let sum = 0
               for (let i = 0; i < input.length; i++) sum += input[i] * input[i]
               if (Math.sqrt(sum / input.length) < 0.05) return // quiet during agent speech = echo
