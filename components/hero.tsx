@@ -217,7 +217,7 @@ export function Hero() {
     <section className="relative isolate overflow-hidden border-b border-border lg:flex lg:min-h-[66.67vh] lg:items-center">
       {/* Background video + dark gradient overlay (darker on the text side) for legibility. */}
       <video
-        className="pointer-events-none absolute inset-0 -z-10 h-full w-full object-cover"
+        className="pointer-events-none absolute inset-0 -z-10 hidden h-full w-full object-cover lg:block"
         src="/hero-bg.mp4"
         autoPlay
         muted
@@ -225,10 +225,22 @@ export function Hero() {
         playsInline
         aria-hidden
       />
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-black/85 via-black/65 to-black/40" />
-      <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pt-5 pb-0 sm:px-6 sm:pt-7 lg:pt-8 lg:pb-8">
+      <div className="pointer-events-none absolute inset-0 -z-10 hidden bg-gradient-to-r from-black/85 via-black/65 to-black/40 lg:block" />
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pt-5 pb-5 sm:px-6 sm:pt-7 sm:pb-7 lg:pt-8 lg:pb-8">
         <div className="grid items-stretch gap-12 lg:grid-cols-2 lg:gap-16">
-          <div className="flex flex-col items-start">
+          <div className="relative isolate flex flex-col items-start">
+            {/* Mobile-only background video: full-bleed width, only as tall as this text block
+                (so it cuts off above the live-call card). Desktop uses the section video above. */}
+            <video
+              className="pointer-events-none absolute -inset-x-4 inset-y-0 -z-10 object-cover sm:-inset-x-6 lg:hidden"
+              src="/hero-bg.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              aria-hidden
+            />
+            <div className="pointer-events-none absolute -inset-x-4 inset-y-0 -z-10 bg-gradient-to-r from-black/85 via-black/65 to-black/40 sm:-inset-x-6 lg:hidden" />
             <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
               <span className="flex h-[5px] w-[5px] rounded-full bg-white motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
               {t("home.heroBadge")}
