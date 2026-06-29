@@ -227,7 +227,7 @@ export function Hero() {
       />
       <div className="pointer-events-none absolute inset-0 -z-10 hidden bg-gradient-to-r from-black/85 via-black/65 to-black/40 lg:block" />
       <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pt-5 pb-12 sm:px-6 sm:pt-7 lg:pt-8 lg:pb-8">
-        <div className="grid items-stretch gap-12 lg:grid-cols-2 lg:gap-16">
+        <div className="grid items-stretch gap-24 lg:grid-cols-2 lg:gap-16">
           <div className="relative isolate flex flex-col items-start">
             {/* Mobile-only background video: full-bleed width, only as tall as this text block
                 (so it cuts off above the live-call card). Desktop uses the section video above. */}
