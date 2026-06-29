@@ -56,6 +56,8 @@ export function useLiveCall() {
   const echoAudioRef = useRef<HTMLAudioElement | null>(null)
   // Elegant call ring played while connecting, stopped the instant the agent answers.
   const ringRef = useRef<HTMLAudioElement | null>(null)
+  // Preloaded + unlocked on the start tap so it reliably plays on End (esp. iOS / no GC).
+  const hangupRef = useRef<HTMLAudioElement | null>(null)
 
   // Fade out and stop the ring.
   const stopRing = useCallback(() => {
@@ -77,9 +79,17 @@ export function useLiveCall() {
     // Call-end tone — only if a call was actually active (not a bare cleanup/unmount).
     if (wsRef.current || streamRef.current) {
       try {
-        const bye = new Audio("/sounds/hangup.mp3")
-        bye.volume = 0.5
-        void bye.play().catch(() => {})
+        const h = hangupRef.current
+        if (h) {
+          h.currentTime = 0
+          h.muted = false
+          h.volume = 0.5
+          void h.play().catch(() => {})
+        } else {
+          const bye = new Audio("/sounds/hangup.mp3")
+          bye.volume = 0.5
+          void bye.play().catch(() => {})
+        }
       } catch {}
     }
     stopRing()
@@ -263,6 +273,18 @@ export function useLiveCall() {
           ring.volume = 0.5
           ringRef.current = ring
           void ring.play().catch(() => {})
+        } catch {}
+
+        // Preload + unlock the hangup tone now (still within the start gesture) by playing it
+        // muted then pausing — so iOS lets it play later on End, and it can't be GC'd.
+        try {
+          const hangup = new Audio("/sounds/hangup.mp3")
+          hangup.muted = true
+          hangupRef.current = hangup
+          void hangup
+            .play()
+            .then(() => { hangup.pause(); hangup.currentTime = 0; hangup.muted = false })
+            .catch(() => {})
         } catch {}
 
         const ws = new WebSocket(
