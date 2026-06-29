@@ -232,7 +232,7 @@ export function Hero() {
             {/* Mobile-only background video: full-bleed width, only as tall as this text block
                 (so it cuts off above the live-call card). Desktop uses the section video above. */}
             <video
-              className="pointer-events-none absolute -inset-x-4 inset-y-0 -z-10 object-cover sm:-inset-x-6 lg:hidden"
+              className="pointer-events-none absolute -inset-x-4 -top-5 -bottom-12 -z-10 object-cover sm:-inset-x-6 sm:-top-7 lg:hidden"
               src="/hero-bg.mp4"
               autoPlay
               muted
@@ -240,7 +240,7 @@ export function Hero() {
               playsInline
               aria-hidden
             />
-            <div className="pointer-events-none absolute -inset-x-4 inset-y-0 -z-10 bg-gradient-to-r from-black/85 via-black/65 to-black/40 sm:-inset-x-6 lg:hidden" />
+            <div className="pointer-events-none absolute -inset-x-4 -top-5 -bottom-12 -z-10 bg-gradient-to-r from-black/85 via-black/65 to-black/40 sm:-inset-x-6 sm:-top-7 lg:hidden" />
             <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
               <span className="flex h-[5px] w-[5px] rounded-full bg-white motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
               {t("home.heroBadge")}
