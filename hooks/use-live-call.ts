@@ -195,41 +195,36 @@ export function useLiveCall() {
         })
         streamRef.current = stream
 
-        // WebRTC loopback for echo cancellation (desktop): agent audio -> MediaStream -> a
-        // local RTCPeerConnection pair -> an <audio> element, so the mic's echo canceller can
-        // subtract it. On iOS Safari this is unreliable and can swallow the agent audio, so
-        // there we play directly (iOS does its own hardware echo cancellation).
-        const isIOS =
-          /iP(hone|ad|od)/.test(navigator.userAgent) ||
-          (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
-        if (isIOS) {
-          playTargetRef.current = null
-        } else {
-          const playDest = playCtx.createMediaStreamDestination()
-          try {
-            const pc1 = new RTCPeerConnection()
-            const pc2 = new RTCPeerConnection()
-            pcRef.current = [pc1, pc2]
-            pc1.onicecandidate = (ev) => { if (ev.candidate) pc2.addIceCandidate(ev.candidate).catch(() => {}) }
-            pc2.onicecandidate = (ev) => { if (ev.candidate) pc1.addIceCandidate(ev.candidate).catch(() => {}) }
-            pc2.ontrack = (ev) => {
-              const el = new Audio()
-              el.srcObject = ev.streams[0]
-              el.autoplay = true
-              echoAudioRef.current = el
-              el.play().catch(() => {})
-            }
-            playDest.stream.getTracks().forEach((tr) => pc1.addTrack(tr, playDest.stream))
-            const offer = await pc1.createOffer()
-            await pc1.setLocalDescription(offer)
-            await pc2.setRemoteDescription(offer)
-            const answer = await pc2.createAnswer()
-            await pc2.setLocalDescription(answer)
-            await pc1.setRemoteDescription(answer)
-            playTargetRef.current = playDest
-          } catch {
-            playTargetRef.current = null
+        // WebRTC loopback for echo cancellation (desktop AND iOS): agent audio -> MediaStream
+        // -> a local RTCPeerConnection pair -> an <audio> element, so the mic's echo canceller
+        // subtracts it. This is what enables barge-in WITHOUT the agent talking to itself.
+        // Enabled on iOS too (playsInline + the getUserMedia gesture lets WebRTC playback run);
+        // falls back to direct playback if WebRTC is unavailable.
+        const playDest = playCtx.createMediaStreamDestination()
+        try {
+          const pc1 = new RTCPeerConnection()
+          const pc2 = new RTCPeerConnection()
+          pcRef.current = [pc1, pc2]
+          pc1.onicecandidate = (ev) => { if (ev.candidate) pc2.addIceCandidate(ev.candidate).catch(() => {}) }
+          pc2.onicecandidate = (ev) => { if (ev.candidate) pc1.addIceCandidate(ev.candidate).catch(() => {}) }
+          pc2.ontrack = (ev) => {
+            const el = new Audio()
+            el.srcObject = ev.streams[0]
+            el.autoplay = true
+            el.playsInline = true
+            echoAudioRef.current = el
+            void el.play().catch(() => {})
           }
+          playDest.stream.getTracks().forEach((tr) => pc1.addTrack(tr, playDest.stream))
+          const offer = await pc1.createOffer()
+          await pc1.setLocalDescription(offer)
+          await pc2.setRemoteDescription(offer)
+          const answer = await pc2.createAnswer()
+          await pc2.setLocalDescription(answer)
+          await pc1.setRemoteDescription(answer)
+          playTargetRef.current = playDest
+        } catch {
+          playTargetRef.current = null
         }
 
         // Robotic ring while connecting (a real looping futuristic beep file, not
@@ -271,11 +266,9 @@ export function useLiveCall() {
             const input = e.inputBuffer.getChannelData(0)
             const pctx = playCtxRef.current
             if (pctx && pctx.currentTime < nextStartRef.current + 0.4) {
-              // Agent is still speaking. On iOS the echo canceller is weak (no loopback), so a
-              // loud echo is indistinguishable from a barge-in — fully mute (strict half-duplex,
-              // no interrupt) so it can't talk to itself. On desktop the loopback AEC keeps the
-              // echo quiet, so allow a clear LOUD barge-in to interrupt.
-              if (isIOS) return
+              // Agent is still speaking. The loopback AEC keeps its own (echo-cancelled) voice
+              // quiet, so forward only a CLEAR, loud barge-in — that lets the caller interrupt
+              // without the agent's echo triggering it to talk to itself.
               let sum = 0
               for (let i = 0; i < input.length; i++) sum += input[i] * input[i]
               if (Math.sqrt(sum / input.length) < 0.05) return // quiet during agent speech = echo
