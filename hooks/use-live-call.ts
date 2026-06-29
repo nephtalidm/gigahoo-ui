@@ -203,47 +203,56 @@ export function useLiveCall() {
       setStatus("connecting")
       agentTurnOpenRef.current = false
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
-        })
-        streamRef.current = stream
-
+        // Create + unlock the audio contexts synchronously in the tap, BEFORE the getUserMedia
+        // await — otherwise iOS Safari leaves them suspended and the agent audio is silent.
         const captureCtx = new AudioContext({ sampleRate: 16000 })
         captureCtxRef.current = captureCtx
         const playCtx = new AudioContext({ sampleRate: 24000 })
         playCtxRef.current = playCtx
         nextStartRef.current = playCtx.currentTime
+        void captureCtx.resume()
+        void playCtx.resume()
 
-        // WebRTC loopback for echo cancellation: agent audio -> MediaStream -> a local
-        // RTCPeerConnection pair -> an <audio> element. Playing it through WebRTC lets the
-        // browser's echo canceller (on the mic) use it as the reference and subtract it,
-        // so the agent never hears itself even though the mic stays fully open and the
-        // caller can interrupt. Falls back to direct playback if WebRTC is unavailable.
-        const playDest = playCtx.createMediaStreamDestination()
-        try {
-          const pc1 = new RTCPeerConnection()
-          const pc2 = new RTCPeerConnection()
-          pcRef.current = [pc1, pc2]
-          pc1.onicecandidate = (ev) => { if (ev.candidate) pc2.addIceCandidate(ev.candidate).catch(() => {}) }
-          pc2.onicecandidate = (ev) => { if (ev.candidate) pc1.addIceCandidate(ev.candidate).catch(() => {}) }
-          pc2.ontrack = (ev) => {
-            const el = new Audio()
-            el.srcObject = ev.streams[0]
-            el.autoplay = true
-            echoAudioRef.current = el
-            el.play().catch(() => {})
-          }
-          playDest.stream.getTracks().forEach((tr) => pc1.addTrack(tr, playDest.stream))
-          const offer = await pc1.createOffer()
-          await pc1.setLocalDescription(offer)
-          await pc2.setRemoteDescription(offer)
-          const answer = await pc2.createAnswer()
-          await pc2.setLocalDescription(answer)
-          await pc1.setRemoteDescription(answer)
-          playTargetRef.current = playDest
-        } catch {
-          // WebRTC loopback unavailable -> play directly (echo cancellation still on).
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
+        })
+        streamRef.current = stream
+
+        // WebRTC loopback for echo cancellation (desktop): agent audio -> MediaStream -> a
+        // local RTCPeerConnection pair -> an <audio> element, so the mic's echo canceller can
+        // subtract it. On iOS Safari this is unreliable and can swallow the agent audio, so
+        // there we play directly (iOS does its own hardware echo cancellation).
+        const isIOS =
+          /iP(hone|ad|od)/.test(navigator.userAgent) ||
+          (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+        if (isIOS) {
           playTargetRef.current = null
+        } else {
+          const playDest = playCtx.createMediaStreamDestination()
+          try {
+            const pc1 = new RTCPeerConnection()
+            const pc2 = new RTCPeerConnection()
+            pcRef.current = [pc1, pc2]
+            pc1.onicecandidate = (ev) => { if (ev.candidate) pc2.addIceCandidate(ev.candidate).catch(() => {}) }
+            pc2.onicecandidate = (ev) => { if (ev.candidate) pc1.addIceCandidate(ev.candidate).catch(() => {}) }
+            pc2.ontrack = (ev) => {
+              const el = new Audio()
+              el.srcObject = ev.streams[0]
+              el.autoplay = true
+              echoAudioRef.current = el
+              el.play().catch(() => {})
+            }
+            playDest.stream.getTracks().forEach((tr) => pc1.addTrack(tr, playDest.stream))
+            const offer = await pc1.createOffer()
+            await pc1.setLocalDescription(offer)
+            await pc2.setRemoteDescription(offer)
+            const answer = await pc2.createAnswer()
+            await pc2.setLocalDescription(answer)
+            await pc1.setRemoteDescription(answer)
+            playTargetRef.current = playDest
+          } catch {
+            playTargetRef.current = null
+          }
         }
 
         // Robotic ring while connecting (a real looping futuristic beep file, not
