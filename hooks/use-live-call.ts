@@ -211,7 +211,6 @@ export function useLiveCall() {
             const el = new Audio()
             el.srcObject = ev.streams[0]
             el.autoplay = true
-            el.playsInline = true
             echoAudioRef.current = el
             void el.play().catch(() => {})
           }
