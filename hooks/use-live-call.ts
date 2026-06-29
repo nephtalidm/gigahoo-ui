@@ -7,10 +7,13 @@ export type LiveMessage = { role: LiveRole; text: string }
 export type LiveStatus = "idle" | "connecting" | "live" | "ended" | "error"
 
 // API base -> ws(s):// origin. NEXT_PUBLIC_API_URL is the https API origin.
-function wsBase(): string {
+// The live call runs in the Node VoiceAgent (voice.gigahoo.ai), not the .NET API.
+function voiceWsBase(): string {
+  const v = process.env.NEXT_PUBLIC_VOICE_WS_URL
+  if (v) return v.replace(/^http/, "ws")
+  // Derive from the API URL: api.gigahoo.ai -> voice.gigahoo.ai.
   const api = process.env.NEXT_PUBLIC_API_URL || ""
-  if (api) return api.replace(/^http/, "ws")
-  // Fallback: same origin (dev).
+  if (api) return api.replace(/^http/, "ws").replace("//api.", "//voice.")
   if (typeof window !== "undefined") return window.location.origin.replace(/^http/, "ws")
   return ""
 }
@@ -153,55 +156,19 @@ export function useLiveCall() {
     }
   }, [stopRing])
 
-  const handleEvent = useCallback((msg: { type: string; text?: string; message?: string }) => {
+  // The Node VoiceAgent sends one full transcript per completed turn (no deltas), binary
+  // PCM16 for agent audio, {type:"clear"} for barge-in, and status/call_ended events.
+  const handleEvent = useCallback((msg: { type: string; text?: string; status?: string }) => {
     if (msg.type === "user" && msg.text) {
-      setMessages((m) => {
-        // Fill the empty placeholder reserved when the caller started speaking, so their
-        // line keeps its place even if its transcript arrives after the agent's reply.
-        for (let i = m.length - 1; i >= 0; i--) {
-          if (m[i].role === "user" && m[i].text === "") {
-            const copy = m.slice()
-            copy[i] = { role: "user", text: msg.text! }
-            return copy
-          }
-        }
-        // Otherwise merge consecutive caller fragments, or append a fresh bubble.
-        const last = m[m.length - 1]
-        if (last && last.role === "user") {
-          return [...m.slice(0, -1), { role: "user", text: `${last.text} ${msg.text!}`.trim() }]
-        }
-        return [...m, { role: "user", text: msg.text! }]
-      })
+      setMessages((m) => [...m, { role: "user", text: msg.text! }])
     } else if (msg.type === "agent" && msg.text) {
-      setMessages((m) => {
-        // While the agent turn is open, append to the agent's CURRENT bubble even if a
-        // (late) caller transcript landed after it — so one sentence never splits in two.
-        if (agentTurnOpenRef.current) {
-          for (let i = m.length - 1; i >= 0; i--) {
-            if (m[i].role === "agent") {
-              const copy = m.slice()
-              copy[i] = { role: "agent", text: copy[i].text + msg.text! }
-              return copy
-            }
-          }
-        }
-        agentTurnOpenRef.current = true
-        return [...m, { role: "agent", text: msg.text! }]
-      })
-    } else if (msg.type === "agent_done") {
-      agentTurnOpenRef.current = false
-    } else if (msg.type === "speech_started") {
+      setMessages((m) => [...m, { role: "agent", text: msg.text! }])
+    } else if (msg.type === "clear") {
       stopAgentAudio() // barge-in: caller started talking — cut the agent off immediately
-      agentTurnOpenRef.current = false // the agent's turn is over; the caller is replying
-      // Reserve the caller's slot now (empty) so their line lands in the right order even
-      // though its transcript arrives later.
-      setMessages((m) => {
-        const last = m[m.length - 1]
-        if (last && last.role === "user" && last.text === "") return m
-        return [...m, { role: "user", text: "" }]
-      })
     } else if (msg.type === "call_ended") {
       stop()
+    } else if (msg.type === "status") {
+      if (msg.status === "live") setStatus("live")
     } else if (msg.type === "error") {
       setStatus("error")
     }
@@ -288,7 +255,7 @@ export function useLiveCall() {
         } catch {}
 
         const ws = new WebSocket(
-          `${wsBase()}/api/voice/live?category=${encodeURIComponent(category)}&voice=${encodeURIComponent(voice)}&lang=${encodeURIComponent(language)}`,
+          `${voiceWsBase()}/browser/media?category=${encodeURIComponent(category)}&voice=${encodeURIComponent(voice)}&lang=${encodeURIComponent(language)}`,
         )
         ws.binaryType = "arraybuffer"
         wsRef.current = ws
