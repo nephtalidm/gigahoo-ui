@@ -215,19 +215,30 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden border-b border-border">
+      {/* Background video + dark gradient overlay (darker on the text side) for legibility. */}
+      <video
+        className="pointer-events-none absolute inset-0 -z-10 h-full w-full object-cover"
+        src="/hero-bg.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        aria-hidden
+      />
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-black/85 via-black/65 to-black/40" />
       <div className="mx-auto max-w-6xl px-4 pt-8 pb-8 sm:px-6 sm:pt-12 sm:pb-12 lg:pt-14 lg:pb-14">
         <div className="grid items-stretch gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="flex flex-col items-start">
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
-              <span className="flex h-1.5 w-1.5 rounded-full bg-primary" />
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+              <span className="flex h-1.5 w-1.5 rounded-full bg-white" />
               {t("home.heroBadge")}
             </span>
 
-            <h1 className="mt-6 text-pretty text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+            <h1 className="mt-6 text-pretty text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
               {t("home.heroTitle")}
             </h1>
 
-            <p className="mt-5 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground">
+            <p className="mt-5 max-w-xl text-pretty text-lg leading-relaxed text-white/85">
               {t("home.heroSubtitle")}
             </p>
 
@@ -242,17 +253,17 @@ export function Hero() {
               <Button
                 size="lg"
                 variant="outline"
-                className="text-base"
+                className="border-white/40 bg-white/5 text-base text-white hover:bg-white/15 hover:text-white"
                 render={<a href="#pricing">{t("home.heroCtaSecondary")}</a>}
               />
             </div>
 
-            <p className="mt-3 text-sm">{t("home.heroNoCard")}</p>
+            <p className="mt-3 text-sm text-white/75">{t("home.heroNoCard")}</p>
 
             <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
               {bullets.map((b) => (
-                <li key={b} className="flex items-center gap-2 text-sm font-medium text-foreground">
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent text-accent-foreground">
+                <li key={b} className="flex items-center gap-2 text-sm font-medium text-white">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/15 text-white">
                     <Check className="h-3 w-3" />
                   </span>
                   {b}
