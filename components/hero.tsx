@@ -230,7 +230,7 @@ export function Hero() {
         <div className="grid items-stretch gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="flex flex-col items-start">
             <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
-              <span className="flex h-1.5 w-1.5 rounded-full bg-white" />
+              <span className="flex h-1.5 w-1.5 rounded-full bg-primary motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
               {t("home.heroBadge")}
             </span>
 
