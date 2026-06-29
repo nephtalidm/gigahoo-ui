@@ -214,10 +214,10 @@ export function Hero() {
   }, [live.messages.length, live.agentSpeaking, liveActive])
 
   return (
-    <section className="relative isolate overflow-hidden border-b border-border">
+    <section className="relative isolate flex min-h-[66.67vh] items-center overflow-hidden border-b border-border">
       {/* Background video + dark gradient overlay (darker on the text side) for legibility. */}
       <video
-        className="pointer-events-none absolute inset-0 -z-10 h-full object-cover lg:inset-x-[16.67%]"
+        className="pointer-events-none absolute inset-0 -z-10 h-full w-full object-cover"
         src="/hero-bg.mp4"
         autoPlay
         muted
@@ -225,8 +225,8 @@ export function Hero() {
         playsInline
         aria-hidden
       />
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-black/85 via-black/65 to-black/40 lg:inset-x-[16.67%]" />
-      <div className="relative z-10 mx-auto w-full px-4 pt-5 pb-5 sm:px-6 sm:pt-7 sm:pb-7 lg:w-2/3 lg:pt-8 lg:pb-8">
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-black/85 via-black/65 to-black/40" />
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pt-5 pb-5 sm:px-6 sm:pt-7 sm:pb-7 lg:pt-8 lg:pb-8">
         <div className="grid items-stretch gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="flex flex-col items-start">
             <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
