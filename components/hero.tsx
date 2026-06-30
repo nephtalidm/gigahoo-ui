@@ -214,7 +214,7 @@ export function Hero() {
   }, [live.messages.length, live.agentSpeaking, liveActive])
 
   return (
-    <section className="relative isolate overflow-hidden border-b border-border lg:flex lg:min-h-[66.67vh] lg:items-center">
+    <section className="relative isolate overflow-hidden border-b border-border lg:flex lg:min-h-[50vh] lg:items-center">
       {/* Background video + dark gradient overlay (darker on the text side) for legibility. */}
       <video
         className="pointer-events-none absolute inset-0 -z-10 hidden h-full w-full object-cover lg:block"
@@ -226,8 +226,11 @@ export function Hero() {
         aria-hidden
       />
       <div className="pointer-events-none absolute inset-0 -z-10 hidden bg-gradient-to-r from-black/85 via-black/65 to-black/40 lg:block" />
-      <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pt-5 pb-6 sm:px-6 sm:pt-7 lg:pt-8 lg:pb-8">
-        <div className="grid items-stretch gap-[4.5rem] lg:grid-cols-2 lg:gap-16">
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pt-5 pb-6 sm:px-6 sm:pt-7 lg:pt-4 lg:pb-4">
+        {/* Base grid-cols-1 (not just display:grid) so the mobile column is a
+            constrained minmax(0,1fr) — otherwise it's auto-sized and the card
+            grows to fit long transcript tokens, eating the right-side spacing. */}
+        <div className="grid grid-cols-1 items-stretch gap-[4.5rem] lg:grid-cols-2 lg:gap-16">
           <div className="relative isolate flex flex-col items-start">
             {/* Mobile-only background video: full-bleed width, only as tall as this text block
                 (so it cuts off above the live-call card). Desktop uses the section video above. */}
@@ -244,7 +247,7 @@ export function Hero() {
               <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/65 to-black/40" />
             </div>
             <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
-              <span className="flex h-[5px] w-[5px] rounded-full bg-white motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
+              <span className="flex h-[5px] w-[5px] rounded-full bg-green-600 motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
               {t("home.heroBadge")}
             </span>
 
@@ -309,7 +312,7 @@ export function Hero() {
                     </div>
                     {live.status === "live" && (
                       <span className="ml-auto flex items-center gap-1.5 rounded-full bg-accent px-2.5 py-1 text-xs font-medium text-accent-foreground">
-                        <span className="h-[5px] w-[5px] rounded-full bg-primary motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
+                        <span className="h-[5px] w-[5px] rounded-full bg-green-600 motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
                         {t("home.heroCardLive")}
                       </span>
                     )}
@@ -334,7 +337,7 @@ export function Hero() {
                         }`}
                         aria-hidden={!connected}
                       >
-                        <span className="h-[5px] w-[5px] rounded-full bg-primary motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
+                        <span className="h-[5px] w-[5px] rounded-full bg-green-600 motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
                         {t("home.heroCardLive")}
                       </span>
                     )}
@@ -369,7 +372,7 @@ export function Hero() {
                       {t("home.heroConnecting")}
                     </Button>
                   ) : (
-                    <Button className="h-auto min-h-9 min-w-0 flex-1 whitespace-normal bg-black py-1.5 text-center text-xs leading-tight text-white hover:bg-black/90" onClick={() => live.start(category, "Serena", locale)}>
+                    <Button className="h-auto min-h-9 min-w-0 flex-1 whitespace-normal bg-black py-1.5 text-center text-xs leading-tight text-white hover:bg-black/90" onClick={() => live.start(category, "Jennifer", locale)}>
                       {t("home.heroTryLive")}
                     </Button>
                   )}
@@ -383,7 +386,7 @@ export function Hero() {
                   (mt-auto) and auto-scroll to the newest; scrollbar hidden. */}
               <div
                 ref={scrollRef}
-                className="mt-4 flex h-56 flex-col overflow-y-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:h-auto lg:min-h-0 lg:flex-1"
+                className="mt-4 flex h-56 min-w-0 flex-col overflow-y-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:h-auto lg:min-h-0 lg:flex-1"
               >
                 {liveActive ? (
                   <div className="mt-auto space-y-3">
@@ -392,7 +395,7 @@ export function Hero() {
                       return (
                         <div
                           key={i}
-                          className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-bottom-2 motion-safe:duration-500 ${
+                          className={`max-w-[85%] break-words rounded-2xl px-4 py-2.5 text-sm motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-bottom-2 motion-safe:duration-500 ${
                             isAgent
                               ? "rounded-tl-sm bg-muted text-foreground"
                               : "ml-auto rounded-tr-sm bg-primary text-primary-foreground"
@@ -425,7 +428,7 @@ export function Hero() {
                       return (
                         <div
                           key={i}
-                          className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-bottom-2 motion-safe:duration-500 ${
+                          className={`max-w-[85%] break-words rounded-2xl px-4 py-2.5 text-sm motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-bottom-2 motion-safe:duration-500 ${
                             isAssistant
                               ? "rounded-tl-sm bg-muted text-foreground"
                               : "ml-auto rounded-tr-sm bg-primary text-primary-foreground"

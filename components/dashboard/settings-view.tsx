@@ -18,7 +18,7 @@ import { CountryFlag } from "@/components/country-flag"
 import { GoogleSignInButton } from "@/components/google-signin-button"
 import { CodeBoxes } from "@/components/code-boxes"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
-import { useTranslation } from "@/contexts/language-context"
+import { useTranslation, isLocale, type Locale } from "@/contexts/language-context"
 import { useUnsavedChanges } from "@/contexts/unsaved-changes-context"
 import { LanguageSwitcher } from "@/components/language-switcher"
 import {
@@ -169,7 +169,7 @@ export function SettingsView({
   featureSettings: FeatureSettings | null
   onCountryChange: (countryId: number) => void
 }) {
-  const { t } = useTranslation()
+  const { t, locale, setLocale } = useTranslation()
   const { setDirty } = useUnsavedChanges()
   // Supported (served) countries from the API (Country.IsSupported), settings.ts fallback.
   const supportedCodes = useSupportedCountries()
@@ -239,18 +239,36 @@ export function SettingsView({
   const snapshot = JSON.stringify({
     businessName, categoryId, businessPhone, phoneCountryCode, email,
     websiteUrl, addressLine1, addressLine2, city, regionId, regionCustom,
-    postalCode, countryId,
+    postalCode, countryId, language: locale,
   })
   // Captured once on mount as the clean baseline; updated after a successful save.
   const baselineRef = useRef<string>(snapshot)
+
+  // The account's persisted language. The LanguageSwitcher previews a change in
+  // the live UI immediately, but it only becomes authoritative on save — if the
+  // user leaves without saving, the preview is reverted back to this value.
+  const savedLanguageRef = useRef<Locale>(
+    isLocale(account.accountLanguage) ? account.accountLanguage : locale,
+  )
+  // Latest selected locale, read by the unmount cleanup below (whose closure
+  // would otherwise capture a stale `locale`).
+  const localeRef = useRef(locale)
+  localeRef.current = locale
 
   // Report dirty state whenever the form diverges from the baseline.
   useEffect(() => {
     setDirty(snapshot !== baselineRef.current)
   }, [snapshot, setDirty])
 
-  // Clear the guard when the settings view unmounts.
-  useEffect(() => () => setDirty(false), [setDirty])
+  // Clear the guard when the settings view unmounts. Also revert an unsaved
+  // live language preview back to the saved account language, so leaving the
+  // page without saving doesn't keep the change.
+  useEffect(() => () => {
+    setDirty(false)
+    if (localeRef.current !== savedLanguageRef.current) {
+      setLocale(savedLanguageRef.current)
+    }
+  }, [setDirty, setLocale])
 
   // Re-point one field of the saved baseline (used after the email/phone verify
   // flows persist a value out-of-band), so that verified change no longer reads
@@ -402,6 +420,13 @@ export function SettingsView({
         postalCode: postalCode || null,
         countryId: Number(countryId),
       })
+      // Persist a language change as part of Save (the live UI already previews
+      // it). Once saved it becomes the value the unmount revert restores to.
+      if (locale !== savedLanguageRef.current) {
+        await updateAccountLanguage(locale)
+        savedLanguageRef.current = locale
+        account.accountLanguage = locale
+      }
       // The saved values are now the clean baseline → clears the dirty guard.
       baselineRef.current = snapshot
       setDirty(false)
@@ -763,7 +788,7 @@ export function SettingsView({
             </p>
           </Field>
           <Field label={t("settings.websiteLanguage")} htmlFor="websiteLanguage">
-            <LanguageSwitcher onChange={(l) => { void updateAccountLanguage(l) }} />
+            <LanguageSwitcher />
             <p className="text-xs text-muted-foreground">{t("settings.websiteLanguageHint")}</p>
           </Field>
         </div>

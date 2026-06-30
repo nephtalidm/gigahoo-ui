@@ -29,8 +29,8 @@ function floatToPcm16(input: Float32Array): Int16Array {
 }
 
 /**
- * Live two-way voice call with the AI agent, proxied through the API
- * (GET /api/voice/live as a WebSocket). Captures the mic at 16 kHz PCM16, streams
+ * Live two-way voice call with the AI agent, via the Node VoiceAgent
+ * (wss://voice.gigahoo.ai/browser/media). Captures the mic at 16 kHz PCM16, streams
  * it up, and plays the 24 kHz PCM16 audio that comes back gaplessly. Transcripts
  * arrive as JSON text frames and accumulate into `messages`.
  */
@@ -47,8 +47,9 @@ export function useLiveCall() {
   const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null)
   // Schedule clock for back-to-back playback buffers.
   const nextStartRef = useRef(0)
-  // Active playback sources, so a barge-in can stop them instantly.
-  const sourcesRef = useRef<AudioBufferSourceNode[]>([])
+  // Active playback sources (each with its own gain, so a barge-in can fade it out instead
+  // of hard-stopping mid-waveform — a hard stop clicks/sounds robotic).
+  const sourcesRef = useRef<{ src: AudioBufferSourceNode; gain: GainNode }[]>([])
   // Whether the current agent turn is still streaming (append deltas) or done.
   const agentTurnOpenRef = useRef(false)
   // Agent audio is routed through a WebRTC loopback so the browser's echo canceller
@@ -122,10 +123,20 @@ export function useLiveCall() {
     setStatus((s) => (s === "error" ? s : "ended"))
   }, [stopRing])
 
-  // Barge-in: stop and flush any agent audio currently playing or queued.
+  // Barge-in: fade out + flush any agent audio currently playing or queued. The short
+  // (~20ms) gain ramp before stopping avoids the click/robotic artifact of a hard stop
+  // that cuts the waveform at a non-zero sample.
   const stopAgentAudio = useCallback(() => {
-    for (const s of sourcesRef.current) {
-      try { s.onended = null; s.stop() } catch {}
+    const ctx = playCtxRef.current
+    const now = ctx?.currentTime ?? 0
+    for (const { src, gain } of sourcesRef.current) {
+      try {
+        src.onended = null
+        gain.gain.cancelScheduledValues(now)
+        gain.gain.setValueAtTime(gain.gain.value, now)
+        gain.gain.linearRampToValueAtTime(0, now + 0.02)
+        src.stop(now + 0.03)
+      } catch {}
     }
     sourcesRef.current = []
     if (playCtxRef.current) nextStartRef.current = playCtxRef.current.currentTime
@@ -141,14 +152,17 @@ export function useLiveCall() {
     for (let i = 0; i < pcm.length; i++) ch[i] = pcm[i] / 0x8000
     const src = ctx.createBufferSource()
     src.buffer = buf
-    src.connect(playTargetRef.current ?? ctx.destination)
+    // Per-source gain so a barge-in can fade this out smoothly instead of hard-stopping it.
+    const gain = ctx.createGain()
+    src.connect(gain)
+    gain.connect(playTargetRef.current ?? ctx.destination)
     const startAt = Math.max(ctx.currentTime + 0.02, nextStartRef.current)
     src.start(startAt)
     nextStartRef.current = startAt + buf.duration
-    sourcesRef.current.push(src)
+    sourcesRef.current.push({ src, gain })
     setAgentSpeaking(true)
     src.onended = () => {
-      sourcesRef.current = sourcesRef.current.filter((s) => s !== src)
+      sourcesRef.current = sourcesRef.current.filter((s) => s.src !== src)
       // Last buffer in the queue finished -> agent stopped speaking.
       if (nextStartRef.current <= (playCtxRef.current?.currentTime ?? 0) + 0.06) {
         setAgentSpeaking(false)
