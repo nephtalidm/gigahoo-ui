@@ -62,6 +62,10 @@ const signup = {
   logIn: "ورود",
   errorTitle: "مشکلی پیش آمد",
   tryAgain: "دوباره تلاش کنید",
+  addressCheckTitle: "آدرس خود را بررسی کنید",
+  addressCheckBody: "نسخه‌ای استانداردشده از آدرس شما پیدا کردیم:",
+  addressCheckUse: "استفاده از این",
+  addressCheckKeep: "نگه داشتن آدرس من",
 }
 
 export default signup

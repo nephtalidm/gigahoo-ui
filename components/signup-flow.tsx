@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/dialog"
 import { PhoneInput } from "@/components/phone-input"
 import { AddressAutocomplete } from "@/components/address-autocomplete"
+import { validateAddress, type ValidatedAddress } from "@/lib/address-validation"
 import { businessCategories, businessCategoryKeys, countries, areaCodeMatchesCountry, type Plan } from "@/lib/data"
 import { getAccount, getCategories, api, createCheckout, getCurrencyForVisitor, type CountryData, type RegionData } from "@/lib/api"
 import { PLAN_PRICES, COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
@@ -130,6 +131,7 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
   const [city, setCity] = useState("")
   const [regionId, setRegionId] = useState("")
   const [postalCode, setPostalCode] = useState("")
+  const [suggestion, setSuggestion] = useState<ValidatedAddress | null>(null)
   // The address country selector is limited to the supported (served) countries.
   const supportedCountries = countries.filter((c) => supportedCodes.includes(c.code))
   // Defaults to the phone country (until the user changes it); if the phone
@@ -324,32 +326,8 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
     return e
   }
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    setErrors({})
-
-    const fieldErrors = validateAll()
-    if (Object.keys(fieldErrors).length > 0) {
-      setErrors(fieldErrors)
-      // Focus/scroll the first invalid field (top-to-bottom by form layout).
-      const order: { key: keyof FieldErrors; id: string }[] = [
-        { key: "businessName", id: "businessName" },
-        { key: "password", id: "password" },
-        { key: "category", id: "category" },
-        { key: "email", id: "email" },
-        { key: "businessPhone", id: "phone" },
-        { key: "country", id: "country" },
-        { key: "addressLine1", id: "addressLine1" },
-        { key: "city", id: "city" },
-        { key: "region", id: "region" },
-        { key: "postalCode", id: "postalCode" },
-        { key: "terms", id: "agreeToTerms" },
-      ]
-      const first = order.find((f) => fieldErrors[f.key])
-      if (first) focusField(first.id)
-      return
-    }
-
+  async function submitAccount(addr?: { addressLine1: string; addressLine2: string; city: string; regionId: string; postalCode: string }) {
+    const a = addr ?? { addressLine1, addressLine2, city, regionId, postalCode }
     setLoading(true)
 
     try {
@@ -369,11 +347,11 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
         phoneCountryCode,
         email,
         planId: plans.find((p) => p.name === selectedPlan)!.planId,
-        addressLine1,
-        addressLine2,
-        city,
-        regionId: regionId ? Number(regionId) : null,
-        postalCode,
+        addressLine1: a.addressLine1,
+        addressLine2: a.addressLine2,
+        city: a.city,
+        regionId: a.regionId ? Number(a.regionId) : null,
+        postalCode: a.postalCode,
         countryCode: addressCountry,
         // Omit when empty (SMS/Google are passwordless) so the optional,
         // min-length-8 backend field stays null instead of failing on "".
@@ -423,6 +401,69 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
     }
   }
 
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setErrors({})
+
+    const fieldErrors = validateAll()
+    if (Object.keys(fieldErrors).length > 0) {
+      setErrors(fieldErrors)
+      // Focus/scroll the first invalid field (top-to-bottom by form layout).
+      const order: { key: keyof FieldErrors; id: string }[] = [
+        { key: "businessName", id: "businessName" },
+        { key: "password", id: "password" },
+        { key: "category", id: "category" },
+        { key: "email", id: "email" },
+        { key: "businessPhone", id: "phone" },
+        { key: "country", id: "country" },
+        { key: "addressLine1", id: "addressLine1" },
+        { key: "city", id: "city" },
+        { key: "region", id: "region" },
+        { key: "postalCode", id: "postalCode" },
+        { key: "terms", id: "agreeToTerms" },
+      ]
+      const first = order.find((f) => fieldErrors[f.key])
+      if (first) focusField(first.id)
+      return
+    }
+
+    // Ask Google to validate/standardize the address; if it differs, offer it in
+    // a "Did you mean…?" dialog. Fail-open: on any validation error, just submit.
+    setLoading(true)
+    const sug = await validateAddress({
+      addressLines: [addressLine1, addressLine2].filter((x): x is string => !!x),
+      locality: city,
+      administrativeArea: regions.find((r) => String(r.id) === regionId)?.code ?? "",
+      postalCode,
+      regionCode: addressCountry,
+    })
+    setLoading(false)
+    if (sug && (sug.hasSuggestion || sug.incomplete)) {
+      setSuggestion(sug)
+      return
+    }
+    await submitAccount()
+  }
+
+  // Apply Google's suggested address, then submit with the corrected values.
+  function acceptSuggestion() {
+    const s = suggestion
+    if (!s) return
+    const newRid = regions.find((r) => r.code.toLowerCase() === s.regionShort.toLowerCase())?.id
+    setAddressLine1(s.line1)
+    setCity(s.city)
+    setPostalCode(s.postalCode)
+    if (newRid != null) setRegionId(String(newRid))
+    setSuggestion(null)
+    void submitAccount({
+      addressLine1: s.line1,
+      addressLine2,
+      city: s.city,
+      regionId: newRid != null ? String(newRid) : regionId,
+      postalCode: s.postalCode,
+    })
+  }
+
   // Block the signup form entirely in coming-soon markets (e.g. Mexico). This is
   // placed after every hook (and after the early checkingAccount return) so it
   // doesn't change hook order. Logins are unaffected — this only gates /signup.
@@ -448,6 +489,25 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
         </DialogHeader>
         <DialogFooter>
           <Button onClick={() => setSignupError(null)}>{t("signup.tryAgain")}</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+    <Dialog open={!!suggestion} onOpenChange={(o) => { if (!o) setSuggestion(null) }}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>{t("signup.addressCheckTitle")}</DialogTitle>
+          <DialogDescription>{t("signup.addressCheckBody")}</DialogDescription>
+        </DialogHeader>
+        <p className="rounded-md border border-border bg-muted/40 p-3 text-sm font-medium">
+          {suggestion?.formatted}
+        </p>
+        <DialogFooter>
+          <Button type="button" variant="outline" onClick={() => { setSuggestion(null); void submitAccount() }}>
+            {t("signup.addressCheckKeep")}
+          </Button>
+          <Button type="button" className="bg-indigo-600 text-white hover:bg-indigo-700" onClick={acceptSuggestion}>
+            {t("signup.addressCheckUse")}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

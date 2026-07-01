@@ -62,6 +62,10 @@ const signup = {
   logIn: "Mag-log in",
   errorTitle: "May nangyaring mali",
   tryAgain: "Subukan muli",
+  addressCheckTitle: "Suriin ang iyong address",
+  addressCheckBody: "May nakita kaming standardized na bersyon ng iyong address:",
+  addressCheckUse: "Gamitin ito",
+  addressCheckKeep: "Panatilihin ang akin",
 }
 
 export default signup

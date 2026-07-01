@@ -62,6 +62,10 @@ const signup = {
   logIn: "साइन इन करें",
   errorTitle: "कुछ गलत हो गया",
   tryAgain: "फिर से प्रयास करें",
+  addressCheckTitle: "अपना पता जांचें",
+  addressCheckBody: "हमें आपके पते का मानकीकृत रूप मिला:",
+  addressCheckUse: "इसका उपयोग करें",
+  addressCheckKeep: "मेरा पता रखें",
 }
 
 export default signup

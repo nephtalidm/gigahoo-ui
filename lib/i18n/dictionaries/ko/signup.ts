@@ -62,6 +62,10 @@ const signup = {
   logIn: "로그인",
   errorTitle: "문제가 발생했습니다",
   tryAgain: "다시 시도",
+  addressCheckTitle: "주소 확인",
+  addressCheckBody: "주소의 표준화된 버전을 찾았습니다:",
+  addressCheckUse: "이 주소 사용",
+  addressCheckKeep: "입력한 주소 유지",
 }
 
 export default signup

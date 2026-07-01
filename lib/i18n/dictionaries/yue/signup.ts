@@ -62,6 +62,10 @@ const signup = {
   logIn: "登入",
   errorTitle: "出咗啲問題",
   tryAgain: "再試一次",
+  addressCheckTitle: "檢查你嘅地址",
+  addressCheckBody: "我哋搵到你地址嘅標準化版本:",
+  addressCheckUse: "用呢個",
+  addressCheckKeep: "保留我輸入嘅",
 }
 
 export default signup

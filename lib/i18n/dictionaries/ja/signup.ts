@@ -62,6 +62,10 @@ const signup = {
   logIn: "ログイン",
   errorTitle: "問題が発生しました",
   tryAgain: "もう一度お試しください",
+  addressCheckTitle: "住所を確認",
+  addressCheckBody: "住所の標準化されたバージョンが見つかりました:",
+  addressCheckUse: "これを使う",
+  addressCheckKeep: "入力した住所を使う",
 }
 
 export default signup

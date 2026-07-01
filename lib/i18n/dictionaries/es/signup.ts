@@ -62,6 +62,10 @@ const signup = {
   logIn: "Iniciar sesión",
   errorTitle: "Algo salió mal",
   tryAgain: "Inténtalo de nuevo",
+  addressCheckTitle: "Verifica tu dirección",
+  addressCheckBody: "Encontramos una versión estandarizada de tu dirección:",
+  addressCheckUse: "Usar esta",
+  addressCheckKeep: "Mantener la mía",
 }
 
 export default signup

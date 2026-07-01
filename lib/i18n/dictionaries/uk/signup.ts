@@ -62,6 +62,10 @@ const signup = {
   logIn: "Увійти",
   errorTitle: "Щось пішло не так",
   tryAgain: "Спробувати ще раз",
+  addressCheckTitle: "Перевірте адресу",
+  addressCheckBody: "Ми знайшли стандартизовану версію вашої адреси:",
+  addressCheckUse: "Використати цю",
+  addressCheckKeep: "Залишити мою",
 }
 
 export default signup

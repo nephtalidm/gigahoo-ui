@@ -62,6 +62,10 @@ const signup = {
   logIn: "تسجيل الدخول",
   errorTitle: "حدث خطأ ما",
   tryAgain: "حاول مرة أخرى",
+  addressCheckTitle: "تحقق من عنوانك",
+  addressCheckBody: "وجدنا نسخة موحّدة من عنوانك:",
+  addressCheckUse: "استخدام هذا",
+  addressCheckKeep: "الاحتفاظ بعنواني",
 }
 
 export default signup
