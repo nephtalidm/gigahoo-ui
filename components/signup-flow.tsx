@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -24,7 +24,7 @@ import {
 import { PhoneInput } from "@/components/phone-input"
 import { AddressAutocomplete } from "@/components/address-autocomplete"
 import { businessCategories, businessCategoryKeys, countries, areaCodeMatchesCountry, type Plan } from "@/lib/data"
-import { getAccount, getCategories, api, createCheckout, getCurrencyForVisitor, getCountries, getRegions, type CountryData, type RegionData } from "@/lib/api"
+import { getAccount, getCategories, api, createCheckout, getCurrencyForVisitor, type CountryData, type RegionData } from "@/lib/api"
 import { PLAN_PRICES, COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
 import { useAuth } from "@/contexts/auth-context"
 import { useTranslation } from "@/contexts/language-context"
@@ -84,7 +84,10 @@ function normalizePlan(value: string | null | undefined): Plan | null {
   }
 }
 
-export function SignupFlow() {
+export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
+  countries: CountryData[]
+  regionsByCountryId: Record<number, RegionData[]>
+}) {
   const router = useRouter()
   const params = useSearchParams()
   const { storeAuth } = useAuth()
@@ -126,10 +129,6 @@ export function SignupFlow() {
   const [addressLine2, setAddressLine2] = useState("")
   const [city, setCity] = useState("")
   const [regionId, setRegionId] = useState("")
-  const [apiCountries, setApiCountries] = useState<CountryData[]>([])
-  const [regions, setRegions] = useState<RegionData[]>([])
-  const pendingRegionRef = useRef<string | null>(null)
-  const pendingRegionShortRef = useRef<string | null>(null)
   const [postalCode, setPostalCode] = useState("")
   // The address country selector is limited to the supported (served) countries.
   const supportedCountries = countries.filter((c) => supportedCodes.includes(c.code))
@@ -139,29 +138,13 @@ export function SignupFlow() {
   const addressCountry =
     addressCountryPicked ??
     (supportedCodes.includes(phoneCountryCode) ? phoneCountryCode : supportedCodes[0])
-  // Country + region dropdowns are backed by the API lookup tables (ids match the
-  // DB). Resolve the picked country code to its id, then load that country's regions.
+  // Country + region dropdowns are backed by the server-provided lookup data
+  // (props, read from the DB on the server — no browser fetch). Resolve the picked
+  // country code to its id, take that country's region list, and reset the region
+  // selection whenever the country changes.
   const addressCountryId = apiCountries.find((c) => c.code === addressCountry)?.id ?? null
-  useEffect(() => { getCountries(true).then(setApiCountries).catch(() => setApiCountries([])) }, [])
-  useEffect(() => {
-    if (addressCountryId == null) { setRegions([]); return }
-    getRegions(addressCountryId).then(setRegions).catch(() => setRegions([]))
-    setRegionId("")
-  }, [addressCountryId])
-  // Resolve a Google-autofilled region (long_name / short_name) to a Region id once
-  // the region list for the selected country has loaded.
-  useEffect(() => {
-    if (regions.length === 0 || !pendingRegionRef.current) return
-    const pending = pendingRegionRef.current.toLowerCase()
-    const pendingShort = (pendingRegionShortRef.current ?? "").toLowerCase()
-    const match = regions.find(
-      (r) => r.name.toLowerCase() === pending ||
-        (pendingShort && (r.code.toLowerCase() === pendingShort || r.name.toLowerCase() === pendingShort)),
-    )
-    if (match) setRegionId(String(match.id))
-    pendingRegionRef.current = null
-    pendingRegionShortRef.current = null
-  }, [regions])
+  const regions = addressCountryId != null ? (regionsByCountryId[addressCountryId] ?? []) : []
+  useEffect(() => { setRegionId("") }, [addressCountryId])
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [agreedToTerms, setAgreedToTerms] = useState(false)
@@ -639,8 +622,15 @@ export function SignupFlow() {
           onSelect={(a) => {
             setAddressLine1(a.line1)
             setCity(a.city)
-            pendingRegionRef.current = a.region || null
-            pendingRegionShortRef.current = a.regionShort || null
+            // Resolve Google's region (long_name / short_name) to a Region id
+            // against the already-loaded list for the selected country.
+            const long = (a.region ?? "").toLowerCase()
+            const short = (a.regionShort ?? "").toLowerCase()
+            const match = regions.find(
+              (r) => r.name.toLowerCase() === long ||
+                (short && (r.code.toLowerCase() === short || r.name.toLowerCase() === short)),
+            )
+            if (match) setRegionId(String(match.id))
             setPostalCode(a.postalCode)
           }}
           placeholder={t("signup.addressLine1Placeholder")}
