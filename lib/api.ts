@@ -168,7 +168,6 @@ export function updateAccount(data: {
   addressLine2: string | null;
   city: string | null;
   regionId: number | null;
-  regionCustom: string | null;
   postalCode: string | null;
   countryId: number;
 }) {

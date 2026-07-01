@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -24,7 +24,7 @@ import {
 import { PhoneInput } from "@/components/phone-input"
 import { AddressAutocomplete } from "@/components/address-autocomplete"
 import { businessCategories, businessCategoryKeys, countries, areaCodeMatchesCountry, type Plan } from "@/lib/data"
-import { getAccount, getCategories, api, createCheckout, getCurrencyForVisitor } from "@/lib/api"
+import { getAccount, getCategories, api, createCheckout, getCurrencyForVisitor, getCountries, getRegions, type CountryData, type RegionData } from "@/lib/api"
 import { PLAN_PRICES, COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
 import { useAuth } from "@/contexts/auth-context"
 import { useTranslation } from "@/contexts/language-context"
@@ -125,7 +125,11 @@ export function SignupFlow() {
   const [addressLine1, setAddressLine1] = useState("")
   const [addressLine2, setAddressLine2] = useState("")
   const [city, setCity] = useState("")
-  const [region, setRegion] = useState("")
+  const [regionId, setRegionId] = useState("")
+  const [apiCountries, setApiCountries] = useState<CountryData[]>([])
+  const [regions, setRegions] = useState<RegionData[]>([])
+  const pendingRegionRef = useRef<string | null>(null)
+  const pendingRegionShortRef = useRef<string | null>(null)
   const [postalCode, setPostalCode] = useState("")
   // The address country selector is limited to the supported (served) countries.
   const supportedCountries = countries.filter((c) => supportedCodes.includes(c.code))
@@ -135,6 +139,29 @@ export function SignupFlow() {
   const addressCountry =
     addressCountryPicked ??
     (supportedCodes.includes(phoneCountryCode) ? phoneCountryCode : supportedCodes[0])
+  // Country + region dropdowns are backed by the API lookup tables (ids match the
+  // DB). Resolve the picked country code to its id, then load that country's regions.
+  const addressCountryId = apiCountries.find((c) => c.code === addressCountry)?.id ?? null
+  useEffect(() => { getCountries(true).then(setApiCountries).catch(() => setApiCountries([])) }, [])
+  useEffect(() => {
+    if (addressCountryId == null) { setRegions([]); return }
+    getRegions(addressCountryId).then(setRegions).catch(() => setRegions([]))
+    setRegionId("")
+  }, [addressCountryId])
+  // Resolve a Google-autofilled region (long_name / short_name) to a Region id once
+  // the region list for the selected country has loaded.
+  useEffect(() => {
+    if (regions.length === 0 || !pendingRegionRef.current) return
+    const pending = pendingRegionRef.current.toLowerCase()
+    const pendingShort = (pendingRegionShortRef.current ?? "").toLowerCase()
+    const match = regions.find(
+      (r) => r.name.toLowerCase() === pending ||
+        (pendingShort && (r.code.toLowerCase() === pendingShort || r.name.toLowerCase() === pendingShort)),
+    )
+    if (match) setRegionId(String(match.id))
+    pendingRegionRef.current = null
+    pendingRegionShortRef.current = null
+  }, [regions])
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [agreedToTerms, setAgreedToTerms] = useState(false)
@@ -206,10 +233,9 @@ export function SignupFlow() {
     if (isPhoneSignup && email.length > 0 && !z.string().email().safeParse(email).success) e.email = t("signup.errEmailInvalid")
     if (addressLine1.length > 200) e.addressLine1 = t("signup.errAddressLong")
     if (city.length > 100) e.city = t("signup.errAddressLong")
-    if (region.length > 100) e.region = t("signup.errAddressLong")
     if (postalCode.length > 20) e.postalCode = t("signup.errAddressLong")
     setErrors(e)
-  }, [businessName, businessPhone, password, category, email, isPhoneSignup, isEmailSignup, addressLine1, city, region, postalCode, t])
+  }, [businessName, businessPhone, password, category, email, isPhoneSignup, isEmailSignup, addressLine1, city, regionId, postalCode, t])
 
   // Used by validateAll() to flag a malformed email on submit. Full required/
   // length validation now lives in validateAll() so each failure maps to its
@@ -303,8 +329,7 @@ export function SignupFlow() {
     if (city.trim().length < 1) e.city = t("signup.errCityRequired")
     else if (city.length > 100) e.city = t("signup.errAddressLong")
 
-    if (region.trim().length < 1) e.region = t("signup.errRegionRequired")
-    else if (region.length > 100) e.region = t("signup.errAddressLong")
+    if (!regionId) e.region = t("signup.errRegionRequired")
 
     if (postalCode.trim().length < 1) e.postalCode = t("signup.errPostalCodeRequired")
     else if (postalCode.length > 20) e.postalCode = t("signup.errAddressLong")
@@ -364,7 +389,7 @@ export function SignupFlow() {
         addressLine1,
         addressLine2,
         city,
-        region,
+        regionId: regionId ? Number(regionId) : null,
         postalCode,
         countryCode: addressCountry,
         // Omit when empty (SMS/Google are passwordless) so the optional,
@@ -614,7 +639,8 @@ export function SignupFlow() {
           onSelect={(a) => {
             setAddressLine1(a.line1)
             setCity(a.city)
-            setRegion(a.region)
+            pendingRegionRef.current = a.region || null
+            pendingRegionShortRef.current = a.regionShort || null
             setPostalCode(a.postalCode)
           }}
           placeholder={t("signup.addressLine1Placeholder")}
@@ -659,17 +685,23 @@ export function SignupFlow() {
 
       <div className="flex flex-col gap-2">
         <Label htmlFor="region">{t("signup.regionLabel")}</Label>
-        <Input
-          name="region"
-          id="region"
-          value={region}
-          onChange={(e) => setRegion(e.target.value)}
-          placeholder={t("signup.regionPlaceholder")}
-          maxLength={100}
-          className={cn(errors.region && "border-destructive focus-visible:ring-destructive")}
-          aria-invalid={!!errors.region}
-          aria-describedby={errors.region ? "region-error" : undefined}
-        />
+        <Select value={regionId} onValueChange={(v) => { if (v) { setRegionId(v); setErrors((e) => ({ ...e, region: undefined })) } }}>
+          <SelectTrigger
+            id="region"
+            className={cn(errors.region && "border-destructive focus-visible:ring-destructive")}
+            aria-invalid={!!errors.region}
+            aria-describedby={errors.region ? "region-error" : undefined}
+          >
+            <SelectValue>
+              {regions.find((r) => String(r.id) === regionId)?.name || t("signup.regionPlaceholder")}
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            {regions.map((r) => (
+              <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         {errors.region && (
           <p id="region-error" className="text-xs text-destructive">{errors.region}</p>
         )}

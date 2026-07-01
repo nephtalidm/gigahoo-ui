@@ -183,7 +183,6 @@ export function SettingsView({
   const [addressLine2, setAddressLine2] = useState(account.addressLine2 ?? "")
   const [city, setCity] = useState(account.city ?? "")
   const [regionId, setRegionId] = useState(account.regionId != null ? String(account.regionId) : "")
-  const [regionCustom, setRegionCustom] = useState(account.region ?? "")
   const [postalCode, setPostalCode] = useState(account.postalCode ?? "")
   const [countryId, setCountryId] = useState(String(account.countryId))
   const [saving, setSaving] = useState(false)
@@ -238,7 +237,7 @@ export function SettingsView({
   // handlers below, leaving any other unsaved edits intact.
   const snapshot = JSON.stringify({
     businessName, categoryId, businessPhone, phoneCountryCode, email,
-    websiteUrl, addressLine1, addressLine2, city, regionId, regionCustom,
+    websiteUrl, addressLine1, addressLine2, city, regionId,
     postalCode, countryId, language: locale,
   })
   // Captured once on mount as the clean baseline; updated after a successful save.
@@ -291,7 +290,7 @@ export function SettingsView({
     if (!countryId) e.country = t("settings.errCountryRequired")
     if (addressLine1.trim().length < 1) e.addressLine1 = t("settings.errAddressLine1Required")
     if (city.trim().length < 1) e.city = t("settings.errCityRequired")
-    if (hasRegions ? !regionId : regionCustom.trim().length < 1) e.region = t("settings.errRegionRequired")
+    if (!regionId) e.region = t("settings.errRegionRequired")
     if (postalCode.trim().length < 1) e.postalCode = t("settings.errPostalCodeRequired")
     return e
   }
@@ -304,7 +303,7 @@ export function SettingsView({
       return validateAll()
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [businessName, email, categoryId, countryId, addressLine1, city, regionId, regionCustom, postalCode, hasRegions])
+  }, [businessName, email, categoryId, countryId, addressLine1, city, regionId, postalCode, hasRegions])
 
   // Live re-validation of password fields: clear a field's red border once it
   // becomes valid. Only re-validate fields already flagged so untouched fields
@@ -324,7 +323,6 @@ export function SettingsView({
   function handleCountryChange(value: string) {
     setCountryId(value)
     setRegionId("")
-    setRegionCustom("")
     const id = Number(value)
     if (!isNaN(id)) onCountryChange(id)
   }
@@ -350,7 +348,6 @@ export function SettingsView({
     // countries without a region list.
     pendingRegionRef.current = a.region || null
     pendingRegionShortRef.current = a.regionShort || null
-    setRegionCustom(a.region)
   }
 
   // Resolve a pending region (from a Places selection) once the `regions` list
@@ -415,8 +412,7 @@ export function SettingsView({
         addressLine1: addressLine1 || null,
         addressLine2: addressLine2 || null,
         city: city || null,
-        regionId: hasRegions && regionId ? Number(regionId) : null,
-        regionCustom: !hasRegions && regionCustom ? regionCustom : null,
+        regionId: regionId ? Number(regionId) : null,
         postalCode: postalCode || null,
         countryId: Number(countryId),
       })
@@ -843,33 +839,20 @@ export function SettingsView({
             )}
           </Field>
           <Field label={t("settings.region")} htmlFor="region">
-            {hasRegions ? (
-              <Select value={regionId} onValueChange={(v) => v && setRegionId(v)}>
-                <SelectTrigger id="region" className={cn(errors.region && "border-destructive focus-visible:ring-destructive")}>
-                  <SelectValue>
-                    {regions.find((r) => String(r.id) === regionId)?.name || t("settings.selectRegion")}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  {regions.map((r) => (
-                    <SelectItem key={r.id} value={String(r.id)}>
-                      {r.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            ) : (
-              <Input
-                id="region"
-                value={regionCustom}
-                onChange={(e) => setRegionCustom(e.target.value)}
-                placeholder={t("settings.regionPlaceholder")}
-                autoComplete="address-level1"
-                className={cn(errors.region && "border-destructive focus-visible:ring-destructive")}
-                aria-invalid={!!errors.region}
-                aria-describedby={errors.region ? "region-error" : undefined}
-              />
-            )}
+            <Select value={regionId} onValueChange={(v) => v && setRegionId(v)}>
+              <SelectTrigger id="region" className={cn(errors.region && "border-destructive focus-visible:ring-destructive")}>
+                <SelectValue>
+                  {regions.find((r) => String(r.id) === regionId)?.name || t("settings.selectRegion")}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {regions.map((r) => (
+                  <SelectItem key={r.id} value={String(r.id)}>
+                    {r.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             {errors.region && (
               <p id="region-error" className="text-xs text-destructive">{errors.region}</p>
             )}
