@@ -33,6 +33,7 @@ export function useWebrtcDemo() {
   const callRef = useRef<{ hangup?: () => void } | null>(null)
   const eventsRef = useRef<WebSocket | null>(null)
   const speakTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const hangupRef = useRef<HTMLAudioElement | null>(null)
 
   const cleanup = useCallback(() => {
     try { callRef.current?.hangup?.() } catch {}
@@ -46,6 +47,15 @@ export function useWebrtcDemo() {
   }, [])
 
   const stop = useCallback(() => {
+    // Call-end tone — only if a call was actually active (fires on the agent's
+    // auto-hangup as well as a manual stop).
+    if (clientRef.current || callRef.current || eventsRef.current) {
+      try {
+        const h = hangupRef.current
+        if (h) { h.currentTime = 0; h.muted = false; h.volume = 0.5; void h.play().catch(() => {}) }
+        else { const bye = new Audio("/sounds/hangup.mp3"); bye.volume = 0.5; void bye.play().catch(() => {}) }
+      } catch {}
+    }
     cleanup()
     setStatus((s) => (s === "error" ? s : "ended"))
   }, [cleanup])
@@ -71,6 +81,15 @@ export function useWebrtcDemo() {
     setMessages([])
     setAgentSpeaking(false)
     setStatus("connecting")
+    // Preload + unlock the hangup tone within this click gesture, so it can play
+    // later when the agent auto-hangs up (that end isn't a user gesture).
+    try {
+      const h = new Audio("/sounds/hangup.mp3")
+      h.muted = true
+      h.volume = 0.5
+      hangupRef.current = h
+      void h.play().then(() => { h.pause(); h.currentTime = 0; h.muted = false }).catch(() => {})
+    } catch {}
     try {
       // 1. Short-lived Telnyx login token + the demo destination.
       const r = await fetch(`${voiceHttpBase()}/demo/webrtc-token`)
