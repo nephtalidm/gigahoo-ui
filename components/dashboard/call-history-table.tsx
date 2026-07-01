@@ -72,7 +72,7 @@ export function ConversationHistoryTable({ conversations }: { conversations: Con
                     className="cursor-pointer"
                   >
                     <TableCell className="font-medium text-foreground">{conv.callerName}</TableCell>
-                    <TableCell className="text-muted-foreground">{conv.callerPhone}</TableCell>
+                    <TableCell className="text-muted-foreground">{conv.callerPhoneNumber}</TableCell>
                     <TableCell className="text-muted-foreground">{formatDateTime(conv.dateTime)}</TableCell>
                     <TableCell className="text-muted-foreground">{formatDuration(conv.durationSeconds)}</TableCell>
                     <TableCell className="text-muted-foreground">{conv.language}</TableCell>
@@ -97,7 +97,7 @@ export function ConversationHistoryTable({ conversations }: { conversations: Con
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <p className="font-medium text-foreground">{conv.callerName}</p>
-                    <p className="text-xs text-muted-foreground">{conv.callerPhone}</p>
+                    <p className="text-xs text-muted-foreground">{conv.callerPhoneNumber}</p>
                   </div>
                   <StatusBadge status={conv.status} />
                 </div>
@@ -126,7 +126,7 @@ export function ConversationHistoryTable({ conversations }: { conversations: Con
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-lg font-semibold text-foreground">{selected.callerName}</p>
-                    <p className="text-sm text-muted-foreground">{selected.callerPhone}</p>
+                    <p className="text-sm text-muted-foreground">{selected.callerPhoneNumber}</p>
                   </div>
                   <StatusBadge status={selected.status} />
                 </div>

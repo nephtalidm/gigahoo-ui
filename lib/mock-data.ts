@@ -41,7 +41,7 @@ export const mockConversations: ConversationData[] = [
   {
     id: "conv-1",
     callerName: "John Smith",
-    callerPhone: "+14155550101",
+    callerPhoneNumber: "+14155550101",
     dateTimeUtc: "2024-06-15T14:30:00Z",
     durationSeconds: 245,
     language: "English",
@@ -51,7 +51,7 @@ export const mockConversations: ConversationData[] = [
   {
     id: "conv-2",
     callerName: "Maria Garcia",
-    callerPhone: "+14155550102",
+    callerPhoneNumber: "+14155550102",
     dateTimeUtc: "2024-06-15T11:15:00Z",
     durationSeconds: 180,
     language: "Spanish",
@@ -61,7 +61,7 @@ export const mockConversations: ConversationData[] = [
   {
     id: "conv-3",
     callerName: "Robert Chen",
-    callerPhone: "+14155550103",
+    callerPhoneNumber: "+14155550103",
     dateTimeUtc: "2024-06-14T16:45:00Z",
     durationSeconds: 120,
     language: "English",
@@ -71,7 +71,7 @@ export const mockConversations: ConversationData[] = [
   {
     id: "conv-4",
     callerName: "Sarah Johnson",
-    callerPhone: "+14155550104",
+    callerPhoneNumber: "+14155550104",
     dateTimeUtc: "2024-06-14T09:20:00Z",
     durationSeconds: 95,
     language: "English",
@@ -81,7 +81,7 @@ export const mockConversations: ConversationData[] = [
   {
     id: "conv-5",
     callerName: "Unknown",
-    callerPhone: "+14155550105",
+    callerPhoneNumber: "+14155550105",
     dateTimeUtc: "2024-06-13T15:30:00Z",
     durationSeconds: 0,
     language: "English",

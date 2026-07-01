@@ -273,7 +273,7 @@ export function getDashboardOverview() {
 export interface ConversationData {
   id: string;
   callerName: string | null;
-  callerPhone: string;
+  callerPhoneNumber: string;
   dateTimeUtc: string;
   durationSeconds: number;
   language: string;

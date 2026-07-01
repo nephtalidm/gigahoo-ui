@@ -9,7 +9,7 @@ export type CallStatus = "Answered" | "Completed" | "Missed" | "Failed"
 export type Conversation = {
   id: string
   callerName: string
-  callerPhone: string
+  callerPhoneNumber: string
   dateTime: string
   durationSeconds: number
   language: string
@@ -54,7 +54,7 @@ export function mapApiConversation(c: ConversationData): Conversation {
   return {
     id: c.id,
     callerName: c.callerName ?? "Unknown Caller",
-    callerPhone: c.callerPhone,
+    callerPhoneNumber: c.callerPhoneNumber,
     dateTime: c.dateTimeUtc,
     durationSeconds: c.durationSeconds,
     language: c.language,
