@@ -2,7 +2,10 @@
 
 import { useCallback, useRef, useState } from "react"
 import type { TelnyxRTC } from "@telnyx/webrtc"
-import type { LiveMessage, LiveStatus } from "./use-live-call"
+
+export type LiveRole = "user" | "agent"
+export type LiveMessage = { role: LiveRole; text: string }
+export type LiveStatus = "idle" | "connecting" | "live" | "ended" | "error"
 
 // API base -> ws(s):// origin of the Node VoiceAgent (voice.gigahoo.ai).
 function voiceWsBase(): string {
