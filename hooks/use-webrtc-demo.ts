@@ -31,6 +31,9 @@ export function useWebrtcDemo() {
   // False during the greeting (mic held), true once the greeting finishes and we're
   // actually listening. Drives the "Greeting…" -> "Listening" label.
   const [listening, setListening] = useState(false)
+  // True from the moment we start dialing until the agent's first message arrives (ringback
+  // playing). Drives the "Connecting…" -> "End call" button switch.
+  const [ringing, setRinging] = useState(false)
 
   const clientRef = useRef<TelnyxRTC | null>(null)
   const callRef = useRef<{ hangup?: () => void } | null>(null)
@@ -45,6 +48,7 @@ export function useWebrtcDemo() {
   const readySentRef = useRef(false) // sent the "ready to greet" signal yet?
 
   const stopRing = useCallback(() => {
+    setRinging(false)
     const r = ringRef.current
     if (r) { try { r.pause(); r.currentTime = 0 } catch {} }
   }, [])
@@ -105,6 +109,7 @@ export function useWebrtcDemo() {
     setMessages([])
     setAgentSpeaking(false)
     setListening(false)
+    setRinging(true)
     liveRef.current = false
     readySentRef.current = false
     setStatus("connecting")
@@ -206,5 +211,5 @@ export function useWebrtcDemo() {
     }
   }, [handleEvent, stop, cleanup])
 
-  return { status, messages, agentSpeaking, listening, start, stop }
+  return { status, messages, agentSpeaking, listening, ringing, start, stop }
 }

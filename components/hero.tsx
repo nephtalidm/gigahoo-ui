@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Check, PhoneCall } from "lucide-react"
+import { Check, Loader2, PhoneCall } from "lucide-react"
 import Link from "next/link"
 import { useTranslation } from "@/contexts/language-context"
 import { COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
@@ -367,11 +367,18 @@ export function Hero() {
                   </select>
 
                   {live.status === "live" || live.status === "connecting" ? (
-                    // "End call" from the moment we start dialing (ringback playing) so the
-                    // caller can hang up during the wait, not just after the greeting.
-                    <Button variant="destructive" className="h-auto min-h-9 min-w-0 flex-1 whitespace-normal py-1.5 text-center text-xs leading-tight" onClick={() => live.stop()}>
-                      {t("home.heroEndCall")}
-                    </Button>
+                    live.ringing ? (
+                      // Ringback playing — waiting for the agent to pick up and greet.
+                      <Button className="h-auto min-h-9 min-w-0 flex-1 whitespace-normal py-1.5 text-center text-xs leading-tight" disabled>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        {t("home.heroConnecting")}
+                      </Button>
+                    ) : (
+                      // Agent is greeting / the call is live — allow hanging up.
+                      <Button variant="destructive" className="h-auto min-h-9 min-w-0 flex-1 whitespace-normal py-1.5 text-center text-xs leading-tight" onClick={() => live.stop()}>
+                        {t("home.heroEndCall")}
+                      </Button>
+                    )
                   ) : (
                     <Button className="h-auto min-h-9 min-w-0 flex-1 whitespace-normal bg-black py-1.5 text-center text-xs leading-tight text-white hover:bg-black/90" onClick={() => live.start(category, "Jennifer", locale)}>
                       {t("home.heroTryLive")}
