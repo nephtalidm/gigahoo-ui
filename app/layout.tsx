@@ -27,8 +27,8 @@ export async function generateMetadata(): Promise<Metadata> {
     title: home.metaTitle,
     description: home.metaDescription,
     icons: {
-      icon: '/gigahoo-icon.png',
-      apple: '/gigahoo-icon.png',
+      icon: '/gigahoo-icon.png?v=2',
+      apple: '/gigahoo-icon.png?v=2',
     },
   }
 }
