@@ -122,6 +122,7 @@ export function useWebrtcDemo() {
       clientRef.current = client
       ;(client as unknown as { remoteElement: string }).remoteElement = AUDIO_ID
       client.on("telnyx.ready", () => {
+        if (callRef.current) return // telnyx.ready can fire more than once — place one call only
         // Must be called as a METHOD on the client (client.newCall) so `this` is bound —
         // extracting it into a variable drops the binding and the SDK throws on newCall.
         const c = client as unknown as {
