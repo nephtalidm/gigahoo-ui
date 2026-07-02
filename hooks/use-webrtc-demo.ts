@@ -34,6 +34,9 @@ export function useWebrtcDemo() {
   const eventsRef = useRef<WebSocket | null>(null)
   const speakTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const hangupRef = useRef<HTMLAudioElement | null>(null)
+  // True once the call has gone live. The SDK emits errors during normal teardown too;
+  // after a call has connected we treat those as a clean end, not a failure.
+  const liveRef = useRef(false)
 
   const cleanup = useCallback(() => {
     try { callRef.current?.hangup?.() } catch {}
@@ -71,6 +74,7 @@ export function useWebrtcDemo() {
     } else if (msg.type === "clear") {
       setAgentSpeaking(false)
     } else if (msg.type === "status" && msg.status === "live") {
+      liveRef.current = true
       setStatus((s) => (s === "error" ? s : "live"))
     } else if (msg.type === "call_ended") {
       stop()
@@ -80,6 +84,7 @@ export function useWebrtcDemo() {
   const start = useCallback(async (category: string, _voice: string, locale: string) => {
     setMessages([])
     setAgentSpeaking(false)
+    liveRef.current = false
     setStatus("connecting")
     // Preload + unlock the hangup tone within this click gesture, so it can play
     // later when the agent auto-hangs up (that end isn't a user gesture).
@@ -136,10 +141,15 @@ export function useWebrtcDemo() {
       })
       client.on("telnyx.notification", (n: { call?: { state?: string } }) => {
         const st = n?.call?.state
-        if (st === "active") setStatus((s) => (s === "error" ? s : "live"))
+        if (st === "active") { liveRef.current = true; setStatus((s) => (s === "error" ? s : "live")) }
         if (st === "hangup" || st === "destroy") stop()
       })
-      client.on("telnyx.error", () => setStatus("error"))
+      client.on("telnyx.error", () => {
+        // A live/ended call tearing down also emits errors — end cleanly, don't show the
+        // mic/connection failure. Only a genuine pre-connection error is a real failure.
+        if (liveRef.current) stop()
+        else setStatus("error")
+      })
       client.connect()
     } catch {
       cleanup()
