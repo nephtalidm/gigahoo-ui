@@ -41,6 +41,7 @@ export function useWebrtcDemo() {
   // True once the call has gone live. The SDK emits errors during normal teardown too;
   // after a call has connected we treat those as a clean end, not a failure.
   const liveRef = useRef(false)
+  const readySentRef = useRef(false) // sent the "ready to greet" signal yet?
 
   const cleanup = useCallback(() => {
     try { callRef.current?.hangup?.() } catch {}
@@ -97,6 +98,7 @@ export function useWebrtcDemo() {
     setAgentSpeaking(false)
     setListening(false)
     liveRef.current = false
+    readySentRef.current = false
     setStatus("connecting")
     // Preload + unlock the hangup tone within this click gesture, so it can play
     // later when the agent auto-hangs up (that end isn't a user gesture).
@@ -160,16 +162,19 @@ export function useWebrtcDemo() {
         // (more reliable than remoteElement + autoplay). Idempotent on repeat notifications.
         const el = audioElRef.current
         if (call?.remoteStream && el && el.srcObject !== call.remoteStream) {
-          try {
-            el.srcObject = call.remoteStream
-            // Once our speaker pipeline is set up, tell the server it's safe to greet now
-            // (event-driven, replaces the fixed warmup). Sent whether play() resolves or not.
-            const signalReady = () => { try { eventsRef.current?.send(JSON.stringify({ type: "ready" })) } catch {} }
-            void el.play().then(signalReady).catch(signalReady)
-          } catch {}
+          try { el.srcObject = call.remoteStream; void el.play().catch(() => {}) } catch {}
         }
         const st = call?.state
-        if (st === "active") { liveRef.current = true; setStatus((s) => (s === "error" || s === "ended" ? s : "live")) }
+        if (st === "active") {
+          liveRef.current = true
+          setStatus((s) => (s === "error" || s === "ended" ? s : "live"))
+          // Call media is up -> tell the server it's safe to greet now (event-driven, no
+          // warmup). Robust: not gated on the remoteStream object, which the SDK may not expose.
+          if (!readySentRef.current) {
+            readySentRef.current = true
+            try { eventsRef.current?.send(JSON.stringify({ type: "ready" })) } catch {}
+          }
+        }
         if (st === "hangup" || st === "destroy") stop()
       })
       client.on("telnyx.error", () => {

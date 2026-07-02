@@ -420,7 +420,7 @@ export function Hero() {
                         <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce" />
                       </div>
                     ) : (
-                      live.status === "live" && (
+                      live.status === "live" && live.listening && (
                         <p className="text-xs text-muted-foreground">{t("home.heroListening")}</p>
                       )
                     )}
