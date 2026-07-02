@@ -38,12 +38,19 @@ export function useWebrtcDemo() {
   const speakTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const hangupRef = useRef<HTMLAudioElement | null>(null)
   const audioElRef = useRef<HTMLAudioElement | null>(null)
+  const ringRef = useRef<HTMLAudioElement | null>(null) // ringback tone while we wait for the greeting
   // True once the call has gone live. The SDK emits errors during normal teardown too;
   // after a call has connected we treat those as a clean end, not a failure.
   const liveRef = useRef(false)
   const readySentRef = useRef(false) // sent the "ready to greet" signal yet?
 
+  const stopRing = useCallback(() => {
+    const r = ringRef.current
+    if (r) { try { r.pause(); r.currentTime = 0 } catch {} }
+  }, [])
+
   const cleanup = useCallback(() => {
+    stopRing()
     try { callRef.current?.hangup?.() } catch {}
     try { clientRef.current?.disconnect?.() } catch {}
     try { eventsRef.current?.close() } catch {}
@@ -53,7 +60,7 @@ export function useWebrtcDemo() {
     try { if (audioElRef.current) audioElRef.current.srcObject = null } catch {}
     if (speakTimer.current) { clearTimeout(speakTimer.current); speakTimer.current = null }
     setAgentSpeaking(false)
-  }, [])
+  }, [stopRing])
 
   const stop = useCallback(() => {
     const wasActive = !!(clientRef.current || callRef.current || eventsRef.current)
@@ -77,6 +84,7 @@ export function useWebrtcDemo() {
     if (msg.type === "user" && msg.text) {
       setMessages((m) => [...m, { role: "user", text: msg.text! }])
     } else if (msg.type === "agent" && msg.text) {
+      stopRing() // agent "picked up" — the greeting is here, stop the ringback
       setMessages((m) => [...m, { role: "agent", text: msg.text! }])
       setAgentSpeaking(true)
       if (speakTimer.current) clearTimeout(speakTimer.current)
@@ -91,7 +99,7 @@ export function useWebrtcDemo() {
     } else if (msg.type === "call_ended") {
       stop()
     }
-  }, [stop])
+  }, [stop, stopRing])
 
   const start = useCallback(async (category: string, _voice: string, locale: string) => {
     setMessages([])
@@ -108,6 +116,14 @@ export function useWebrtcDemo() {
       h.volume = 0.5
       hangupRef.current = h
       void h.play().then(() => { h.pause(); h.currentTime = 0; h.muted = false }).catch(() => {})
+    } catch {}
+    // Ringback tone while we wait for the agent to "pick up" (greeting arrives). Starts within
+    // this click gesture so autoplay is allowed; loops until the first agent message.
+    try {
+      let ring = ringRef.current
+      if (!ring) { ring = new Audio("/sounds/ring.mp3"); ring.loop = true; ring.volume = 0.4; ringRef.current = ring }
+      ring.currentTime = 0
+      void ring.play().catch(() => {})
     } catch {}
     try {
       // 1. Short-lived Telnyx login token + the demo destination.
