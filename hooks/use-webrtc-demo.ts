@@ -34,6 +34,7 @@ export function useWebrtcDemo() {
   const eventsRef = useRef<WebSocket | null>(null)
   const speakTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const hangupRef = useRef<HTMLAudioElement | null>(null)
+  const audioElRef = useRef<HTMLAudioElement | null>(null)
   // True once the call has gone live. The SDK emits errors during normal teardown too;
   // after a call has connected we treat those as a clean end, not a failure.
   const liveRef = useRef(false)
@@ -45,6 +46,7 @@ export function useWebrtcDemo() {
     callRef.current = null
     clientRef.current = null
     eventsRef.current = null
+    try { if (audioElRef.current) audioElRef.current.srcObject = null } catch {}
     if (speakTimer.current) { clearTimeout(speakTimer.current); speakTimer.current = null }
     setAgentSpeaking(false)
   }, [])
@@ -107,14 +109,16 @@ export function useWebrtcDemo() {
       eventsRef.current = ev
       ev.onmessage = (e) => { try { handleEvent(JSON.parse(e.data)) } catch {} }
 
-      // 3. Hidden <audio> the SDK plays the agent's voice into.
+      // 3. Hidden <audio> for the agent's voice.
       let audioEl = document.getElementById(AUDIO_ID) as HTMLAudioElement | null
       if (!audioEl) {
         audioEl = document.createElement("audio")
         audioEl.id = AUDIO_ID
         audioEl.autoplay = true
+        ;(audioEl as HTMLAudioElement & { playsInline?: boolean }).playsInline = true
         document.body.appendChild(audioEl)
       }
+      audioElRef.current = audioEl
 
       // 4. Telnyx WebRTC — place the call to the demo number with the session context.
       const mod = await import("@telnyx/webrtc") // browser-only SDK, loaded on demand
@@ -140,8 +144,15 @@ export function useWebrtcDemo() {
           ],
         })
       })
-      client.on("telnyx.notification", (n: { call?: { state?: string } }) => {
-        const st = n?.call?.state
+      client.on("telnyx.notification", (n: { call?: { state?: string; remoteStream?: MediaStream } }) => {
+        const call = n?.call
+        // Explicitly attach + play the agent's audio the moment the remote stream appears
+        // (more reliable than remoteElement + autoplay). Idempotent on repeat notifications.
+        const el = audioElRef.current
+        if (call?.remoteStream && el && el.srcObject !== call.remoteStream) {
+          try { el.srcObject = call.remoteStream; void el.play().catch(() => {}) } catch {}
+        }
+        const st = call?.state
         if (st === "active") { liveRef.current = true; setStatus((s) => (s === "error" ? s : "live")) }
         if (st === "hangup" || st === "destroy") stop()
       })
