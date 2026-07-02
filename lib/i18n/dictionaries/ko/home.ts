@@ -40,6 +40,7 @@ const home = {
   heroEndCall: "통화 종료",
   heroLiveCall: "실시간 통화",
   heroListening: "듣는 중…",
+  heroGreeting: "인사 중…",
   heroMicError: "마이크 또는 연결에 실패했습니다. 마이크 액세스를 허용한 후 다시 시도해 주세요.",
 
   // Features

@@ -41,6 +41,7 @@ const home = {
   heroEndCall: "Finalizar llamada",
   heroLiveCall: "Llamada en vivo",
   heroListening: "Escuchando…",
+  heroGreeting: "Saludando…",
   heroMicError: "Error de micrófono o de conexión. Permite el acceso al micrófono e inténtalo de nuevo.",
 
   // Features

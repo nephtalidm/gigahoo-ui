@@ -40,6 +40,7 @@ const home = {
   heroEndCall: "कॉल समाप्त करें",
   heroLiveCall: "लाइव कॉल",
   heroListening: "सुन रहा है…",
+  heroGreeting: "अभिवादन कर रहा है…",
   heroMicError: "माइक्रोफ़ोन या कनेक्शन विफल रहा। कृपया माइक एक्सेस की अनुमति दें और फिर से प्रयास करें।",
 
   // Features

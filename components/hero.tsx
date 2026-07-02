@@ -307,7 +307,11 @@ export function Hero() {
                     <div>
                       <p className="text-sm font-semibold text-foreground">{t("home.heroLiveCall")}</p>
                       <p className="text-xs text-muted-foreground">
-                        {live.status === "live" ? t("home.heroListening") : t("home.heroConnecting")}
+                        {live.status === "live"
+                          ? live.listening
+                            ? t("home.heroListening")
+                            : t("home.heroGreeting")
+                          : t("home.heroConnecting")}
                       </p>
                     </div>
                     {live.status === "live" && (

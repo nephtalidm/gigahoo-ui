@@ -40,6 +40,7 @@ const home = {
   heroEndCall: "End call",
   heroLiveCall: "Live call",
   heroListening: "Listening…",
+  heroGreeting: "Greeting…",
   heroMicError: "Microphone or connection failed. Please allow mic access and try again.",
 
   // Features

@@ -40,6 +40,7 @@ const home = {
   heroEndCall: "通話を終了",
   heroLiveCall: "ライブ通話",
   heroListening: "聞いています…",
+  heroGreeting: "ご挨拶中…",
   heroMicError: "マイクまたは接続に失敗しました。マイクへのアクセスを許可して、もう一度お試しください。",
 
   // Features

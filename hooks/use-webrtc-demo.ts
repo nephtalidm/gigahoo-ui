@@ -28,6 +28,9 @@ export function useWebrtcDemo() {
   const [status, setStatus] = useState<LiveStatus>("idle")
   const [messages, setMessages] = useState<LiveMessage[]>([])
   const [agentSpeaking, setAgentSpeaking] = useState(false)
+  // False during the greeting (mic held), true once the greeting finishes and we're
+  // actually listening. Drives the "Greeting…" -> "Listening" label.
+  const [listening, setListening] = useState(false)
 
   const clientRef = useRef<TelnyxRTC | null>(null)
   const callRef = useRef<{ hangup?: () => void } | null>(null)
@@ -82,6 +85,8 @@ export function useWebrtcDemo() {
     } else if (msg.type === "status" && msg.status === "live") {
       liveRef.current = true
       setStatus((s) => (s === "error" || s === "ended" ? s : "live"))
+    } else if (msg.type === "listening") {
+      setListening(true)
     } else if (msg.type === "call_ended") {
       stop()
     }
@@ -90,6 +95,7 @@ export function useWebrtcDemo() {
   const start = useCallback(async (category: string, _voice: string, locale: string) => {
     setMessages([])
     setAgentSpeaking(false)
+    setListening(false)
     liveRef.current = false
     setStatus("connecting")
     // Preload + unlock the hangup tone within this click gesture, so it can play
@@ -173,5 +179,5 @@ export function useWebrtcDemo() {
     }
   }, [handleEvent, stop, cleanup])
 
-  return { status, messages, agentSpeaking, start, stop }
+  return { status, messages, agentSpeaking, listening, start, stop }
 }

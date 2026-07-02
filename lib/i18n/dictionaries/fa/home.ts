@@ -40,6 +40,7 @@ const home = {
   heroEndCall: "پایان تماس",
   heroLiveCall: "تماس زنده",
   heroListening: "در حال شنیدن…",
+  heroGreeting: "در حال خوش‌آمدگویی…",
   heroMicError: "میکروفون یا اتصال ناموفق بود. لطفاً دسترسی به میکروفون را مجاز کرده و دوباره تلاش کنید.",
 
   // Features

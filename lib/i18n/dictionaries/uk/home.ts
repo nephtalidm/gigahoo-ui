@@ -40,6 +40,7 @@ const home = {
   heroEndCall: "Завершити дзвінок",
   heroLiveCall: "Живий дзвінок",
   heroListening: "Слухаю…",
+  heroGreeting: "Вітає…",
   heroMicError: "Збій мікрофона або з'єднання. Дозвольте доступ до мікрофона та спробуйте ще раз.",
 
   // Features

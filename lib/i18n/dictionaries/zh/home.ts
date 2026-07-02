@@ -40,6 +40,7 @@ const home = {
   heroEndCall: "结束通话",
   heroLiveCall: "实时通话",
   heroListening: "正在聆听…",
+  heroGreeting: "正在问候…",
   heroMicError: "麦克风或连接失败。请允许麦克风访问权限后重试。",
 
   // Features

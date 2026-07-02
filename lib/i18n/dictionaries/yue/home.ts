@@ -40,6 +40,7 @@ const home = {
   heroEndCall: "結束通話",
   heroLiveCall: "即時通話",
   heroListening: "聆聽緊…",
+  heroGreeting: "打緊招呼…",
   heroMicError: "麥克風或者連接失敗。請允許麥克風存取權限再試一次。",
 
   // Features

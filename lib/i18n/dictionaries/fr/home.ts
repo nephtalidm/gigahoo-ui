@@ -40,6 +40,7 @@ const home = {
   heroEndCall: "Terminer l'appel",
   heroLiveCall: "Appel en direct",
   heroListening: "À l'écoute…",
+  heroGreeting: "Vous accueille…",
   heroMicError: "Échec du microphone ou de la connexion. Veuillez autoriser l'accès au micro et réessayer.",
 
   // Features

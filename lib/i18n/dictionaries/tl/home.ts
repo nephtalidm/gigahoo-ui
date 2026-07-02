@@ -40,6 +40,7 @@ const home = {
   heroEndCall: "Tapusin ang tawag",
   heroLiveCall: "Live na tawag",
   heroListening: "Nakikinig…",
+  heroGreeting: "Bumabati…",
   heroMicError: "Nabigo ang mikropono o koneksyon. Mangyaring payagan ang access sa mic at subukang muli.",
 
   // Features
