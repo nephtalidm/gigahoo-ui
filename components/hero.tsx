@@ -307,14 +307,16 @@ export function Hero() {
                     <div>
                       <p className="text-sm font-semibold text-foreground">{t("home.heroLiveCall")}</p>
                       <p className="text-xs text-muted-foreground">
-                        {live.status === "live"
-                          ? live.listening
-                            ? t("home.heroListening")
-                            : t("home.heroGreeting")
-                          : t("home.heroConnecting")}
+                        {live.ringing
+                          ? t("home.heroConnecting")
+                          : live.status === "live"
+                            ? live.listening
+                              ? t("home.heroListening")
+                              : t("home.heroGreeting")
+                            : t("home.heroConnecting")}
                       </p>
                     </div>
-                    {live.status === "live" && (
+                    {live.status === "live" && !live.ringing && (
                       <span className="ml-auto flex items-center gap-1.5 rounded-full bg-accent px-2.5 py-1 text-xs font-medium text-accent-foreground">
                         <span className="h-[5px] w-[5px] rounded-full bg-green-600 motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
                         {t("home.heroCardLive")}
