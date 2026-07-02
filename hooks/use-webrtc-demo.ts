@@ -52,17 +52,21 @@ export function useWebrtcDemo() {
   }, [])
 
   const stop = useCallback(() => {
+    const wasActive = !!(clientRef.current || callRef.current || eventsRef.current)
+    // Flip the UI to ended IMMEDIATELY so the button returns to its ready state at once —
+    // don't make it wait on the WebRTC teardown below.
+    setStatus((s) => (s === "error" ? s : "ended"))
     // Call-end tone — only if a call was actually active (fires on the agent's
     // auto-hangup as well as a manual stop).
-    if (clientRef.current || callRef.current || eventsRef.current) {
+    if (wasActive) {
       try {
         const h = hangupRef.current
         if (h) { h.currentTime = 0; h.muted = false; h.volume = 0.5; void h.play().catch(() => {}) }
         else { const bye = new Audio("/sounds/hangup.mp3"); bye.volume = 0.5; void bye.play().catch(() => {}) }
       } catch {}
     }
-    cleanup()
-    setStatus((s) => (s === "error" ? s : "ended"))
+    // Defer teardown a tick so React repaints the button before hangup/disconnect run.
+    setTimeout(() => cleanup(), 0)
   }, [cleanup])
 
   const handleEvent = useCallback((msg: { type: string; text?: string; status?: string }) => {
@@ -77,7 +81,7 @@ export function useWebrtcDemo() {
       setAgentSpeaking(false)
     } else if (msg.type === "status" && msg.status === "live") {
       liveRef.current = true
-      setStatus((s) => (s === "error" ? s : "live"))
+      setStatus((s) => (s === "error" || s === "ended" ? s : "live"))
     } else if (msg.type === "call_ended") {
       stop()
     }
@@ -153,7 +157,7 @@ export function useWebrtcDemo() {
           try { el.srcObject = call.remoteStream; void el.play().catch(() => {}) } catch {}
         }
         const st = call?.state
-        if (st === "active") { liveRef.current = true; setStatus((s) => (s === "error" ? s : "live")) }
+        if (st === "active") { liveRef.current = true; setStatus((s) => (s === "error" || s === "ended" ? s : "live")) }
         if (st === "hangup" || st === "destroy") stop()
       })
       client.on("telnyx.error", () => {
