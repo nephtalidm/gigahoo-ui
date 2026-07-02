@@ -160,7 +160,13 @@ export function useWebrtcDemo() {
         // (more reliable than remoteElement + autoplay). Idempotent on repeat notifications.
         const el = audioElRef.current
         if (call?.remoteStream && el && el.srcObject !== call.remoteStream) {
-          try { el.srcObject = call.remoteStream; void el.play().catch(() => {}) } catch {}
+          try {
+            el.srcObject = call.remoteStream
+            // Once our speaker pipeline is set up, tell the server it's safe to greet now
+            // (event-driven, replaces the fixed warmup). Sent whether play() resolves or not.
+            const signalReady = () => { try { eventsRef.current?.send(JSON.stringify({ type: "ready" })) } catch {} }
+            void el.play().then(signalReady).catch(signalReady)
+          } catch {}
         }
         const st = call?.state
         if (st === "active") { liveRef.current = true; setStatus((s) => (s === "error" || s === "ended" ? s : "live")) }
