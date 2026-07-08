@@ -183,8 +183,8 @@ function DetailItem({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-center">
       <div className="text-left">
-        <p className="text-xs text-muted-foreground">{label}</p>
-        <p className="mt-0.5 font-medium text-foreground">{value}</p>
+        <p className="text-sm font-medium text-foreground">{label}</p>
+        <p className="mt-0.5 text-sm text-muted-foreground">{value}</p>
       </div>
     </div>
   )
