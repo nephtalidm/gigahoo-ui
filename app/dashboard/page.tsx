@@ -100,9 +100,9 @@ export default function OverviewPage() {
         minutesRemaining={remaining}
       />
 
-      <div className="grid gap-6">
+      <div className="grid min-w-0 gap-6">
         {/* Recent calls */}
-        <div className="rounded-2xl border border-border bg-card shadow-sm">
+        <div className="min-w-0 overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
           <div className="flex items-center justify-between border-b border-border px-5 py-4">
             <h2 className="font-semibold text-foreground">{t("dashboard.recentCalls")}</h2>
             <Button
