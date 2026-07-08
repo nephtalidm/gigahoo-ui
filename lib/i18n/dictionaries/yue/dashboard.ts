@@ -22,7 +22,7 @@ const dashboard = {
   questionAddress: "地址",
   questionEmergency: "係咪緊急？",
   questionNameDesc: "問並儲存來電者嘅姓名。",
-  questionPhoneDesc: "確認來電號碼作回撥，或問另一個。",
+  questionPhoneDesc: "自動由來電號碼取得；AI 會確認係咪最佳回撥號碼，或問另一個。",
   questionAddressDesc: "問並儲存來電者嘅完整地址。",
   questionEmergencyDesc: "偵測緊急來電並用紅色緊急標籤標示。",
   maxCallHint: "單次通話喺 AI 自動結束之前可以維持嘅最長時間，無論通話進行得點樣。設為「冇限制」就冇上限。",

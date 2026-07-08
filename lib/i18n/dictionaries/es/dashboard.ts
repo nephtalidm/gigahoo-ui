@@ -22,7 +22,7 @@ const dashboard = {
   questionAddress: "Dirección",
   questionEmergency: "¿Es una emergencia?",
   questionNameDesc: "Pide y guarda el nombre de quien llama.",
-  questionPhoneDesc: "Confirma el número desde el que llaman como contacto, o pide otro.",
+  questionPhoneDesc: "Se toma automáticamente del número de quien llama; el agente confirma que es el mejor número de contacto o pide otro.",
   questionAddressDesc: "Pide y guarda la dirección completa de quien llama.",
   questionEmergencyDesc: "Detecta llamadas urgentes y las marca con una etiqueta roja de Emergencia.",
   maxCallHint: "El tiempo máximo que puede durar una llamada antes de que la IA la finalice automáticamente, sin importar cómo vaya la llamada. Ponlo en «Sin límite» para no aplicar ningún tope.",

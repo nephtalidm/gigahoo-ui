@@ -22,7 +22,7 @@ const dashboard = {
   questionAddress: "Address",
   questionEmergency: "Emergency ba ito?",
   questionNameDesc: "Tinatanong at itinatala ang pangalan ng tumatawag.",
-  questionPhoneDesc: "Kinukumpirma ang numerong tinatawagan bilang callback, o humihingi ng iba.",
+  questionPhoneDesc: "Awtomatikong kinukuha mula sa numero ng tumatawag; kinukumpirma ng agent kung ito ang pinakamahusay na callback number, o humihingi ng iba.",
   questionAddressDesc: "Tinatanong at itinatala ang buong address ng tumatawag.",
   questionEmergencyDesc: "Tinutukoy ang mga urgent na tawag at minamarkahan ng pulang Emergency badge.",
   maxCallHint: "Ang pinakamatagal na maaaring tumagal ang isang tawag bago ito awtomatikong tapusin ng AI, anuman ang takbo ng tawag. Itakda ito sa 'Walang limitasyon' para walang takda.",

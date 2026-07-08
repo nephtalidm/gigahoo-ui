@@ -22,7 +22,7 @@ const dashboard = {
   questionAddress: "Adresse",
   questionEmergency: "Est-ce une urgence ?",
   questionNameDesc: "Demande et enregistre le nom de l'appelant.",
-  questionPhoneDesc: "Confirme le numéro d'appel comme rappel, ou en demande un autre.",
+  questionPhoneDesc: "Récupéré automatiquement du numéro de l'appelant ; l'agent confirme que c'est le meilleur numéro de rappel, ou en demande un autre.",
   questionAddressDesc: "Demande et enregistre l'adresse complète de l'appelant.",
   questionEmergencyDesc: "Détecte les appels urgents et les marque d'un badge rouge Urgence.",
   maxCallHint: "La durée maximale d'un appel avant que l'IA n'y mette fin automatiquement, quel que soit le déroulement de l'appel. Réglez sur « Illimité » pour ne fixer aucune limite.",

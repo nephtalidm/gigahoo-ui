@@ -22,7 +22,7 @@ const dashboard = {
   questionAddress: "住所",
   questionEmergency: "緊急ですか？",
   questionNameDesc: "発信者の名前を尋ねて保存します。",
-  questionPhoneDesc: "発信番号を折り返し先として確認するか、別の番号を尋ねます。",
+  questionPhoneDesc: "発信者の番号から自動取得します。エージェントが最適な折り返し番号か確認するか、別の番号を尋ねます。",
   questionAddressDesc: "発信者の完全な住所を尋ねて保存します。",
   questionEmergencyDesc: "緊急の電話を検出し、赤い緊急バッジで示します。",
   maxCallHint: "通話の状況にかかわらず、AI が通話を自動的に終了するまでに 1 回の通話が続く最大時間です。上限を設けない場合は「無制限」に設定してください。",

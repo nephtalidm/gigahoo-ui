@@ -22,7 +22,7 @@ const dashboard = {
   questionAddress: "Address",
   questionEmergency: "Is it an emergency?",
   questionNameDesc: "Ask for and save the caller's name.",
-  questionPhoneDesc: "Confirm the number they're calling from as their callback, or ask for another.",
+  questionPhoneDesc: "Automatically taken from the caller's number — the agent confirms it's the best callback number, or asks for a different one.",
   questionAddressDesc: "Ask for and save the caller's full address.",
   questionEmergencyDesc: "Detect urgent calls and flag them with a red Emergency badge.",
   maxCallHint: "The longest a single call can run before the AI automatically ends it, no matter how the call is going. Set it to Unlimited for no cap.",
