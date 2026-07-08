@@ -125,6 +125,7 @@ export interface AccountData {
   agentVoice: string | null;
   maximumCallMinutes: number | null;
   accountLanguage: string | null;
+  timeZone?: string | null;
 }
 
 export function createAccount(data: {

@@ -19,14 +19,14 @@ import { StatusBadge } from "@/components/dashboard/status-badge"
 import { useTranslation } from "@/contexts/language-context"
 import { type Conversation, formatDateTime, formatDuration, formatPhone } from "@/lib/data"
 
-export function ConversationHistoryTable({ conversations }: { conversations: Conversation[] }) {
+export function ConversationHistoryTable({ conversations, timeZone }: { conversations: Conversation[]; timeZone?: string }) {
   const [selected, setSelected] = useState<Conversation | null>(null)
   const { t } = useTranslation()
   // Render dates client-side so they show in the VIEWER's local timezone (the server renders in its
   // own TZ — now Singapore). Empty until mounted to avoid a hydration mismatch.
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
-  const fmtDate = (iso: string) => (mounted ? formatDateTime(iso) : "")
+  const fmtDate = (iso: string) => (mounted ? formatDateTime(iso, timeZone) : "")
 
   return (
     <>

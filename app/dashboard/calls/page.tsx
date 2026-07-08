@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { PageHeader } from "@/components/dashboard/page-header"
 import { ConversationHistoryTable } from "@/components/dashboard/call-history-table"
-import { getConversations, type ConversationData } from "@/lib/api"
+import { getConversations, getAccount, type ConversationData } from "@/lib/api"
 import { mapApiConversation, type Conversation } from "@/lib/data"
 import { useTranslation } from "@/contexts/language-context"
 import { Loader2 } from "lucide-react"
@@ -11,12 +11,16 @@ import { Loader2 } from "lucide-react"
 export default function CallHistoryPage() {
   const { t } = useTranslation()
   const [conversations, setConversations] = useState<Conversation[]>([])
+  const [timeZone, setTimeZone] = useState<string | undefined>(undefined)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    getConversations(1, 100)
-      .then((page) => {
+    // Fetch the account too so we can show call times in the ACCOUNT's timezone (its region),
+    // consistent with the summary email — not the viewer's browser timezone.
+    Promise.all([getConversations(1, 100), getAccount().catch(() => null)])
+      .then(([page, account]) => {
         setConversations(page.items.map(mapApiConversation))
+        if (account?.timeZone) setTimeZone(account.timeZone)
       })
       .catch(() => {})
       .finally(() => setLoading(false))
@@ -33,7 +37,7 @@ export default function CallHistoryPage() {
           <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         </div>
       ) : (
-        <ConversationHistoryTable conversations={conversations} />
+        <ConversationHistoryTable conversations={conversations} timeZone={timeZone} />
       )}
     </div>
   )
