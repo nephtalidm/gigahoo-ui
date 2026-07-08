@@ -121,14 +121,14 @@ export default function OverviewPage() {
             {recentCalls.map((call) => (
               <li key={call.id} className="flex items-start gap-3 px-5 py-3.5">
                 <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <p className="truncate text-sm font-medium text-foreground">{call.callerName}</p>
-                    <span className="text-xs text-muted-foreground">·</span>
-                    <p className="text-xs text-muted-foreground">{formatDuration(call.durationSeconds)}</p>
+                  <div className="flex min-w-0 items-center gap-2">
+                    <p className="min-w-0 truncate text-sm font-medium text-foreground">{call.callerName}</p>
+                    <span className="shrink-0 text-xs text-muted-foreground">·</span>
+                    <p className="shrink-0 text-xs text-muted-foreground">{formatDuration(call.durationSeconds)}</p>
                   </div>
                   <p className="mt-0.5 truncate text-xs text-muted-foreground">{call.summary}</p>
                 </div>
-                <p className="shrink-0 text-xs text-muted-foreground">{formatDateTime(call.dateTime, timeZone)}</p>
+                <p className="shrink-0 whitespace-nowrap text-xs text-muted-foreground">{formatDateTime(call.dateTime, timeZone)}</p>
               </li>
             ))}
             {recentCalls.length === 0 && (
