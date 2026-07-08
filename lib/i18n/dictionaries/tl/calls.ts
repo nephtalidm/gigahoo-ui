@@ -6,6 +6,7 @@ const calls = {
   // Table headers
   caller: "Tumawag",
   phone: "Telepono",
+  address: "Address",
   dateTime: "Petsa / Oras",
   duration: "Tagal",
   language: "Wika",

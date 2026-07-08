@@ -6,6 +6,7 @@ const calls = {
   // Table headers
   caller: "Caller",
   phone: "Phone",
+  address: "Address",
   dateTime: "Date / Time",
   duration: "Duration",
   language: "Language",

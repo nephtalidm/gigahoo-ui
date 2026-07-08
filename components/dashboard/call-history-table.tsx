@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
   Table,
   TableBody,
@@ -17,11 +17,16 @@ import {
 } from "@/components/ui/dialog"
 import { StatusBadge } from "@/components/dashboard/status-badge"
 import { useTranslation } from "@/contexts/language-context"
-import { type Conversation, formatDateTime, formatDuration } from "@/lib/data"
+import { type Conversation, formatDateTime, formatDuration, formatPhone } from "@/lib/data"
 
 export function ConversationHistoryTable({ conversations }: { conversations: Conversation[] }) {
   const [selected, setSelected] = useState<Conversation | null>(null)
   const { t } = useTranslation()
+  // Render dates client-side so they show in the VIEWER's local timezone (the server renders in its
+  // own TZ — now Singapore). Empty until mounted to avoid a hydration mismatch.
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  const fmtDate = (iso: string) => (mounted ? formatDateTime(iso) : "")
 
   return (
     <>
@@ -72,8 +77,8 @@ export function ConversationHistoryTable({ conversations }: { conversations: Con
                     className="cursor-pointer"
                   >
                     <TableCell className="font-medium text-foreground">{conv.callerName}</TableCell>
-                    <TableCell className="text-muted-foreground">{conv.callerPhoneNumber}</TableCell>
-                    <TableCell className="text-muted-foreground">{formatDateTime(conv.dateTime)}</TableCell>
+                    <TableCell className="text-muted-foreground">{formatPhone(conv.callerPhoneNumber)}</TableCell>
+                    <TableCell className="text-muted-foreground">{fmtDate(conv.dateTime)}</TableCell>
                     <TableCell className="text-muted-foreground">{formatDuration(conv.durationSeconds)}</TableCell>
                     <TableCell className="text-muted-foreground">{conv.language}</TableCell>
                     <TableCell className="max-w-xs truncate text-muted-foreground">{conv.summary}</TableCell>
@@ -97,13 +102,13 @@ export function ConversationHistoryTable({ conversations }: { conversations: Con
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <p className="font-medium text-foreground">{conv.callerName}</p>
-                    <p className="text-xs text-muted-foreground">{conv.callerPhoneNumber}</p>
+                    <p className="text-xs text-muted-foreground">{formatPhone(conv.callerPhoneNumber)}</p>
                   </div>
                   <StatusBadge status={conv.status} />
                 </div>
                 <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{conv.summary}</p>
                 <div className="mt-2 flex items-center gap-3 text-xs text-muted-foreground">
-                  <span>{formatDateTime(conv.dateTime)}</span>
+                  <span>{fmtDate(conv.dateTime)}</span>
                   <span>·</span>
                   <span>{formatDuration(conv.durationSeconds)}</span>
                   <span>·</span>
@@ -124,23 +129,21 @@ export function ConversationHistoryTable({ conversations }: { conversations: Con
               </DialogHeader>
               <div className="flex flex-col gap-4">
                 <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-lg font-semibold text-foreground">{selected.callerName}</p>
-                    <p className="text-sm text-muted-foreground">{selected.callerPhoneNumber}</p>
-                  </div>
+                  <p className="text-lg font-semibold text-foreground">{selected.callerName}</p>
                   <StatusBadge status={selected.status} />
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 rounded-xl border border-border bg-secondary/40 p-4 text-sm">
-                  <DetailItem label={t("calls.dateTime")} value={formatDateTime(selected.dateTime)} />
+                {/* Metadata — date/time · duration · language, all in one row */}
+                <div className="grid grid-cols-3 gap-3 rounded-xl border border-border bg-secondary/40 p-4 text-sm">
+                  <DetailItem label={t("calls.dateTime")} value={fmtDate(selected.dateTime)} />
                   <DetailItem label={t("calls.duration")} value={formatDuration(selected.durationSeconds)} />
                   <DetailItem label={t("calls.language")} value={selected.language} />
                 </div>
 
-                <div>
-                  <p className="text-sm font-medium text-foreground">{t("calls.summary")}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">{selected.summary}</p>
-                </div>
+                {/* Info sections — phone · address · summary */}
+                <DetailSection label={t("calls.phone")} value={formatPhone(selected.callerPhoneNumber)} />
+                <DetailSection label={t("calls.address")} value={selected.address || "—"} />
+                <DetailSection label={t("calls.summary")} value={selected.summary || "—"} />
               </div>
             </>
           )}
@@ -155,6 +158,15 @@ function DetailItem({ label, value }: { label: string; value: string }) {
     <div>
       <p className="text-xs text-muted-foreground">{label}</p>
       <p className="mt-0.5 font-medium text-foreground">{value}</p>
+    </div>
+  )
+}
+
+function DetailSection({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <p className="text-sm font-medium text-foreground">{label}</p>
+      <p className="mt-1 whitespace-pre-line text-sm text-muted-foreground">{value}</p>
     </div>
   )
 }

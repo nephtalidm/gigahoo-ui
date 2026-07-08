@@ -14,6 +14,7 @@ export type Conversation = {
   durationSeconds: number
   language: string
   summary: string
+  address: string
   status: CallStatus
 }
 
@@ -59,6 +60,7 @@ export function mapApiConversation(c: ConversationData): Conversation {
     durationSeconds: c.durationSeconds,
     language: c.language,
     summary: c.summary ?? "",
+    address: c.address ?? "",
     status: c.status as CallStatus,
   };
 }
@@ -401,9 +403,18 @@ export const regionsByCountry: Record<string, string[]> = {
 
 export function formatDuration(seconds: number) {
   if (seconds <= 0) return "—"
-  const m = Math.floor(seconds / 60)
-  const s = seconds % 60
-  return `${m}:${s.toString().padStart(2, "0")}`
+  const h = Math.floor(seconds / 3600)
+  const m = Math.floor((seconds % 3600) / 60)
+  return `${h}h ${m}m`
+}
+
+// Format a NANP number as "(XXX) XXX-XXXX"; anything else is returned unchanged.
+export function formatPhone(raw: string) {
+  if (!raw) return "—"
+  let d = raw.replace(/\D/g, "")
+  if (d.length === 11 && d.startsWith("1")) d = d.slice(1)
+  if (d.length === 10) return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`
+  return raw
 }
 
 export function formatDateTime(iso: string) {

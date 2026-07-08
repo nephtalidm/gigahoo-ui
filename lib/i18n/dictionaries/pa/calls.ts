@@ -6,6 +6,7 @@ const calls = {
   // Table headers
   caller: "ਕਾਲ ਕਰਨ ਵਾਲਾ",
   phone: "ਫ਼ੋਨ",
+  address: "ਪਤਾ",
   dateTime: "ਮਿਤੀ / ਸਮਾਂ",
   duration: "ਅਵਧੀ",
   language: "ਭਾਸ਼ਾ",

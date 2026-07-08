@@ -283,6 +283,7 @@ export interface ConversationData {
   durationSeconds: number;
   language: string;
   summary: string | null;
+  address?: string | null;
   status: string;
 }
 

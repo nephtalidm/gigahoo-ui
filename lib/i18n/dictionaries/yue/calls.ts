@@ -6,6 +6,7 @@ const calls = {
   // Table headers
   caller: "來電者",
   phone: "電話",
+  address: "地址",
   dateTime: "日期 / 時間",
   duration: "通話時長",
   language: "語言",
