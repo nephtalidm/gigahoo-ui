@@ -172,7 +172,7 @@ export function BillingView({
           <div className="h-2 w-full overflow-hidden rounded-full bg-secondary">
             <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${usagePct}%` }} />
           </div>
-          <p className="mt-2 text-xs text-muted-foreground">{t("billing.usedThisCycle", { percent: usagePct })}</p>
+          <p className="mt-2 text-sm text-muted-foreground">{t("billing.usedThisCycle", { percent: usagePct })}</p>
         </div>
       </div>
 
