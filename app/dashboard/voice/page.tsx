@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { PageHeader } from "@/components/dashboard/page-header"
 import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
-import { getAccount, getSettings, updateVoiceSettings, generateVoiceSample, getVoices, type AgentVoice } from "@/lib/api"
+import { getAccount, getSettings, updateVoiceSettings, updateQuestions, generateVoiceSample, getVoices, type AgentVoice } from "@/lib/api"
 import { useTranslation } from "@/contexts/language-context"
 import { useUnsavedChanges } from "@/contexts/unsaved-changes-context"
 import { cn } from "@/lib/utils"
@@ -24,6 +24,8 @@ export default function VoiceAgentPage() {
   const [maxCallMinutes, setMaxCallMinutes] = useState<number | null>(null)
   const [voices, setVoices] = useState<AgentVoice[]>([])
   const [voice, setVoice] = useState<string | null>(null)
+  // "Questions" — which details the agent collects (all default on).
+  const [questions, setQuestions] = useState({ collectName: true, collectPhone: true, collectAddress: true, collectEmergency: true })
   // Snapshot of the last loaded/saved values; dirty = current differs from this.
   const baselineRef = useRef<string>("")
   const [playingId, setPlayingId] = useState<string | null>(null)
@@ -63,8 +65,15 @@ export default function VoiceAgentPage() {
           fetchedVoices[0]?.apiName ??
           null
         setVoice(initialVoice)
+        const initialQuestions = {
+          collectName: account.collectName ?? true,
+          collectPhone: account.collectPhone ?? true,
+          collectAddress: account.collectAddress ?? true,
+          collectEmergency: account.collectEmergency ?? true,
+        }
+        setQuestions(initialQuestions)
         // Capture the loaded values as the clean baseline.
-        baselineRef.current = JSON.stringify({ greetingMessage: greeting, maxCallMinutes: initialMax, voice: initialVoice })
+        baselineRef.current = JSON.stringify({ greetingMessage: greeting, maxCallMinutes: initialMax, voice: initialVoice, questions: initialQuestions })
       })
       .catch(() => {})
       .finally(() => setLoading(false))
@@ -72,8 +81,8 @@ export default function VoiceAgentPage() {
 
   // Report dirty state whenever the editable values diverge from the baseline.
   useEffect(() => {
-    setDirty(JSON.stringify({ greetingMessage, maxCallMinutes, voice }) !== baselineRef.current)
-  }, [greetingMessage, maxCallMinutes, voice, setDirty])
+    setDirty(JSON.stringify({ greetingMessage, maxCallMinutes, voice, questions }) !== baselineRef.current)
+  }, [greetingMessage, maxCallMinutes, voice, questions, setDirty])
 
   // Clear the guard when leaving the page.
   useEffect(() => () => setDirty(false), [setDirty])
@@ -135,8 +144,9 @@ export default function VoiceAgentPage() {
         agentVoice: voice,
         maximumCallMinutes,
       })
+      await updateQuestions(questions)
       // The saved values are now the clean baseline → clears the dirty guard.
-      baselineRef.current = JSON.stringify({ greetingMessage, maxCallMinutes, voice })
+      baselineRef.current = JSON.stringify({ greetingMessage, maxCallMinutes, voice, questions })
       setDirty(false)
       setSaved(true)
       setTimeout(() => setSaved(false), 2000)
@@ -191,6 +201,44 @@ export default function VoiceAgentPage() {
           rows={3}
           className="w-full resize-y rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground shadow-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
+      </div>
+
+      {/* Questions — which details the agent asks callers for */}
+      <div className="relative rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="mb-4">
+          <p className="text-sm font-medium text-foreground">{t("dashboard.questionsLabel")}</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">{t("dashboard.questionsHint")}</p>
+        </div>
+        <div className="flex flex-col divide-y divide-border">
+          {([
+            ["collectName", "questionName"],
+            ["collectPhone", "questionPhone"],
+            ["collectAddress", "questionAddress"],
+            ["collectEmergency", "questionEmergency"],
+          ] as const).map(([key, labelKey]) => (
+            <div key={key} className="flex items-center justify-between py-3">
+              <span className="text-sm text-foreground">{t(`dashboard.${labelKey}`)}</span>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={questions[key]}
+                aria-label={t(`dashboard.${labelKey}`)}
+                onClick={() => setQuestions((q) => ({ ...q, [key]: !q[key] }))}
+                className={cn(
+                  "relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors",
+                  questions[key] ? "bg-primary" : "bg-input",
+                )}
+              >
+                <span
+                  className={cn(
+                    "inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform",
+                    questions[key] ? "translate-x-5" : "translate-x-0.5",
+                  )}
+                />
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Maximum call length — per-call hard cap (kill switch). Slider runs 1 min → Unlimited. */}

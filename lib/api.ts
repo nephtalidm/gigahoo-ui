@@ -126,6 +126,10 @@ export interface AccountData {
   maximumCallMinutes: number | null;
   accountLanguage: string | null;
   timeZone?: string | null;
+  collectName?: boolean;
+  collectPhone?: boolean;
+  collectAddress?: boolean;
+  collectEmergency?: boolean;
 }
 
 export function createAccount(data: {
@@ -201,6 +205,18 @@ export function updateVoiceSettings(s: {
   maximumCallMinutes: number | null;
 }) {
   return api.put<VoiceSettings>("/api/account/voice-settings", s);
+}
+
+export interface QuestionsSettings {
+  collectName: boolean;
+  collectPhone: boolean;
+  collectAddress: boolean;
+  collectEmergency: boolean;
+}
+
+// Which details the AI agent collects (the "Questions" section). Off = don't ask/collect + hide.
+export function updateQuestions(s: QuestionsSettings) {
+  return api.put<QuestionsSettings>("/api/account/questions", s);
 }
 
 export interface AgentVoice {
