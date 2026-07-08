@@ -216,8 +216,11 @@ export default function VoiceAgentPage() {
             ["collectAddress", "questionAddress"],
             ["collectEmergency", "questionEmergency"],
           ] as const).map(([key, labelKey]) => (
-            <div key={key} className="flex items-center justify-between py-3">
-              <span className="text-sm text-foreground">{t(`dashboard.${labelKey}`)}</span>
+            <div key={key} className="flex items-center justify-between gap-4 py-3">
+              <div className="min-w-0">
+                <p className="text-sm text-foreground">{t(`dashboard.${labelKey}`)}</p>
+                <p className="mt-0.5 text-xs text-muted-foreground">{t(`dashboard.${labelKey}Desc`)}</p>
+              </div>
               <button
                 type="button"
                 role="switch"

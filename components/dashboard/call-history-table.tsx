@@ -181,7 +181,7 @@ export function ConversationHistoryTable({ conversations, timeZone }: { conversa
 
 function DetailItem({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex-1 text-center">
+    <div className="flex-1 text-left">
       <p className="text-xs text-muted-foreground">{label}</p>
       <p className="mt-0.5 font-medium text-foreground">{value}</p>
     </div>
