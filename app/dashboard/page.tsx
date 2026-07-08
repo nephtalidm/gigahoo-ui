@@ -7,8 +7,9 @@ import { MinuteUsageWidget } from "@/components/dashboard/minute-usage-widget"
 import { MetricsGrid } from "@/components/dashboard/metrics-grid"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { ConversationDetailDialog } from "@/components/dashboard/conversation-detail-dialog"
 import { getDashboardOverview, getAccount, type DashboardOverview } from "@/lib/api"
-import { mapApiConversation, formatDateTime, formatDuration } from "@/lib/data"
+import { mapApiConversation, formatDateTime, formatDuration, type Conversation } from "@/lib/data"
 import { useTranslation } from "@/contexts/language-context"
 import { ArrowRight, ArrowUpRight, Loader2 } from "lucide-react"
 
@@ -16,6 +17,7 @@ export default function OverviewPage() {
   const { t } = useTranslation()
   const [data, setData] = useState<DashboardOverview | null>(null)
   const [timeZone, setTimeZone] = useState<string | undefined>(undefined)
+  const [selected, setSelected] = useState<Conversation | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -119,7 +121,19 @@ export default function OverviewPage() {
           </div>
           <ul className="divide-y divide-border">
             {recentCalls.map((call) => (
-              <li key={call.id} className="flex items-start gap-3 px-5 py-3.5">
+              <li
+                key={call.id}
+                onClick={() => setSelected(call)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault()
+                    setSelected(call)
+                  }
+                }}
+                className="flex cursor-pointer items-start gap-3 px-5 py-3.5 transition-colors hover:bg-accent/50 focus:bg-accent/50 focus:outline-none"
+              >
                 <div className="min-w-0 flex-1">
                   <div className="flex min-w-0 items-center gap-2">
                     <p className="min-w-0 break-words text-sm font-medium text-foreground">{call.callerName}</p>
@@ -139,6 +153,8 @@ export default function OverviewPage() {
           </ul>
         </div>
       </div>
+
+      <ConversationDetailDialog conversation={selected} onClose={() => setSelected(null)} timeZone={timeZone} />
     </div>
   )
 }
