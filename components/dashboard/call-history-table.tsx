@@ -159,19 +159,19 @@ export function ConversationHistoryTable({ conversations, timeZone }: { conversa
                 {/* Info sections — phone · address (Maps link) · summary */}
                 <DetailSection label={t("calls.phone")} value={formatPhone(selected.callerPhoneNumber)} />
                 <div>
-                  <div className="flex items-center justify-between gap-2">
-                    <p className="text-sm font-medium text-foreground">{t("calls.address")}</p>
-                    {selected.address && <CopyButton value={selected.address} />}
-                  </div>
+                  <p className="text-sm font-medium text-foreground">{t("calls.address")}</p>
                   {selected.address ? (
-                    <a
-                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selected.address)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-1 inline-block text-sm text-primary underline underline-offset-2 hover:opacity-80"
-                    >
-                      {selected.address}
-                    </a>
+                    <p className="mt-1 text-sm">
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selected.address)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary underline underline-offset-2 hover:opacity-80"
+                      >
+                        {selected.address}
+                      </a>
+                      <CopyButton value={selected.address} />
+                    </p>
                   ) : (
                     <p className="mt-1 text-sm text-muted-foreground">—</p>
                   )}
@@ -201,11 +201,11 @@ function DetailSection({ label, value }: { label: string; value: string }) {
   const showCopy = value != null && value !== "" && value !== "—"
   return (
     <div>
-      <div className="flex items-center justify-between gap-2">
-        <p className="text-sm font-medium text-foreground">{label}</p>
+      <p className="text-sm font-medium text-foreground">{label}</p>
+      <p className="mt-1 whitespace-pre-line text-sm text-muted-foreground">
+        {value}
         {showCopy && <CopyButton value={value} />}
-      </div>
-      <p className="mt-1 whitespace-pre-line text-sm text-muted-foreground">{value}</p>
+      </p>
     </div>
   )
 }
@@ -229,7 +229,7 @@ function CopyButton({ value }: { value: string }) {
       onClick={onCopy}
       aria-label={t("calls.copy")}
       title={t("calls.copy")}
-      className="shrink-0 rounded-md p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+      className="ml-1 inline-flex align-middle rounded p-0.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
     >
       {copied ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5" />}
     </button>
