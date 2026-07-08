@@ -145,8 +145,8 @@ export function ConversationHistoryTable({ conversations, timeZone }: { conversa
                   </div>
                 </div>
 
-                {/* Metadata — date/time · duration · language, evenly divided across the row + centered */}
-                <div className="flex items-start gap-2 rounded-xl border border-border bg-secondary/40 p-4 text-sm">
+                {/* Metadata — date/time · duration · language, three equal columns, left-aligned */}
+                <div className="grid grid-cols-3 gap-2 rounded-xl border border-border bg-secondary/40 p-4 text-sm">
                   <DetailItem label={t("calls.dateTime")} value={fmtDate(selected.dateTime)} />
                   <DetailItem label={t("calls.duration")} value={formatDuration(selected.durationSeconds)} />
                   <DetailItem label={t("calls.language")} value={selected.language} />
@@ -181,7 +181,7 @@ export function ConversationHistoryTable({ conversations, timeZone }: { conversa
 
 function DetailItem({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex-1 text-left">
+    <div className="min-w-0 text-left">
       <p className="text-xs text-muted-foreground">{label}</p>
       <p className="mt-0.5 font-medium text-foreground">{value}</p>
     </div>
