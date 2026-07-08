@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import {
   Table,
   TableBody,
@@ -22,6 +22,9 @@ import { type Conversation, formatDateTime, formatDuration, formatPhone } from "
 
 export function ConversationHistoryTable({ conversations, timeZone }: { conversations: Conversation[]; timeZone?: string }) {
   const [selected, setSelected] = useState<Conversation | null>(null)
+  // Focus target when the detail dialog opens — the content container, so focus lands
+  // inside the dialog without highlighting the first link (the address Maps link).
+  const detailRef = useRef<HTMLDivElement>(null)
   const { t } = useTranslation()
   // Render dates client-side so they show in the VIEWER's local timezone (the server renders in its
   // own TZ — now Singapore). Empty until mounted to avoid a hydration mismatch.
@@ -130,13 +133,13 @@ export function ConversationHistoryTable({ conversations, timeZone }: { conversa
       )}
 
       <Dialog open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-lg" initialFocus={detailRef}>
           {selected && (
             <>
               <DialogHeader>
                 <DialogTitle>{t("calls.detailsTitle")}</DialogTitle>
               </DialogHeader>
-              <div className="flex flex-col gap-4">
+              <div ref={detailRef} tabIndex={-1} className="flex flex-col gap-4 outline-none">
                 <div className="flex items-center justify-between">
                   <p className="text-lg font-semibold text-foreground">{selected.callerName}</p>
                   <div className="flex items-center gap-2">
