@@ -229,7 +229,7 @@ function CopyButton({ value }: { value: string }) {
       onClick={onCopy}
       aria-label={t("calls.copy")}
       title={t("calls.copy")}
-      className="ml-1 inline-flex align-middle rounded p-0.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+      className="ml-1 inline-flex cursor-pointer align-middle rounded p-0.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
     >
       {copied ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5" />}
     </button>
