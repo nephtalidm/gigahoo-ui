@@ -146,7 +146,7 @@ export function ConversationHistoryTable({ conversations, timeZone }: { conversa
                   <p className="text-sm font-medium text-foreground">{t("calls.address")}</p>
                   {selected.address ? (
                     <a
-                      href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(selected.address)}`}
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selected.address)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="mt-1 inline-block text-sm text-primary underline underline-offset-2 hover:opacity-80"
