@@ -191,8 +191,8 @@ export default function VoiceAgentPage() {
       {/* Greeting */}
       <div className="relative rounded-2xl border border-border bg-card p-6 shadow-sm">
         <div className="mb-3">
-          <p className="text-sm font-medium text-foreground">{t("dashboard.greetingLabel")}</p>
-          <p className="mt-0.5 text-xs text-muted-foreground">{t("dashboard.greetingHint")}</p>
+          <p className="text-base font-semibold text-foreground">{t("dashboard.greetingLabel")}</p>
+          <p className="mt-0.5 text-sm text-muted-foreground">{t("dashboard.greetingHint")}</p>
         </div>
         <textarea
           value={greetingMessage}
@@ -206,8 +206,8 @@ export default function VoiceAgentPage() {
       {/* Questions — which details the agent asks callers for */}
       <div className="relative rounded-2xl border border-border bg-card p-6 shadow-sm">
         <div className="mb-4">
-          <p className="text-sm font-medium text-foreground">{t("dashboard.questionsLabel")}</p>
-          <p className="mt-0.5 text-xs text-muted-foreground">{t("dashboard.questionsHint")}</p>
+          <p className="text-base font-semibold text-foreground">{t("dashboard.questionsLabel")}</p>
+          <p className="mt-0.5 text-sm text-muted-foreground">{t("dashboard.questionsHint")}</p>
         </div>
         <div className="flex flex-col divide-y divide-border">
           {([
@@ -218,8 +218,8 @@ export default function VoiceAgentPage() {
           ] as const).map(([key, labelKey]) => (
             <div key={key} className="flex items-center justify-between gap-4 py-3">
               <div className="min-w-0">
-                <p className="text-sm text-foreground">{t(`dashboard.${labelKey}`)}</p>
-                <p className="mt-0.5 text-xs text-muted-foreground">{t(`dashboard.${labelKey}Desc`)}</p>
+                <p className="text-base text-foreground">{t(`dashboard.${labelKey}`)}</p>
+                <p className="mt-0.5 text-sm text-muted-foreground">{t(`dashboard.${labelKey}Desc`)}</p>
               </div>
               <button
                 type="button"
@@ -247,8 +247,8 @@ export default function VoiceAgentPage() {
       {/* Maximum call length — per-call hard cap (kill switch). Slider runs 1 min → Unlimited. */}
       <div className="relative rounded-2xl border border-border bg-card p-6 shadow-sm">
         <div className="mb-4">
-          <p className="text-sm font-medium text-foreground">{t("dashboard.maxCallLabel")}</p>
-          <p className="mt-0.5 text-xs text-muted-foreground">{t("dashboard.maxCallHint")}</p>
+          <p className="text-base font-semibold text-foreground">{t("dashboard.maxCallLabel")}</p>
+          <p className="mt-0.5 text-sm text-muted-foreground">{t("dashboard.maxCallHint")}</p>
         </div>
         <div className="flex flex-col gap-6">
           <div className="flex items-center justify-center gap-4">
@@ -313,8 +313,8 @@ export default function VoiceAgentPage() {
       {/* Agent voice */}
       <div className="relative rounded-2xl border border-border bg-card p-6 shadow-sm">
         <div className="mb-3">
-          <p className="text-sm font-medium text-foreground">{t("dashboard.voiceLabel")}</p>
-          <p className="mt-0.5 text-xs text-muted-foreground">{t("dashboard.voiceHint")}</p>
+          <p className="text-base font-semibold text-foreground">{t("dashboard.voiceLabel")}</p>
+          <p className="mt-0.5 text-sm text-muted-foreground">{t("dashboard.voiceHint")}</p>
         </div>
         <div className="flex flex-col gap-2">
           {voices.map((v) => {
