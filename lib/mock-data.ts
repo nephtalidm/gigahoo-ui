@@ -34,7 +34,7 @@ export const mockAccount: AccountData = {
   smsCallNotifications: false,
   greetingMessage: null,
   agentVoice: null,
-  maximumCallMinutes: null,
+  maximumCallMinutes: 10,
   accountLanguage: "en",
 };
 
