@@ -7,7 +7,7 @@ import Link from "next/link"
 import { useTranslation } from "@/contexts/language-context"
 import { COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
 import { businessCategories, businessCategoryKeys } from "@/lib/data"
-import { useWebrtcDemo } from "@/hooks/use-webrtc-demo"
+import { useBrowserDemo } from "@/hooks/use-browser-demo"
 
 // Timing (ms) for the looping live-call demo animation.
 const RINGING_MS = 1500
@@ -202,7 +202,7 @@ export function Hero() {
   }, [connected, reducedMotion, conversationMs])
 
   // Live two-way voice call (real call to the AI agent via the API).
-  const live = useWebrtcDemo()
+  const live = useBrowserDemo()
   const liveActive = live.status === "connecting" || live.status === "live"
   const [category, setCategory] = useState(businessCategories[0])
 

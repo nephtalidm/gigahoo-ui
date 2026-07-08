@@ -67,8 +67,8 @@ export interface AuthResponse {
   isNewUser: boolean;
 }
 
-export function googleLogin(idToken: string) {
-  return api.post<AuthResponse>("/api/auth/google", { idToken });
+export function googleLogin(idToken: string, country?: string) {
+  return api.post<AuthResponse>("/api/auth/google", { idToken, country });
 }
 
 export function sendMagicLink(email: string, country?: string) {
@@ -123,6 +123,7 @@ export interface AccountData {
   smsCallNotifications: boolean;
   greetingMessage: string | null;
   agentVoice: string | null;
+  maximumCallMinutes: number | null;
   accountLanguage: string | null;
 }
 
@@ -190,9 +191,14 @@ export function updateNotificationSettings(s: NotificationSettings) {
 export interface VoiceSettings {
   greetingMessage: string | null;
   agentVoice: string | null;
+  maximumCallMinutes: number | null;
 }
 
-export function updateVoiceSettings(s: { greetingMessage: string | null; agentVoice: string | null }) {
+export function updateVoiceSettings(s: {
+  greetingMessage: string | null;
+  agentVoice: string | null;
+  maximumCallMinutes: number | null;
+}) {
   return api.put<VoiceSettings>("/api/account/voice-settings", s);
 }
 

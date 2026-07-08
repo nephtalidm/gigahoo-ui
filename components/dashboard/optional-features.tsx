@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -8,7 +8,7 @@ import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
 import { Slider } from "@/components/ui/slider"
 import { Input } from "@/components/ui/input"
-import { Plus, Minus, Loader2, CheckCircle2 } from "lucide-react"
+import { Plus, Minus } from "lucide-react"
 import { UpgradeCard } from "@/components/dashboard/upgrade-card"
 import { useTranslation } from "@/contexts/language-context"
 import { updateFeatureSettings, type FeatureSettings as FeatureSettingsData } from "@/lib/api"
@@ -98,19 +98,26 @@ const defaultState: FeatureFormState = {
   pricePerKm: "",
 }
 
-function FeaturesPanel({ initial }: { initial: FeatureSettingsData | null }) {
+export type FeaturesPanelHandle = { save: () => Promise<void> }
+
+const FeaturesPanel = forwardRef<FeaturesPanelHandle, {
+  initial: FeatureSettingsData | null
+  onDirtyChange?: (dirty: boolean) => void
+}>(function FeaturesPanel({ initial, onDirtyChange }, ref) {
   const { t } = useTranslation()
   const init = initial ? toFormState(initial) : defaultState
   const [savedSettings, setSavedSettings] = useState<FeatureFormState>(init)
   const [settings, setSettings] = useState<FeatureFormState>(init)
-  const [saving, setSaving] = useState(false)
-  const [saved, setSaved] = useState(false)
-  const [error, setError] = useState<string | null>(null)
 
   const isDirty = useMemo(
     () => JSON.stringify(settings) !== JSON.stringify(savedSettings),
     [settings, savedSettings],
   )
+
+  // Report dirty state up so the page's single Save button / unsaved guard can account for it.
+  useEffect(() => {
+    onDirtyChange?.(isDirty)
+  }, [isDirty, onDirtyChange])
 
   useEffect(() => {
     if (!isDirty) return
@@ -126,55 +133,31 @@ function FeaturesPanel({ initial }: { initial: FeatureSettingsData | null }) {
     setSettings((prev) => ({ ...prev, [key]: value }))
   }
 
-  async function handleSave() {
-    setSaving(true)
-    setError(null)
-    try {
-      await updateFeatureSettings({
-        answerQuestions: settings.answerQuestions,
-        servicesInfo: settings.servicesInfo || null,
-        serviceAreas: settings.serviceAreas || null,
-        businessHours: settings.businessHours || null,
-        emergencyAvailability: settings.emergencyAvailability || null,
-        pricingPolicy: settings.pricingPolicy || null,
-        warrantyPolicy: settings.warrantyPolicy || null,
-        frequentlyAskedQuestions: settings.frequentlyAskedQuestions || null,
-        additionalBusinessInfo: settings.additionalBusinessInfo || null,
-        serveArea: settings.serveArea,
-        distanceKm: settings.distanceKm,
-        quoteInspection: settings.quoteInspection,
-        pricePerKm: settings.pricePerKm ? parseFloat(settings.pricePerKm) : 0,
-      })
-      setSavedSettings(settings)
-      setSaved(true)
-      setTimeout(() => setSaved(false), 3000)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t("features.saveFailed"))
-    } finally {
-      setSaving(false)
-    }
-  }
+  // Persist via the page's single Save button (see SettingsView.handleSave). Throws on failure so
+  // the parent surfaces the error alongside the rest of the Save.
+  const doSave = useCallback(async () => {
+    await updateFeatureSettings({
+      answerQuestions: settings.answerQuestions,
+      servicesInfo: settings.servicesInfo || null,
+      serviceAreas: settings.serviceAreas || null,
+      businessHours: settings.businessHours || null,
+      emergencyAvailability: settings.emergencyAvailability || null,
+      pricingPolicy: settings.pricingPolicy || null,
+      warrantyPolicy: settings.warrantyPolicy || null,
+      frequentlyAskedQuestions: settings.frequentlyAskedQuestions || null,
+      additionalBusinessInfo: settings.additionalBusinessInfo || null,
+      serveArea: settings.serveArea,
+      distanceKm: settings.distanceKm,
+      quoteInspection: settings.quoteInspection,
+      pricePerKm: settings.pricePerKm ? parseFloat(settings.pricePerKm) : 0,
+    })
+    setSavedSettings(settings)
+  }, [settings])
+
+  useImperativeHandle(ref, () => ({ save: doSave }), [doSave])
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex items-center justify-between gap-4">
-        <h2 className="text-lg font-semibold text-foreground">{t("features.sectionTitle")}</h2>
-        <div className="flex items-center gap-3">
-          {saved && (
-            <span className="flex items-center gap-1.5 text-sm text-emerald-600">
-              <CheckCircle2 className="h-4 w-4" />
-              {t("features.saved")}
-            </span>
-          )}
-          {isDirty && !saved && <p className="text-sm text-muted-foreground">{t("features.unsavedChanges")}</p>}
-          {error && <p className="text-sm text-destructive">{error}</p>}
-          <Button onClick={handleSave} disabled={!isDirty || saving}>
-            {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {t("features.saveChanges")}
-          </Button>
-        </div>
-      </div>
-
       <FeatureCard
         title={t("features.answerQuestionsTitle")}
         description={t("features.answerQuestionsDescription")}
@@ -285,27 +268,27 @@ function FeaturesPanel({ initial }: { initial: FeatureSettingsData | null }) {
               type="button"
               variant="outline"
               size="icon"
-              className="h-14 w-14 rounded-xl"
+              className="h-11 w-11 rounded-lg"
               aria-label={t("features.decreaseDistance")}
               onClick={() => update("distanceKm", Math.max(1, settings.distanceKm - 10))}
             >
-              <Minus className="h-6 w-6" />
+              <Minus className="h-5 w-5" />
             </Button>
 
-            <div className="flex min-w-[7rem] items-baseline justify-center gap-1.5 rounded-xl border border-border bg-secondary/40 px-4 py-3">
-              <span className="text-3xl font-bold tabular-nums text-foreground">{settings.distanceKm}</span>
-              <span className="text-base font-medium text-muted-foreground">km</span>
+            <div className="flex min-w-[6rem] items-baseline justify-center gap-1.5 rounded-lg border border-border bg-secondary/40 px-4 py-2">
+              <span className="text-2xl font-bold tabular-nums text-foreground">{settings.distanceKm}</span>
+              <span className="text-sm font-medium text-muted-foreground">km</span>
             </div>
 
             <Button
               type="button"
               variant="outline"
               size="icon"
-              className="h-14 w-14 rounded-xl"
+              className="h-11 w-11 rounded-lg"
               aria-label={t("features.increaseDistance")}
               onClick={() => update("distanceKm", Math.min(1000, settings.distanceKm + 10))}
             >
-              <Plus className="h-6 w-6" />
+              <Plus className="h-5 w-5" />
             </Button>
           </div>
 
@@ -355,25 +338,23 @@ function FeaturesPanel({ initial }: { initial: FeatureSettingsData | null }) {
       </FeatureCard>
     </div>
   )
-}
+})
 
-export function OptionalFeatures({
-  plan,
-  initialSettings,
-}: {
+export const OptionalFeatures = forwardRef<FeaturesPanelHandle, {
   plan: Plan
   initialSettings: FeatureSettingsData | null
-}) {
+  onDirtyChange?: (dirty: boolean) => void
+}>(function OptionalFeatures({ plan, initialSettings, onDirtyChange }, ref) {
   const { t } = useTranslation()
   const hasFeatures = plan === "Business"
 
   return (
     <div className="w-full">
       {hasFeatures ? (
-        <FeaturesPanel initial={initialSettings} />
+        <FeaturesPanel ref={ref} initial={initialSettings} onDirtyChange={onDirtyChange} />
       ) : (
         <UpgradeCard requiredPlan="Business" feature={t("features.featureName")} />
       )}
     </div>
   )
-}
+})

@@ -3,11 +3,15 @@
 import { useEffect, useRef, useState } from "react"
 import { PageHeader } from "@/components/dashboard/page-header"
 import { Button } from "@/components/ui/button"
+import { Slider } from "@/components/ui/slider"
 import { getAccount, getSettings, updateVoiceSettings, generateVoiceSample, getVoices, type AgentVoice } from "@/lib/api"
 import { useTranslation } from "@/contexts/language-context"
 import { useUnsavedChanges } from "@/contexts/unsaved-changes-context"
 import { cn } from "@/lib/utils"
-import { Loader2, CheckCircle2, Play, Pause } from "lucide-react"
+import { Loader2, CheckCircle2, Play, Pause, Minus, Plus } from "lucide-react"
+
+// The max-call-length slider runs 1..MAX minutes; one step past the top means "Unlimited" (no cap).
+const MAX_CALL_SLIDER_MAX = 60
 
 export default function VoiceAgentPage() {
   const { t } = useTranslation()
@@ -16,6 +20,8 @@ export default function VoiceAgentPage() {
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [greetingMessage, setGreetingMessage] = useState("")
+  // Per-call hard cap in minutes; null = Unlimited (no cap).
+  const [maxCallMinutes, setMaxCallMinutes] = useState<number | null>(null)
   const [voices, setVoices] = useState<AgentVoice[]>([])
   const [voice, setVoice] = useState<string | null>(null)
   // Snapshot of the last loaded/saved values; dirty = current differs from this.
@@ -41,6 +47,9 @@ export default function VoiceAgentPage() {
           greeting = greeting.replaceAll("[Name of business]", account.businessName)
         }
         setGreetingMessage(greeting)
+        // null = Unlimited (slider sits at the top).
+        const initialMax = account.maximumCallMinutes
+        setMaxCallMinutes(initialMax)
         // The API returns the list pre-ordered (Jennifer first); render in that order.
         setVoices(fetchedVoices)
         // Preselect the API-marked default voice (Jennifer) when the account hasn't chosen
@@ -55,7 +64,7 @@ export default function VoiceAgentPage() {
           null
         setVoice(initialVoice)
         // Capture the loaded values as the clean baseline.
-        baselineRef.current = JSON.stringify({ greetingMessage: greeting, voice: initialVoice })
+        baselineRef.current = JSON.stringify({ greetingMessage: greeting, maxCallMinutes: initialMax, voice: initialVoice })
       })
       .catch(() => {})
       .finally(() => setLoading(false))
@@ -63,8 +72,8 @@ export default function VoiceAgentPage() {
 
   // Report dirty state whenever the editable values diverge from the baseline.
   useEffect(() => {
-    setDirty(JSON.stringify({ greetingMessage, voice }) !== baselineRef.current)
-  }, [greetingMessage, voice, setDirty])
+    setDirty(JSON.stringify({ greetingMessage, maxCallMinutes, voice }) !== baselineRef.current)
+  }, [greetingMessage, maxCallMinutes, voice, setDirty])
 
   // Clear the guard when leaving the page.
   useEffect(() => () => setDirty(false), [setDirty])
@@ -119,12 +128,15 @@ export default function VoiceAgentPage() {
   async function save() {
     setSaving(true)
     try {
+      // null = Unlimited; otherwise clamp to the 1–120 min the API accepts.
+      const maximumCallMinutes = maxCallMinutes == null ? null : Math.min(Math.max(maxCallMinutes, 1), 120)
       await updateVoiceSettings({
         greetingMessage: greetingMessage.trim() ? greetingMessage.trim() : null,
         agentVoice: voice,
+        maximumCallMinutes,
       })
       // The saved values are now the clean baseline → clears the dirty guard.
-      baselineRef.current = JSON.stringify({ greetingMessage, voice })
+      baselineRef.current = JSON.stringify({ greetingMessage, maxCallMinutes, voice })
       setDirty(false)
       setSaved(true)
       setTimeout(() => setSaved(false), 2000)
@@ -148,7 +160,23 @@ export default function VoiceAgentPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <PageHeader title={t("dashboard.voiceAgentTitle")} description={t("dashboard.voiceAgentDescription")} />
+      {/* Header + Save. The Save button lives at the top so it stays reachable without
+          scrolling past the long agent-voice list below. */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <PageHeader title={t("dashboard.voiceAgentTitle")} description={t("dashboard.voiceAgentDescription")} />
+        <div className="flex shrink-0 items-center gap-3 sm:pt-1">
+          {saved && (
+            <span className="flex items-center gap-1.5 text-sm text-emerald-600">
+              <CheckCircle2 className="h-4 w-4" />
+              {t("dashboard.voiceSaved")}
+            </span>
+          )}
+          <Button type="button" onClick={save} disabled={saving}>
+            {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {t("settings.saveChanges")}
+          </Button>
+        </div>
+      </div>
 
       {/* Greeting */}
       <div className="relative rounded-2xl border border-border bg-card p-6 shadow-sm">
@@ -163,6 +191,72 @@ export default function VoiceAgentPage() {
           rows={3}
           className="w-full resize-y rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground shadow-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
+      </div>
+
+      {/* Maximum call length — per-call hard cap (kill switch). Slider runs 1 min → Unlimited. */}
+      <div className="relative rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="mb-4">
+          <p className="text-sm font-medium text-foreground">{t("dashboard.maxCallLabel")}</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">{t("dashboard.maxCallHint")}</p>
+        </div>
+        <div className="flex flex-col gap-6">
+          <div className="flex items-center justify-center gap-4">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              className="h-11 w-11 rounded-xl"
+              aria-label={t("dashboard.maxCallDecrease")}
+              onClick={() =>
+                setMaxCallMinutes(maxCallMinutes == null ? MAX_CALL_SLIDER_MAX : Math.max(1, maxCallMinutes - 1))
+              }
+            >
+              <Minus className="h-5 w-5" />
+            </Button>
+
+            <div className="flex min-w-[7rem] items-baseline justify-center gap-1.5 rounded-xl border border-border bg-secondary/40 px-4 py-2.5">
+              {maxCallMinutes == null ? (
+                <span className="text-2xl font-bold text-foreground">{t("dashboard.maxCallUnlimited")}</span>
+              ) : (
+                <>
+                  <span className="text-2xl font-bold tabular-nums text-foreground">{maxCallMinutes}</span>
+                  <span className="text-sm font-medium text-muted-foreground">{t("dashboard.maxCallUnit")}</span>
+                </>
+              )}
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              className="h-11 w-11 rounded-xl"
+              aria-label={t("dashboard.maxCallIncrease")}
+              onClick={() =>
+                setMaxCallMinutes(
+                  maxCallMinutes == null || maxCallMinutes >= MAX_CALL_SLIDER_MAX ? null : maxCallMinutes + 1,
+                )
+              }
+            >
+              <Plus className="h-5 w-5" />
+            </Button>
+          </div>
+
+          <Slider
+            min={1}
+            max={MAX_CALL_SLIDER_MAX + 1}
+            value={[maxCallMinutes == null ? MAX_CALL_SLIDER_MAX + 1 : Math.min(maxCallMinutes, MAX_CALL_SLIDER_MAX)]}
+            onValueChange={(value) => {
+              const n = Array.isArray(value) ? value[0] : value
+              setMaxCallMinutes(n > MAX_CALL_SLIDER_MAX ? null : n)
+            }}
+            aria-label={t("dashboard.maxCallLabel")}
+            className="py-2"
+          />
+          <div className="flex justify-between text-sm text-muted-foreground">
+            <span>1 {t("dashboard.maxCallUnit")}</span>
+            <span>{t("dashboard.maxCallUnlimited")}</span>
+          </div>
+        </div>
       </div>
 
       {/* Agent voice */}
@@ -226,20 +320,6 @@ export default function VoiceAgentPage() {
             )
           })}
         </div>
-      </div>
-
-      {/* Save */}
-      <div className="flex items-center justify-end gap-3">
-        {saved && (
-          <span className="flex items-center gap-1.5 text-sm text-emerald-600">
-            <CheckCircle2 className="h-4 w-4" />
-            {t("dashboard.voiceSaved")}
-          </span>
-        )}
-        <Button type="button" onClick={save} disabled={saving}>
-          {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {t("settings.saveChanges")}
-        </Button>
       </div>
     </div>
   )
