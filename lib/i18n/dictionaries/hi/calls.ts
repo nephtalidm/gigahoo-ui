@@ -11,6 +11,7 @@ const calls = {
   duration: "अवधि",
   language: "भाषा",
   summary: "सारांश",
+  copy: "कॉपी करें",
   status: "स्थिति",
   isEmergency: "क्या आपातकाल?",
   emergency: "आपातकाल",

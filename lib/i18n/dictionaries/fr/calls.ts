@@ -11,6 +11,7 @@ const calls = {
   duration: "Durée",
   language: "Langue",
   summary: "Résumé",
+  copy: "Copier",
   status: "Statut",
   isEmergency: "Urgence ?",
   emergency: "Urgence",

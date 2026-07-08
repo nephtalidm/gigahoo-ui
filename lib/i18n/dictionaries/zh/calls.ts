@@ -11,6 +11,7 @@ const calls = {
   duration: "时长",
   language: "语言",
   summary: "摘要",
+  copy: "复制",
   status: "状态",
   isEmergency: "是否紧急？",
   emergency: "紧急",

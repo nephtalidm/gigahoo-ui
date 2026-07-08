@@ -11,6 +11,7 @@ const calls = {
   duration: "Tagal",
   language: "Wika",
   summary: "Buod",
+  copy: "Kopyahin",
   status: "Status",
   isEmergency: "Emergency ba?",
   emergency: "Emergency",

@@ -11,6 +11,7 @@ const calls = {
   duration: "통화 시간",
   language: "언어",
   summary: "요약",
+  copy: "복사",
   status: "상태",
   isEmergency: "긴급 여부",
   emergency: "긴급",

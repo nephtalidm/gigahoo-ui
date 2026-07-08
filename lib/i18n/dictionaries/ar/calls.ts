@@ -11,6 +11,7 @@ const calls = {
   duration: "المدة",
   language: "اللغة",
   summary: "الملخّص",
+  copy: "نسخ",
   status: "الحالة",
   isEmergency: "هل هي حالة طارئة؟",
   emergency: "طارئ",

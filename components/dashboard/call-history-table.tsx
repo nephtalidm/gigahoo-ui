@@ -19,6 +19,7 @@ import { StatusBadge } from "@/components/dashboard/status-badge"
 import { EmergencyBadge } from "@/components/dashboard/emergency-badge"
 import { useTranslation } from "@/contexts/language-context"
 import { type Conversation, formatDateTime, formatDuration, formatPhone } from "@/lib/data"
+import { Copy, Check } from "lucide-react"
 
 export function ConversationHistoryTable({ conversations, timeZone }: { conversations: Conversation[]; timeZone?: string }) {
   const [selected, setSelected] = useState<Conversation | null>(null)
@@ -158,7 +159,10 @@ export function ConversationHistoryTable({ conversations, timeZone }: { conversa
                 {/* Info sections — phone · address (Maps link) · summary */}
                 <DetailSection label={t("calls.phone")} value={formatPhone(selected.callerPhoneNumber)} />
                 <div>
-                  <p className="text-sm font-medium text-foreground">{t("calls.address")}</p>
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-sm font-medium text-foreground">{t("calls.address")}</p>
+                    {selected.address && <CopyButton value={selected.address} />}
+                  </div>
                   {selected.address ? (
                     <a
                       href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selected.address)}`}
@@ -194,10 +198,40 @@ function DetailItem({ label, value }: { label: string; value: string }) {
 }
 
 function DetailSection({ label, value }: { label: string; value: string }) {
+  const showCopy = value != null && value !== "" && value !== "—"
   return (
     <div>
-      <p className="text-sm font-medium text-foreground">{label}</p>
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-sm font-medium text-foreground">{label}</p>
+        {showCopy && <CopyButton value={value} />}
+      </div>
       <p className="mt-1 whitespace-pre-line text-sm text-muted-foreground">{value}</p>
     </div>
+  )
+}
+
+// Small icon button that copies its value to the clipboard, flashing a check on success.
+function CopyButton({ value }: { value: string }) {
+  const { t } = useTranslation()
+  const [copied, setCopied] = useState(false)
+  const onCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(value)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1500)
+    } catch {
+      // Clipboard unavailable (e.g. insecure context) — silently ignore.
+    }
+  }
+  return (
+    <button
+      type="button"
+      onClick={onCopy}
+      aria-label={t("calls.copy")}
+      title={t("calls.copy")}
+      className="shrink-0 rounded-md p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+    >
+      {copied ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5" />}
+    </button>
   )
 }

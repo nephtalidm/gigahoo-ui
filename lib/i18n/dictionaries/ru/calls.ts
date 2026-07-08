@@ -11,6 +11,7 @@ const calls = {
   duration: "Длительность",
   language: "Язык",
   summary: "Сводка",
+  copy: "Копировать",
   status: "Статус",
   isEmergency: "Экстренно?",
   emergency: "Экстренно",

@@ -11,6 +11,7 @@ const calls = {
   duration: "通話時長",
   language: "語言",
   summary: "摘要",
+  copy: "複製",
   status: "狀態",
   isEmergency: "係咪緊急？",
   emergency: "緊急",

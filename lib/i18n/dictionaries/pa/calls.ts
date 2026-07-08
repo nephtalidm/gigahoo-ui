@@ -11,6 +11,7 @@ const calls = {
   duration: "ਅਵਧੀ",
   language: "ਭਾਸ਼ਾ",
   summary: "ਸਾਰ",
+  copy: "ਕਾਪੀ ਕਰੋ",
   status: "ਸਥਿਤੀ",
   isEmergency: "ਕੀ ਐਮਰਜੈਂਸੀ?",
   emergency: "ਐਮਰਜੈਂਸੀ",

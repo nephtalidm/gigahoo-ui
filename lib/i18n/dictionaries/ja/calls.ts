@@ -11,6 +11,7 @@ const calls = {
   duration: "通話時間",
   language: "言語",
   summary: "要約",
+  copy: "コピー",
   status: "ステータス",
   isEmergency: "緊急ですか？",
   emergency: "緊急",

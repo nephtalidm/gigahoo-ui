@@ -11,6 +11,7 @@ const calls = {
   duration: "Тривалість",
   language: "Мова",
   summary: "Підсумок",
+  copy: "Копіювати",
   status: "Статус",
   isEmergency: "Терміново?",
   emergency: "Терміново",
