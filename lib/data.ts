@@ -56,7 +56,9 @@ export function mapApiConversation(c: ConversationData): Conversation {
     id: c.id,
     callerName: c.callerName ?? "Unknown Caller",
     callerPhoneNumber: c.callerPhoneNumber,
-    dateTime: c.dateTimeUtc,
+    // The API sends the UTC time without a "Z" (EF reads it as Unspecified kind); mark it UTC so
+    // `new Date()` parses it as UTC and timezone conversion actually happens.
+    dateTime: /(?:Z|[+-]\d{2}:\d{2})$/.test(c.dateTimeUtc) ? c.dateTimeUtc : c.dateTimeUtc + "Z",
     durationSeconds: c.durationSeconds,
     language: c.language,
     summary: c.summary ?? "",

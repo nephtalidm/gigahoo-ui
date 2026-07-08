@@ -7,7 +7,7 @@ import { MinuteUsageWidget } from "@/components/dashboard/minute-usage-widget"
 import { MetricsGrid } from "@/components/dashboard/metrics-grid"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { getDashboardOverview, type DashboardOverview } from "@/lib/api"
+import { getDashboardOverview, getAccount, type DashboardOverview } from "@/lib/api"
 import { mapApiConversation, formatDateTime, formatDuration } from "@/lib/data"
 import { useTranslation } from "@/contexts/language-context"
 import { ArrowRight, ArrowUpRight, Loader2 } from "lucide-react"
@@ -15,11 +15,17 @@ import { ArrowRight, ArrowUpRight, Loader2 } from "lucide-react"
 export default function OverviewPage() {
   const { t } = useTranslation()
   const [data, setData] = useState<DashboardOverview | null>(null)
+  const [timeZone, setTimeZone] = useState<string | undefined>(undefined)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    getDashboardOverview()
-      .then(setData)
+    // Also fetch the account so call times show in the account's region timezone (consistent with
+    // the summary email + the calls page), not the viewer's browser / the UTC server.
+    Promise.all([getDashboardOverview(), getAccount().catch(() => null)])
+      .then(([overview, account]) => {
+        setData(overview)
+        if (account?.timeZone) setTimeZone(account.timeZone)
+      })
       .catch(() => {})
       .finally(() => setLoading(false))
   }, [])
@@ -122,7 +128,7 @@ export default function OverviewPage() {
                   </div>
                   <p className="mt-0.5 truncate text-xs text-muted-foreground">{call.summary}</p>
                 </div>
-                <p className="shrink-0 text-xs text-muted-foreground">{formatDateTime(call.dateTime)}</p>
+                <p className="shrink-0 text-xs text-muted-foreground">{formatDateTime(call.dateTime, timeZone)}</p>
               </li>
             ))}
             {recentCalls.length === 0 && (

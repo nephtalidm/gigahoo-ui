@@ -140,9 +140,23 @@ export function ConversationHistoryTable({ conversations, timeZone }: { conversa
                   <DetailItem label={t("calls.language")} value={selected.language} />
                 </div>
 
-                {/* Info sections — phone · address · summary */}
+                {/* Info sections — phone · address (Maps link) · summary */}
                 <DetailSection label={t("calls.phone")} value={formatPhone(selected.callerPhoneNumber)} />
-                <DetailSection label={t("calls.address")} value={selected.address || "—"} />
+                <div>
+                  <p className="text-sm font-medium text-foreground">{t("calls.address")}</p>
+                  {selected.address ? (
+                    <a
+                      href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(selected.address)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-1 inline-block text-sm text-primary underline underline-offset-2 hover:opacity-80"
+                    >
+                      {selected.address}
+                    </a>
+                  ) : (
+                    <p className="mt-1 text-sm text-muted-foreground">—</p>
+                  )}
+                </div>
                 <DetailSection label={t("calls.summary")} value={selected.summary || "—"} />
               </div>
             </>
