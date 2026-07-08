@@ -12,6 +12,8 @@ const calls = {
   language: "Мова",
   summary: "Підсумок",
   status: "Статус",
+  isEmergency: "Терміново?",
+  emergency: "Терміново",
 
   // Detail dialog
   detailsTitle: "Деталі розмови",

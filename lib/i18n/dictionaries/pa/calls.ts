@@ -12,6 +12,8 @@ const calls = {
   language: "ਭਾਸ਼ਾ",
   summary: "ਸਾਰ",
   status: "ਸਥਿਤੀ",
+  isEmergency: "ਕੀ ਐਮਰਜੈਂਸੀ?",
+  emergency: "ਐਮਰਜੈਂਸੀ",
 
   // Detail dialog
   detailsTitle: "ਗੱਲਬਾਤ ਦੇ ਵੇਰਵੇ",

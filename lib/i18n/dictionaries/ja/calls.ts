@@ -12,6 +12,8 @@ const calls = {
   language: "言語",
   summary: "要約",
   status: "ステータス",
+  isEmergency: "緊急ですか？",
+  emergency: "緊急",
 
   // Detail dialog
   detailsTitle: "会話の詳細",

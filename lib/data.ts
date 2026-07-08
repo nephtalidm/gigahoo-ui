@@ -15,6 +15,7 @@ export type Conversation = {
   language: string
   summary: string
   address: string
+  isEmergency: boolean
   status: CallStatus
 }
 
@@ -63,6 +64,7 @@ export function mapApiConversation(c: ConversationData): Conversation {
     language: c.language,
     summary: c.summary ?? "",
     address: c.address ?? "",
+    isEmergency: c.isEmergency ?? false,
     status: c.status as CallStatus,
   };
 }

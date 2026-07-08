@@ -12,6 +12,8 @@ const calls = {
   language: "Langue",
   summary: "Résumé",
   status: "Statut",
+  isEmergency: "Urgence ?",
+  emergency: "Urgence",
 
   // Detail dialog
   detailsTitle: "Détails de la conversation",

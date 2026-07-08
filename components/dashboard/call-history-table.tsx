@@ -16,6 +16,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { StatusBadge } from "@/components/dashboard/status-badge"
+import { EmergencyBadge } from "@/components/dashboard/emergency-badge"
 import { useTranslation } from "@/contexts/language-context"
 import { type Conversation, formatDateTime, formatDuration, formatPhone } from "@/lib/data"
 
@@ -47,6 +48,7 @@ export function ConversationHistoryTable({ conversations, timeZone }: { conversa
                   <TableHead className="text-center">{t("calls.language")}</TableHead>
                   <TableHead className="max-w-xs text-center">{t("calls.summary")}</TableHead>
                   <TableHead className="text-center">{t("calls.status")}</TableHead>
+                  <TableHead className="text-center">{t("calls.isEmergency")}</TableHead>
                 </TableRow>
               </TableHeader>
             </Table>
@@ -67,6 +69,7 @@ export function ConversationHistoryTable({ conversations, timeZone }: { conversa
                   <TableHead className="text-center">{t("calls.language")}</TableHead>
                   <TableHead className="max-w-xs text-center">{t("calls.summary")}</TableHead>
                   <TableHead className="text-center">{t("calls.status")}</TableHead>
+                  <TableHead className="text-center">{t("calls.isEmergency")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -84,6 +87,9 @@ export function ConversationHistoryTable({ conversations, timeZone }: { conversa
                     <TableCell className="max-w-xs truncate text-muted-foreground">{conv.summary}</TableCell>
                     <TableCell>
                       <StatusBadge status={conv.status} />
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {conv.isEmergency ? <EmergencyBadge /> : <span className="text-muted-foreground">—</span>}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -104,7 +110,10 @@ export function ConversationHistoryTable({ conversations, timeZone }: { conversa
                     <p className="font-medium text-foreground">{conv.callerName}</p>
                     <p className="text-xs text-muted-foreground">{formatPhone(conv.callerPhoneNumber)}</p>
                   </div>
-                  <StatusBadge status={conv.status} />
+                  <div className="flex shrink-0 flex-col items-end gap-1">
+                    <StatusBadge status={conv.status} />
+                    {conv.isEmergency && <EmergencyBadge />}
+                  </div>
                 </div>
                 <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{conv.summary}</p>
                 <div className="mt-2 flex items-center gap-3 text-xs text-muted-foreground">
@@ -130,7 +139,10 @@ export function ConversationHistoryTable({ conversations, timeZone }: { conversa
               <div className="flex flex-col gap-4">
                 <div className="flex items-center justify-between">
                   <p className="text-lg font-semibold text-foreground">{selected.callerName}</p>
-                  <StatusBadge status={selected.status} />
+                  <div className="flex items-center gap-2">
+                    <StatusBadge status={selected.status} />
+                    {selected.isEmergency && <EmergencyBadge />}
+                  </div>
                 </div>
 
                 {/* Metadata — date/time · duration · language, all in one row */}

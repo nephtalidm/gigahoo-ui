@@ -12,6 +12,8 @@ const calls = {
   language: "Wika",
   summary: "Buod",
   status: "Status",
+  isEmergency: "Emergency ba?",
+  emergency: "Emergency",
 
   // Detail dialog
   detailsTitle: "Mga Detalye ng Pag-uusap",

@@ -285,6 +285,7 @@ export interface ConversationData {
   language: string;
   summary: string | null;
   address?: string | null;
+  isEmergency?: boolean;
   status: string;
 }
 

@@ -12,6 +12,8 @@ const calls = {
   language: "اللغة",
   summary: "الملخّص",
   status: "الحالة",
+  isEmergency: "هل هي حالة طارئة؟",
+  emergency: "طارئ",
 
   // Detail dialog
   detailsTitle: "تفاصيل المحادثة",

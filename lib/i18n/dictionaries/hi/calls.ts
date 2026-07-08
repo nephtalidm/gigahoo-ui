@@ -12,6 +12,8 @@ const calls = {
   language: "भाषा",
   summary: "सारांश",
   status: "स्थिति",
+  isEmergency: "क्या आपातकाल?",
+  emergency: "आपातकाल",
 
   // Detail dialog
   detailsTitle: "वार्तालाप विवरण",

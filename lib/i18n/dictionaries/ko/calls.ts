@@ -12,6 +12,8 @@ const calls = {
   language: "언어",
   summary: "요약",
   status: "상태",
+  isEmergency: "긴급 여부",
+  emergency: "긴급",
 
   // Detail dialog
   detailsTitle: "대화 세부 정보",

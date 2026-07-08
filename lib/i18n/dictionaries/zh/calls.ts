@@ -12,6 +12,8 @@ const calls = {
   language: "语言",
   summary: "摘要",
   status: "状态",
+  isEmergency: "是否紧急？",
+  emergency: "紧急",
 
   // Detail dialog
   detailsTitle: "对话详情",
