@@ -12,7 +12,6 @@ export default function CallHistoryPage() {
   const { t } = useTranslation()
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [timeZone, setTimeZone] = useState<string | undefined>(undefined)
-  const [questions, setQuestions] = useState<{ collectName: boolean; collectPhone: boolean; collectAddress: boolean; collectEmergency: boolean } | undefined>(undefined)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -22,12 +21,6 @@ export default function CallHistoryPage() {
       .then(([page, account]) => {
         setConversations(page.items.map(mapApiConversation))
         if (account?.timeZone) setTimeZone(account.timeZone)
-        if (account) setQuestions({
-          collectName: account.collectName ?? true,
-          collectPhone: account.collectPhone ?? true,
-          collectAddress: account.collectAddress ?? true,
-          collectEmergency: account.collectEmergency ?? true,
-        })
       })
       .catch(() => {})
       .finally(() => setLoading(false))
@@ -44,7 +37,7 @@ export default function CallHistoryPage() {
           <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         </div>
       ) : (
-        <ConversationHistoryTable conversations={conversations} timeZone={timeZone} questions={questions} />
+        <ConversationHistoryTable conversations={conversations} timeZone={timeZone} />
       )}
     </div>
   )

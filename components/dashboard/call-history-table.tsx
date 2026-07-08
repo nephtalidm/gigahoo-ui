@@ -20,10 +20,7 @@ import { EmergencyBadge } from "@/components/dashboard/emergency-badge"
 import { useTranslation } from "@/contexts/language-context"
 import { type Conversation, formatDateTime, formatDuration, formatPhone } from "@/lib/data"
 
-type Questions = { collectName: boolean; collectPhone: boolean; collectAddress: boolean; collectEmergency: boolean }
-
-export function ConversationHistoryTable({ conversations, timeZone, questions }: { conversations: Conversation[]; timeZone?: string; questions?: Questions }) {
-  const q = questions ?? { collectName: true, collectPhone: true, collectAddress: true, collectEmergency: true }
+export function ConversationHistoryTable({ conversations, timeZone }: { conversations: Conversation[]; timeZone?: string }) {
   const [selected, setSelected] = useState<Conversation | null>(null)
   const { t } = useTranslation()
   // Render dates client-side so they show in the VIEWER's local timezone (the server renders in its
@@ -44,14 +41,14 @@ export function ConversationHistoryTable({ conversations, timeZone, questions }:
             <Table>
               <TableHeader>
                 <TableRow className="hover:bg-transparent">
-                  {q.collectName && <TableHead className="text-center">{t("calls.caller")}</TableHead>}
-                  {q.collectPhone && <TableHead className="text-center">{t("calls.phone")}</TableHead>}
+                  <TableHead className="text-center">{t("calls.caller")}</TableHead>
+                  <TableHead className="text-center">{t("calls.phone")}</TableHead>
                   <TableHead className="text-center">{t("calls.dateTime")}</TableHead>
                   <TableHead className="text-center">{t("calls.duration")}</TableHead>
                   <TableHead className="text-center">{t("calls.language")}</TableHead>
                   <TableHead className="max-w-xs text-center">{t("calls.summary")}</TableHead>
                   <TableHead className="text-center">{t("calls.status")}</TableHead>
-                  {q.collectEmergency && <TableHead className="text-center">{t("calls.isEmergency")}</TableHead>}
+                  <TableHead className="text-center">{t("calls.isEmergency")}</TableHead>
                 </TableRow>
               </TableHeader>
             </Table>
@@ -65,14 +62,14 @@ export function ConversationHistoryTable({ conversations, timeZone, questions }:
             <Table>
               <TableHeader>
                 <TableRow className="hover:bg-transparent">
-                  {q.collectName && <TableHead className="text-center">{t("calls.caller")}</TableHead>}
-                  {q.collectPhone && <TableHead className="text-center">{t("calls.phone")}</TableHead>}
+                  <TableHead className="text-center">{t("calls.caller")}</TableHead>
+                  <TableHead className="text-center">{t("calls.phone")}</TableHead>
                   <TableHead className="text-center">{t("calls.dateTime")}</TableHead>
                   <TableHead className="text-center">{t("calls.duration")}</TableHead>
                   <TableHead className="text-center">{t("calls.language")}</TableHead>
                   <TableHead className="max-w-xs text-center">{t("calls.summary")}</TableHead>
                   <TableHead className="text-center">{t("calls.status")}</TableHead>
-                  {q.collectEmergency && <TableHead className="text-center">{t("calls.isEmergency")}</TableHead>}
+                  <TableHead className="text-center">{t("calls.isEmergency")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -82,8 +79,8 @@ export function ConversationHistoryTable({ conversations, timeZone, questions }:
                     onClick={() => setSelected(conv)}
                     className="cursor-pointer"
                   >
-                    {q.collectName && <TableCell className="font-medium text-foreground">{conv.callerName}</TableCell>}
-                    {q.collectPhone && <TableCell className="text-muted-foreground">{formatPhone(conv.callerPhoneNumber)}</TableCell>}
+                    <TableCell className="font-medium text-foreground">{conv.callerName}</TableCell>
+                    <TableCell className="text-muted-foreground">{formatPhone(conv.callerPhoneNumber)}</TableCell>
                     <TableCell className="text-muted-foreground">{fmtDate(conv.dateTime)}</TableCell>
                     <TableCell className="text-muted-foreground">{formatDuration(conv.durationSeconds)}</TableCell>
                     <TableCell className="text-muted-foreground">{conv.language}</TableCell>
@@ -91,11 +88,9 @@ export function ConversationHistoryTable({ conversations, timeZone, questions }:
                     <TableCell>
                       <StatusBadge status={conv.status} />
                     </TableCell>
-                    {q.collectEmergency && (
-                      <TableCell className="text-center">
-                        {conv.isEmergency ? <EmergencyBadge /> : <span className="text-muted-foreground">—</span>}
-                      </TableCell>
-                    )}
+                    <TableCell className="text-center">
+                      {conv.isEmergency ? <EmergencyBadge /> : <span className="text-muted-foreground">—</span>}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -113,11 +108,11 @@ export function ConversationHistoryTable({ conversations, timeZone, questions }:
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <p className="font-medium text-foreground">{conv.callerName}</p>
-                    {q.collectPhone && <p className="text-xs text-muted-foreground">{formatPhone(conv.callerPhoneNumber)}</p>}
+                    <p className="text-xs text-muted-foreground">{formatPhone(conv.callerPhoneNumber)}</p>
                   </div>
                   <div className="flex shrink-0 flex-col items-end gap-1">
                     <StatusBadge status={conv.status} />
-                    {q.collectEmergency && conv.isEmergency && <EmergencyBadge />}
+                    {conv.isEmergency && <EmergencyBadge />}
                   </div>
                 </div>
                 <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{conv.summary}</p>
@@ -146,36 +141,34 @@ export function ConversationHistoryTable({ conversations, timeZone, questions }:
                   <p className="text-lg font-semibold text-foreground">{selected.callerName}</p>
                   <div className="flex items-center gap-2">
                     <StatusBadge status={selected.status} />
-                    {q.collectEmergency && selected.isEmergency && <EmergencyBadge />}
+                    {selected.isEmergency && <EmergencyBadge />}
                   </div>
                 </div>
 
-                {/* Metadata — date/time · duration · language, all in one row */}
-                <div className="grid grid-cols-3 gap-3 rounded-xl border border-border bg-secondary/40 p-4 text-sm">
+                {/* Metadata — date/time · duration · language, evenly divided across the row + centered */}
+                <div className="flex items-start gap-2 rounded-xl border border-border bg-secondary/40 p-4 text-sm">
                   <DetailItem label={t("calls.dateTime")} value={fmtDate(selected.dateTime)} />
                   <DetailItem label={t("calls.duration")} value={formatDuration(selected.durationSeconds)} />
                   <DetailItem label={t("calls.language")} value={selected.language} />
                 </div>
 
-                {/* Info sections — phone · address (Maps link) · summary; each gated by the Questions toggles */}
-                {q.collectPhone && <DetailSection label={t("calls.phone")} value={formatPhone(selected.callerPhoneNumber)} />}
-                {q.collectAddress && (
-                  <div>
-                    <p className="text-sm font-medium text-foreground">{t("calls.address")}</p>
-                    {selected.address ? (
-                      <a
-                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selected.address)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-1 inline-block text-sm text-primary underline underline-offset-2 hover:opacity-80"
-                      >
-                        {selected.address}
-                      </a>
-                    ) : (
-                      <p className="mt-1 text-sm text-muted-foreground">—</p>
-                    )}
-                  </div>
-                )}
+                {/* Info sections — phone · address (Maps link) · summary */}
+                <DetailSection label={t("calls.phone")} value={formatPhone(selected.callerPhoneNumber)} />
+                <div>
+                  <p className="text-sm font-medium text-foreground">{t("calls.address")}</p>
+                  {selected.address ? (
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selected.address)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-1 inline-block text-sm text-primary underline underline-offset-2 hover:opacity-80"
+                    >
+                      {selected.address}
+                    </a>
+                  ) : (
+                    <p className="mt-1 text-sm text-muted-foreground">—</p>
+                  )}
+                </div>
                 <DetailSection label={t("calls.summary")} value={selected.summary || "—"} />
               </div>
             </>
@@ -188,7 +181,7 @@ export function ConversationHistoryTable({ conversations, timeZone, questions }:
 
 function DetailItem({ label, value }: { label: string; value: string }) {
   return (
-    <div>
+    <div className="flex-1 text-center">
       <p className="text-xs text-muted-foreground">{label}</p>
       <p className="mt-0.5 font-medium text-foreground">{value}</p>
     </div>
