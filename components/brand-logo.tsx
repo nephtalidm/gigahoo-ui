@@ -1,9 +1,28 @@
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 
-export function BrandLogo({ className }: { className?: string }) {
+export function BrandLogo({
+  className,
+  href = "/",
+  onNavigate,
+}: {
+  className?: string
+  href?: string
+  // When provided, the click is intercepted and this runs instead of navigating
+  // directly — used inside the dashboard to route through the unsaved-changes guard.
+  onNavigate?: (href: string) => void
+}) {
   return (
-    <Link href="/" className={cn("inline-flex items-center", className)}>
+    <Link
+      href={href}
+      onClick={(e) => {
+        if (onNavigate) {
+          e.preventDefault()
+          onNavigate(href)
+        }
+      }}
+      className={cn("inline-flex items-center", className)}
+    >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/gigahoo-logo.png" alt="Gigahoo" className="h-[2.4rem] w-auto" />
     </Link>

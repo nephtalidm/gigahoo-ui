@@ -154,7 +154,7 @@ export function DashboardSidebar() {
       {/* Desktop sidebar */}
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-border bg-card lg:flex">
         <div className="flex h-16 items-center border-b border-border px-6">
-          <BrandLogo />
+          <BrandLogo onNavigate={guardedNavigate} />
         </div>
         <div className="flex-1 overflow-y-auto p-4">
           <NavLinks onGuardedNavigate={guardedNavigate} />
@@ -166,7 +166,7 @@ export function DashboardSidebar() {
 
       {/* Mobile top bar */}
       <div className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-border bg-background/90 px-4 backdrop-blur-md lg:hidden">
-        <BrandLogo />
+        <BrandLogo onNavigate={guardedNavigate} />
         <div className="flex items-center gap-2">
           <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger
@@ -179,7 +179,7 @@ export function DashboardSidebar() {
           <SheetContent side="right" className="w-72 gap-0 p-0">
             <SheetTitle className="sr-only">{t("dashboard.navigation")}</SheetTitle>
             <div className="flex h-16 items-center px-4">
-              <BrandLogo />
+              <BrandLogo onNavigate={(href) => { setOpen(false); guardedNavigate(href) }} />
             </div>
             <div className="border-t border-border px-4 py-4">
               <NavLinks onNavigate={() => setOpen(false)} onGuardedNavigate={guardedNavigate} />

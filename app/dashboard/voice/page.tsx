@@ -228,7 +228,7 @@ export default function VoiceAgentPage() {
                 aria-label={t(`dashboard.${labelKey}`)}
                 onClick={() => setQuestions((q) => ({ ...q, [key]: !q[key] }))}
                 className={cn(
-                  "relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors",
+                  "relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors",
                   questions[key] ? "bg-primary" : "bg-input",
                 )}
               >
