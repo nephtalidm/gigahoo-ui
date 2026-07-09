@@ -27,7 +27,7 @@ export default function VoiceAgentPage() {
   // "Questions" — which details the agent collects (all default on).
   const [questions, setQuestions] = useState({ collectName: true, collectPhone: true, collectAddress: true, collectEmergency: true })
   // Voice style / personality baseline (maps to a tone directive + later the TTS instruct).
-  const [style, setStyle] = useState<string>("professional")
+  const [style, setStyle] = useState<string>("neutral")
   // Snapshot of the last loaded/saved values; dirty = current differs from this.
   const baselineRef = useRef<string>("")
   const [playingId, setPlayingId] = useState<string | null>(null)
@@ -74,7 +74,8 @@ export default function VoiceAgentPage() {
           collectEmergency: account.collectEmergency ?? true,
         }
         setQuestions(initialQuestions)
-        const initialStyle = account.agentStyle ?? "professional"
+        const emotions = ["neutral", "happy", "sad", "angry", "fearful", "surprised", "disgusted"]
+        const initialStyle = emotions.includes(account.agentStyle ?? "") ? account.agentStyle! : "neutral"
         setStyle(initialStyle)
         // Capture the loaded values as the clean baseline.
         baselineRef.current = JSON.stringify({ greetingMessage: greeting, maxCallMinutes: initialMax, voice: initialVoice, questions: initialQuestions, style: initialStyle })
@@ -215,7 +216,7 @@ export default function VoiceAgentPage() {
           <p className="mt-0.5 text-sm text-muted-foreground">{t("dashboard.styleHint")}</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          {(["professional", "warm", "friendly", "energetic", "calm"] as const).map((s) => {
+          {(["neutral", "happy", "sad", "angry", "fearful", "surprised", "disgusted"] as const).map((s) => {
             const selected = style === s
             return (
               <button
@@ -229,7 +230,7 @@ export default function VoiceAgentPage() {
                     : "border-border text-foreground hover:bg-accent",
                 )}
               >
-                {t(`dashboard.style_${s}`)}
+                {t(`dashboard.emotion_${s}`)}
               </button>
             )
           })}
