@@ -120,7 +120,7 @@ export default function VoiceAgentPage() {
     const reqId = requestRef.current
     setLoadingId(id)
     try {
-      const blob = await generateVoiceSample(text, apiName)
+      const blob = await generateVoiceSample(text, apiName, style)
       // A newer Play click superseded this request — discard its audio so only
       // the most recently clicked voice ever plays.
       if (reqId !== requestRef.current) return
