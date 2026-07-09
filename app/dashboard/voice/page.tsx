@@ -26,6 +26,8 @@ export default function VoiceAgentPage() {
   const [voice, setVoice] = useState<string | null>(null)
   // "Questions" — which details the agent collects (all default on).
   const [questions, setQuestions] = useState({ collectName: true, collectPhone: true, collectAddress: true, collectEmergency: true })
+  // Voice style / personality baseline (maps to a tone directive + later the TTS instruct).
+  const [style, setStyle] = useState<string>("professional")
   // Snapshot of the last loaded/saved values; dirty = current differs from this.
   const baselineRef = useRef<string>("")
   const [playingId, setPlayingId] = useState<string | null>(null)
@@ -72,8 +74,10 @@ export default function VoiceAgentPage() {
           collectEmergency: account.collectEmergency ?? true,
         }
         setQuestions(initialQuestions)
+        const initialStyle = account.agentStyle ?? "professional"
+        setStyle(initialStyle)
         // Capture the loaded values as the clean baseline.
-        baselineRef.current = JSON.stringify({ greetingMessage: greeting, maxCallMinutes: initialMax, voice: initialVoice, questions: initialQuestions })
+        baselineRef.current = JSON.stringify({ greetingMessage: greeting, maxCallMinutes: initialMax, voice: initialVoice, questions: initialQuestions, style: initialStyle })
       })
       .catch(() => {})
       .finally(() => setLoading(false))
@@ -81,8 +85,8 @@ export default function VoiceAgentPage() {
 
   // Report dirty state whenever the editable values diverge from the baseline.
   useEffect(() => {
-    setDirty(JSON.stringify({ greetingMessage, maxCallMinutes, voice, questions }) !== baselineRef.current)
-  }, [greetingMessage, maxCallMinutes, voice, questions, setDirty])
+    setDirty(JSON.stringify({ greetingMessage, maxCallMinutes, voice, questions, style }) !== baselineRef.current)
+  }, [greetingMessage, maxCallMinutes, voice, questions, style, setDirty])
 
   // Clear the guard when leaving the page.
   useEffect(() => () => setDirty(false), [setDirty])
@@ -143,10 +147,11 @@ export default function VoiceAgentPage() {
         greetingMessage: greetingMessage.trim() ? greetingMessage.trim() : null,
         agentVoice: voice,
         maximumCallMinutes,
+        agentStyle: style,
       })
       await updateQuestions(questions)
       // The saved values are now the clean baseline → clears the dirty guard.
-      baselineRef.current = JSON.stringify({ greetingMessage, maxCallMinutes, voice, questions })
+      baselineRef.current = JSON.stringify({ greetingMessage, maxCallMinutes, voice, questions, style })
       setDirty(false)
       setSaved(true)
       setTimeout(() => setSaved(false), 2000)
@@ -201,6 +206,34 @@ export default function VoiceAgentPage() {
           rows={3}
           className="w-full resize-y rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground shadow-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
+      </div>
+
+      {/* Voice style / personality — a baseline tone for the agent's delivery */}
+      <div className="relative rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="mb-4">
+          <p className="text-base font-semibold text-foreground">{t("dashboard.styleLabel")}</p>
+          <p className="mt-0.5 text-sm text-muted-foreground">{t("dashboard.styleHint")}</p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {(["professional", "warm", "friendly", "energetic", "calm"] as const).map((s) => {
+            const selected = style === s
+            return (
+              <button
+                key={s}
+                type="button"
+                onClick={() => setStyle(s)}
+                className={cn(
+                  "cursor-pointer rounded-full border px-4 py-2 text-sm font-medium transition-colors",
+                  selected
+                    ? "border-primary bg-primary/10 text-primary"
+                    : "border-border text-foreground hover:bg-accent",
+                )}
+              >
+                {t(`dashboard.style_${s}`)}
+              </button>
+            )
+          })}
+        </div>
       </div>
 
       {/* Questions — which details the agent asks callers for */}
