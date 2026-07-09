@@ -278,6 +278,69 @@ export default function VoiceAgentPage() {
         </div>
       </div>
 
+      {/* Agent voice */}
+      <div className="relative rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="mb-3">
+          <p className="text-base font-semibold text-foreground">{t("dashboard.voiceLabel")}</p>
+          <p className="mt-0.5 text-sm text-muted-foreground">{t("dashboard.voiceHint")}</p>
+        </div>
+        <div className="flex flex-col gap-2">
+          {voices.map((v) => {
+            const selected = voice === v.apiName
+            return (
+              <div
+                key={v.apiName}
+                role="button"
+                tabIndex={0}
+                onClick={() => setVoice(v.apiName)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault()
+                    setVoice(v.apiName)
+                  }
+                }}
+                className={cn(
+                  "flex cursor-pointer items-center justify-between gap-4 rounded-lg border p-4 transition-colors",
+                  selected
+                    ? "border-primary bg-primary/5"
+                    : "border-border hover:bg-accent",
+                )}
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <span
+                    className={cn(
+                      "flex h-4 w-4 shrink-0 items-center justify-center rounded-full border",
+                      selected ? "border-primary" : "border-muted-foreground/40",
+                    )}
+                  >
+                    {selected && <span className="h-2 w-2 rounded-full bg-primary" />}
+                  </span>
+                  <span className="truncate text-sm font-medium text-foreground">{v.label}</span>
+                </div>
+                <button
+                  type="button"
+                  disabled={loadingId === v.apiName}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    playSample(v.apiName, v.apiName)
+                  }}
+                  className="flex shrink-0 cursor-pointer items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent disabled:opacity-60"
+                >
+                  {loadingId === v.apiName ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : playingId === v.apiName ? (
+                    <Pause className="h-3.5 w-3.5" />
+                  ) : (
+                    <Play className="h-3.5 w-3.5" />
+                  )}
+                  {playingId === v.apiName ? t("dashboard.pauseSample") : t("dashboard.playSample")}
+                </button>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
       {/* Maximum call length — per-call hard cap (kill switch). Slider runs 1 min → Unlimited. */}
       <div className="relative rounded-2xl border border-border bg-card p-6 shadow-sm">
         <div className="mb-4">
@@ -341,69 +404,6 @@ export default function VoiceAgentPage() {
             <span>1 {t("dashboard.maxCallUnit")}</span>
             <span>{t("dashboard.maxCallUnlimited")}</span>
           </div>
-        </div>
-      </div>
-
-      {/* Agent voice */}
-      <div className="relative rounded-2xl border border-border bg-card p-6 shadow-sm">
-        <div className="mb-3">
-          <p className="text-base font-semibold text-foreground">{t("dashboard.voiceLabel")}</p>
-          <p className="mt-0.5 text-sm text-muted-foreground">{t("dashboard.voiceHint")}</p>
-        </div>
-        <div className="flex flex-col gap-2">
-          {voices.map((v) => {
-            const selected = voice === v.apiName
-            return (
-              <div
-                key={v.apiName}
-                role="button"
-                tabIndex={0}
-                onClick={() => setVoice(v.apiName)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault()
-                    setVoice(v.apiName)
-                  }
-                }}
-                className={cn(
-                  "flex cursor-pointer items-center justify-between gap-4 rounded-lg border p-4 transition-colors",
-                  selected
-                    ? "border-primary bg-primary/5"
-                    : "border-border hover:bg-accent",
-                )}
-              >
-                <div className="flex items-center gap-3 min-w-0">
-                  <span
-                    className={cn(
-                      "flex h-4 w-4 shrink-0 items-center justify-center rounded-full border",
-                      selected ? "border-primary" : "border-muted-foreground/40",
-                    )}
-                  >
-                    {selected && <span className="h-2 w-2 rounded-full bg-primary" />}
-                  </span>
-                  <span className="truncate text-sm font-medium text-foreground">{v.label}</span>
-                </div>
-                <button
-                  type="button"
-                  disabled={loadingId === v.apiName}
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    playSample(v.apiName, v.apiName)
-                  }}
-                  className="flex shrink-0 cursor-pointer items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent disabled:opacity-60"
-                >
-                  {loadingId === v.apiName ? (
-                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                  ) : playingId === v.apiName ? (
-                    <Pause className="h-3.5 w-3.5" />
-                  ) : (
-                    <Play className="h-3.5 w-3.5" />
-                  )}
-                  {playingId === v.apiName ? t("dashboard.pauseSample") : t("dashboard.playSample")}
-                </button>
-              </div>
-            )
-          })}
         </div>
       </div>
     </div>
