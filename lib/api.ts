@@ -131,6 +131,7 @@ export interface AccountData {
   collectAddress?: boolean;
   collectEmergency?: boolean;
   agentStyle?: string | null;
+  agentInstruct?: string | null;
 }
 
 export function createAccount(data: {
@@ -199,6 +200,7 @@ export interface VoiceSettings {
   agentVoice: string | null;
   maximumCallMinutes: number | null;
   agentStyle: string | null;
+  agentInstruct: string | null;
 }
 
 export function updateVoiceSettings(s: {
@@ -206,6 +208,7 @@ export function updateVoiceSettings(s: {
   agentVoice: string | null;
   maximumCallMinutes: number | null;
   agentStyle: string | null;
+  agentInstruct: string | null;
 }) {
   return api.put<VoiceSettings>("/api/account/voice-settings", s);
 }
@@ -226,6 +229,8 @@ export interface AgentVoice {
   apiName: string;
   label: string;
   isDefault: boolean;
+  // Per-voice instruct "context" options (scenarios/roles/identities). Empty for non-instruct voices.
+  options: { key: string; label: string }[];
 }
 
 export function getVoices(): Promise<AgentVoice[]> {
@@ -235,7 +240,7 @@ export function getVoices(): Promise<AgentVoice[]> {
 // Synthesize a live voice sample of `text` spoken in `voice` and return the audio
 // as a Blob. Uses fetch directly (not the JSON `api` client) so we can request a
 // binary response, but reuses the same Bearer-token auth header.
-export async function generateVoiceSample(text: string, voice: string, style?: string): Promise<Blob> {
+export async function generateVoiceSample(text: string, voice: string, style?: string, instruct?: string): Promise<Blob> {
   const token = typeof window !== "undefined" ? localStorage.getItem("gigahoo_token") : null;
   const res = await fetch(`${API_BASE}/api/voice/sample`, {
     method: "POST",
@@ -243,7 +248,7 @@ export async function generateVoiceSample(text: string, voice: string, style?: s
       "Content-Type": "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
-    body: JSON.stringify({ text, voice, style }),
+    body: JSON.stringify({ text, voice, style, instruct }),
   });
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));

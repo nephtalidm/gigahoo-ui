@@ -16,6 +16,8 @@ const dashboard = {
   greetingHint: "Ang sinasabi ng AI kapag sumagot ito sa isang tawag. Iwanang blangko para gamitin ang default na pagbati.",
   maxCallLabel: "Pinakamahabang Tawag",
   styleLabel: "Istilo ng Boses",
+  contextLabel: "Konteksto ng pagsasalita",
+  contextNone: "Wala (emosyon lang)",
   emotion_neutral: "Neutral",
   emotion_happy: "Masaya",
   emotion_sad: "Malungkot",

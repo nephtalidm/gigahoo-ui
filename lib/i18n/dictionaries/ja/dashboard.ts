@@ -16,6 +16,8 @@ const dashboard = {
   greetingHint: "AIが電話に出たときに最初に話す内容です。空欄にするとデフォルトのあいさつが使われます。",
   maxCallLabel: "最大通話時間",
   styleLabel: "音声スタイル",
+  contextLabel: "話す文脈",
+  contextNone: "なし（感情のみ）",
   emotion_neutral: "ニュートラル",
   emotion_happy: "楽しい",
   emotion_sad: "悲しい",

@@ -16,6 +16,8 @@ const dashboard = {
   greetingHint: "What the AI says when it first answers a call. Leave blank to use the default greeting.",
   maxCallLabel: "Maximum Call Length",
   styleLabel: "Voice Style",
+  contextLabel: "Speaking context",
+  contextNone: "None (emotion only)",
   emotion_neutral: "Neutral",
   emotion_happy: "Happy",
   emotion_sad: "Sad",

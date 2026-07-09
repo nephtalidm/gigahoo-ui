@@ -16,6 +16,8 @@ const dashboard = {
   greetingHint: "ਕਾਲ ਦਾ ਜਵਾਬ ਦਿੰਦੇ ਸਮੇਂ AI ਸਭ ਤੋਂ ਪਹਿਲਾਂ ਕੀ ਕਹਿੰਦਾ ਹੈ। ਡਿਫੌਲਟ ਨਮਸਕਾਰ ਵਰਤਣ ਲਈ ਖਾਲੀ ਛੱਡੋ।",
   maxCallLabel: "ਵੱਧ ਤੋਂ ਵੱਧ ਕਾਲ ਮਿਆਦ",
   styleLabel: "ਆਵਾਜ਼ ਸ਼ੈਲੀ",
+  contextLabel: "ਬੋਲਣ ਦਾ ਪ੍ਰਸੰਗ",
+  contextNone: "ਕੋਈ ਨਹੀਂ (ਸਿਰਫ਼ ਭਾਵਨਾ)",
   emotion_neutral: "ਨਿਰਪੱਖ",
   emotion_happy: "ਖੁਸ਼",
   emotion_sad: "ਉਦਾਸ",

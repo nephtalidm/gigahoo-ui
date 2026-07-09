@@ -16,6 +16,8 @@ const dashboard = {
   greetingHint: "Ce que dit l'IA lorsqu'elle répond à un appel. Laissez vide pour utiliser le message par défaut.",
   maxCallLabel: "Durée maximale d'appel",
   styleLabel: "Style de voix",
+  contextLabel: "Contexte de parole",
+  contextNone: "Aucun (émotion seule)",
   emotion_neutral: "Neutre",
   emotion_happy: "Joyeux",
   emotion_sad: "Triste",

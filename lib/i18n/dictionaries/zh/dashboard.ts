@@ -16,6 +16,8 @@ const dashboard = {
   greetingHint: "AI 接听电话时最先说的话。留空则使用默认问候语。",
   maxCallLabel: "最长通话时长",
   styleLabel: "语音风格",
+  contextLabel: "说话场景",
+  contextNone: "无（仅情感）",
   emotion_neutral: "中性",
   emotion_happy: "开心",
   emotion_sad: "悲伤",

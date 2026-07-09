@@ -16,6 +16,8 @@ const dashboard = {
   greetingHint: "ما يقوله الذكاء الاصطناعي عند الرد على المكالمة. اتركه فارغًا لاستخدام التحية الافتراضية.",
   maxCallLabel: "الحد الأقصى لمدة المكالمة",
   styleLabel: "نمط الصوت",
+  contextLabel: "سياق الكلام",
+  contextNone: "بدون (المشاعر فقط)",
   emotion_neutral: "محايد",
   emotion_happy: "سعيد",
   emotion_sad: "حزين",

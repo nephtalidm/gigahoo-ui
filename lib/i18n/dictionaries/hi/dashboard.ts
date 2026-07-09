@@ -16,6 +16,8 @@ const dashboard = {
   greetingHint: "कॉल का जवाब देते समय AI सबसे पहले क्या कहता है। डिफ़ॉल्ट अभिवादन उपयोग करने के लिए खाली छोड़ें।",
   maxCallLabel: "अधिकतम कॉल अवधि",
   styleLabel: "आवाज़ शैली",
+  contextLabel: "बोलने का संदर्भ",
+  contextNone: "कोई नहीं (केवल भावना)",
   emotion_neutral: "तटस्थ",
   emotion_happy: "खुश",
   emotion_sad: "उदास",

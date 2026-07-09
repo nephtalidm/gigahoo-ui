@@ -16,6 +16,8 @@ const dashboard = {
   greetingHint: "Lo que dice la IA al contestar una llamada. Déjalo en blanco para usar el saludo predeterminado.",
   maxCallLabel: "Duración máxima de llamada",
   styleLabel: "Estilo de voz",
+  contextLabel: "Contexto de habla",
+  contextNone: "Ninguno (solo emoción)",
   emotion_neutral: "Neutral",
   emotion_happy: "Feliz",
   emotion_sad: "Triste",

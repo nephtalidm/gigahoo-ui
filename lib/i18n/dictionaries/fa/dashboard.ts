@@ -16,6 +16,8 @@ const dashboard = {
   greetingHint: "آنچه هوش مصنوعی هنگام پاسخ به تماس می‌گوید. برای استفاده از خوش‌آمدگویی پیش‌فرض، خالی بگذارید.",
   maxCallLabel: "حداکثر مدت تماس",
   styleLabel: "سبک صدا",
+  contextLabel: "زمینه گفتار",
+  contextNone: "هیچ (فقط احساس)",
   emotion_neutral: "خنثی",
   emotion_happy: "شاد",
   emotion_sad: "غمگین",

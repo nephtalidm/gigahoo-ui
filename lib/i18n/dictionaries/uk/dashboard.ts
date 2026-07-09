@@ -16,6 +16,8 @@ const dashboard = {
   greetingHint: "Що каже ШІ, відповідаючи на дзвінок. Залиште порожнім, щоб використовувати привітання за замовчуванням.",
   maxCallLabel: "Максимальна тривалість дзвінка",
   styleLabel: "Стиль голосу",
+  contextLabel: "Контекст мовлення",
+  contextNone: "Немає (лише емоція)",
   emotion_neutral: "Нейтральна",
   emotion_happy: "Радісна",
   emotion_sad: "Сумна",

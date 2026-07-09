@@ -16,6 +16,8 @@ const dashboard = {
   greetingHint: "Что говорит ИИ, отвечая на звонок. Оставьте пустым, чтобы использовать приветствие по умолчанию.",
   maxCallLabel: "Максимальная длительность звонка",
   styleLabel: "Стиль голоса",
+  contextLabel: "Контекст речи",
+  contextNone: "Нет (только эмоция)",
   emotion_neutral: "Нейтральная",
   emotion_happy: "Радостная",
   emotion_sad: "Грустная",

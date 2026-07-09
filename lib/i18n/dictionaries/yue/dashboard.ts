@@ -16,6 +16,8 @@ const dashboard = {
   greetingHint: "AI 接聽電話時最先講嘅嘢。留空就會用預設招呼語。",
   maxCallLabel: "最長通話時間",
   styleLabel: "語音風格",
+  contextLabel: "說話場景",
+  contextNone: "冇（淨係情感）",
   emotion_neutral: "中性",
   emotion_happy: "開心",
   emotion_sad: "傷心",

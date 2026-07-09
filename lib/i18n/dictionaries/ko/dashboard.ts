@@ -16,6 +16,8 @@ const dashboard = {
   greetingHint: "AI가 전화를 받을 때 처음 하는 말입니다. 비워 두면 기본 인사말이 사용됩니다.",
   maxCallLabel: "최대 통화 시간",
   styleLabel: "음성 스타일",
+  contextLabel: "말하기 맥락",
+  contextNone: "없음 (감정만)",
   emotion_neutral: "중립",
   emotion_happy: "행복",
   emotion_sad: "슬픔",
