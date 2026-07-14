@@ -402,6 +402,9 @@ export function Hero() {
                   <div className="mt-auto space-y-3">
                     {live.messages.filter((m) => m.text).map((m, i) => {
                       const isAgent = m.role === "agent"
+                      // "…" is the live placeholder for a caller turn being transcribed — render an
+                      // animated typing indicator (never wrong text) until the clean transcript fills it.
+                      const isPending = m.text === "…"
                       return (
                         <div
                           key={i}
@@ -411,7 +414,15 @@ export function Hero() {
                               : "ml-auto rounded-tr-sm bg-primary text-primary-foreground"
                           }`}
                         >
-                          {m.text}
+                          {isPending ? (
+                            <span className="flex items-center gap-1 py-0.5" aria-hidden>
+                              <span className="h-1.5 w-1.5 rounded-full bg-primary-foreground/70 motion-safe:animate-bounce [animation-delay:-0.3s]" />
+                              <span className="h-1.5 w-1.5 rounded-full bg-primary-foreground/70 motion-safe:animate-bounce [animation-delay:-0.15s]" />
+                              <span className="h-1.5 w-1.5 rounded-full bg-primary-foreground/70 motion-safe:animate-bounce" />
+                            </span>
+                          ) : (
+                            m.text
+                          )}
                         </div>
                       )
                     })}

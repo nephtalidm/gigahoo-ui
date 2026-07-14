@@ -26,10 +26,6 @@ export default function VoiceAgentPage() {
   const [voice, setVoice] = useState<string | null>(null)
   // "Questions" — which details the agent collects (all default on).
   const [questions, setQuestions] = useState({ collectName: true, collectPhone: true, collectAddress: true, collectEmergency: true })
-  // Voice style / personality baseline (maps to a tone directive + later the TTS instruct).
-  const [style, setStyle] = useState<string>("neutral")
-  // Optional per-voice instruct "context" key (scenario/role/identity); "" = emotion only.
-  const [instruct, setInstruct] = useState<string>("")
   // Snapshot of the last loaded/saved values; dirty = current differs from this.
   const baselineRef = useRef<string>("")
   const [playingId, setPlayingId] = useState<string | null>(null)
@@ -76,13 +72,8 @@ export default function VoiceAgentPage() {
           collectEmergency: account.collectEmergency ?? true,
         }
         setQuestions(initialQuestions)
-        const emotions = ["neutral", "happy", "sad", "angry", "fearful", "surprised", "disgusted"]
-        const initialStyle = emotions.includes(account.agentStyle ?? "") ? account.agentStyle! : "neutral"
-        setStyle(initialStyle)
-        const initialInstruct = account.agentInstruct ?? ""
-        setInstruct(initialInstruct)
         // Capture the loaded values as the clean baseline.
-        baselineRef.current = JSON.stringify({ greetingMessage: greeting, maxCallMinutes: initialMax, voice: initialVoice, questions: initialQuestions, style: initialStyle, instruct: initialInstruct })
+        baselineRef.current = JSON.stringify({ greetingMessage: greeting, maxCallMinutes: initialMax, voice: initialVoice, questions: initialQuestions })
       })
       .catch(() => {})
       .finally(() => setLoading(false))
@@ -90,8 +81,8 @@ export default function VoiceAgentPage() {
 
   // Report dirty state whenever the editable values diverge from the baseline.
   useEffect(() => {
-    setDirty(JSON.stringify({ greetingMessage, maxCallMinutes, voice, questions, style, instruct }) !== baselineRef.current)
-  }, [greetingMessage, maxCallMinutes, voice, questions, style, instruct, setDirty])
+    setDirty(JSON.stringify({ greetingMessage, maxCallMinutes, voice, questions }) !== baselineRef.current)
+  }, [greetingMessage, maxCallMinutes, voice, questions, setDirty])
 
   // Clear the guard when leaving the page.
   useEffect(() => () => setDirty(false), [setDirty])
@@ -125,7 +116,7 @@ export default function VoiceAgentPage() {
     const reqId = requestRef.current
     setLoadingId(id)
     try {
-      const blob = await generateVoiceSample(text, apiName, style, apiName === voice ? instruct : undefined)
+      const blob = await generateVoiceSample(text, apiName)
       // A newer Play click superseded this request — discard its audio so only
       // the most recently clicked voice ever plays.
       if (reqId !== requestRef.current) return
@@ -152,12 +143,10 @@ export default function VoiceAgentPage() {
         greetingMessage: greetingMessage.trim() ? greetingMessage.trim() : null,
         agentVoice: voice,
         maximumCallMinutes,
-        agentStyle: style,
-        agentInstruct: instruct || null,
       })
       await updateQuestions(questions)
       // The saved values are now the clean baseline → clears the dirty guard.
-      baselineRef.current = JSON.stringify({ greetingMessage, maxCallMinutes, voice, questions, style, instruct })
+      baselineRef.current = JSON.stringify({ greetingMessage, maxCallMinutes, voice, questions })
       setDirty(false)
       setSaved(true)
       setTimeout(() => setSaved(false), 2000)
@@ -214,95 +203,6 @@ export default function VoiceAgentPage() {
         />
       </div>
 
-      {/* Voice style / personality — a baseline tone for the agent's delivery */}
-      <div className="relative rounded-2xl border border-border bg-card p-6 shadow-sm">
-        <div className="mb-4">
-          <p className="text-base font-semibold text-foreground">{t("dashboard.styleLabel")}</p>
-          <p className="mt-0.5 text-sm text-muted-foreground">{t("dashboard.styleHint")}</p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {(["neutral", "happy", "sad", "angry", "fearful", "surprised", "disgusted"] as const).map((s) => {
-            const selected = style === s
-            return (
-              <button
-                key={s}
-                type="button"
-                onClick={() => setStyle(s)}
-                className={cn(
-                  "cursor-pointer rounded-full border px-4 py-2 text-sm font-medium transition-colors",
-                  selected
-                    ? "border-primary bg-primary/10 text-primary"
-                    : "border-border text-foreground hover:bg-accent",
-                )}
-              >
-                {t(`dashboard.emotion_${s}`)}
-              </button>
-            )
-          })}
-        </div>
-        {(() => {
-          // Per-voice "speaking context" (scenario / role / identity) for the selected voice.
-          const opts = voices.find((v) => v.apiName === voice)?.options ?? []
-          if (opts.length === 0) return null
-          return (
-            <div className="mt-5">
-              <p className="mb-2 text-sm text-muted-foreground">{t("dashboard.contextLabel")}</p>
-              <select
-                value={instruct}
-                onChange={(e) => setInstruct(e.target.value)}
-                className="w-full max-w-xs cursor-pointer rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground outline-none focus:border-primary"
-              >
-                <option value="">{t("dashboard.contextNone")}</option>
-                {opts.map((o) => (
-                  <option key={o.key} value={o.key}>{o.label}</option>
-                ))}
-              </select>
-            </div>
-          )
-        })()}
-      </div>
-
-      {/* Questions — which details the agent asks callers for */}
-      <div className="relative rounded-2xl border border-border bg-card p-6 shadow-sm">
-        <div className="mb-4">
-          <p className="text-base font-semibold text-foreground">{t("dashboard.questionsLabel")}</p>
-          <p className="mt-0.5 text-sm text-muted-foreground">{t("dashboard.questionsHint")}</p>
-        </div>
-        <div className="flex flex-col divide-y divide-border">
-          {([
-            ["collectName", "questionName"],
-            ["collectPhone", "questionPhone"],
-            ["collectAddress", "questionAddress"],
-            ["collectEmergency", "questionEmergency"],
-          ] as const).map(([key, labelKey]) => (
-            <div key={key} className="flex items-center justify-between gap-4 py-3">
-              <div className="min-w-0">
-                <p className="text-base text-foreground">{t(`dashboard.${labelKey}`)}</p>
-                <p className="mt-0.5 text-sm text-muted-foreground">{t(`dashboard.${labelKey}Desc`)}</p>
-              </div>
-              <button
-                type="button"
-                role="switch"
-                aria-checked={questions[key]}
-                aria-label={t(`dashboard.${labelKey}`)}
-                onClick={() => setQuestions((q) => ({ ...q, [key]: !q[key] }))}
-                className={cn(
-                  "relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors",
-                  questions[key] ? "bg-primary" : "bg-input",
-                )}
-              >
-                <span
-                  className={cn(
-                    "inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform",
-                    questions[key] ? "translate-x-5" : "translate-x-0.5",
-                  )}
-                />
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* Agent voice */}
       <div className="relative rounded-2xl border border-border bg-card p-6 shadow-sm">
         <div className="mb-3">
@@ -317,15 +217,11 @@ export default function VoiceAgentPage() {
                 key={v.apiName}
                 role="button"
                 tabIndex={0}
-                onClick={() => {
-                  setVoice(v.apiName)
-                  if (instruct && !v.options.some((o) => o.key === instruct)) setInstruct("")
-                }}
+                onClick={() => setVoice(v.apiName)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault()
                     setVoice(v.apiName)
-                    if (instruct && !v.options.some((o) => o.key === instruct)) setInstruct("")
                   }
                 }}
                 className={cn(
@@ -367,6 +263,47 @@ export default function VoiceAgentPage() {
               </div>
             )
           })}
+        </div>
+      </div>
+
+      {/* Questions — which details the agent asks callers for */}
+      <div className="relative rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="mb-4">
+          <p className="text-base font-semibold text-foreground">{t("dashboard.questionsLabel")}</p>
+          <p className="mt-0.5 text-sm text-muted-foreground">{t("dashboard.questionsHint")}</p>
+        </div>
+        <div className="flex flex-col divide-y divide-border">
+          {([
+            ["collectName", "questionName"],
+            ["collectPhone", "questionPhone"],
+            ["collectAddress", "questionAddress"],
+            ["collectEmergency", "questionEmergency"],
+          ] as const).map(([key, labelKey]) => (
+            <div key={key} className="flex items-center justify-between gap-4 py-3">
+              <div className="min-w-0">
+                <p className="text-base text-foreground">{t(`dashboard.${labelKey}`)}</p>
+                <p className="mt-0.5 text-sm text-muted-foreground">{t(`dashboard.${labelKey}Desc`)}</p>
+              </div>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={questions[key]}
+                aria-label={t(`dashboard.${labelKey}`)}
+                onClick={() => setQuestions((q) => ({ ...q, [key]: !q[key] }))}
+                className={cn(
+                  "relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors",
+                  questions[key] ? "bg-primary" : "bg-input",
+                )}
+              >
+                <span
+                  className={cn(
+                    "inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform",
+                    questions[key] ? "translate-x-5" : "translate-x-0.5",
+                  )}
+                />
+              </button>
+            </div>
+          ))}
         </div>
       </div>
 

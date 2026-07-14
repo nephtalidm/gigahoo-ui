@@ -15,12 +15,19 @@ export function BrandLogo({
   return (
     <Link
       href={href}
-      onClick={(e) => {
-        if (onNavigate) {
-          e.preventDefault()
-          onNavigate(href)
-        }
-      }}
+      // Only attach a click handler when a navigation guard is supplied (dashboard,
+      // a client subtree). Passing an inline function unconditionally breaks any
+      // SERVER-rendered usage (e.g. /signup): a Server Component can't hand an event
+      // handler to a Client Component (<Link>). undefined is serializable, so the
+      // logo stays a zero-JS server component on marketing pages.
+      onClick={
+        onNavigate
+          ? (e) => {
+              e.preventDefault()
+              onNavigate(href)
+            }
+          : undefined
+      }
       className={cn("inline-flex items-center", className)}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
