@@ -22,7 +22,6 @@ import {
   Settings,
   Menu,
   LogOut,
-  FlaskConical,
 } from "lucide-react"
 
 // `label` is a raw (untranslated) string for internal tools; `labelKey` is the i18n key otherwise.
@@ -30,7 +29,6 @@ const navItems: { labelKey?: string; label?: string; href: string; icon: typeof 
   { labelKey: "dashboard.navOverview", href: "/dashboard", icon: LayoutDashboard },
   { labelKey: "dashboard.navSettings", href: "/dashboard/settings", icon: Settings },
   { labelKey: "dashboard.navVoiceAgent", href: "/dashboard/voice", icon: AudioLines },
-  { label: "Voice Lab", href: "/dashboard/voice-lab", icon: FlaskConical },
   { labelKey: "dashboard.navCallHistory", href: "/dashboard/calls", icon: PhoneCall },
   { labelKey: "dashboard.navNotifications", href: "/dashboard/notifications", icon: Bell },
   { labelKey: "dashboard.navPlanBilling", href: "/dashboard/billing", icon: CreditCard },

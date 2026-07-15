@@ -235,22 +235,6 @@ export function getVoices(): Promise<AgentVoice[]> {
   return api.get<AgentVoice[]>("/api/voices");
 }
 
-// Voice-lab test data: instruct-capable CosyVoice + Qwen-TTS voices and their emotion/preset sets.
-export interface LabVoice {
-  apiName: string;
-  label: string;
-}
-export interface LabData {
-  cosyvoice: LabVoice[];
-  cosyvoiceEmotions: string[];
-  qwenTts: LabVoice[];
-  qwenPresets: { key: string; label: string }[];
-}
-export function getLabVoices(): Promise<LabData> {
-  return api.get<LabData>("/api/voices/lab");
-}
-
-
 // Synthesize a live voice sample of `text` spoken in `voice` and return the audio
 // as a Blob. Uses fetch directly (not the JSON `api` client) so we can request a
 // binary response, but reuses the same Bearer-token auth header.
