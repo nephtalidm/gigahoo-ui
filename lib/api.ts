@@ -48,7 +48,12 @@ async function apiRequest<T>(
     throw err;
   }
 
-  return res.json() as Promise<T>;
+  // 204 / empty responses have no body — res.json() would throw and make a SUCCESSFUL
+  // call look failed (a deleted card once stayed on screen until a manual page refresh
+  // because the refresh-after-delete was skipped by the phantom error).
+  if (res.status === 204) return undefined as T;
+  const text = await res.text();
+  return (text ? JSON.parse(text) : undefined) as T;
 }
 
 export const api = {
