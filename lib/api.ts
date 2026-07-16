@@ -227,6 +227,9 @@ export interface AgentVoice {
   apiName: string;
   label: string;
   isDefault: boolean;
+  // Fish voices carry gender + the language they speak (picker grouping).
+  gender?: string | null;
+  language?: string | null;
   // Per-voice instruct "context" options (scenarios/roles/identities). Empty for non-instruct voices.
   options: { key: string; label: string }[];
 }

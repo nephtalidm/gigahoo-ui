@@ -209,8 +209,16 @@ export default function VoiceAgentPage() {
           <p className="text-base font-semibold text-foreground">{t("dashboard.voiceLabel")}</p>
           <p className="mt-0.5 text-sm text-muted-foreground">{t("dashboard.voiceHint")}</p>
         </div>
-        <div className="flex flex-col gap-2">
-          {voices.map((v) => {
+        <div className="flex flex-col gap-5">
+          {/* Grouped by the language each voice speaks (API pre-orders by language). */}
+          {Array.from(new Map(voices.map((g) => [g.language ?? "", true])).keys()).map((lang) => (
+          <div key={lang || "other"} className="flex flex-col gap-2">
+          {lang && (
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              {(() => { const k = `dashboard.voiceLang${lang}`; const tr = t(k); return tr === k ? lang : tr })()}
+            </p>
+          )}
+          {voices.filter((v) => (v.language ?? "") === lang).map((v) => {
             const selected = voice === v.apiName
             return (
               <div
@@ -241,6 +249,11 @@ export default function VoiceAgentPage() {
                     {selected && <span className="h-2 w-2 rounded-full bg-primary" />}
                   </span>
                   <span className="truncate text-sm font-medium text-foreground">{v.label}</span>
+                  {v.gender && (
+                    <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                      {v.gender === "male" ? t("dashboard.voiceMale") : t("dashboard.voiceFemale")}
+                    </span>
+                  )}
                 </div>
                 <button
                   type="button"
@@ -263,6 +276,8 @@ export default function VoiceAgentPage() {
               </div>
             )
           })}
+          </div>
+          ))}
         </div>
       </div>
 
