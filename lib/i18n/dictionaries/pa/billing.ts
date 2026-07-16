@@ -43,6 +43,8 @@ const billing = {
   save: "ਕਾਰਡ ਸੰਭਾਲੋ",
   cancel: "ਰੱਦ ਕਰੋ",
   remove: "ਹਟਾਓ",
+  defaultCard: "ਡਿਫਾਲਟ",
+  makeDefault: "ਡਿਫਾਲਟ ਬਣਾਓ",
   removeConfirm: "ਕੀ ਇਹ ਭੁਗਤਾਨ ਵਿਧੀ ਹਟਾਉਣੀ ਹੈ?",
   noPaymentMethods: "ਅਜੇ ਤੱਕ ਕੋਈ ਭੁਗਤਾਨ ਵਿਧੀ ਸੰਭਾਲੀ ਨਹੀਂ ਗਈ।",
   cardSaved: "ਕਾਰਡ ਸੰਭਾਲਿਆ ਗਿਆ",

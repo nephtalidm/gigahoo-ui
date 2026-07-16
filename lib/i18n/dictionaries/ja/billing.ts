@@ -43,6 +43,8 @@ const billing = {
   save: "カードを保存",
   cancel: "キャンセル",
   remove: "削除",
+  defaultCard: "デフォルト",
+  makeDefault: "デフォルトに設定",
   removeConfirm: "このお支払い方法を削除しますか？",
   noPaymentMethods: "保存されたお支払い方法はまだありません。",
   cardSaved: "カードを保存しました",

@@ -43,6 +43,8 @@ const billing = {
   save: "कार्ड सहेजें",
   cancel: "रद्द करें",
   remove: "हटाएँ",
+  defaultCard: "डिफ़ॉल्ट",
+  makeDefault: "डिफ़ॉल्ट बनाएं",
   removeConfirm: "इस भुगतान विधि को हटाएँ?",
   noPaymentMethods: "अभी तक कोई भुगतान विधि सहेजी नहीं गई है।",
   cardSaved: "कार्ड सहेजा गया",

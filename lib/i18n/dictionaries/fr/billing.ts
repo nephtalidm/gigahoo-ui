@@ -43,6 +43,8 @@ const billing = {
   save: "Enregistrer la carte",
   cancel: "Annuler",
   remove: "Supprimer",
+  defaultCard: "Par défaut",
+  makeDefault: "Définir par défaut",
   removeConfirm: "Supprimer ce moyen de paiement ?",
   noPaymentMethods: "Aucun moyen de paiement enregistré pour le moment.",
   cardSaved: "Carte enregistrée",

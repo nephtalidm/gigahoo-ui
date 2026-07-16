@@ -43,6 +43,8 @@ const billing = {
   save: "I-save ang card",
   cancel: "Kanselahin",
   remove: "Alisin",
+  defaultCard: "Default",
+  makeDefault: "Gawing default",
   removeConfirm: "Alisin ang paraan ng pagbabayad na ito?",
   noPaymentMethods: "Wala pang naka-save na paraan ng pagbabayad.",
   cardSaved: "Na-save ang card",

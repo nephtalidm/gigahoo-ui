@@ -420,6 +420,7 @@ export interface PaymentMethod {
   expMonth: number;
   expYear: number;
   provider: string;
+  isDefault: boolean;
 }
 
 // Creates a provider SetupIntent so the dashboard can collect & save a card
@@ -436,6 +437,13 @@ export function removePaymentMethod(id: string, provider: string) {
   return apiRequest<void>(
     `/api/billing/payment-methods/${encodeURIComponent(id)}?provider=${encodeURIComponent(provider)}`,
     { method: "DELETE" },
+  );
+}
+
+export function setDefaultPaymentMethod(id: string, provider: string) {
+  return apiRequest<void>(
+    `/api/billing/payment-methods/${encodeURIComponent(id)}/default?provider=${encodeURIComponent(provider)}`,
+    { method: "POST" },
   );
 }
 

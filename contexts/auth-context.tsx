@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { getAccount, type AccountData, googleLogin, sendMagicLink as apiSendMagicLink, sendSmsCode as apiSendSmsCode, verifySmsCode as apiVerifySmsCode } from "@/lib/api";
+import { sessionExpired, clearSession, touchActivity } from "@/lib/session";
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -28,13 +29,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const checkAuth = async () => {
       const token = localStorage.getItem("gigahoo_token");
       if (token) {
-        setIsAuthenticated(true);
-        try {
-          const accountData = await getAccount();
-          setAccount(accountData);
-        } catch {
-          // Account exists but no business profile yet (just verified email)
-          // Keep the token — don't clear it
+        // A token's presence is NOT a session: the inactivity policy must hold across
+        // tab closes and browser restarts (sessions used to survive for days because
+        // this check didn't exist — only the in-tab idle timer did).
+        if (sessionExpired()) {
+          clearSession();
+        } else {
+          touchActivity(true); // opening the app is activity
+          setIsAuthenticated(true);
+          try {
+            const accountData = await getAccount();
+            setAccount(accountData);
+          } catch {
+            // Account exists but no business profile yet (just verified email)
+            // Keep the token — don't clear it
+          }
         }
       }
       setIsLoading(false);
@@ -46,14 +55,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     setIsAuthenticated(false);
     setAccount(null);
-    localStorage.removeItem("gigahoo_token");
-    localStorage.removeItem("gigahoo_expires_at");
+    clearSession();
     window.location.href = "/";
   };
 
   const storeAuth = async (response: { accessToken: string; expiresAt: string }) => {
     localStorage.setItem("gigahoo_token", response.accessToken);
     localStorage.setItem("gigahoo_expires_at", response.expiresAt);
+    touchActivity(true); // a fresh login starts the activity clock
     setIsAuthenticated(true);
     // Go straight to the right page with client-side navigation (no full reload,
     // no flash of the /signup loader): dashboard if the account is already set up,

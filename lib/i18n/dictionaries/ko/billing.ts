@@ -43,6 +43,8 @@ const billing = {
   save: "카드 저장",
   cancel: "취소",
   remove: "삭제",
+  defaultCard: "기본",
+  makeDefault: "기본으로 설정",
   removeConfirm: "이 결제 수단을 삭제할까요?",
   noPaymentMethods: "아직 저장된 결제 수단이 없습니다.",
   cardSaved: "카드가 저장되었습니다",

@@ -43,6 +43,8 @@ const billing = {
   save: "Save card",
   cancel: "Cancel",
   remove: "Remove",
+  defaultCard: "Default",
+  makeDefault: "Make default",
   removeConfirm: "Remove this payment method?",
   noPaymentMethods: "No payment methods saved yet.",
   cardSaved: "Card saved",

@@ -43,6 +43,8 @@ const billing = {
   save: "ذخیره کارت",
   cancel: "لغو",
   remove: "حذف",
+  defaultCard: "پیش‌فرض",
+  makeDefault: "تنظیم به‌عنوان پیش‌فرض",
   removeConfirm: "این روش پرداخت حذف شود؟",
   noPaymentMethods: "هنوز هیچ روش پرداختی ذخیره نشده است.",
   cardSaved: "کارت ذخیره شد",

@@ -78,14 +78,14 @@ export default function OverviewPage() {
             <Button
               className="gap-1.5"
               render={
-                <Link href="/dashboard/billing">
+                <Link href="/dashboard/plan">
                   {t("dashboard.upgradeTo", { plan: nextPlan })}
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
               }
             />
           ) : (
-            <Button variant="outline" render={<Link href="/dashboard/billing">{t("dashboard.managePlan")}</Link>} />
+            <Button variant="outline" render={<Link href="/dashboard/plan">{t("dashboard.managePlan")}</Link>} />
           )}
         </div>
       </div>
@@ -112,7 +112,7 @@ export default function OverviewPage() {
               size="sm"
               className="gap-1"
               render={
-                <Link href="/dashboard/calls">
+                <Link href="/dashboard/call-history">
                   {t("dashboard.viewAll")}
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>

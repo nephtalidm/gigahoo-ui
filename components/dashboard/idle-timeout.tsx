@@ -13,8 +13,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 
-const IDLE_MS = 15 * 60 * 1000 // 15 minutes of no activity
-const WARN_MS = 2 * 60 * 1000 // then a 2-minute warning countdown
+import { IDLE_MS, WARN_MS, touchActivity } from "@/lib/session"
 
 /**
  * Signs the user out after 15 minutes of inactivity. At 15 minutes a modal
@@ -71,7 +70,12 @@ export function IdleTimeout() {
     extendRef.current = restart
 
     const onActivity = () => {
-      if (!warned) armIdle()
+      if (!warned) {
+        armIdle()
+        // Persisted (throttled) so the inactivity policy survives tab closes: on the
+        // next app load, auth rehydration compares against this timestamp.
+        touchActivity()
+      }
     }
 
     const events: (keyof WindowEventMap)[] = [

@@ -43,6 +43,8 @@ const billing = {
   save: "保存卡片",
   cancel: "取消",
   remove: "移除",
+  defaultCard: "默认",
+  makeDefault: "设为默认",
   removeConfirm: "移除此支付方式？",
   noPaymentMethods: "尚未保存任何支付方式。",
   cardSaved: "卡片已保存",

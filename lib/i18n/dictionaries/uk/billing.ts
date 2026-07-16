@@ -43,6 +43,8 @@ const billing = {
   save: "Зберегти картку",
   cancel: "Скасувати",
   remove: "Видалити",
+  defaultCard: "Основна",
+  makeDefault: "Зробити основною",
   removeConfirm: "Видалити цей спосіб оплати?",
   noPaymentMethods: "Способи оплати ще не збережено.",
   cardSaved: "Картку збережено",

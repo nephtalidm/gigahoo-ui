@@ -43,6 +43,8 @@ const billing = {
   save: "儲存卡片",
   cancel: "取消",
   remove: "移除",
+  defaultCard: "預設",
+  makeDefault: "設為預設",
   removeConfirm: "移除呢個付款方式？",
   noPaymentMethods: "仲未儲存任何付款方式。",
   cardSaved: "卡片已儲存",

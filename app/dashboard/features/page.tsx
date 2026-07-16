@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation"
 
 export default function FeaturesPage() {
-  redirect("/dashboard/settings")
+  redirect("/dashboard/general-settings")
 }

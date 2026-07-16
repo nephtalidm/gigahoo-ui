@@ -43,6 +43,8 @@ const billing = {
   save: "حفظ البطاقة",
   cancel: "إلغاء",
   remove: "إزالة",
+  defaultCard: "افتراضية",
+  makeDefault: "تعيين كافتراضية",
   removeConfirm: "إزالة طريقة الدفع هذه؟",
   noPaymentMethods: "لا توجد طرق دفع محفوظة بعد.",
   cardSaved: "تم حفظ البطاقة",

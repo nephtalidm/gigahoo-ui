@@ -118,7 +118,7 @@ export function MinuteUsageWidget({
             <Button
               variant="outline"
               size="sm"
-              render={<Link href="/dashboard/billing">{t("dashboard.changePlan")}</Link>}
+              render={<Link href="/dashboard/plan">{t("dashboard.changePlan")}</Link>}
             />
           </div>
         </div>
