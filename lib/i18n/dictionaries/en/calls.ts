@@ -1,7 +1,7 @@
 const calls = {
   // Page header
   title: "Call History",
-  description: "Every conversation your AI receptionist handled. Select one for details.",
+  description: "Every call your AI receptionist handled. Select one for details.",
 
   // Table headers
   caller: "Caller",
