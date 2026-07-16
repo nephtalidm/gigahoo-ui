@@ -15,7 +15,7 @@ const MAX_CALL_SLIDER_MAX = 60
 
 export default function VoiceAgentPage() {
   const { t } = useTranslation()
-  const { setDirty } = useUnsavedChanges()
+  const { dirty, setDirty } = useUnsavedChanges()
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -181,7 +181,7 @@ export default function VoiceAgentPage() {
               {t("dashboard.voiceSaved")}
             </span>
           )}
-          <Button type="button" onClick={save} disabled={saving}>
+          <Button type="button" onClick={save} disabled={saving || !dirty}>
             {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {t("settings.saveChanges")}
           </Button>

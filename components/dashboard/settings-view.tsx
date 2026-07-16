@@ -170,7 +170,7 @@ export function SettingsView({
   onCountryChange: (countryId: number) => void
 }) {
   const { t, locale, setLocale } = useTranslation()
-  const { setDirty } = useUnsavedChanges()
+  const { dirty, setDirty } = useUnsavedChanges()
   // Supported (served) countries from the API (Country.IsSupported), settings.ts fallback.
   const supportedCodes = useSupportedCountries()
   const [businessName, setBusinessName] = useState(account.businessName)
@@ -1084,7 +1084,7 @@ export function SettingsView({
             <span className="text-sm text-amber-600">{t("settings.verifyBeforeSave")}</span>
           )}
           {error && <span className="text-sm text-destructive">{error}</span>}
-          <Button onClick={handleSave} disabled={saving}>
+          <Button onClick={handleSave} disabled={saving || !dirty}>
             {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {t("settings.saveChanges")}
           </Button>

@@ -15,7 +15,7 @@ import { Loader2, CheckCircle2 } from "lucide-react"
 
 export default function NotificationsPage() {
   const { t } = useTranslation()
-  const { setDirty } = useUnsavedChanges()
+  const { dirty, setDirty } = useUnsavedChanges()
   const [settings, setSettings] = useState<NotificationSettings | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -110,7 +110,7 @@ export default function NotificationsPage() {
               {t("notifications.saved")}
             </span>
           )}
-          <Button type="button" onClick={save} disabled={saving}>
+          <Button type="button" onClick={save} disabled={saving || !dirty}>
             {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {t("settings.saveChanges")}
           </Button>
