@@ -1,7 +1,7 @@
 const dashboard = {
   // Sidebar nav
   navOverview: "概要",
-  navCallHistory: "会話履歴",
+  navCallHistory: "通話履歴",
   navOptionalFeatures: "オプション機能",
   navPlanBilling: "プラン",
   navBilling: "お支払い",

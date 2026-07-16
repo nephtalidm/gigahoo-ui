@@ -1,7 +1,7 @@
 const dashboard = {
   // Sidebar nav
   navOverview: "अवलोकन",
-  navCallHistory: "वार्तालाप इतिहास",
+  navCallHistory: "कॉल इतिहास",
   navOptionalFeatures: "वैकल्पिक विशेषताएँ",
   navPlanBilling: "प्लान",
   navBilling: "भुगतान",

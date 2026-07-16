@@ -1,6 +1,6 @@
 const calls = {
   // Page header
-  title: "對話記錄",
+  title: "通話記錄",
   description: "你嘅 AI 接待員處理過嘅每一個對話。揀一個睇詳情。",
 
   // Table headers

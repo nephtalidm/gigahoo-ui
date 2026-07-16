@@ -1,7 +1,7 @@
 const dashboard = {
   // Sidebar nav
   navOverview: "نمای کلی",
-  navCallHistory: "تاریخچه مکالمات",
+  navCallHistory: "تاریخچه تماس‌ها",
   navOptionalFeatures: "امکانات اختیاری",
   navPlanBilling: "طرح",
   navBilling: "پرداخت",

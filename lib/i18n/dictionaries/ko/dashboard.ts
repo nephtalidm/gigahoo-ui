@@ -1,7 +1,7 @@
 const dashboard = {
   // Sidebar nav
   navOverview: "개요",
-  navCallHistory: "대화 기록",
+  navCallHistory: "통화 기록",
   navOptionalFeatures: "선택 기능",
   navPlanBilling: "요금제",
   navBilling: "결제 수단",

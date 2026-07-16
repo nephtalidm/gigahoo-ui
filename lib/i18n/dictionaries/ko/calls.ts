@@ -1,6 +1,6 @@
 const calls = {
   // Page header
-  title: "대화 기록",
+  title: "통화 기록",
   description: "AI 응대원이 처리한 모든 대화입니다. 하나를 선택하면 세부 정보를 볼 수 있습니다.",
 
   // Table headers

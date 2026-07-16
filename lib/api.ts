@@ -318,8 +318,10 @@ export interface ConversationsPage {
   pageSize: number;
 }
 
+// The dashboard's Call History shows PHONE CALLS only (ConversationTypeId 1) — the backend stays
+// generic ("conversations") so SMS/WhatsApp receptionists can join later as other type ids.
 export function getConversations(page = 1, pageSize = 20, status?: string) {
-  const params = new URLSearchParams({ page: String(page), pageSize: String(pageSize) });
+  const params = new URLSearchParams({ page: String(page), pageSize: String(pageSize), typeId: "1" });
   if (status) params.set("status", status);
   return api.get<ConversationsPage>(`/api/conversations?${params}`);
 }

@@ -1,6 +1,6 @@
 const calls = {
   // Page header
-  title: "Історія розмов",
+  title: "Історія дзвінків",
   description: "Кожна розмова, яку обробив ваш AI-секретар. Виберіть одну для деталей.",
 
   // Table headers

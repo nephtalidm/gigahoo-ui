@@ -1,6 +1,6 @@
 const calls = {
   // Page header
-  title: "वार्तालाप इतिहास",
+  title: "कॉल इतिहास",
   description: "आपके AI रिसेप्शनिस्ट द्वारा संभाली गई हर बातचीत। विवरण के लिए कोई एक चुनें।",
 
   // Table headers

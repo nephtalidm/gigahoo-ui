@@ -1,7 +1,7 @@
 const dashboard = {
   // Sidebar nav
   navOverview: "Огляд",
-  navCallHistory: "Історія розмов",
+  navCallHistory: "Історія дзвінків",
   navOptionalFeatures: "Додаткові можливості",
   navPlanBilling: "Тариф",
   navBilling: "Оплата",

@@ -1,7 +1,7 @@
 const dashboard = {
   // Sidebar nav
   navOverview: "Pangkalahatang-tanaw",
-  navCallHistory: "Kasaysayan ng Pag-uusap",
+  navCallHistory: "Kasaysayan ng Tawag",
   navOptionalFeatures: "Mga Opsyonal na Feature",
   navPlanBilling: "Plano",
   navBilling: "Pagbabayad",

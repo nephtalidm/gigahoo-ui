@@ -1,7 +1,7 @@
 const dashboard = {
   // Sidebar nav
   navOverview: "概览",
-  navCallHistory: "对话记录",
+  navCallHistory: "通话记录",
   navOptionalFeatures: "可选功能",
   navPlanBilling: "套餐",
   navBilling: "支付方式",

@@ -1,6 +1,6 @@
 const calls = {
   // Page header
-  title: "Kasaysayan ng Pag-uusap",
+  title: "Kasaysayan ng Tawag",
   description: "Bawat pag-uusap na hinawakan ng iyong AI receptionist. Pumili ng isa para sa mga detalye.",
 
   // Table headers

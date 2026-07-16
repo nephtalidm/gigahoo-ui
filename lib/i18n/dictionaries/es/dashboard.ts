@@ -1,7 +1,7 @@
 const dashboard = {
   // Sidebar nav
   navOverview: "Resumen",
-  navCallHistory: "Historial de conversaciones",
+  navCallHistory: "Historial de llamadas",
   navOptionalFeatures: "Funciones opcionales",
   navPlanBilling: "Plan",
   navBilling: "Pagos",

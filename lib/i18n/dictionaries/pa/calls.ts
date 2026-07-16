@@ -1,6 +1,6 @@
 const calls = {
   // Page header
-  title: "ਗੱਲਬਾਤ ਇਤਿਹਾਸ",
+  title: "ਕਾਲ ਇਤਿਹਾਸ",
   description: "ਤੁਹਾਡੇ AI ਰਿਸੈਪਸ਼ਨਿਸਟ ਦੁਆਰਾ ਸੰਭਾਲੀ ਹਰ ਗੱਲਬਾਤ। ਵੇਰਵਿਆਂ ਲਈ ਕਿਸੇ ਇੱਕ ਨੂੰ ਚੁਣੋ।",
 
   // Table headers

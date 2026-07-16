@@ -1,6 +1,6 @@
 const calls = {
   // Page header
-  title: "会話履歴",
+  title: "通話履歴",
   description: "AI受付が対応したすべての会話。詳細を見るには会話を選択してください。",
 
   // Table headers

@@ -1,7 +1,7 @@
 const dashboard = {
   // Sidebar nav
   navOverview: "نظرة عامة",
-  navCallHistory: "سجل المحادثات",
+  navCallHistory: "سجل المكالمات",
   navOptionalFeatures: "الميزات الاختيارية",
   navPlanBilling: "الخطة",
   navBilling: "المدفوعات",
