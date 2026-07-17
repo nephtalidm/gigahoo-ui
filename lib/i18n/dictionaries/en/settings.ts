@@ -35,6 +35,10 @@ const settings = {
 
   // Account security
   securityTitle: "Account Security",
+  dangerTitle: "Danger zone",
+  dangerDescription: "Deleting your account permanently removes your phone number, call history, and billing data.",
+  deleteAccountButton: "Delete account",
+  deleteAccountConfirm: "This will PERMANENTLY delete your account, release your phone number, and erase all call history and billing data. This cannot be undone. Delete anyway?",
   securityDescription: "Manage your linked authentication methods.",
   google: "Google",
   notLinked: "Not linked",

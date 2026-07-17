@@ -35,6 +35,10 @@ const settings = {
 
   // Account security
   securityTitle: "ਖਾਤਾ ਸੁਰੱਖਿਆ",
+  dangerTitle: "ਖ਼ਤਰੇ ਵਾਲਾ ਖੇਤਰ",
+  dangerDescription: "ਖਾਤਾ ਮਿਟਾਉਣ ਨਾਲ ਤੁਹਾਡਾ ਫ਼ੋਨ ਨੰਬਰ, ਕਾਲ ਇਤਿਹਾਸ ਅਤੇ ਬਿਲਿੰਗ ਡਾਟਾ ਪੱਕੇ ਤੌਰ ਤੇ ਮਿਟ ਜਾਂਦਾ ਹੈ।",
+  deleteAccountButton: "ਖਾਤਾ ਮਿਟਾਓ",
+  deleteAccountConfirm: "ਇਸ ਨਾਲ ਤੁਹਾਡਾ ਖਾਤਾ ਪੱਕੇ ਤੌਰ ਤੇ ਮਿਟ ਜਾਵੇਗਾ, ਨੰਬਰ ਛੱਡ ਦਿੱਤਾ ਜਾਵੇਗਾ ਅਤੇ ਸਾਰਾ ਕਾਲ ਇਤਿਹਾਸ ਤੇ ਬਿਲਿੰਗ ਡਾਟਾ ਮਿਟ ਜਾਵੇਗਾ। ਇਹ ਵਾਪਸ ਨਹੀਂ ਹੋ ਸਕਦਾ। ਫਿਰ ਵੀ ਮਿਟਾਉਣਾ ਹੈ?",
   securityDescription: "ਆਪਣੇ ਜੁੜੇ ਪ੍ਰਮਾਣੀਕਰਨ ਤਰੀਕਿਆਂ ਦਾ ਪ੍ਰਬੰਧ ਕਰੋ।",
   google: "Google",
   notLinked: "ਜੁੜਿਆ ਨਹੀਂ",

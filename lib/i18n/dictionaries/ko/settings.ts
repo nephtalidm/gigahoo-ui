@@ -35,6 +35,10 @@ const settings = {
 
   // Account security
   securityTitle: "계정 보안",
+  dangerTitle: "위험 구역",
+  dangerDescription: "계정을 삭제하면 전화번호, 통화 기록, 결제 데이터가 영구적으로 삭제됩니다.",
+  deleteAccountButton: "계정 삭제",
+  deleteAccountConfirm: "계정이 영구적으로 삭제되고 전화번호가 해제되며 모든 통화 기록과 결제 데이터가 지워집니다. 되돌릴 수 없습니다. 삭제하시겠습니까?",
   securityDescription: "연결된 인증 수단을 관리하세요.",
   google: "Google",
   notLinked: "연결되지 않음",

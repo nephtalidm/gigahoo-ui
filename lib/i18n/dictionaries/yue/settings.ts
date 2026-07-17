@@ -35,6 +35,10 @@ const settings = {
 
   // Account security
   securityTitle: "帳戶安全",
+  dangerTitle: "危險區",
+  dangerDescription: "刪除帳戶會永久移除你嘅電話號碼、通話記錄同帳單資料。",
+  deleteAccountButton: "刪除帳戶",
+  deleteAccountConfirm: "帳戶會被永久刪除，電話號碼會被釋放，所有通話記錄同帳單資料都會清除。無法復原。仍然要刪除？",
   securityDescription: "管理你已連結嘅驗證方式。",
   google: "Google",
   notLinked: "未連結",

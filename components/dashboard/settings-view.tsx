@@ -20,8 +20,10 @@ import { CodeBoxes } from "@/components/code-boxes"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import { useTranslation, isLocale, type Locale } from "@/contexts/language-context"
 import { useUnsavedChanges } from "@/contexts/unsaved-changes-context"
+import { useAuth } from "@/contexts/auth-context"
 import { LanguageSwitcher } from "@/components/language-switcher"
 import {
+  deleteAccount,
   updateAccount,
   updateAccountLanguage,
   setPassword as apiSetPassword,
@@ -167,6 +169,7 @@ export function SettingsView({
 }) {
   const { t, locale, setLocale } = useTranslation()
   const { dirty, setDirty } = useUnsavedChanges()
+  const { logout } = useAuth()
   // Supported (served) countries from the API (Country.IsSupported), settings.ts fallback.
   const supportedCodes = useSupportedCountries()
   const [businessName, setBusinessName] = useState(account.businessName)
@@ -187,6 +190,7 @@ export function SettingsView({
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [errors, setErrors] = useState<FieldErrors>({})
+  const [deleting, setDeleting] = useState(false)
 
   // Password set/change
   const [showPwForm, setShowPwForm] = useState(false)
@@ -547,6 +551,18 @@ export function SettingsView({
     setEmailCode("")
     setEmailVerifyError(null)
     setEmail(account.email)
+  }
+
+  async function handleDeleteAccount() {
+    if (!window.confirm(t("settings.deleteAccountConfirm"))) return
+    setDeleting(true)
+    try {
+      await deleteAccount()
+      logout() // session cleared; back to the homepage
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("settings.saveFailed"))
+      setDeleting(false)
+    }
   }
 
   function handleCancelPhoneChange() {
@@ -1049,7 +1065,7 @@ export function SettingsView({
               </div>
               <div>
                 <p className="text-sm font-medium text-foreground">{t("settings.phoneNumber")}</p>
-                <p className="text-xs text-muted-foreground">{account.businessPhone}</p>
+                <p className="text-xs text-muted-foreground">{formatPhoneDisplay(account.businessPhone)}</p>
               </div>
             </div>
             <Button variant="outline" size="sm" onClick={() => focusField("businessPhone")}>{t("settings.change")}</Button>
@@ -1070,6 +1086,19 @@ export function SettingsView({
           <Button onClick={handleSave} disabled={saving || !dirty}>
             {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {t("settings.saveChanges")}
+          </Button>
+        </div>
+      </div>
+
+      {/* DANGER ZONE — deliberately the LAST section of the page (common practice for
+          destructive, irreversible actions). */}
+      <div className="rounded-2xl border border-destructive/40 bg-card p-6 shadow-sm">
+        <h3 className="font-semibold text-destructive">{t("settings.dangerTitle")}</h3>
+        <p className="mt-1 text-sm text-muted-foreground">{t("settings.dangerDescription")}</p>
+        <div className="mt-4">
+          <Button variant="destructive" onClick={handleDeleteAccount} disabled={deleting}>
+            {deleting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {t("settings.deleteAccountButton")}
           </Button>
         </div>
       </div>

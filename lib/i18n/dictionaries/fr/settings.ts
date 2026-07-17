@@ -35,6 +35,10 @@ const settings = {
 
   // Account security
   securityTitle: "Sécurité du compte",
+  dangerTitle: "Zone de danger",
+  dangerDescription: "La suppression de votre compte efface définitivement votre numéro de téléphone, l'historique des appels et les données de facturation.",
+  deleteAccountButton: "Supprimer le compte",
+  deleteAccountConfirm: "Cela supprimera DÉFINITIVEMENT votre compte, libérera votre numéro et effacera tout l'historique des appels et de facturation. Cette action est irréversible. Supprimer quand même ?",
   securityDescription: "Gérez vos méthodes d'authentification liées.",
   google: "Google",
   notLinked: "Non lié",

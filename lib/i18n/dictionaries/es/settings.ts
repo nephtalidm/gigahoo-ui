@@ -35,6 +35,10 @@ const settings = {
 
   // Account security
   securityTitle: "Seguridad de la cuenta",
+  dangerTitle: "Zona de peligro",
+  dangerDescription: "Eliminar tu cuenta borra permanentemente tu número de teléfono, el historial de llamadas y los datos de facturación.",
+  deleteAccountButton: "Eliminar cuenta",
+  deleteAccountConfirm: "Esto eliminará PERMANENTEMENTE tu cuenta, liberará tu número de teléfono y borrará todo el historial de llamadas y los datos de facturación. No se puede deshacer. ¿Eliminar de todos modos?",
   securityDescription: "Administra tus métodos de autenticación vinculados.",
   google: "Google",
   notLinked: "No vinculado",

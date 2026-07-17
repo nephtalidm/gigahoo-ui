@@ -35,6 +35,10 @@ const settings = {
 
   // Account security
   securityTitle: "खाता सुरक्षा",
+  dangerTitle: "खतरनाक क्षेत्र",
+  dangerDescription: "खाता हटाने से आपका फ़ोन नंबर, कॉल इतिहास और बिलिंग डेटा स्थायी रूप से हट जाता है।",
+  deleteAccountButton: "खाता हटाएं",
+  deleteAccountConfirm: "इससे आपका खाता स्थायी रूप से हट जाएगा, आपका नंबर मुक्त हो जाएगा और सारा कॉल इतिहास व बिलिंग डेटा मिट जाएगा। इसे पूर्ववत नहीं किया जा सकता। फिर भी हटाएं?",
   securityDescription: "अपने लिंक किए गए प्रमाणीकरण तरीके प्रबंधित करें।",
   google: "Google",
   notLinked: "लिंक नहीं किया गया",

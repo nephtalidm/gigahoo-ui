@@ -35,6 +35,10 @@ const settings = {
 
   // Account security
   securityTitle: "アカウントのセキュリティ",
+  dangerTitle: "危険な操作",
+  dangerDescription: "アカウントを削除すると、電話番号・通話履歴・請求データが完全に削除されます。",
+  deleteAccountButton: "アカウントを削除",
+  deleteAccountConfirm: "アカウントが完全に削除され、電話番号は解放され、通話履歴と請求データがすべて消去されます。元に戻せません。削除しますか？",
   securityDescription: "連携している認証方法を管理します。",
   google: "Google",
   notLinked: "未連携",

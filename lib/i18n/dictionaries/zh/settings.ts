@@ -35,6 +35,10 @@ const settings = {
 
   // Account security
   securityTitle: "账户安全",
+  dangerTitle: "危险区域",
+  dangerDescription: "删除账户将永久移除您的电话号码、通话记录和账单数据。",
+  deleteAccountButton: "删除账户",
+  deleteAccountConfirm: "您的账户将被永久删除，电话号码将被释放，所有通话记录和账单数据将被清除。此操作无法撤销。仍要删除吗？",
   securityDescription: "管理您已关联的身份验证方式。",
   google: "Google",
   notLinked: "未关联",

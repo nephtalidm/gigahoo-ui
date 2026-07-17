@@ -153,6 +153,11 @@ export function updateAccountLanguage(language: string) {
   return api.put<{ language: string }>("/api/account/language", { language });
 }
 
+// DANGER ZONE: permanently delete the signed-in account and everything it owns.
+export function deleteAccount() {
+  return apiRequest<void>("/api/account", { method: "DELETE" });
+}
+
 export function getAccount() {
   return api.get<AccountData>("/api/account");
 }

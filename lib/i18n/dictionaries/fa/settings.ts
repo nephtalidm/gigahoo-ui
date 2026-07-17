@@ -35,6 +35,10 @@ const settings = {
 
   // Account security
   securityTitle: "امنیت حساب کاربری",
+  dangerTitle: "منطقه خطر",
+  dangerDescription: "حذف حساب، شماره تلفن، تاریخچه تماس‌ها و داده‌های صورتحساب شما را برای همیشه پاک می‌کند.",
+  deleteAccountButton: "حذف حساب",
+  deleteAccountConfirm: "این کار حساب شما را برای همیشه حذف می‌کند، شماره تلفن آزاد می‌شود و همه تاریخچه تماس‌ها و صورتحساب پاک می‌شود. قابل بازگشت نیست. ادامه می‌دهید؟",
   securityDescription: "روش‌های احراز هویت متصل‌شده خود را مدیریت کنید.",
   google: "Google",
   notLinked: "متصل نشده",

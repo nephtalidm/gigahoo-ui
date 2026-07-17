@@ -35,6 +35,10 @@ const settings = {
 
   // Account security
   securityTitle: "أمان الحساب",
+  dangerTitle: "منطقة الخطر",
+  dangerDescription: "حذف حسابك يزيل نهائيًا رقم هاتفك وسجل المكالمات وبيانات الفوترة.",
+  deleteAccountButton: "حذف الحساب",
+  deleteAccountConfirm: "سيؤدي هذا إلى حذف حسابك نهائيًا وتحرير رقم هاتفك ومحو كل سجل المكالمات وبيانات الفوترة. لا يمكن التراجع عن ذلك. هل تريد الحذف على أي حال؟",
   securityDescription: "إدارة طرق المصادقة المرتبطة بحسابك.",
   google: "Google",
   notLinked: "غير مرتبط",
