@@ -199,7 +199,7 @@ export default function BillingMethodsPage() {
       <div className="relative rounded-2xl border border-border bg-card p-6 shadow-sm">
         {/* Status row with reserved height: the "card saved" flash gets its own line, so it
             never crowds the card list below and nothing shifts when it appears. */}
-        <div className="mb-2 flex h-5 items-center justify-end">
+        <div className="mb-2 flex h-5 items-center justify-end pr-2">
           {saved && (
             <span className="flex items-center gap-1.5 text-sm text-emerald-600">
               <CheckCircle2 className="h-4 w-4" />
