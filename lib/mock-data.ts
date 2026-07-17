@@ -8,7 +8,6 @@ export const mockAccount: AccountData = {
   businessPhone: "+14155551234",
   phoneCountryCode: "US",
   email: "owner@summitplumbing.com",
-  serviceArea: "San Francisco Bay Area",
   websiteUrl: "https://summitplumbing.com",
   businessHours: "Mon-Fri 8am-6pm, Sat 9am-2pm",
   forwardingPhone: "+14155559999",

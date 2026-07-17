@@ -25,7 +25,6 @@ export type Account = {
   categoryId: number
   businessPhone: string
   email: string
-  serviceArea: string
   phoneCountryCode: string
   addressLine1: string
   addressLine2: string
@@ -76,7 +75,6 @@ export function mapApiAccount(a: AccountData): Account {
     categoryId: a.categoryId,
     businessPhone: a.businessPhone,
     email: a.email,
-    serviceArea: a.serviceArea ?? "",
     phoneCountryCode: a.phoneCountryCode,
     addressLine1: a.addressLine1 ?? "",
     addressLine2: a.addressLine2 ?? "",

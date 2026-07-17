@@ -102,7 +102,6 @@ export interface AccountData {
   businessPhone: string;
   phoneCountryCode: string;
   email: string;
-  serviceArea: string | null;
   websiteUrl: string | null;
   businessHours: string | null;
   forwardingPhone: string | null;
@@ -136,7 +135,6 @@ export interface AccountData {
   collectAddress?: boolean;
   collectEmergency?: boolean;
   agentStyle?: string | null;
-  agentInstruct?: string | null;
 }
 
 export function createAccount(data: {
@@ -205,7 +203,6 @@ export interface VoiceSettings {
   agentVoice: string | null;
   maximumCallMinutes: number | null;
   agentStyle: string | null;
-  agentInstruct: string | null;
 }
 
 export function updateVoiceSettings(s: {
