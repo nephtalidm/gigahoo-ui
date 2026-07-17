@@ -58,7 +58,15 @@ function AddCardForm({
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <PaymentElement />
+      {/* Plain card fields, always: no wallets and no Link-style takeovers — a user must
+          always see number/expiry/CVC without needing to know what Stripe Link is. */}
+      <PaymentElement
+        options={{
+          paymentMethodOrder: ["card"],
+          wallets: { applePay: "never", googlePay: "never" },
+          terms: { card: "never" },
+        }}
+      />
       {error && <p className="text-sm text-destructive">{error}</p>}
       <div className="flex items-center justify-end gap-3">
         <button
