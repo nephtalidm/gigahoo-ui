@@ -23,7 +23,8 @@ import { useUnsavedChanges } from "@/contexts/unsaved-changes-context"
 import { useAuth } from "@/contexts/auth-context"
 import { LanguageSwitcher } from "@/components/language-switcher"
 import {
-  deleteAccount,
+  requestAccountDeletion,
+  confirmAccountDeletion,
   updateAccount,
   updateAccountLanguage,
   setPassword as apiSetPassword,
@@ -190,7 +191,11 @@ export function SettingsView({
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [errors, setErrors] = useState<FieldErrors>({})
-  const [deleting, setDeleting] = useState(false)
+  // Account deletion is code-confirmed (VerifyModal, like email/phone changes).
+  const [deleteVerifyOpen, setDeleteVerifyOpen] = useState(false)
+  const [deleteCode, setDeleteCode] = useState("")
+  const [deleteBusy, setDeleteBusy] = useState(false)
+  const [deleteError, setDeleteError] = useState<string | null>(null)
 
   // Password set/change
   const [showPwForm, setShowPwForm] = useState(false)
@@ -553,15 +558,30 @@ export function SettingsView({
     setEmail(account.email)
   }
 
-  async function handleDeleteAccount() {
-    if (!window.confirm(t("settings.deleteAccountConfirm"))) return
-    setDeleting(true)
+  async function handleRequestDeleteAccount() {
+    setDeleteError(null)
+    setDeleteBusy(true)
     try {
-      await deleteAccount()
+      await requestAccountDeletion()
+      setDeleteCode("")
+      setDeleteVerifyOpen(true)
+    } catch (err) {
+      setDeleteError(err instanceof Error ? err.message : t("settings.codeSendFailed"))
+      setDeleteVerifyOpen(true) // show the error inside the modal (resend available)
+    } finally {
+      setDeleteBusy(false)
+    }
+  }
+
+  async function handleConfirmDeleteAccount() {
+    setDeleteError(null)
+    setDeleteBusy(true)
+    try {
+      await confirmAccountDeletion(deleteCode)
       logout() // session cleared; back to the homepage
     } catch (err) {
-      setError(err instanceof Error ? err.message : t("settings.saveFailed"))
-      setDeleting(false)
+      setDeleteError(err instanceof Error ? err.message : t("settings.verifyFailed"))
+      setDeleteBusy(false)
     }
   }
 
@@ -1096,10 +1116,28 @@ export function SettingsView({
         <h3 className="font-semibold text-destructive">{t("settings.dangerTitle")}</h3>
         <p className="mt-1 text-sm text-muted-foreground">{t("settings.dangerDescription")}</p>
         <div className="mt-4">
-          <Button variant="destructive" onClick={handleDeleteAccount} disabled={deleting}>
-            {deleting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          <Button variant="destructive" onClick={handleRequestDeleteAccount} disabled={deleteBusy}>
+            {deleteBusy && !deleteVerifyOpen && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {t("settings.deleteAccountButton")}
           </Button>
+          <VerifyModal
+            open={deleteVerifyOpen}
+            id="deleteCode"
+            title={t("settings.deleteVerifyTitle")}
+            description={t("settings.deleteAccountConfirm")}
+            waitingLabel={t("settings.waitingForConfirmation")}
+            cancelLabel={t("settings.cancel")}
+            confirmLabel={t("settings.deleteAccountButton")}
+            resendLabel={t("settings.resendCode")}
+            codeSentLabel={t("settings.codeSent")}
+            code={deleteCode}
+            setCode={setDeleteCode}
+            busy={deleteBusy}
+            error={deleteError}
+            onCancel={() => { setDeleteVerifyOpen(false); setDeleteCode(""); setDeleteError(null) }}
+            onConfirm={handleConfirmDeleteAccount}
+            onResend={handleRequestDeleteAccount}
+          />
         </div>
       </div>
     </div>
