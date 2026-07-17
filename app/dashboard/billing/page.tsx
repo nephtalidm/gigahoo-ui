@@ -197,12 +197,16 @@ export default function BillingMethodsPage() {
 
       {/* Saved cards */}
       <div className="relative rounded-2xl border border-border bg-card p-6 shadow-sm">
-        {saved && (
-          <span className="absolute top-2 right-6 flex items-center gap-1.5 text-sm text-emerald-600">
-            <CheckCircle2 className="h-4 w-4" />
-            {t("billing.cardSaved")}
-          </span>
-        )}
+        {/* Status row with reserved height: the "card saved" flash gets its own line, so it
+            never crowds the card list below and nothing shifts when it appears. */}
+        <div className="mb-2 flex h-5 items-center justify-end">
+          {saved && (
+            <span className="flex items-center gap-1.5 text-sm text-emerald-600">
+              <CheckCircle2 className="h-4 w-4" />
+              {t("billing.cardSaved")}
+            </span>
+          )}
+        </div>
         {methods.length === 0 ? (
           <p className="py-6 text-center text-sm text-muted-foreground">
             {t("billing.noPaymentMethods")}
