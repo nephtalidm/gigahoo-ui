@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { PageHeader } from "@/components/dashboard/page-header"
 import { SettingsView } from "@/components/dashboard/settings-view"
-import { getAccount, getCountries, getRegions, getFeatureSettings, type AccountData, type CountryData, type RegionData, type FeatureSettings } from "@/lib/api"
+import { getAccount, getCountries, getRegions, type AccountData, type CountryData, type RegionData } from "@/lib/api"
 import { useTranslation } from "@/contexts/language-context"
 import { Loader2 } from "lucide-react"
 
@@ -12,7 +12,6 @@ export default function SettingsPage() {
   const [account, setAccount] = useState<AccountData | null>(null)
   const [countries, setCountries] = useState<CountryData[]>([])
   const [regions, setRegions] = useState<RegionData[]>([])
-  const [featureSettings, setFeatureSettings] = useState<FeatureSettings | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -21,7 +20,6 @@ export default function SettingsPage() {
       // Address country dropdown is limited to served markets (Country.IsSupported) — the
       // backend does the filtering via supportedOnly.
       getCountries(true).then(setCountries).catch(() => {}),
-      getFeatureSettings().then(setFeatureSettings).catch(() => {}),
     ]).finally(() => setLoading(false))
   }, [])
 
@@ -52,7 +50,6 @@ export default function SettingsPage() {
           account={account}
           countries={countries}
           regions={regions}
-          featureSettings={featureSettings}
           onCountryChange={(countryId) => {
             getRegions(countryId)
               .then(setRegions)

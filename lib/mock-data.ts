@@ -1,4 +1,4 @@
-import type { ConversationData, AccountData, DashboardOverview, FeatureSettings, BillingSummary, PlanData } from "./api";
+import type { ConversationData, AccountData, DashboardOverview, BillingSummary, PlanData } from "./api";
 
 export const mockAccount: AccountData = {
   id: "123e4567-e89b-12d3-a456-426614174000",
@@ -102,21 +102,6 @@ export const mockDashboard: DashboardOverview = {
   recentConversations: mockConversations.slice(0, 4),
 };
 
-export const mockFeatureSettings: FeatureSettings = {
-  answerQuestions: true,
-  servicesInfo: "We offer residential and commercial plumbing services including leak repair, pipe installation, water heater repair, drain cleaning, and emergency services.",
-  serviceAreas: "San Francisco Bay Area, East Bay, Peninsula",
-  businessHours: "Mon-Fri 8am-6pm, Sat 9am-2pm, Emergency 24/7",
-  emergencyAvailability: "24/7 emergency service available for burst pipes and severe leaks",
-  pricingPolicy: "Free estimates for all jobs. Hourly rate: $125/hr. Emergency calls: $175/hr.",
-  warrantyPolicy: "All work guaranteed for 1 year. Parts warranty per manufacturer.",
-  frequentlyAskedQuestions: "Q: Do you offer free estimates?\nA: Yes, we provide free estimates for all jobs.\n\nQ: How quickly can you respond to emergencies?\nA: We typically arrive within 1-2 hours for emergencies.\n\nQ: Do you work on weekends?\nA: Yes, we offer Saturday service 9am-2pm and 24/7 emergency service.",
-  additionalBusinessInfo: "Licensed, bonded, and insured. 15+ years of experience. Family-owned business.",
-  serveArea: true,
-  distanceKm: 50,
-  quoteInspection: true,
-  pricePerKm: 2.50,
-};
 
 export const mockBillingSummary: BillingSummary = {
   plan: "Starter",

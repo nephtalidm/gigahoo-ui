@@ -9,7 +9,6 @@ import legal from "./legal"
 import dashboard from "./dashboard"
 import calls from "./calls"
 import billing from "./billing"
-import features from "./features"
 import settings from "./settings"
 import notifications from "./notifications"
 import categories from "./categories"
@@ -27,7 +26,6 @@ export const yue = {
   dashboard,
   calls,
   billing,
-  features,
   settings,
   notifications,
   categories,

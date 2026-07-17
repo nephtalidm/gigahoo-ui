@@ -33,9 +33,7 @@ import {
   type AccountData,
   type CountryData,
   type RegionData,
-  type FeatureSettings,
 } from "@/lib/api"
-import { OptionalFeatures, type FeaturesPanelHandle } from "@/components/dashboard/optional-features"
 import { areaCodeMatchesCountry, businessCategories, businessCategoryKeys, toE164, type Plan } from "@/lib/data"
 import { useSupportedCountries } from "@/hooks/use-supported-countries"
 import { cn } from "@/lib/utils"
@@ -160,13 +158,11 @@ export function SettingsView({
   account,
   countries,
   regions,
-  featureSettings,
   onCountryChange,
 }: {
   account: AccountData
   countries: CountryData[]
   regions: RegionData[]
-  featureSettings: FeatureSettings | null
   onCountryChange: (countryId: number) => void
 }) {
   const { t, locale, setLocale } = useTranslation()
@@ -189,8 +185,6 @@ export function SettingsView({
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [errors, setErrors] = useState<FieldErrors>({})
-  // The embedded optional-features panel saves through THIS page's single Save button.
-  const featuresRef = useRef<FeaturesPanelHandle>(null)
 
   // Password set/change
   const [showPwForm, setShowPwForm] = useState(false)
@@ -427,7 +421,6 @@ export function SettingsView({
       }
       // Persist the optional-feature settings through this SAME Save (one button for the page).
       // No-op when the panel isn't mounted (non-Business plans show the upgrade card instead).
-      await featuresRef.current?.save()
       // The saved values are now the clean baseline → clears the dirty guard.
       baselineRef.current = snapshot
       setDirty(false)
@@ -905,16 +898,6 @@ export function SettingsView({
               <p className="text-xs text-destructive">{errors.country}</p>
             )}
           </Field>
-        </div>
-
-        <Separator className="my-6" />
-
-        <h3 className="text-lg font-semibold text-foreground">{t("features.title")}</h3>
-        <p className="text-sm text-muted-foreground">
-          {t("features.description")}
-        </p>
-        <div className="mt-5">
-          <OptionalFeatures ref={featuresRef} plan={(account.plan ?? "Free") as Plan} initialSettings={featureSettings} />
         </div>
 
         <Separator className="my-6" />

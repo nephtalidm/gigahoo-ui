@@ -1,4 +1,4 @@
-import { mockAccount, mockDashboard, mockConversations, mockFeatureSettings, mockBillingSummary, mockPlans } from "./mock-data";
+import { mockAccount, mockDashboard, mockConversations, mockBillingSummary, mockPlans } from "./mock-data";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -453,32 +453,6 @@ export function setDefaultPaymentMethod(id: string, provider: string) {
     `/api/billing/payment-methods/${encodeURIComponent(id)}/default?provider=${encodeURIComponent(provider)}`,
     { method: "POST" },
   );
-}
-
-// ── Feature Settings ──
-
-export interface FeatureSettings {
-  answerQuestions: boolean;
-  servicesInfo: string | null;
-  serviceAreas: string | null;
-  businessHours: string | null;
-  emergencyAvailability: string | null;
-  pricingPolicy: string | null;
-  warrantyPolicy: string | null;
-  frequentlyAskedQuestions: string | null;
-  additionalBusinessInfo: string | null;
-  serveArea: boolean;
-  distanceKm: number;
-  quoteInspection: boolean;
-  pricePerKm: number;
-}
-
-export function getFeatureSettings() {
-  return api.get<FeatureSettings>("/api/features");
-}
-
-export function updateFeatureSettings(data: FeatureSettings) {
-  return api.put<FeatureSettings>("/api/features", data);
 }
 
 // ── Contact ──
