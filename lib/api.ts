@@ -134,7 +134,6 @@ export interface AccountData {
   collectPhone?: boolean;
   collectAddress?: boolean;
   collectEmergency?: boolean;
-  agentStyle?: string | null;
 }
 
 export function createAccount(data: {
@@ -202,7 +201,6 @@ export interface VoiceSettings {
   greetingMessage: string | null;
   agentVoice: string | null;
   maximumCallMinutes: number | null;
-  agentStyle: string | null;
 }
 
 export function updateVoiceSettings(s: {
