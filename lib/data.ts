@@ -25,7 +25,6 @@ export type Account = {
   categoryId: number
   businessPhone: string
   email: string
-  phoneCountryCode: string
   addressLine1: string
   addressLine2: string
   city: string
@@ -75,7 +74,6 @@ export function mapApiAccount(a: AccountData): Account {
     categoryId: a.categoryId,
     businessPhone: a.businessPhone,
     email: a.email,
-    phoneCountryCode: a.phoneCountryCode,
     addressLine1: a.addressLine1 ?? "",
     addressLine2: a.addressLine2 ?? "",
     city: a.city ?? "",
@@ -442,4 +440,39 @@ export function formatTime(iso: string) {
     hour: "numeric",
     minute: "2-digit",
   })
+}
+
+// Display formatting for phone numbers everywhere in the product: "+1 (778) 392-3021".
+// NANP numbers get the full pretty form; other countries render as "+<dial> <rest>".
+export function formatPhoneDisplay(phone: string | null | undefined): string {
+  const p = (phone ?? "").trim()
+  if (!p) return ""
+  const digits = p.replace(/\D/g, "")
+  if (digits.length === 11 && digits.startsWith("1")) return `+1 (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`
+  if (digits.length === 10) return `+1 (${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`
+  const match = [...countries]
+    .sort((a, b) => b.dialCode.length - a.dialCode.length)
+    .find((c) => digits.startsWith(c.dialCode.replace(/\D/g, "")))
+  if (match) return `${match.dialCode} ${digits.slice(match.dialCode.replace(/\D/g, "").length)}`
+  return p.startsWith("+") ? p : `+${digits}`
+}
+
+// Split a stored E.164 number into a picker country + local digits for editing.
+// US/CA share +1, so the NANP area code decides between them.
+export function splitE164(phone: string | null | undefined): { countryCode: string; local: string } {
+  const p = (phone ?? "").trim()
+  const digits = p.replace(/\D/g, "")
+  if (!digits) return { countryCode: "US", local: "" }
+  if (digits.length === 11 && digits.startsWith("1")) {
+    const local = digits.slice(1)
+    return { countryCode: areaCodeMatchesCountry(local, "CA") ? "CA" : "US", local }
+  }
+  if (digits.length === 10) {
+    return { countryCode: areaCodeMatchesCountry(digits, "CA") ? "CA" : "US", local: digits }
+  }
+  const match = [...countries]
+    .sort((a, b) => b.dialCode.length - a.dialCode.length)
+    .find((c) => digits.startsWith(c.dialCode.replace(/\D/g, "")))
+  if (match) return { countryCode: match.code, local: digits.slice(match.dialCode.replace(/\D/g, "").length) }
+  return { countryCode: "US", local: digits }
 }

@@ -24,7 +24,7 @@ import {
 import { PhoneInput } from "@/components/phone-input"
 import { AddressAutocomplete } from "@/components/address-autocomplete"
 import { validateAddress, type ValidatedAddress } from "@/lib/address-validation"
-import { businessCategories, businessCategoryKeys, countries, areaCodeMatchesCountry, type Plan } from "@/lib/data"
+import { businessCategories, businessCategoryKeys, countries, areaCodeMatchesCountry, toE164, type Plan } from "@/lib/data"
 import { getAccount, getCategories, api, createCheckout, getCurrencyForVisitor, type CountryData, type RegionData } from "@/lib/api"
 import { PLAN_PRICES, COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
 import { useAuth } from "@/contexts/auth-context"
@@ -343,8 +343,8 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
       const response = await api.post<{ token: string; expiresAt: string; account: unknown }>("/api/account", {
         businessName,
         categoryId: cat.id,
-        businessPhone,
-        phoneCountryCode,
+        // Stored as ONE full E.164 string — the country picker only shapes input.
+        businessPhone: toE164(phoneCountryCode, businessPhone),
         email,
         planId: plans.find((p) => p.name === selectedPlan)!.planId,
         addressLine1: a.addressLine1,

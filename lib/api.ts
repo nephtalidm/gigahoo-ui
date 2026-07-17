@@ -100,7 +100,6 @@ export interface AccountData {
   category: string;
   categoryId: number;
   businessPhone: string;
-  phoneCountryCode: string;
   email: string;
   websiteUrl: string | null;
   businessHours: string | null;
@@ -140,7 +139,6 @@ export function createAccount(data: {
   businessName: string;
   categoryId: number;
   businessPhone: string;
-  phoneCountryCode: string;
   email: string;
   planId: number;
   password: string;
@@ -171,7 +169,6 @@ export function updateAccount(data: {
   businessName: string;
   categoryId: number;
   businessPhone: string;
-  phoneCountryCode: string;
   email: string;
   websiteUrl: string | null;
   addressLine1: string | null;
@@ -278,8 +275,8 @@ export function requestPhoneChange(newPhone: string) {
   return api.post<{ message: string }>("/api/account/phone/request-change", { newPhone });
 }
 
-export function confirmPhoneChange(newPhone: string, phoneCountryCode: string, code: string) {
-  return api.post<{ message: string }>("/api/account/phone/confirm-change", { newPhone, phoneCountryCode, code });
+export function confirmPhoneChange(newPhone: string, code: string) {
+  return api.post<{ message: string }>("/api/account/phone/confirm-change", { newPhone, code });
 }
 
 // ── Dashboard ──

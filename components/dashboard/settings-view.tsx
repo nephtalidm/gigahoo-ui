@@ -34,7 +34,7 @@ import {
   type CountryData,
   type RegionData,
 } from "@/lib/api"
-import { areaCodeMatchesCountry, businessCategories, businessCategoryKeys, toE164, type Plan } from "@/lib/data"
+import { areaCodeMatchesCountry, businessCategories, businessCategoryKeys, formatPhoneDisplay, splitE164, toE164 } from "@/lib/data"
 import { useSupportedCountries } from "@/hooks/use-supported-countries"
 import { cn } from "@/lib/utils"
 import { Loader2, CheckCircle2 } from "lucide-react"
@@ -171,8 +171,10 @@ export function SettingsView({
   const supportedCodes = useSupportedCountries()
   const [businessName, setBusinessName] = useState(account.businessName)
   const [categoryId, setCategoryId] = useState(String(account.categoryId))
-  const [businessPhone, setBusinessPhone] = useState(account.businessPhone)
-  const [phoneCountryCode, setPhoneCountryCode] = useState(account.phoneCountryCode)
+  // The stored number is full E.164; the editor shows a country picker + local digits.
+  const initialPhone = splitE164(account.businessPhone)
+  const [businessPhone, setBusinessPhone] = useState(initialPhone.local)
+  const [phoneCountryCode, setPhoneCountryCode] = useState(initialPhone.countryCode)
   const [email, setEmail] = useState(account.email)
   const [websiteUrl, setWebsiteUrl] = useState(account.websiteUrl ?? "")
   const [addressLine1, setAddressLine1] = useState(account.addressLine1 ?? "")
@@ -219,8 +221,7 @@ export function SettingsView({
   // Compare digits only so re-formatting the same number (e.g. "(778) 392-3021"
   // vs a raw "7783923021" from the API) isn't a false "changed".
   const phoneChanged =
-    businessPhone.replace(/\D/g, "") !== (account.businessPhone ?? "").replace(/\D/g, "") ||
-    phoneCountryCode !== account.phoneCountryCode
+    toE164(phoneCountryCode, businessPhone).replace(/\D/g, "") !== (account.businessPhone ?? "").replace(/\D/g, "")
 
   const selectedCountry = countries.find((c) => String(c.id) === countryId)
   const hasRegions = regions.length > 0
@@ -402,7 +403,6 @@ export function SettingsView({
         businessName,
         categoryId: Number(categoryId),
         businessPhone: account.businessPhone,
-        phoneCountryCode: account.phoneCountryCode,
         email: account.email,
         websiteUrl: websiteUrl || null,
         addressLine1: addressLine1 || null,
@@ -553,8 +553,9 @@ export function SettingsView({
     setPhoneVerifyOpen(false)
     setPhoneCode("")
     setPhoneVerifyError(null)
-    setBusinessPhone(account.businessPhone)
-    setPhoneCountryCode(account.phoneCountryCode)
+    const reset = splitE164(account.businessPhone)
+    setBusinessPhone(reset.local)
+    setPhoneCountryCode(reset.countryCode)
   }
 
   async function handleRequestPhoneChange() {
@@ -567,7 +568,7 @@ export function SettingsView({
       return
     }
     // US/CA share +1; the area code must match the account's stored country.
-    if (!areaCodeMatchesCountry(phoneDigits, account.phoneCountryCode)) {
+    if (!areaCodeMatchesCountry(phoneDigits, phoneCountryCode)) {
       setPhoneVerifyError(t("signup.errAreaCodeMismatch"))
       return
     }
@@ -587,9 +588,8 @@ export function SettingsView({
     setPhoneVerifyError(null)
     setPhoneVerifyBusy(true)
     try {
-      await confirmPhoneChange(toE164(phoneCountryCode, businessPhone), phoneCountryCode, phoneCode)
-      account.businessPhone = businessPhone
-      account.phoneCountryCode = phoneCountryCode
+      await confirmPhoneChange(toE164(phoneCountryCode, businessPhone), phoneCode)
+      account.businessPhone = toE164(phoneCountryCode, businessPhone)
       // The new phone is now persisted — fold it into the baseline.
       patchBaseline({ businessPhone, phoneCountryCode })
       setPhoneVerifyOpen(false)
@@ -771,7 +771,7 @@ export function SettingsView({
           <Field label={t("settings.forwardingPhone")} htmlFor="forwardingPhone">
             <Input
               id="forwardingPhone"
-              value={account.forwardingPhone ?? "—"}
+              value={account.forwardingPhone ? formatPhoneDisplay(account.forwardingPhone) : "—"}
               readOnly
               disabled
               aria-describedby="forwardingPhoneHint"

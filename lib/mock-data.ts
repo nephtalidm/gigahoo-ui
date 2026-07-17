@@ -6,7 +6,6 @@ export const mockAccount: AccountData = {
   category: "Plumbing",
   categoryId: 1,
   businessPhone: "+14155551234",
-  phoneCountryCode: "US",
   email: "owner@summitplumbing.com",
   websiteUrl: "https://summitplumbing.com",
   businessHours: "Mon-Fri 8am-6pm, Sat 9am-2pm",
