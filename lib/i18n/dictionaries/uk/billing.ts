@@ -21,9 +21,6 @@ const billing = {
   noPlans: "Немає доступних тарифів.",
 
   // Payment / Stripe
-  paymentSubscription: "Оплата та підписка",
-  paymentDescription: "Керуйте способами оплати та підпискою через платіжний портал Stripe.",
-  managePaymentMethods: "Керувати способами оплати",
 
   // Billing history
   billingHistory: "Історія платежів",

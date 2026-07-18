@@ -21,9 +21,6 @@ const billing = {
   noPlans: "利用可能なプランがありません。",
 
   // Payment / Stripe
-  paymentSubscription: "支払いとサブスクリプション",
-  paymentDescription: "Stripe請求ポータルを通じて支払い方法とサブスクリプションを管理します。",
-  managePaymentMethods: "支払い方法を管理",
 
   // Billing history
   billingHistory: "請求履歴",

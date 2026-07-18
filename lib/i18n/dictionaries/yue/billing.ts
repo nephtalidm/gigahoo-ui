@@ -21,9 +21,6 @@ const billing = {
   noPlans: "暫時冇方案可選。",
 
   // Payment / Stripe
-  paymentSubscription: "付款與訂閱",
-  paymentDescription: "透過 Stripe 帳單入口管理你嘅付款方式同訂閱。",
-  managePaymentMethods: "管理付款方式",
 
   // Billing history
   billingHistory: "帳單記錄",

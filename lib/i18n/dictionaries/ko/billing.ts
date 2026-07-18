@@ -21,9 +21,6 @@ const billing = {
   noPlans: "사용 가능한 요금제가 없습니다.",
 
   // Payment / Stripe
-  paymentSubscription: "결제 및 구독",
-  paymentDescription: "Stripe 결제 포털을 통해 결제 수단과 구독을 관리하세요.",
-  managePaymentMethods: "결제 수단 관리",
 
   // Billing history
   billingHistory: "결제 내역",

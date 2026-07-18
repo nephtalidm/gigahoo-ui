@@ -21,9 +21,6 @@ const billing = {
   noPlans: "Walang available na plano.",
 
   // Payment / Stripe
-  paymentSubscription: "Pagbabayad at Subscription",
-  paymentDescription: "Pamahalaan ang iyong mga paraan ng pagbabayad at subscription sa pamamagitan ng Stripe Billing Portal.",
-  managePaymentMethods: "Pamahalaan ang mga paraan ng pagbabayad",
 
   // Billing history
   billingHistory: "Kasaysayan ng Pagbabayad",

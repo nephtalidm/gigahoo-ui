@@ -21,9 +21,6 @@ const billing = {
   noPlans: "暂无可用套餐。",
 
   // Payment / Stripe
-  paymentSubscription: "付款与订阅",
-  paymentDescription: "通过 Stripe 计费门户管理您的付款方式和订阅。",
-  managePaymentMethods: "管理支付方式",
 
   // Billing history
   billingHistory: "计费记录",

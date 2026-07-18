@@ -21,9 +21,6 @@ const billing = {
   noPlans: "هیچ طرحی در دسترس نیست.",
 
   // Payment / Stripe
-  paymentSubscription: "پرداخت و اشتراک",
-  paymentDescription: "روش‌های پرداخت و اشتراک خود را از طریق پورتال صورت‌حساب Stripe مدیریت کنید.",
-  managePaymentMethods: "مدیریت روش‌های پرداخت",
 
   // Billing history
   billingHistory: "تاریخچه صورت‌حساب",

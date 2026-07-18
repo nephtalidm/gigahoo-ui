@@ -21,9 +21,6 @@ const billing = {
   noPlans: "Aucun forfait disponible.",
 
   // Payment / Stripe
-  paymentSubscription: "Paiement et abonnement",
-  paymentDescription: "Gérez vos modes de paiement et votre abonnement via le portail de facturation Stripe.",
-  managePaymentMethods: "Gérer les moyens de paiement",
 
   // Billing history
   billingHistory: "Historique de facturation",

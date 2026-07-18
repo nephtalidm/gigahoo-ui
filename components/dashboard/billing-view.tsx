@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { useRouter } from "next/navigation"
 import { Elements } from "@stripe/react-stripe-js"
 import { StripeCardPayForm, stripePromise } from "@/components/stripe-card-form"
 import { Button } from "@/components/ui/button"
@@ -20,19 +19,15 @@ import {
   getPublicPrices,
   type BillingSummary,
   type PlanData,
-  type InvoiceData,
 } from "@/lib/api"
-import { formatDate } from "@/lib/data"
-import { ArrowUpRight, Check, Download, Loader2 } from "lucide-react"
+import { ArrowUpRight, Check, Loader2 } from "lucide-react"
 
 export function BillingView({
   summary,
   plans,
-  invoices,
 }: {
   summary: BillingSummary | null
   plans: PlanData[]
-  invoices: InvoiceData[]
 }) {
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null)
   // Embedded payment modal (no saved card): mounted once we hold a PaymentIntent clientSecret.
@@ -49,7 +44,6 @@ export function BillingView({
   const [currency, setCurrency] = useState<string | null>(null)
   const [prices, setPrices] = useState<Record<string, string>>({})
   const { toast } = useToast()
-  const router = useRouter()
   // Deep-link: /dashboard/plan?upgrade=Starter (the dashboard's Upgrade button) starts the
   // embedded flow for that plan immediately — this page is the fallback view, not a detour.
   // The param is consumed once and stripped so a refresh can't restart the flow.
@@ -321,69 +315,6 @@ export function BillingView({
           )}
         </div>
       </div>
-
-      {/* Payment & Subscription + Billing History — hidden on the free plan */}
-      {!onFreePlan && (
-      <div className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-          <h2 className="font-semibold text-foreground">{t("billing.paymentSubscription")}</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {t("billing.paymentDescription")}
-          </p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <Button variant="default" onClick={() => router.push("/dashboard/billing")}>
-              {t("billing.managePaymentMethods")}
-            </Button>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-          <h2 className="font-semibold text-foreground">{t("billing.billingHistory")}</h2>
-          {invoices.length > 0 ? (
-            <ul className="mt-4 divide-y divide-border">
-              {invoices.map((inv) => (
-                <li key={inv.id} className="flex items-center justify-between py-3">
-                  <div>
-                    <p className="text-sm font-medium text-foreground">{formatDate(inv.dateUtc)}</p>
-                    <p className="text-xs text-muted-foreground">{inv.invoiceNumber}</p>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Badge
-                      variant="secondary"
-                      className={cn(
-                        inv.status === "paid"
-                          ? "bg-emerald-500/10 text-emerald-600"
-                          : inv.status === "open"
-                            ? "bg-amber-500/10 text-amber-600"
-                            : "bg-destructive/10 text-destructive",
-                      )}
-                    >
-                      {inv.status}
-                    </Badge>
-                    <span className="text-sm font-medium text-foreground">
-                      {inv.currency} {inv.amount.toFixed(2)}
-                    </span>
-                    {inv.pdfUrl && (
-                      <a
-                        href={inv.pdfUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={t("billing.downloadInvoice", { number: inv.invoiceNumber })}
-                        className="text-muted-foreground transition-colors hover:text-foreground"
-                      >
-                        <Download className="h-4 w-4" />
-                      </a>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="mt-4 text-sm text-muted-foreground">{t("billing.noInvoices")}</p>
-          )}
-        </div>
-      </div>
-      )}
       {payPreparing && !payClientSecret && !confirmTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="flex w-full max-w-md flex-col items-center gap-4 rounded-2xl border border-border bg-card p-8 shadow-lg">

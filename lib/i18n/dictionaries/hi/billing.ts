@@ -21,9 +21,6 @@ const billing = {
   noPlans: "कोई प्लान उपलब्ध नहीं है।",
 
   // Payment / Stripe
-  paymentSubscription: "भुगतान और सदस्यता",
-  paymentDescription: "Stripe बिलिंग पोर्टल के माध्यम से अपने भुगतान तरीके और सदस्यता प्रबंधित करें।",
-  managePaymentMethods: "भुगतान विधियां प्रबंधित करें",
 
   // Billing history
   billingHistory: "बिलिंग इतिहास",

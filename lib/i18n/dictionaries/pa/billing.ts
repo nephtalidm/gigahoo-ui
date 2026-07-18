@@ -21,9 +21,6 @@ const billing = {
   noPlans: "ਕੋਈ ਪਲਾਨ ਉਪਲਬਧ ਨਹੀਂ ਹੈ।",
 
   // Payment / Stripe
-  paymentSubscription: "ਭੁਗਤਾਨ ਅਤੇ ਸਬਸਕ੍ਰਿਪਸ਼ਨ",
-  paymentDescription: "Stripe ਬਿਲਿੰਗ ਪੋਰਟਲ ਰਾਹੀਂ ਆਪਣੇ ਭੁਗਤਾਨ ਤਰੀਕਿਆਂ ਅਤੇ ਸਬਸਕ੍ਰਿਪਸ਼ਨ ਦਾ ਪ੍ਰਬੰਧ ਕਰੋ।",
-  managePaymentMethods: "ਭੁਗਤਾਨ ਵਿਧੀਆਂ ਪ੍ਰਬੰਧਿਤ ਕਰੋ",
 
   // Billing history
   billingHistory: "ਬਿਲਿੰਗ ਇਤਿਹਾਸ",

@@ -14,10 +14,15 @@ import {
   getPaymentMethods,
   removePaymentMethod,
   setDefaultPaymentMethod,
+  getInvoices,
   type PaymentMethod,
+  type InvoiceData,
 } from "@/lib/api"
+import { formatDate } from "@/lib/data"
+import { Badge } from "@/components/ui/badge"
+import { cn } from "@/lib/utils"
 import { useTranslation } from "@/contexts/language-context"
-import { Loader2, CheckCircle2, CreditCard, Trash2, Plus, Star } from "lucide-react"
+import { Loader2, CheckCircle2, CreditCard, Trash2, Plus, Star, Download } from "lucide-react"
 
 // Module-level promise so Stripe.js is loaded once and shared across renders.
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
@@ -97,6 +102,8 @@ export default function BillingMethodsPage() {
   const [removingId, setRemovingId] = useState<string | null>(null)
   const [defaultingId, setDefaultingId] = useState<string | null>(null)
   const [saved, setSaved] = useState(false)
+  // Billing history — invoices belong on the Billing page, next to the cards that pay them.
+  const [invoices, setInvoices] = useState<InvoiceData[]>([])
 
   // Add-card flow state. We only mount <Elements> once we have a clientSecret.
   const [adding, setAdding] = useState(false)
@@ -112,6 +119,7 @@ export default function BillingMethodsPage() {
   }
 
   useEffect(() => {
+    getInvoices().then(setInvoices).catch(() => {})
     refresh().finally(() => setLoading(false))
   }, [])
 
@@ -318,6 +326,52 @@ export default function BillingMethodsPage() {
           // card-collection component instead of Stripe Elements.
           <p className="text-sm text-destructive">{t("billing.providerUnsupported")}</p>
         ) : null}
+      </div>
+
+      <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <h2 className="font-semibold text-foreground">{t("billing.billingHistory")}</h2>
+        {invoices.length > 0 ? (
+          <ul className="mt-4 divide-y divide-border">
+            {invoices.map((inv) => (
+              <li key={inv.id} className="flex items-center justify-between py-3">
+                <div>
+                  <p className="text-sm font-medium text-foreground">{formatDate(inv.dateUtc)}</p>
+                  <p className="text-xs text-muted-foreground">{inv.invoiceNumber}</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Badge
+                    variant="secondary"
+                    className={cn(
+                      inv.status.toLowerCase() === "paid"
+                        ? "bg-emerald-500/10 text-emerald-600"
+                        : inv.status.toLowerCase() === "open"
+                          ? "bg-amber-500/10 text-amber-600"
+                          : "bg-destructive/10 text-destructive",
+                    )}
+                  >
+                    {inv.status}
+                  </Badge>
+                  <span className="text-sm font-medium text-foreground">
+                    {inv.currency} {inv.amount.toFixed(2)}
+                  </span>
+                  {inv.pdfUrl && (
+                    <a
+                      href={inv.pdfUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={t("billing.downloadInvoice", { number: inv.invoiceNumber })}
+                      className="text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      <Download className="h-4 w-4" />
+                    </a>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-4 text-sm text-muted-foreground">{t("billing.noInvoices")}</p>
+        )}
       </div>
     </div>
   )

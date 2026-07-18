@@ -21,9 +21,6 @@ const billing = {
   noPlans: "No plans available.",
 
   // Payment / Stripe
-  paymentSubscription: "Payment & Subscription",
-  paymentDescription: "Manage your payment methods and subscription through the Stripe Billing Portal.",
-  managePaymentMethods: "Manage payment methods",
 
   // Billing history
   billingHistory: "Billing History",

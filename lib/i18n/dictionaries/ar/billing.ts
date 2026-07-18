@@ -21,9 +21,6 @@ const billing = {
   noPlans: "لا توجد خطط متاحة.",
 
   // Payment / Stripe
-  paymentSubscription: "الدفع والاشتراك",
-  paymentDescription: "إدارة طرق الدفع والاشتراك من خلال بوابة الفوترة Stripe.",
-  managePaymentMethods: "إدارة طرق الدفع",
 
   // Billing history
   billingHistory: "سجل الفوترة",
