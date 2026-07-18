@@ -25,7 +25,7 @@ import { PhoneInput } from "@/components/phone-input"
 import { AddressAutocomplete } from "@/components/address-autocomplete"
 import { validateAddress, type ValidatedAddress } from "@/lib/address-validation"
 import { businessCategories, businessCategoryKeys, countries, areaCodeMatchesCountry, toE164, type Plan } from "@/lib/data"
-import { getAccount, getCategories, api, subscribePlan, requestSignupPhoneCode, syncSubscription, getCurrencyForVisitor, type CountryData, type RegionData } from "@/lib/api"
+import { getAccount, getCategories, api, ApiError, subscribePlan, requestSignupPhoneCode, syncSubscription, getCurrencyForVisitor, type CountryData, type RegionData } from "@/lib/api"
 import { Elements } from "@stripe/react-stripe-js"
 import { VerifyModal } from "@/components/verify-modal"
 import { StripeCardPayForm, stripePromise } from "@/components/stripe-card-form"
@@ -357,8 +357,16 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
       // for their own login number and sail through; everyone else gets a code by SMS and
       // the modal collects it - creation then retries with the code attached.
       if (!phoneVerificationCode) {
-        const gate = await requestSignupPhoneCode(toE164(phoneCountryCode, businessPhone))
-        if (!gate.verified) {
+        let verified = false
+        try {
+          verified = (await requestSignupPhoneCode(toE164(phoneCountryCode, businessPhone))).verified
+        } catch (err) {
+          // 429 = the rate limiter blocked a RE-send — a still-valid code is already out
+          // there (10-minute lifetime), so just reopen the modal for it. Anything else is
+          // a real failure.
+          if (!(err instanceof ApiError && err.status === 429)) throw err
+        }
+        if (!verified) {
           setPendingAddr(a)
           setPhoneCode("")
           setPhoneVerifyError(null)
@@ -945,7 +953,15 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
         error={phoneVerifyError}
         onCancel={() => setPhoneVerifyOpen(false)}
         onConfirm={() => { setPhoneVerifyError(null); void submitAccount(pendingAddr ?? undefined, phoneCode) }}
-        onResend={async () => { await requestSignupPhoneCode(toE164(phoneCountryCode, businessPhone)) }}
+        onResend={async () => {
+          try {
+            await requestSignupPhoneCode(toE164(phoneCountryCode, businessPhone))
+            setPhoneVerifyError(null)
+          } catch (e) {
+            setPhoneVerifyError(e instanceof Error ? e.message : t("signup.errGeneric"))
+            throw e // VerifyModal must not show the "code sent" checkmark
+          }
+        }}
       />
       {payClientSecret && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
