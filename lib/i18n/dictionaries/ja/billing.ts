@@ -50,7 +50,7 @@ const billing = {
   cardExpires: "有効期限 {date}",
   cardError: "カードを保存できませんでした。もう一度お試しください。",
   pay: "支払う",
-  completeUpgrade: "プランのアップグレードを完了",
+  completeUpgradeTo: "{plan}プランへのアップグレードを完了",
   confirmUpgradeTitle: "アップグレードの確認",
   confirmUpgradeText: "{plan}（月額{price}）にアップグレードしますか？末尾{last4}の{brand}カードに請求されます。",
   confirmCharge: "確認して支払う",

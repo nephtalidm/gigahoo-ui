@@ -50,7 +50,7 @@ const billing = {
   cardExpires: "انقضا {date}",
   cardError: "ذخیره کارت شما ممکن نشد. لطفاً دوباره تلاش کنید.",
   pay: "پرداخت",
-  completeUpgrade: "ارتقای طرح خود را کامل کنید",
+  completeUpgradeTo: "ارتقای خود به طرح {plan} را کامل کنید",
   confirmUpgradeTitle: "تأیید ارتقا",
   confirmUpgradeText: "ارتقا به {plan} با {price} در ماه؟ مبلغ از کارت {brand} با پایان {last4} برداشت می‌شود.",
   confirmCharge: "تأیید و پرداخت",

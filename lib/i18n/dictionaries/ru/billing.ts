@@ -50,7 +50,7 @@ const billing = {
   cardExpires: "Действует до {date}",
   cardError: "Не удалось сохранить карту. Пожалуйста, попробуйте ещё раз.",
   pay: "Оплатить",
-  completeUpgrade: "Завершите обновление тарифа",
+  completeUpgradeTo: "Завершите переход на тариф {plan}",
   confirmUpgradeTitle: "Подтвердите переход",
   confirmUpgradeText: "Перейти на {plan} за {price}/мес.? Будет списано с карты {brand}, оканчивающейся на {last4}.",
   confirmCharge: "Подтвердить и оплатить",

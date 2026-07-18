@@ -50,7 +50,7 @@ const billing = {
   cardExpires: "有效期至 {date}",
   cardError: "無法儲存你嘅卡片。請再試一次。",
   pay: "付款",
-  completeUpgrade: "完成計劃升級",
+  completeUpgradeTo: "完成升級至{plan}計劃",
   confirmUpgradeTitle: "確認升級",
   confirmUpgradeText: "以每月{price}升級至{plan}？將會從尾號{last4}嘅{brand}卡扣款。",
   confirmCharge: "確認並付款",

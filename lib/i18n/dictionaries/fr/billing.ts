@@ -50,7 +50,7 @@ const billing = {
   cardExpires: "Expire le {date}",
   cardError: "Impossible d'enregistrer votre carte. Veuillez réessayer.",
   pay: "Payer",
-  completeUpgrade: "Finalisez votre changement de forfait",
+  completeUpgradeTo: "Finalisez votre passage au forfait {plan}",
   confirmUpgradeTitle: "Confirmer le changement",
   confirmUpgradeText: "Passer à {plan} pour {price}/mois ? Votre carte {brand} se terminant par {last4} sera débitée.",
   confirmCharge: "Confirmer et payer",

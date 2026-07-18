@@ -50,7 +50,7 @@ const billing = {
   cardExpires: "Expires {date}",
   cardError: "Could not save your card. Please try again.",
   pay: "Pay",
-  completeUpgrade: "Complete your upgrade",
+  completeUpgradeTo: "Complete your upgrade to {plan}",
   confirmUpgradeTitle: "Confirm upgrade",
   confirmUpgradeText: "Upgrade to {plan} for {price}/month? Your {brand} card ending in {last4} will be charged.",
   confirmCharge: "Confirm and pay",

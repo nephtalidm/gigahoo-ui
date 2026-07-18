@@ -50,7 +50,7 @@ const billing = {
   cardExpires: "समाप्ति {date}",
   cardError: "आपका कार्ड सहेजा नहीं जा सका। कृपया पुनः प्रयास करें।",
   pay: "भुगतान करें",
-  completeUpgrade: "अपना प्लान अपग्रेड पूरा करें",
+  completeUpgradeTo: "{plan} प्लान में अपना अपग्रेड पूरा करें",
   confirmUpgradeTitle: "अपग्रेड की पुष्टि करें",
   confirmUpgradeText: "{price}/माह पर {plan} में अपग्रेड करें? आपके {last4} पर समाप्त {brand} कार्ड से शुल्क लिया जाएगा।",
   confirmCharge: "पुष्टि करें और भुगतान करें",

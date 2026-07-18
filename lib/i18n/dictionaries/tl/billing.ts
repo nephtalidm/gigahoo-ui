@@ -50,7 +50,7 @@ const billing = {
   cardExpires: "Mag-e-expire {date}",
   cardError: "Hindi ma-save ang iyong card. Pakisubukang muli.",
   pay: "Magbayad",
-  completeUpgrade: "Kumpletuhin ang pag-upgrade ng plano",
+  completeUpgradeTo: "Kumpletuhin ang pag-upgrade sa {plan}",
   confirmUpgradeTitle: "Kumpirmahin ang upgrade",
   confirmUpgradeText: "I-upgrade sa {plan} sa {price}/buwan? Sisingilin ang iyong {brand} card na nagtatapos sa {last4}.",
   confirmCharge: "Kumpirmahin at magbayad",

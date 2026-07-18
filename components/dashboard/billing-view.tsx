@@ -39,6 +39,7 @@ export function BillingView({
   // The modal opens INSTANTLY in a preparing state when an upgrade starts — card lookup +
   // Stripe subscription creation take several seconds, and silence reads as a dead click.
   const [payPreparing, setPayPreparing] = useState(false)
+  const [payPlan, setPayPlan] = useState<PlanData | null>(null)
   // Charging a SAVED card is never silent: the user confirms plan + price + card first.
   const [confirmTarget, setConfirmTarget] = useState<{ plan: PlanData; card: PaymentMethod } | null>(null)
   // Billing currency/amounts follow the ACCOUNT's country (where they signed up),
@@ -142,6 +143,7 @@ export function BillingView({
       // Charging a saved card is never silent — surface plan, price and card, and wait for an
       // explicit confirm. With no saved card the card-entry modal is itself the confirmation.
       setPayPreparing(true)
+      setPayPlan(plan)
       const methods = await getPaymentMethods().catch(() => [] as PaymentMethod[])
       const defaultCard = methods.find((m) => m.isDefault) ?? methods[0]
       if (defaultCard) {
@@ -380,7 +382,7 @@ export function BillingView({
       {payPreparing && !payClientSecret && !confirmTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="flex w-full max-w-md flex-col items-center gap-4 rounded-2xl border border-border bg-card p-8 shadow-lg">
-            <h2 className="text-lg font-semibold text-foreground">{t("billing.completeUpgrade")}</h2>
+            <h2 className="text-lg font-semibold text-foreground">{t("billing.completeUpgradeTo", { plan: payPlan?.name ?? "" })}</h2>
             <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
           </div>
         </div>
@@ -421,7 +423,7 @@ export function BillingView({
       {payClientSecret && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-lg">
-            <h2 className="mb-4 text-lg font-semibold text-foreground">{t("billing.completeUpgrade")}</h2>
+            <h2 className="mb-4 text-lg font-semibold text-foreground">{t("billing.completeUpgradeTo", { plan: payPlan?.name ?? "" })}</h2>
             <Elements stripe={stripePromise} options={{ clientSecret: payClientSecret }}>
               <StripeCardPayForm
                 submitLabel={t("billing.pay")}

@@ -50,7 +50,7 @@ const billing = {
   cardExpires: "ਮਿਆਦ {date}",
   cardError: "ਤੁਹਾਡਾ ਕਾਰਡ ਸੰਭਾਲਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
   pay: "ਭੁਗਤਾਨ ਕਰੋ",
-  completeUpgrade: "ਆਪਣਾ ਪਲਾਨ ਅੱਪਗ੍ਰੇਡ ਪੂਰਾ ਕਰੋ",
+  completeUpgradeTo: "{plan} ਪਲਾਨ ਵਿੱਚ ਆਪਣਾ ਅੱਪਗ੍ਰੇਡ ਪੂਰਾ ਕਰੋ",
   confirmUpgradeTitle: "ਅੱਪਗ੍ਰੇਡ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
   confirmUpgradeText: "{price}/ਮਹੀਨਾ ਤੇ {plan} ਵਿੱਚ ਅੱਪਗ੍ਰੇਡ ਕਰੀਏ? ਤੁਹਾਡੇ {last4} ਤੇ ਖ਼ਤਮ ਹੋਣ ਵਾਲੇ {brand} ਕਾਰਡ ਤੋਂ ਭੁਗਤਾਨ ਲਿਆ ਜਾਵੇਗਾ।",
   confirmCharge: "ਪੁਸ਼ਟੀ ਕਰੋ ਅਤੇ ਭੁਗਤਾਨ ਕਰੋ",

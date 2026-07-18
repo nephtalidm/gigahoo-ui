@@ -50,7 +50,7 @@ const billing = {
   cardExpires: "تنتهي في {date}",
   cardError: "تعذّر حفظ بطاقتك. يرجى المحاولة مرة أخرى.",
   pay: "ادفع",
-  completeUpgrade: "أكمل ترقية خطتك",
+  completeUpgradeTo: "أكمل الترقية إلى خطة {plan}",
   confirmUpgradeTitle: "تأكيد الترقية",
   confirmUpgradeText: "الترقية إلى {plan} مقابل {price}/شهريًا؟ سيتم الخصم من بطاقة {brand} المنتهية بـ {last4}.",
   confirmCharge: "تأكيد والدفع",
