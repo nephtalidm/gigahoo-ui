@@ -25,7 +25,9 @@ import { PhoneInput } from "@/components/phone-input"
 import { AddressAutocomplete } from "@/components/address-autocomplete"
 import { validateAddress, type ValidatedAddress } from "@/lib/address-validation"
 import { businessCategories, businessCategoryKeys, countries, areaCodeMatchesCountry, toE164, type Plan } from "@/lib/data"
-import { getAccount, getCategories, api, createCheckout, getCurrencyForVisitor, type CountryData, type RegionData } from "@/lib/api"
+import { getAccount, getCategories, api, subscribePlan, getCurrencyForVisitor, type CountryData, type RegionData } from "@/lib/api"
+import { Elements } from "@stripe/react-stripe-js"
+import { StripeCardPayForm, stripePromise } from "@/components/stripe-card-form"
 import { PLAN_PRICES, COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
 import { useAuth } from "@/contexts/auth-context"
 import { useTranslation } from "@/contexts/language-context"
@@ -95,6 +97,10 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
   const { t } = useTranslation()
   const [checkingAccount, setCheckingAccount] = useState(true)
   const [selectedPlan, setSelectedPlan] = useState<Plan>("Starter")
+  // Embedded card step for paid signups — mounted once the unpaid subscription's
+  // PaymentIntent clientSecret arrives. Cancel still lands in the dashboard: the account
+  // exists on the Free plan and the upgrade can be finished from there any time.
+  const [payClientSecret, setPayClientSecret] = useState<string | null>(null)
   // Billing currency for the plan amounts, resolved from the visitor's geo
   // country (the same source the homepage Pricing uses). Initialized from the
   // NEXT_CURRENCY cookie so it renders immediately without a flicker.
@@ -364,12 +370,21 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
       try { localStorage.removeItem(SIGNUP_PLAN_KEY) } catch {}
       storeAuth({ accessToken: response.token, expiresAt: response.expiresAt })
 
-      // Paid plans collect a card via Stripe Checkout; Free goes straight to the dashboard.
+      // Paid plans collect the card RIGHT HERE (embedded, no Stripe redirect); Free goes
+      // straight to the dashboard. The subscription is created unpaid and this form's
+      // confirmation pays its first invoice — the plan flips only when the payment lands.
       if (selectedPlan !== "Free") {
         const planId = plans.find((p) => p.name === selectedPlan)!.planId
-        const { url } = await createCheckout(planId)
-        window.location.href = url
-        return
+        const res = await subscribePlan(planId)
+        if (res.status === "active") {
+          router.push("/dashboard")
+          return
+        }
+        if (res.clientSecret) {
+          setPayClientSecret(res.clientSecret)
+          return
+        }
+        throw new Error(t("signup.errGeneric"))
       }
       router.push("/dashboard")
     } catch (err) {
@@ -877,6 +892,20 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
         </Button>
       </div>
     </form>
+      {payClientSecret && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-lg">
+            <h2 className="mb-4 text-lg font-semibold text-foreground">{t("billing.completeUpgrade")}</h2>
+            <Elements stripe={stripePromise} options={{ clientSecret: payClientSecret }}>
+              <StripeCardPayForm
+                submitLabel={t("billing.pay")}
+                onSuccess={() => router.push("/dashboard")}
+                onCancel={() => router.push("/dashboard")}
+              />
+            </Elements>
+          </div>
+        </div>
+      )}
     </>
   )
 }
