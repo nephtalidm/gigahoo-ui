@@ -36,6 +36,9 @@ export function BillingView({
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null)
   // Embedded payment modal (no saved card): mounted once we hold a PaymentIntent clientSecret.
   const [payClientSecret, setPayClientSecret] = useState<string | null>(null)
+  // The modal opens INSTANTLY in a preparing state when an upgrade starts — card lookup +
+  // Stripe subscription creation take several seconds, and silence reads as a dead click.
+  const [payPreparing, setPayPreparing] = useState(false)
   // Charging a SAVED card is never silent: the user confirms plan + price + card first.
   const [confirmTarget, setConfirmTarget] = useState<{ plan: PlanData; card: PaymentMethod } | null>(null)
   // Billing currency/amounts follow the ACCOUNT's country (where they signed up),
@@ -138,15 +141,18 @@ export function BillingView({
     try {
       // Charging a saved card is never silent — surface plan, price and card, and wait for an
       // explicit confirm. With no saved card the card-entry modal is itself the confirmation.
+      setPayPreparing(true)
       const methods = await getPaymentMethods().catch(() => [] as PaymentMethod[])
       const defaultCard = methods.find((m) => m.isDefault) ?? methods[0]
       if (defaultCard) {
+        setPayPreparing(false) // the confirm dialog takes over
         setConfirmTarget({ plan, card: defaultCard })
         setLoadingPlan(null)
         return
       }
       await startSubscribe(plan)
     } catch {
+      setPayPreparing(false)
       toast({ title: t("billing.checkoutFailed"), description: t("billing.tryAgain"), variant: "destructive" })
     } finally {
       setLoadingPlan(null)
@@ -166,16 +172,20 @@ export function BillingView({
         const stripe = await stripePromise
         const { error } = await stripe!.confirmCardPayment(res.clientSecret)
         if (error) {
+          setPayPreparing(false)
           toast({ title: t("billing.checkoutFailed"), description: error.message ?? t("billing.tryAgain"), variant: "destructive" })
         } else {
           window.location.reload()
         }
       } else if (res.clientSecret) {
         setPayClientSecret(res.clientSecret) // no saved card — collect one in the modal
+        setPayPreparing(false)
       } else {
+        setPayPreparing(false)
         toast({ title: t("billing.checkoutFailed"), description: t("billing.tryAgain"), variant: "destructive" })
       }
     } catch {
+      setPayPreparing(false)
       toast({ title: t("billing.checkoutFailed"), description: t("billing.tryAgain"), variant: "destructive" })
     } finally {
       setLoadingPlan(null)
@@ -366,6 +376,14 @@ export function BillingView({
           )}
         </div>
       </div>
+      )}
+      {payPreparing && !payClientSecret && !confirmTarget && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="flex w-full max-w-md flex-col items-center gap-4 rounded-2xl border border-border bg-card p-8 shadow-lg">
+            <h2 className="text-lg font-semibold text-foreground">{t("billing.completeUpgrade")}</h2>
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          </div>
+        </div>
       )}
       {confirmTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
