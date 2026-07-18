@@ -946,7 +946,7 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
       {payClientSecret && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-lg">
-            <h2 className="mb-4 text-lg font-semibold text-foreground">{t("billing.completeUpgradeTo", { plan: selectedPlan })}</h2>
+            <h2 className="mb-4 text-lg font-semibold text-foreground">{t("billing.completeSubscribeTo", { plan: selectedPlan })}</h2>
             <Elements stripe={stripePromise} options={{ clientSecret: payClientSecret }}>
               <StripeCardPayForm
                 submitLabel={t("billing.pay")}

@@ -117,6 +117,9 @@ export function BillingView({
   // Plan ordering is data-driven (Plan.DisplayOrder from the API), not a hardcoded list.
   const currentPlanOrder = plans.find((p) => p.name === currentPlan)?.displayOrder ?? 0
   const onFreePlan = currentPlan === "Free"
+  // Wording follows reality: with no paid plan yet the user is SUBSCRIBING; only a move
+  // from one paid plan to another is an upgrade.
+  const isSubscribing = onFreePlan
   const includedMinutes = summary?.includedMinutes ?? 25
   const minutesUsed = summary?.minutesUsed ?? 0
   const remaining = summary?.remainingMinutes ?? Math.max(includedMinutes - minutesUsed, 0)
@@ -382,7 +385,7 @@ export function BillingView({
       {payPreparing && !payClientSecret && !confirmTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="flex w-full max-w-md flex-col items-center gap-4 rounded-2xl border border-border bg-card p-8 shadow-lg">
-            <h2 className="text-lg font-semibold text-foreground">{t("billing.completeUpgradeTo", { plan: payPlan?.name ?? "" })}</h2>
+            <h2 className="text-lg font-semibold text-foreground">{t(isSubscribing ? "billing.completeSubscribeTo" : "billing.completeUpgradeTo", { plan: payPlan?.name ?? "" })}</h2>
             <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
           </div>
         </div>
@@ -390,9 +393,9 @@ export function BillingView({
       {confirmTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-lg">
-            <h2 className="mb-2 text-lg font-semibold text-foreground">{t("billing.confirmUpgradeTitle")}</h2>
+            <h2 className="mb-2 text-lg font-semibold text-foreground">{t(isSubscribing ? "billing.confirmSubscribeTitle" : "billing.confirmUpgradeTitle")}</h2>
             <p className="mb-5 text-sm text-muted-foreground">
-              {t("billing.confirmUpgradeText", {
+              {t(isSubscribing ? "billing.confirmSubscribeText" : "billing.confirmUpgradeText", {
                 plan: confirmTarget.plan.name,
                 price: prices[confirmTarget.plan.name] ?? `$${Math.round(confirmTarget.plan.priceMonthly)}`,
                 brand: confirmTarget.card.brand,
@@ -423,7 +426,7 @@ export function BillingView({
       {payClientSecret && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-lg">
-            <h2 className="mb-4 text-lg font-semibold text-foreground">{t("billing.completeUpgradeTo", { plan: payPlan?.name ?? "" })}</h2>
+            <h2 className="mb-4 text-lg font-semibold text-foreground">{t(isSubscribing ? "billing.completeSubscribeTo" : "billing.completeUpgradeTo", { plan: payPlan?.name ?? "" })}</h2>
             <Elements stripe={stripePromise} options={{ clientSecret: payClientSecret }}>
               <StripeCardPayForm
                 submitLabel={t("billing.pay")}
