@@ -52,6 +52,9 @@ const billing = {
   cardError: "Could not save your card. Please try again.",
   pay: "Pay",
   completeUpgrade: "Complete your upgrade",
+  confirmUpgradeTitle: "Confirm upgrade",
+  confirmUpgradeText: "Upgrade to {plan} for {price}/month? Your {brand} card ending in {last4} will be charged.",
+  confirmCharge: "Confirm and pay",
   addCardFailed: "Could not start adding a card. Please try again.",
   providerUnsupported: "This payment provider isn't supported yet.",
 }

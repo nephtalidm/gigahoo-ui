@@ -52,6 +52,9 @@ const billing = {
   cardError: "Hindi ma-save ang iyong card. Pakisubukang muli.",
   pay: "Magbayad",
   completeUpgrade: "Kumpletuhin ang pag-upgrade ng plano",
+  confirmUpgradeTitle: "Kumpirmahin ang upgrade",
+  confirmUpgradeText: "I-upgrade sa {plan} sa {price}/buwan? Sisingilin ang iyong {brand} card na nagtatapos sa {last4}.",
+  confirmCharge: "Kumpirmahin at magbayad",
   addCardFailed: "Hindi masimulan ang pagdaragdag ng card. Pakisubukang muli.",
   providerUnsupported: "Hindi pa sinusuportahan ang payment provider na ito.",
 }

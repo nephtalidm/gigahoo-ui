@@ -52,6 +52,9 @@ const billing = {
   cardError: "無法儲存你嘅卡片。請再試一次。",
   pay: "付款",
   completeUpgrade: "完成計劃升級",
+  confirmUpgradeTitle: "確認升級",
+  confirmUpgradeText: "以每月{price}升級至{plan}？將會從尾號{last4}嘅{brand}卡扣款。",
+  confirmCharge: "確認並付款",
   addCardFailed: "無法開始新增卡片。請再試一次。",
   providerUnsupported: "暫時未支援呢個付款服務商。",
 }

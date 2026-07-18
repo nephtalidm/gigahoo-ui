@@ -52,6 +52,9 @@ const billing = {
   cardError: "无法保存您的卡片。请重试。",
   pay: "支付",
   completeUpgrade: "完成套餐升级",
+  confirmUpgradeTitle: "确认升级",
+  confirmUpgradeText: "以每月{price}升级到{plan}？将从尾号{last4}的{brand}卡扣款。",
+  confirmCharge: "确认并支付",
   addCardFailed: "无法开始添加卡片。请重试。",
   providerUnsupported: "尚不支持此支付服务商。",
 }

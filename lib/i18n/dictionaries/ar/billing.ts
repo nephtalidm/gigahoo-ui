@@ -52,6 +52,9 @@ const billing = {
   cardError: "تعذّر حفظ بطاقتك. يرجى المحاولة مرة أخرى.",
   pay: "ادفع",
   completeUpgrade: "أكمل ترقية خطتك",
+  confirmUpgradeTitle: "تأكيد الترقية",
+  confirmUpgradeText: "الترقية إلى {plan} مقابل {price}/شهريًا؟ سيتم الخصم من بطاقة {brand} المنتهية بـ {last4}.",
+  confirmCharge: "تأكيد والدفع",
   addCardFailed: "تعذّر بدء إضافة بطاقة. يرجى المحاولة مرة أخرى.",
   providerUnsupported: "مزوّد الدفع هذا غير مدعوم بعد.",
 }

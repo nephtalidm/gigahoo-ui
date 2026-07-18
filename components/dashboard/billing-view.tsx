@@ -13,6 +13,8 @@ import {
   changePlan,
   createBillingPortal,
   subscribePlan,
+  getPaymentMethods,
+  type PaymentMethod,
   getAccount,
   getPublicPrices,
   type BillingSummary,
@@ -93,6 +95,8 @@ export function BillingView({
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null)
   // Embedded payment modal (no saved card): mounted once we hold a PaymentIntent clientSecret.
   const [payClientSecret, setPayClientSecret] = useState<string | null>(null)
+  // Charging a SAVED card is never silent: the user confirms plan + price + card first.
+  const [confirmTarget, setConfirmTarget] = useState<{ plan: PlanData; card: PaymentMethod } | null>(null)
   const [portalLoading, setPortalLoading] = useState(false)
   // Billing currency/amounts follow the ACCOUNT's country (where they signed up),
   // NOT the top-menu country/language switcher. Fetched fresh from the DB each load
@@ -174,6 +178,27 @@ export function BillingView({
       return
     }
 
+    setLoadingPlan(plan.name)
+    try {
+      // Charging a saved card is never silent — surface plan, price and card, and wait for an
+      // explicit confirm. With no saved card the card-entry modal is itself the confirmation.
+      const methods = await getPaymentMethods().catch(() => [] as PaymentMethod[])
+      const defaultCard = methods.find((m) => m.isDefault) ?? methods[0]
+      if (defaultCard) {
+        setConfirmTarget({ plan, card: defaultCard })
+        setLoadingPlan(null)
+        return
+      }
+      await startSubscribe(plan)
+    } catch {
+      toast({ title: t("billing.checkoutFailed"), description: t("billing.tryAgain"), variant: "destructive" })
+    } finally {
+      setLoadingPlan(null)
+    }
+  }
+
+  // The actual subscribe call — reached directly (no saved card) or via the confirm dialog.
+  async function startSubscribe(plan: PlanData) {
     setLoadingPlan(plan.name)
     try {
       // EMBEDDED upgrade: the saved default card is charged server-side; the dashboard is
@@ -397,6 +422,39 @@ export function BillingView({
           )}
         </div>
       </div>
+      )}
+      {confirmTarget && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-lg">
+            <h2 className="mb-2 text-lg font-semibold text-foreground">{t("billing.confirmUpgradeTitle")}</h2>
+            <p className="mb-5 text-sm text-muted-foreground">
+              {t("billing.confirmUpgradeText", {
+                plan: confirmTarget.plan.name,
+                price: prices[confirmTarget.plan.name] ?? `$${Math.round(confirmTarget.plan.priceMonthly)}`,
+                brand: confirmTarget.card.brand,
+                last4: confirmTarget.card.last4,
+              })}
+            </p>
+            <div className="flex items-center justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setConfirmTarget(null)}
+                className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground cursor-pointer transition-colors hover:bg-accent"
+              >
+                {t("billing.cancel")}
+              </button>
+              <button
+                type="button"
+                disabled={loadingPlan !== null}
+                onClick={() => { const plan = confirmTarget.plan; setConfirmTarget(null); void startSubscribe(plan) }}
+                className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm cursor-pointer transition-colors hover:bg-primary/90 disabled:opacity-60"
+              >
+                {loadingPlan !== null && <Loader2 className="h-4 w-4 animate-spin" />}
+                {t("billing.confirmCharge")}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
       {payClientSecret && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">

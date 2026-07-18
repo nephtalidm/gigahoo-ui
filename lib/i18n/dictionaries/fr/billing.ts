@@ -52,6 +52,9 @@ const billing = {
   cardError: "Impossible d'enregistrer votre carte. Veuillez réessayer.",
   pay: "Payer",
   completeUpgrade: "Finalisez votre changement de forfait",
+  confirmUpgradeTitle: "Confirmer le changement",
+  confirmUpgradeText: "Passer à {plan} pour {price}/mois ? Votre carte {brand} se terminant par {last4} sera débitée.",
+  confirmCharge: "Confirmer et payer",
   addCardFailed: "Impossible de lancer l'ajout d'une carte. Veuillez réessayer.",
   providerUnsupported: "Ce prestataire de paiement n'est pas encore pris en charge.",
 }

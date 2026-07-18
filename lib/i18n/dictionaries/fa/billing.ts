@@ -52,6 +52,9 @@ const billing = {
   cardError: "ذخیره کارت شما ممکن نشد. لطفاً دوباره تلاش کنید.",
   pay: "پرداخت",
   completeUpgrade: "ارتقای طرح خود را کامل کنید",
+  confirmUpgradeTitle: "تأیید ارتقا",
+  confirmUpgradeText: "ارتقا به {plan} با {price} در ماه؟ مبلغ از کارت {brand} با پایان {last4} برداشت می‌شود.",
+  confirmCharge: "تأیید و پرداخت",
   addCardFailed: "شروع افزودن کارت ممکن نشد. لطفاً دوباره تلاش کنید.",
   providerUnsupported: "این ارائه‌دهنده پرداخت هنوز پشتیبانی نمی‌شود.",
 }

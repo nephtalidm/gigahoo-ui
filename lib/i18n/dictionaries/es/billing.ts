@@ -52,6 +52,9 @@ const billing = {
   cardError: "No se pudo guardar tu tarjeta. Inténtalo de nuevo.",
   pay: "Pagar",
   completeUpgrade: "Completa tu mejora de plan",
+  confirmUpgradeTitle: "Confirmar mejora",
+  confirmUpgradeText: "¿Mejorar a {plan} por {price}/mes? Se cobrará a tu tarjeta {brand} terminada en {last4}.",
+  confirmCharge: "Confirmar y pagar",
   addCardFailed: "No se pudo iniciar el proceso para agregar una tarjeta. Inténtalo de nuevo.",
   providerUnsupported: "Este proveedor de pagos aún no es compatible.",
 }

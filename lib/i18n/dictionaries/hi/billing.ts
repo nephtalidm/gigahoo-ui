@@ -52,6 +52,9 @@ const billing = {
   cardError: "आपका कार्ड सहेजा नहीं जा सका। कृपया पुनः प्रयास करें।",
   pay: "भुगतान करें",
   completeUpgrade: "अपना प्लान अपग्रेड पूरा करें",
+  confirmUpgradeTitle: "अपग्रेड की पुष्टि करें",
+  confirmUpgradeText: "{price}/माह पर {plan} में अपग्रेड करें? आपके {last4} पर समाप्त {brand} कार्ड से शुल्क लिया जाएगा।",
+  confirmCharge: "पुष्टि करें और भुगतान करें",
   addCardFailed: "कार्ड जोड़ना शुरू नहीं किया जा सका। कृपया पुनः प्रयास करें।",
   providerUnsupported: "यह भुगतान प्रदाता अभी समर्थित नहीं है।",
 }
