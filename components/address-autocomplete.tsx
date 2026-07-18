@@ -166,6 +166,7 @@ export function AddressAutocomplete({
 
   return (
     <Input
+      spellCheck={false}
       ref={inputRef}
       id={id}
       value={value}

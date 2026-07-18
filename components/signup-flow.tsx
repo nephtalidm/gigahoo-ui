@@ -577,6 +577,7 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
         <Input
           name="businessName"
           id="businessName"
+          spellCheck={false}
           value={businessName}
           onChange={(e) => setBusinessName(e.target.value)}
           placeholder={t("signup.businessNamePlaceholder")}
@@ -756,6 +757,7 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
         <Input
           name="addressLine2"
           id="addressLine2"
+          spellCheck={false}
           value={addressLine2}
           onChange={(e) => setAddressLine2(e.target.value)}
           placeholder={t("signup.addressLine2Placeholder")}
@@ -768,6 +770,7 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
         <Input
           name="city"
           id="city"
+          spellCheck={false}
           value={city}
           onChange={(e) => setCity(e.target.value)}
           placeholder={t("signup.cityPlaceholder")}
@@ -810,6 +813,7 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
         <Input
           name="postalCode"
           id="postalCode"
+          spellCheck={false}
           value={postalCode}
           onChange={(e) => setPostalCode(e.target.value)}
           placeholder={t("signup.postalCodePlaceholder")}
