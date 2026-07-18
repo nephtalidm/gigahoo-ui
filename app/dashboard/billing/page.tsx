@@ -360,9 +360,9 @@ export default function BillingMethodsPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={t("billing.downloadInvoice", { number: inv.invoiceNumber })}
-                      className="text-muted-foreground transition-colors hover:text-foreground"
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                     >
-                      <Download className="h-4 w-4" />
+                      <Download className="h-5 w-5" />
                     </a>
                   )}
                 </div>
