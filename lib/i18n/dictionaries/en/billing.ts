@@ -23,7 +23,7 @@ const billing = {
   // Payment / Stripe
   paymentSubscription: "Payment & Subscription",
   paymentDescription: "Manage your payment methods and subscription through the Stripe Billing Portal.",
-  openBillingPortal: "Open Billing Portal",
+  managePaymentMethods: "Manage payment methods",
 
   // Billing history
   billingHistory: "Billing History",
@@ -33,7 +33,6 @@ const billing = {
   // Toasts
   changePlanFailed: "Failed to change plan",
   checkoutFailed: "Failed to start checkout",
-  portalFailed: "Failed to open billing portal",
   tryAgain: "Please try again.",
   // Payment methods (embedded Stripe Elements)
   paymentMethodsTitle: "Billing",

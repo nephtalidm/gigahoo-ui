@@ -23,7 +23,7 @@ const billing = {
   // Payment / Stripe
   paymentSubscription: "الدفع والاشتراك",
   paymentDescription: "إدارة طرق الدفع والاشتراك من خلال بوابة الفوترة Stripe.",
-  openBillingPortal: "فتح بوابة الفوترة",
+  managePaymentMethods: "إدارة طرق الدفع",
 
   // Billing history
   billingHistory: "سجل الفوترة",
@@ -33,7 +33,6 @@ const billing = {
   // Toasts
   changePlanFailed: "فشل تغيير الخطة",
   checkoutFailed: "فشل بدء عملية الدفع",
-  portalFailed: "فشل فتح بوابة الفوترة",
   tryAgain: "يرجى المحاولة مرة أخرى.",
   // Payment methods (embedded Stripe Elements)
   paymentMethodsTitle: "المدفوعات",

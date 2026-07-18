@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { Elements } from "@stripe/react-stripe-js"
 import { StripeCardPayForm, stripePromise } from "@/components/stripe-card-form"
 import { Button } from "@/components/ui/button"
@@ -11,7 +12,6 @@ import { useToast } from "@/components/ui/toaster"
 import { useTranslation } from "@/contexts/language-context"
 import {
   changePlan,
-  createBillingPortal,
   subscribePlan,
   getPaymentMethods,
   type PaymentMethod,
@@ -38,13 +38,13 @@ export function BillingView({
   const [payClientSecret, setPayClientSecret] = useState<string | null>(null)
   // Charging a SAVED card is never silent: the user confirms plan + price + card first.
   const [confirmTarget, setConfirmTarget] = useState<{ plan: PlanData; card: PaymentMethod } | null>(null)
-  const [portalLoading, setPortalLoading] = useState(false)
   // Billing currency/amounts follow the ACCOUNT's country (where they signed up),
   // NOT the top-menu country/language switcher. Fetched fresh from the DB each load
   // (no caching); the price and its currency label render together once loaded.
   const [currency, setCurrency] = useState<string | null>(null)
   const [prices, setPrices] = useState<Record<string, string>>({})
   const { toast } = useToast()
+  const router = useRouter()
   const { t } = useTranslation()
 
   useEffect(() => {
@@ -167,17 +167,6 @@ export function BillingView({
     }
   }
 
-  async function handleOpenPortal() {
-    setPortalLoading(true)
-    try {
-      const { url } = await createBillingPortal()
-      window.open(url, "_blank")
-    } catch {
-      toast({ title: t("billing.portalFailed"), description: t("billing.tryAgain"), variant: "destructive" })
-    } finally {
-      setPortalLoading(false)
-    }
-  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -310,9 +299,8 @@ export function BillingView({
             {t("billing.paymentDescription")}
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
-            <Button variant="default" onClick={handleOpenPortal} disabled={portalLoading}>
-              {portalLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {t("billing.openBillingPortal")}
+            <Button variant="default" onClick={() => router.push("/dashboard/billing")}>
+              {t("billing.managePaymentMethods")}
             </Button>
           </div>
         </div>

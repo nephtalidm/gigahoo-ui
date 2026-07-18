@@ -23,7 +23,7 @@ const billing = {
   // Payment / Stripe
   paymentSubscription: "ਭੁਗਤਾਨ ਅਤੇ ਸਬਸਕ੍ਰਿਪਸ਼ਨ",
   paymentDescription: "Stripe ਬਿਲਿੰਗ ਪੋਰਟਲ ਰਾਹੀਂ ਆਪਣੇ ਭੁਗਤਾਨ ਤਰੀਕਿਆਂ ਅਤੇ ਸਬਸਕ੍ਰਿਪਸ਼ਨ ਦਾ ਪ੍ਰਬੰਧ ਕਰੋ।",
-  openBillingPortal: "ਬਿਲਿੰਗ ਪੋਰਟਲ ਖੋਲ੍ਹੋ",
+  managePaymentMethods: "ਭੁਗਤਾਨ ਵਿਧੀਆਂ ਪ੍ਰਬੰਧਿਤ ਕਰੋ",
 
   // Billing history
   billingHistory: "ਬਿਲਿੰਗ ਇਤਿਹਾਸ",
@@ -33,7 +33,6 @@ const billing = {
   // Toasts
   changePlanFailed: "ਪਲਾਨ ਬਦਲਣ ਵਿੱਚ ਅਸਫਲ",
   checkoutFailed: "ਚੈੱਕਆਊਟ ਸ਼ੁਰੂ ਕਰਨ ਵਿੱਚ ਅਸਫਲ",
-  portalFailed: "ਬਿਲਿੰਗ ਪੋਰਟਲ ਖੋਲ੍ਹਣ ਵਿੱਚ ਅਸਫਲ",
   tryAgain: "ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
   // Payment methods (embedded Stripe Elements)
   paymentMethodsTitle: "ਭੁਗਤਾਨ",

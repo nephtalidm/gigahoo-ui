@@ -23,7 +23,7 @@ const billing = {
   // Payment / Stripe
   paymentSubscription: "Paiement et abonnement",
   paymentDescription: "Gérez vos modes de paiement et votre abonnement via le portail de facturation Stripe.",
-  openBillingPortal: "Ouvrir le portail de facturation",
+  managePaymentMethods: "Gérer les moyens de paiement",
 
   // Billing history
   billingHistory: "Historique de facturation",
@@ -33,7 +33,6 @@ const billing = {
   // Toasts
   changePlanFailed: "Échec du changement de forfait",
   checkoutFailed: "Échec du démarrage du paiement",
-  portalFailed: "Échec de l'ouverture du portail de facturation",
   tryAgain: "Veuillez réessayer.",
   // Payment methods (embedded Stripe Elements)
   paymentMethodsTitle: "Paiement",

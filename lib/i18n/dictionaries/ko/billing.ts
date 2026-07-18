@@ -23,7 +23,7 @@ const billing = {
   // Payment / Stripe
   paymentSubscription: "결제 및 구독",
   paymentDescription: "Stripe 결제 포털을 통해 결제 수단과 구독을 관리하세요.",
-  openBillingPortal: "결제 포털 열기",
+  managePaymentMethods: "결제 수단 관리",
 
   // Billing history
   billingHistory: "결제 내역",
@@ -33,7 +33,6 @@ const billing = {
   // Toasts
   changePlanFailed: "요금제 변경에 실패했습니다",
   checkoutFailed: "결제 시작에 실패했습니다",
-  portalFailed: "결제 포털을 여는 데 실패했습니다",
   tryAgain: "다시 시도해 주세요.",
   // Payment methods (embedded Stripe Elements)
   paymentMethodsTitle: "결제 수단",

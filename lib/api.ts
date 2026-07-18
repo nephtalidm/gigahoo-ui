@@ -418,10 +418,6 @@ export function getInvoices() {
   return api.get<InvoiceData[]>("/api/billing/invoices");
 }
 
-export function createBillingPortal() {
-  return api.post<{ url: string }>("/api/billing/portal");
-}
-
 // ── Payment methods (Stripe Elements, embedded in the dashboard) ──
 
 export interface SetupIntent {

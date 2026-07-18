@@ -23,7 +23,7 @@ const billing = {
   // Payment / Stripe
   paymentSubscription: "भुगतान और सदस्यता",
   paymentDescription: "Stripe बिलिंग पोर्टल के माध्यम से अपने भुगतान तरीके और सदस्यता प्रबंधित करें।",
-  openBillingPortal: "बिलिंग पोर्टल खोलें",
+  managePaymentMethods: "भुगतान विधियां प्रबंधित करें",
 
   // Billing history
   billingHistory: "बिलिंग इतिहास",
@@ -33,7 +33,6 @@ const billing = {
   // Toasts
   changePlanFailed: "प्लान बदलने में विफल",
   checkoutFailed: "चेकआउट शुरू करने में विफल",
-  portalFailed: "बिलिंग पोर्टल खोलने में विफल",
   tryAgain: "कृपया पुनः प्रयास करें।",
   // Payment methods (embedded Stripe Elements)
   paymentMethodsTitle: "भुगतान",

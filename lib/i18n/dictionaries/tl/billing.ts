@@ -23,7 +23,7 @@ const billing = {
   // Payment / Stripe
   paymentSubscription: "Pagbabayad at Subscription",
   paymentDescription: "Pamahalaan ang iyong mga paraan ng pagbabayad at subscription sa pamamagitan ng Stripe Billing Portal.",
-  openBillingPortal: "Buksan ang Billing Portal",
+  managePaymentMethods: "Pamahalaan ang mga paraan ng pagbabayad",
 
   // Billing history
   billingHistory: "Kasaysayan ng Pagbabayad",
@@ -33,7 +33,6 @@ const billing = {
   // Toasts
   changePlanFailed: "Nabigong baguhin ang plano",
   checkoutFailed: "Nabigong simulan ang checkout",
-  portalFailed: "Nabigong buksan ang billing portal",
   tryAgain: "Pakisubukan muli.",
   // Payment methods (embedded Stripe Elements)
   paymentMethodsTitle: "Pagbabayad",

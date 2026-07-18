@@ -23,7 +23,7 @@ const billing = {
   // Payment / Stripe
   paymentSubscription: "付款与订阅",
   paymentDescription: "通过 Stripe 计费门户管理您的付款方式和订阅。",
-  openBillingPortal: "打开计费门户",
+  managePaymentMethods: "管理支付方式",
 
   // Billing history
   billingHistory: "计费记录",
@@ -33,7 +33,6 @@ const billing = {
   // Toasts
   changePlanFailed: "套餐更改失败",
   checkoutFailed: "结账启动失败",
-  portalFailed: "计费门户打开失败",
   tryAgain: "请重试。",
   // Payment methods (embedded Stripe Elements)
   paymentMethodsTitle: "支付方式",

@@ -23,7 +23,7 @@ const billing = {
   // Payment / Stripe
   paymentSubscription: "پرداخت و اشتراک",
   paymentDescription: "روش‌های پرداخت و اشتراک خود را از طریق پورتال صورت‌حساب Stripe مدیریت کنید.",
-  openBillingPortal: "باز کردن پورتال صورت‌حساب",
+  managePaymentMethods: "مدیریت روش‌های پرداخت",
 
   // Billing history
   billingHistory: "تاریخچه صورت‌حساب",
@@ -33,7 +33,6 @@ const billing = {
   // Toasts
   changePlanFailed: "تغییر طرح ناموفق بود",
   checkoutFailed: "شروع فرآیند پرداخت ناموفق بود",
-  portalFailed: "باز کردن پورتال صورت‌حساب ناموفق بود",
   tryAgain: "لطفاً دوباره تلاش کنید.",
   // Payment methods (embedded Stripe Elements)
   paymentMethodsTitle: "پرداخت",

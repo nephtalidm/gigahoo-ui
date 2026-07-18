@@ -23,7 +23,7 @@ const billing = {
   // Payment / Stripe
   paymentSubscription: "Оплата и подписка",
   paymentDescription: "Управляйте способами оплаты и подпиской через платёжный портал Stripe.",
-  openBillingPortal: "Открыть платёжный портал",
+  managePaymentMethods: "Управление способами оплаты",
 
   // Billing history
   billingHistory: "История оплаты",
@@ -33,7 +33,6 @@ const billing = {
   // Toasts
   changePlanFailed: "Не удалось изменить тариф",
   checkoutFailed: "Не удалось начать оформление оплаты",
-  portalFailed: "Не удалось открыть платёжный портал",
   tryAgain: "Пожалуйста, повторите попытку.",
   // Payment methods (embedded Stripe Elements)
   paymentMethodsTitle: "Оплата",

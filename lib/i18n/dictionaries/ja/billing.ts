@@ -23,7 +23,7 @@ const billing = {
   // Payment / Stripe
   paymentSubscription: "支払いとサブスクリプション",
   paymentDescription: "Stripe請求ポータルを通じて支払い方法とサブスクリプションを管理します。",
-  openBillingPortal: "請求ポータルを開く",
+  managePaymentMethods: "支払い方法を管理",
 
   // Billing history
   billingHistory: "請求履歴",
@@ -33,7 +33,6 @@ const billing = {
   // Toasts
   changePlanFailed: "プランの変更に失敗しました",
   checkoutFailed: "チェックアウトの開始に失敗しました",
-  portalFailed: "請求ポータルを開けませんでした",
   tryAgain: "もう一度お試しください。",
   // Payment methods (embedded Stripe Elements)
   paymentMethodsTitle: "お支払い",
