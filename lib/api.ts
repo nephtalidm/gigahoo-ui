@@ -81,8 +81,9 @@ export function googleLogin(idToken: string, country?: string) {
   return api.post<AuthResponse>("/api/auth/google", { idToken, country });
 }
 
-export function sendMagicLink(email: string, country?: string) {
-  return api.post<{ message: string }>("/api/auth/magic-link", { email, country });
+export function sendMagicLink(email: string, country?: string, next?: string | null) {
+  // next rides INTO the emailed link so /auth/callback can resume the original page.
+  return api.post<{ message: string }>("/api/auth/magic-link", { email, country, next });
 }
 
 export function verifyMagicLink(email: string, code: string) {

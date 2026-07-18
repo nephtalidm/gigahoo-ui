@@ -44,6 +44,9 @@ function isRegionRestricted(err: unknown) {
 export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void }) {
   const { t } = useTranslation()
   const { loginWithGoogle, sendMagicLink, sendSmsCode, verifySmsCode, storeAuth } = useAuth()
+  // The page the user was heading to before the 401 bounce ("/login?next=...") — threaded
+  // into the magic link so the EMAIL path resumes it too, not just same-page code entry.
+  const loginNext = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("next") : null
   const [mode, setMode] = useState<Mode>("menu")
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
@@ -106,7 +109,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
       if (mode === "sms") {
         await sendSmsCode(toE164(phoneCountry, phone), selectedCountry())
       } else {
-        await sendMagicLink(email, selectedCountry())
+        await sendMagicLink(email, selectedCountry(), loginNext)
       }
       setCode("")
       lastAutoCode.current = ""
@@ -187,7 +190,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
         setLoading(false)
         return
       }
-      await sendMagicLink(email, selectedCountry())
+      await sendMagicLink(email, selectedCountry(), loginNext)
       setEmailSent(true)
       startResendCountdown()
     } catch (err) {
