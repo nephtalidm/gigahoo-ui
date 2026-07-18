@@ -77,7 +77,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const acc = await getAccount();
       setAccount(acc);
-      router.push(acc.businessName?.trim() ? "/dashboard" : "/signup");
+      // Resume the page the user was originally heading to (?next= set by the 401 bounce).
+      // Only same-site dashboard paths are honored — never an absolute URL (open redirect).
+      const next = new URLSearchParams(window.location.search).get("next");
+      const safeNext = next && next.startsWith("/dashboard") && !next.startsWith("//") ? next : null;
+      router.push(acc.businessName?.trim() ? (safeNext ?? "/dashboard") : "/signup");
     } catch {
       router.push("/signup");
     }

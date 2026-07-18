@@ -35,7 +35,12 @@ async function apiRequest<T>(
     if (res.status === 401 && !isRetry && !path.startsWith("/api/auth/")) {
       localStorage.removeItem("gigahoo_token");
       localStorage.removeItem("gigahoo_expires_at");
-      window.location.href = "/login";
+      // Remember WHERE the user was heading (e.g. the receipt email's /dashboard/billing
+      // link) so login can resume there instead of dumping them on the dashboard home.
+      const next = window.location.pathname + window.location.search;
+      window.location.href = next.startsWith("/dashboard")
+        ? "/login?next=" + encodeURIComponent(next)
+        : "/login";
       throw new Error("Unauthorized");
     }
     // Surface the server's machine-readable error code (e.g. "region_signup_restricted")
