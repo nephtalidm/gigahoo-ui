@@ -25,7 +25,7 @@ import { PhoneInput } from "@/components/phone-input"
 import { AddressAutocomplete } from "@/components/address-autocomplete"
 import { validateAddress, type ValidatedAddress } from "@/lib/address-validation"
 import { businessCategories, businessCategoryKeys, countries, areaCodeMatchesCountry, toE164, type Plan } from "@/lib/data"
-import { getAccount, getCategories, api, subscribePlan, getCurrencyForVisitor, type CountryData, type RegionData } from "@/lib/api"
+import { getAccount, getCategories, api, subscribePlan, requestSignupPhoneCode, getCurrencyForVisitor, type CountryData, type RegionData } from "@/lib/api"
 import { Elements } from "@stripe/react-stripe-js"
 import { StripeCardPayForm, stripePromise } from "@/components/stripe-card-form"
 import { PLAN_PRICES, COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
@@ -101,6 +101,13 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
   // PaymentIntent clientSecret arrives. Cancel still lands in the dashboard: the account
   // exists on the Free plan and the upgrade can be finished from there any time.
   const [payClientSecret, setPayClientSecret] = useState<string | null>(null)
+  // SMS gate: account creation requires a verified business phone. The modal collects the
+  // code; the server verifies it inside the create call itself (the authoritative gate).
+  const [phoneVerifyOpen, setPhoneVerifyOpen] = useState(false)
+  const [phoneCode, setPhoneCode] = useState("")
+  const [phoneVerifyError, setPhoneVerifyError] = useState<string | null>(null)
+  const [phoneVerifyBusy, setPhoneVerifyBusy] = useState(false)
+  const [pendingAddr, setPendingAddr] = useState<{ addressLine1: string; addressLine2: string; city: string; regionId: string; postalCode: string } | null>(null)
   // Billing currency for the plan amounts, resolved from the visitor's geo
   // country (the same source the homepage Pricing uses). Initialized from the
   // NEXT_CURRENCY cookie so it renders immediately without a flicker.
@@ -332,7 +339,7 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
     return e
   }
 
-  async function submitAccount(addr?: { addressLine1: string; addressLine2: string; city: string; regionId: string; postalCode: string }) {
+  async function submitAccount(addr?: { addressLine1: string; addressLine2: string; city: string; regionId: string; postalCode: string }, phoneVerificationCode?: string) {
     const a = addr ?? { addressLine1, addressLine2, city, regionId, postalCode }
     setLoading(true)
 
@@ -346,7 +353,23 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
         return
       }
 
+      // SMS GATE: without a code in hand, ask the server. SMS-auth users get verified=true
+      // for their own login number and sail through; everyone else gets a code by SMS and
+      // the modal collects it - creation then retries with the code attached.
+      if (!phoneVerificationCode) {
+        const gate = await requestSignupPhoneCode(toE164(phoneCountryCode, businessPhone))
+        if (!gate.verified) {
+          setPendingAddr(a)
+          setPhoneCode("")
+          setPhoneVerifyError(null)
+          setPhoneVerifyOpen(true)
+          setLoading(false)
+          return
+        }
+      }
+
       const response = await api.post<{ token: string; expiresAt: string; account: unknown }>("/api/account", {
+        phoneVerificationCode,
         businessName,
         categoryId: cat.id,
         // Stored as ONE full E.164 string — the country picker only shapes input.
@@ -367,6 +390,7 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
         language: document.cookie.match(/(?:^|;\s*)NEXT_LOCALE=([^;]+)/)?.[1] ?? "en",
       })
 
+      setPhoneVerifyOpen(false)
       try { localStorage.removeItem(SIGNUP_PLAN_KEY) } catch {}
       // navigate: false — the signup flow owns navigation from here: paid plans must stay
       // on this page for the embedded card step; the auto-push would unmount it mid-payment.
@@ -391,6 +415,13 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
       router.push("/dashboard")
     } catch (err) {
       const msg = err instanceof Error ? err.message : t("signup.errGeneric")
+      // Phone-code failures surface inside the verification modal (it stays open for retry).
+      if (msg.includes("phone_verification_required") || msg.toLowerCase().includes("expired code")) {
+        setPhoneVerifyError(t("signup.errCodeInvalid"))
+        setPhoneVerifyOpen(true)
+        setLoading(false)
+        return
+      }
       // Map known server errors to their specific field; reserve errors.general
       // for genuinely non-field (server/network) failures.
       if (msg.toLowerCase().includes("email")) {
@@ -894,6 +925,61 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
         </Button>
       </div>
     </form>
+      {phoneVerifyOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-lg">
+            <h2 className="mb-2 text-lg font-semibold text-foreground">{t("signup.verifyPhoneTitle")}</h2>
+            <p className="mb-4 text-sm text-muted-foreground">
+              {t("signup.verifyPhoneDesc", { phone: toE164(phoneCountryCode, businessPhone) })}
+            </p>
+            <input
+              id="signupPhoneCode"
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              value={phoneCode}
+              onChange={(e) => setPhoneCode(e.target.value.replace(/\D/g, ""))}
+              className="w-full rounded-lg border border-border bg-background px-4 py-2 text-center text-lg tracking-widest text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              maxLength={8}
+            />
+            {phoneVerifyError && <p className="mt-2 text-sm text-destructive">{phoneVerifyError}</p>}
+            <div className="mt-4 flex items-center justify-between gap-3">
+              <button
+                type="button"
+                disabled={phoneVerifyBusy}
+                onClick={() => {
+                  setPhoneVerifyBusy(true)
+                  setPhoneVerifyError(null)
+                  requestSignupPhoneCode(toE164(phoneCountryCode, businessPhone))
+                    .catch((e) => setPhoneVerifyError(e instanceof Error ? e.message : t("signup.errGeneric")))
+                    .finally(() => setPhoneVerifyBusy(false))
+                }}
+                className="text-sm font-medium text-primary hover:underline disabled:opacity-60"
+              >
+                {t("signup.resendCode")}
+              </button>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setPhoneVerifyOpen(false)}
+                  disabled={loading}
+                  className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground cursor-pointer transition-colors hover:bg-accent disabled:opacity-60"
+                >
+                  {t("signup.cancel")}
+                </button>
+                <button
+                  type="button"
+                  disabled={loading || phoneCode.length < 4}
+                  onClick={() => { setPhoneVerifyError(null); void submitAccount(pendingAddr ?? undefined, phoneCode) }}
+                  className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm cursor-pointer transition-colors hover:bg-primary/90 disabled:opacity-60"
+                >
+                  {loading && <Loader2 className="h-4 w-4 animate-spin" />}
+                  {t("signup.verifyPhoneCta")}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {payClientSecret && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-lg">

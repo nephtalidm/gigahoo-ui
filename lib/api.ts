@@ -153,6 +153,12 @@ export function updateAccountLanguage(language: string) {
   return api.put<{ language: string }>("/api/account/language", { language });
 }
 
+// SIGNUP gate: account creation requires SMS-verified control of the business phone.
+// verified=true means this identity already proved the exact number (SMS login) - no code needed.
+export function requestSignupPhoneCode(phoneNumber: string) {
+  return api.post<{ verified: boolean; message?: string }>("/api/account/phone/request-verify", { newPhone: phoneNumber });
+}
+
 // DANGER ZONE: deletion is code-confirmed — request sends an email/SMS code, confirm
 // echoes it back and performs the permanent teardown.
 export function requestAccountDeletion() {
