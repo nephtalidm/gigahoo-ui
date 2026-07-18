@@ -69,6 +69,30 @@ export function ConversationDetailDialog({
                 )}
               </div>
               <DetailSection label={t("calls.summary")} value={selected.summary || "—"} />
+
+              {/* Full transcript — every turn, scrollable; speaker prefix bolded */}
+              {selected.transcript && (
+                <div>
+                  <p className="text-sm font-medium text-foreground">{t("calls.transcript")}</p>
+                  <div className="mt-1 max-h-64 overflow-y-auto rounded-xl border border-border bg-secondary/40 p-3 text-sm">
+                    {selected.transcript.split("\n").map((line, i) => {
+                      const m = line.match(/^(Caller|Receptionist):\s*(.*)$/)
+                      return (
+                        <p key={i} className="mb-1.5 last:mb-0">
+                          {m ? (
+                            <>
+                              <span className="font-semibold">{m[1] === "Caller" ? t("calls.speakerCaller") : t("calls.speakerReceptionist")}:</span>{" "}
+                              {m[2]}
+                            </>
+                          ) : (
+                            line
+                          )}
+                        </p>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           </>
         )}

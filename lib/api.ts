@@ -325,6 +325,7 @@ export interface ConversationData {
   address?: string | null;
   isEmergency?: boolean;
   status: string;
+  transcript?: string | null;
 }
 
 export interface ConversationsPage {

@@ -17,6 +17,7 @@ export type Conversation = {
   address: string
   isEmergency: boolean
   status: CallStatus
+  transcript: string | null
 }
 
 export type Account = {
@@ -64,6 +65,7 @@ export function mapApiConversation(c: ConversationData): Conversation {
     address: c.address ?? "",
     isEmergency: c.isEmergency ?? false,
     status: c.status as CallStatus,
+    transcript: c.transcript ?? null,
   };
 }
 
