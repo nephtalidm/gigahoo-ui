@@ -13,6 +13,7 @@ import { useTranslation } from "@/contexts/language-context"
 import {
   changePlan,
   subscribePlan,
+  syncSubscription,
   getPaymentMethods,
   type PaymentMethod,
   getAccount,
@@ -180,6 +181,7 @@ export function BillingView({
           setPayPreparing(false)
           toast({ title: t("billing.checkoutFailed"), description: error.message ?? t("billing.tryAgain"), variant: "destructive" })
         } else {
+          await syncSubscription().catch(() => {})
           window.location.reload()
         }
       } else if (res.clientSecret) {
@@ -430,7 +432,7 @@ export function BillingView({
             <Elements stripe={stripePromise} options={{ clientSecret: payClientSecret }}>
               <StripeCardPayForm
                 submitLabel={t("billing.pay")}
-                onSuccess={() => window.location.reload()}
+                onSuccess={() => { void syncSubscription().catch(() => {}).finally(() => window.location.reload()) }}
                 onCancel={() => setPayClientSecret(null)}
               />
             </Elements>

@@ -411,6 +411,12 @@ export function changePlan(planId: number) {
   return api.post<{ message: string; plan: string }>("/api/billing/change-plan", { planId });
 }
 
+// EMBEDDED payment epilogue: pull the just-paid subscription's state straight from Stripe so
+// the dashboard's first render already shows the paid plan (no webhook race).
+export function syncSubscription() {
+  return api.post<{ planId: number }>("/api/billing/sync-subscription");
+}
+
 // EMBEDDED plan purchase/upgrade — no hosted page. "active": the saved card was charged (or an
 // existing subscription was re-priced). Otherwise the PaymentIntent clientSecret comes back for
 // the in-app card form ("requires_payment_method") or a 3DS confirmation ("requires_action").

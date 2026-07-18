@@ -25,7 +25,7 @@ import { PhoneInput } from "@/components/phone-input"
 import { AddressAutocomplete } from "@/components/address-autocomplete"
 import { validateAddress, type ValidatedAddress } from "@/lib/address-validation"
 import { businessCategories, businessCategoryKeys, countries, areaCodeMatchesCountry, toE164, type Plan } from "@/lib/data"
-import { getAccount, getCategories, api, subscribePlan, requestSignupPhoneCode, getCurrencyForVisitor, type CountryData, type RegionData } from "@/lib/api"
+import { getAccount, getCategories, api, subscribePlan, requestSignupPhoneCode, syncSubscription, getCurrencyForVisitor, type CountryData, type RegionData } from "@/lib/api"
 import { Elements } from "@stripe/react-stripe-js"
 import { VerifyModal } from "@/components/verify-modal"
 import { StripeCardPayForm, stripePromise } from "@/components/stripe-card-form"
@@ -954,7 +954,7 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
             <Elements stripe={stripePromise} options={{ clientSecret: payClientSecret }}>
               <StripeCardPayForm
                 submitLabel={t("billing.pay")}
-                onSuccess={() => router.push("/dashboard")}
+                onSuccess={() => { void syncSubscription().catch(() => {}).finally(() => router.push("/dashboard")) }}
                 onCancel={() => router.push("/dashboard")}
               />
             </Elements>
