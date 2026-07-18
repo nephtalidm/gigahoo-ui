@@ -368,7 +368,9 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
       })
 
       try { localStorage.removeItem(SIGNUP_PLAN_KEY) } catch {}
-      storeAuth({ accessToken: response.token, expiresAt: response.expiresAt })
+      // navigate: false — the signup flow owns navigation from here: paid plans must stay
+      // on this page for the embedded card step; the auto-push would unmount it mid-payment.
+      storeAuth({ accessToken: response.token, expiresAt: response.expiresAt }, { navigate: false })
 
       // Paid plans collect the card RIGHT HERE (embedded, no Stripe redirect); Free goes
       // straight to the dashboard. The subscription is created unpaid and this form's

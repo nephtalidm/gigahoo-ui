@@ -10,7 +10,7 @@ type AuthContextType = {
   isLoading: boolean;
   account: AccountData | null;
   logout: () => void;
-  storeAuth: (response: { accessToken: string; expiresAt: string }) => void;
+  storeAuth: (response: { accessToken: string; expiresAt: string }, opts?: { navigate?: boolean }) => void;
   loginWithGoogle: (idToken: string, country?: string) => Promise<void>;
   sendMagicLink: (email: string, country?: string) => Promise<void>;
   sendSmsCode: (phoneNumber: string, country?: string) => Promise<void>;
@@ -59,11 +59,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     window.location.href = "/";
   };
 
-  const storeAuth = async (response: { accessToken: string; expiresAt: string }) => {
+  const storeAuth = async (response: { accessToken: string; expiresAt: string }, opts?: { navigate?: boolean }) => {
     localStorage.setItem("gigahoo_token", response.accessToken);
     localStorage.setItem("gigahoo_expires_at", response.expiresAt);
     touchActivity(true); // a fresh login starts the activity clock
     setIsAuthenticated(true);
+    // navigate: false lets the CALLER own what happens next — the signup flow must stay
+    // mounted through its embedded payment step (this auto-push once yanked a paid signup
+    // to the dashboard mid-payment, so the card form never appeared).
+    if (opts?.navigate === false) {
+      getAccount().then(setAccount).catch(() => {});
+      return;
+    }
     // Go straight to the right page with client-side navigation (no full reload,
     // no flash of the /signup loader): dashboard if the account is already set up,
     // otherwise onboarding.
