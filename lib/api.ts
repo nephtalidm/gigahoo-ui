@@ -375,7 +375,6 @@ export interface InvoiceData {
   amount: number;
   currency: string;
   status: string;
-  pdfUrl: string | null;
 }
 
 export function getBillingSummary() {
@@ -425,6 +424,12 @@ export function subscribePlan(planId: number) {
     status: "active" | "requires_action" | "requires_payment_method";
     clientSecret?: string;
   }>("/api/billing/subscribe", { planId });
+}
+
+// Fresh PDF link fetched from Stripe at click time — Stripe rotates invoice_pdf tokens,
+// so links are never stored or reused.
+export function getInvoicePdfLink(invoiceId: string) {
+  return api.get<{ url: string }>(`/api/billing/invoices/${invoiceId}/pdf-link`);
 }
 
 export function getInvoices() {

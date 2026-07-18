@@ -15,6 +15,7 @@ import {
   removePaymentMethod,
   setDefaultPaymentMethod,
   getInvoices,
+  getInvoicePdfLink,
   type PaymentMethod,
   type InvoiceData,
 } from "@/lib/api"
@@ -354,17 +355,21 @@ export default function BillingMethodsPage() {
                   <span className="text-sm font-medium text-foreground">
                     {inv.currency} {inv.amount.toFixed(2)}
                   </span>
-                  {inv.pdfUrl && (
-                    <a
-                      href={inv.pdfUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={t("billing.downloadInvoice", { number: inv.invoiceNumber })}
-                      className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                    >
-                      <Download className="h-5 w-5" />
-                    </a>
-                  )}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      // The tab must open IN the click gesture (popup blockers) — the fresh
+                      // Stripe link is fetched after, then pointed into it.
+                      const tab = window.open("", "_blank")
+                      getInvoicePdfLink(inv.id)
+                        .then(({ url }) => { if (tab) tab.location.href = url })
+                        .catch(() => tab?.close())
+                    }}
+                    aria-label={t("billing.downloadInvoice", { number: inv.invoiceNumber })}
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted-foreground cursor-pointer transition-colors hover:bg-accent hover:text-foreground"
+                  >
+                    <Download className="h-5 w-5" />
+                  </button>
                 </div>
               </li>
             ))}
