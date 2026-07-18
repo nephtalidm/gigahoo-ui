@@ -78,7 +78,7 @@ export default function OverviewPage() {
             <Button
               className="gap-1.5"
               render={
-                <Link href="/dashboard/plan">
+                <Link href={`/dashboard/plan?upgrade=${encodeURIComponent(nextPlan)}`}>
                   {t("dashboard.upgradeTo", { plan: nextPlan })}
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>

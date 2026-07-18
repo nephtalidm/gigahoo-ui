@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { Elements } from "@stripe/react-stripe-js"
 import { StripeCardPayForm, stripePromise } from "@/components/stripe-card-form"
@@ -45,6 +45,21 @@ export function BillingView({
   const [prices, setPrices] = useState<Record<string, string>>({})
   const { toast } = useToast()
   const router = useRouter()
+  // Deep-link: /dashboard/plan?upgrade=Starter (the dashboard's Upgrade button) starts the
+  // embedded flow for that plan immediately — this page is the fallback view, not a detour.
+  // The param is consumed once and stripped so a refresh can't restart the flow.
+  const autoUpgradeDone = useRef(false)
+  useEffect(() => {
+    if (autoUpgradeDone.current) return
+    const name = new URLSearchParams(window.location.search).get("upgrade")
+    if (!name) return
+    const plan = plans.find((pl) => pl.name === name && pl.priceMonthly > 0)
+    if (!plan) return
+    autoUpgradeDone.current = true
+    window.history.replaceState(null, "", "/dashboard/plan")
+    void handleChangePlan(plan)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [plans])
   const { t } = useTranslation()
 
   useEffect(() => {

@@ -26,7 +26,7 @@ export function UpgradeCard({
           {t("dashboard.upgradeSubtext", { plan: requiredPlan })}
         </p>
       </div>
-      <Button render={<Link href="/dashboard/plan">{t("dashboard.upgradeTo", { plan: requiredPlan })}</Link>} />
+      <Button render={<Link href={`/dashboard/plan?upgrade=${encodeURIComponent(requiredPlan)}`}>{t("dashboard.upgradeTo", { plan: requiredPlan })}</Link>} />
     </div>
   )
 }
