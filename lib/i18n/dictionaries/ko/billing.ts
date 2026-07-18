@@ -50,6 +50,8 @@ const billing = {
   cardSaved: "카드가 저장되었습니다",
   cardExpires: "만료 {date}",
   cardError: "카드를 저장할 수 없습니다. 다시 시도해 주세요.",
+  pay: "결제",
+  completeUpgrade: "플랜 업그레이드 완료",
   addCardFailed: "카드 추가를 시작할 수 없습니다. 다시 시도해 주세요.",
   providerUnsupported: "이 결제 제공업체는 아직 지원되지 않습니다.",
 }

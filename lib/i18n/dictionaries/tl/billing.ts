@@ -50,6 +50,8 @@ const billing = {
   cardSaved: "Na-save ang card",
   cardExpires: "Mag-e-expire {date}",
   cardError: "Hindi ma-save ang iyong card. Pakisubukang muli.",
+  pay: "Magbayad",
+  completeUpgrade: "Kumpletuhin ang pag-upgrade ng plano",
   addCardFailed: "Hindi masimulan ang pagdaragdag ng card. Pakisubukang muli.",
   providerUnsupported: "Hindi pa sinusuportahan ang payment provider na ito.",
 }

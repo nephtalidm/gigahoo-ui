@@ -408,6 +408,16 @@ export function createCheckout(planId: number) {
   return api.post<{ url: string }>("/api/billing/checkout", { planId });
 }
 
+// EMBEDDED plan purchase/upgrade — no hosted page. "active": the saved card was charged (or an
+// existing subscription was re-priced). Otherwise the PaymentIntent clientSecret comes back for
+// the in-app card form ("requires_payment_method") or a 3DS confirmation ("requires_action").
+export function subscribePlan(planId: number) {
+  return api.post<{
+    status: "active" | "requires_action" | "requires_payment_method";
+    clientSecret?: string;
+  }>("/api/billing/subscribe", { planId });
+}
+
 export function getInvoices() {
   return api.get<InvoiceData[]>("/api/billing/invoices");
 }

@@ -50,6 +50,8 @@ const billing = {
   cardSaved: "Carte enregistrée",
   cardExpires: "Expire le {date}",
   cardError: "Impossible d'enregistrer votre carte. Veuillez réessayer.",
+  pay: "Payer",
+  completeUpgrade: "Finalisez votre changement de forfait",
   addCardFailed: "Impossible de lancer l'ajout d'une carte. Veuillez réessayer.",
   providerUnsupported: "Ce prestataire de paiement n'est pas encore pris en charge.",
 }

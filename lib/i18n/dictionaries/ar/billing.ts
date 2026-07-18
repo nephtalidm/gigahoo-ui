@@ -50,6 +50,8 @@ const billing = {
   cardSaved: "تم حفظ البطاقة",
   cardExpires: "تنتهي في {date}",
   cardError: "تعذّر حفظ بطاقتك. يرجى المحاولة مرة أخرى.",
+  pay: "ادفع",
+  completeUpgrade: "أكمل ترقية خطتك",
   addCardFailed: "تعذّر بدء إضافة بطاقة. يرجى المحاولة مرة أخرى.",
   providerUnsupported: "مزوّد الدفع هذا غير مدعوم بعد.",
 }

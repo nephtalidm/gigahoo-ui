@@ -50,6 +50,8 @@ const billing = {
   cardSaved: "کارت ذخیره شد",
   cardExpires: "انقضا {date}",
   cardError: "ذخیره کارت شما ممکن نشد. لطفاً دوباره تلاش کنید.",
+  pay: "پرداخت",
+  completeUpgrade: "ارتقای طرح خود را کامل کنید",
   addCardFailed: "شروع افزودن کارت ممکن نشد. لطفاً دوباره تلاش کنید.",
   providerUnsupported: "این ارائه‌دهنده پرداخت هنوز پشتیبانی نمی‌شود.",
 }

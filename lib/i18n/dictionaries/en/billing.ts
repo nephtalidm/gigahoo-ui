@@ -50,6 +50,8 @@ const billing = {
   cardSaved: "Card saved",
   cardExpires: "Expires {date}",
   cardError: "Could not save your card. Please try again.",
+  pay: "Pay",
+  completeUpgrade: "Complete your upgrade",
   addCardFailed: "Could not start adding a card. Please try again.",
   providerUnsupported: "This payment provider isn't supported yet.",
 }

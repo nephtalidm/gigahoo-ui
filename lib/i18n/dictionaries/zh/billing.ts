@@ -50,6 +50,8 @@ const billing = {
   cardSaved: "卡片已保存",
   cardExpires: "有效期至 {date}",
   cardError: "无法保存您的卡片。请重试。",
+  pay: "支付",
+  completeUpgrade: "完成套餐升级",
   addCardFailed: "无法开始添加卡片。请重试。",
   providerUnsupported: "尚不支持此支付服务商。",
 }

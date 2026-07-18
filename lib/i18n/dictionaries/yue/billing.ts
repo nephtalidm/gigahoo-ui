@@ -50,6 +50,8 @@ const billing = {
   cardSaved: "卡片已儲存",
   cardExpires: "有效期至 {date}",
   cardError: "無法儲存你嘅卡片。請再試一次。",
+  pay: "付款",
+  completeUpgrade: "完成計劃升級",
   addCardFailed: "無法開始新增卡片。請再試一次。",
   providerUnsupported: "暫時未支援呢個付款服務商。",
 }

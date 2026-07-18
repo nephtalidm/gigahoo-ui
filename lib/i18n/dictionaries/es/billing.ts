@@ -50,6 +50,8 @@ const billing = {
   cardSaved: "Tarjeta guardada",
   cardExpires: "Vence {date}",
   cardError: "No se pudo guardar tu tarjeta. Inténtalo de nuevo.",
+  pay: "Pagar",
+  completeUpgrade: "Completa tu mejora de plan",
   addCardFailed: "No se pudo iniciar el proceso para agregar una tarjeta. Inténtalo de nuevo.",
   providerUnsupported: "Este proveedor de pagos aún no es compatible.",
 }

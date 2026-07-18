@@ -50,6 +50,8 @@ const billing = {
   cardSaved: "カードを保存しました",
   cardExpires: "有効期限 {date}",
   cardError: "カードを保存できませんでした。もう一度お試しください。",
+  pay: "支払う",
+  completeUpgrade: "プランのアップグレードを完了",
   addCardFailed: "カードの追加を開始できませんでした。もう一度お試しください。",
   providerUnsupported: "この決済プロバイダーはまだサポートされていません。",
 }
