@@ -865,7 +865,7 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
               if (e.target.checked) setErrors((er) => ({ ...er, terms: undefined }))
             }}
             className={cn(
-              "mt-0.5 h-4 w-4 shrink-0 rounded border-border text-primary accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              "mt-0 h-5 w-5 shrink-0 cursor-pointer rounded border-border text-primary accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
               errors.terms && "border-destructive",
             )}
             aria-invalid={!!errors.terms}
