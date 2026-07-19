@@ -49,7 +49,9 @@ export default function VoiceAgentPage() {
         setGreetingMessage(greeting)
         let ph = settings?.defaultGreeting ?? ""
         if (account.businessName) ph = ph.replaceAll("[Name of business]", account.businessName)
-        setGreetingPlaceholder(ph)
+        // The placeholder SAYS it's the default, showing exactly what this account's callers
+        // hear when no custom greeting is set.
+        setGreetingPlaceholder(ph ? t("dashboard.greetingDefaultPrefix") + ph : "")
         setBusinessKnowledge(account.businessKnowledge ?? "")
         // null = Unlimited (slider sits at the top).
         const initialMax = account.maximumCallMinutes

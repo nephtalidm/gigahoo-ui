@@ -12,7 +12,8 @@ const dashboard = {
   // Voice Agent page
   voiceAgentTitle: "AI Voice Agent",
   voiceAgentDescription: "I-customize kung paano bumabati at tumutunog ang iyong AI receptionist sa mga tumatawag.",
-  greetingLabel: "Mensahe ng Pagbati",
+  greetingLabel: "Custom na mensahe ng pagbati",
+  greetingDefaultPrefix: "Default na pagbati: ",
   greetingHint: "Ang sinasabi ng AI kapag sumagot ito sa isang tawag. Iwanang blangko para gamitin ang default na pagbati.",
   knowledgeLabel: "Kaalaman sa negosyo",
   knowledgeHint: "Mga impormasyong maisasagot ng receptionist sa mga tumatawag — serbisyo, presyo, saklaw na lugar, patakaran, oras. Gagamitin lang nito ang isinulat mo rito at hinding-hindi mag-iimbento.",

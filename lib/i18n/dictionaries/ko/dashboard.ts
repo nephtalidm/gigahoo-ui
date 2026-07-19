@@ -12,7 +12,8 @@ const dashboard = {
   // Voice Agent page
   voiceAgentTitle: "AI 음성 에이전트",
   voiceAgentDescription: "AI 안내원이 발신자에게 인사하는 방식과 목소리를 맞춤 설정하세요.",
-  greetingLabel: "인사말 메시지",
+  greetingLabel: "맞춤 인사말 메시지",
+  greetingDefaultPrefix: "기본 인사말: ",
   greetingHint: "AI가 전화를 받을 때 처음 하는 말입니다. 비워 두면 기본 인사말이 사용됩니다.",
   knowledgeLabel: "비즈니스 정보",
   knowledgeHint: "리셉셔니스트가 발신자에게 답할 수 있는 정보 — 서비스, 가격, 서비스 지역, 정책, 영업시간. 여기에 적은 내용만 사용하며 절대 지어내지 않습니다.",

@@ -12,7 +12,8 @@ const dashboard = {
   // Voice Agent page
   voiceAgentTitle: "AI音声エージェント",
   voiceAgentDescription: "AI受付係が発信者に挨拶する方法や声をカスタマイズします。",
-  greetingLabel: "あいさつメッセージ",
+  greetingLabel: "カスタムあいさつメッセージ",
+  greetingDefaultPrefix: "デフォルトのあいさつ: ",
   greetingHint: "AIが電話に出たときに最初に話す内容です。空欄にするとデフォルトのあいさつが使われます。",
   knowledgeLabel: "ビジネス情報",
   knowledgeHint: "受付が発信者に答えられる情報 — サービス内容、料金、対応エリア、ポリシー、営業時間。ここに書いた内容だけを使い、勝手に作り上げることはありません。",

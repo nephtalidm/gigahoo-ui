@@ -12,7 +12,8 @@ const dashboard = {
   // Voice Agent page
   voiceAgentTitle: "Agent vocal IA",
   voiceAgentDescription: "Personnalisez la façon dont votre réceptionniste IA accueille les appelants et le son de sa voix.",
-  greetingLabel: "Message d'accueil",
+  greetingLabel: "Message d'accueil personnalisé",
+  greetingDefaultPrefix: "Accueil par défaut : ",
   greetingHint: "Ce que dit l'IA lorsqu'elle répond à un appel. Laissez vide pour utiliser le message par défaut.",
   knowledgeLabel: "Connaissances de l'entreprise",
   knowledgeHint: "Les informations que votre réceptionniste peut donner aux appelants : services, tarifs, zone desservie, politiques, horaires. Elle n'utilisera que ce que vous écrivez ici et n'inventera jamais rien.",

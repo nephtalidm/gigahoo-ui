@@ -12,7 +12,8 @@ const dashboard = {
   // Voice Agent page
   voiceAgentTitle: "AI 語音助手",
   voiceAgentDescription: "自訂你嘅 AI 接待員點樣同來電者打招呼同把聲。",
-  greetingLabel: "招呼語訊息",
+  greetingLabel: "自訂問候語",
+  greetingDefaultPrefix: "預設問候語：",
   greetingHint: "AI 接聽電話時最先講嘅嘢。留空就會用預設招呼語。",
   knowledgeLabel: "業務資料",
   knowledgeHint: "接待員可以用嚟答來電者嘅資料 — 服務、價錢、服務範圍、政策、營業時間。佢只會用你喺度寫嘅嘢，唔會自己作。",
