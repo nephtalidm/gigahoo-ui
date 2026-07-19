@@ -62,14 +62,17 @@ export function ChatWidget() {
       {open && (
         <div className="flex h-[28rem] w-[min(22rem,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-xl">
           <div className="flex items-center justify-between border-b border-border bg-primary px-4 py-3">
-            <p className="text-sm font-semibold text-primary-foreground">{t("chat.title")}</p>
+            <p className="flex items-center gap-2 text-sm font-semibold text-primary-foreground">
+              <span className="h-[6px] w-[6px] rounded-full bg-green-400 motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
+              {t("chat.title")}
+            </p>
             <button
               type="button"
               onClick={() => setOpen(false)}
               aria-label={t("chat.close")}
-              className="text-primary-foreground/80 cursor-pointer transition-colors hover:text-primary-foreground"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-primary-foreground/80 cursor-pointer transition-colors hover:bg-primary-foreground/10 hover:text-primary-foreground"
             >
-              <X className="h-4 w-4" />
+              <X className="h-5 w-5" />
             </button>
           </div>
 

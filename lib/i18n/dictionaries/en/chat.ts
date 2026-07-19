@@ -1,5 +1,5 @@
 const chat = {
-  title: "Gigahoo assistant",
+  title: "Gigahoo Assistant",
   teaser: "Questions? Chat with us",
   greeting: "Hi! Ask me anything about Gigahoo — features, pricing, or how to get started.",
   placeholder: "Type your question…",
