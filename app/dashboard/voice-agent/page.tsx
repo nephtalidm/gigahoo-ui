@@ -20,6 +20,8 @@ export default function VoiceAgentPage() {
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [greetingMessage, setGreetingMessage] = useState("")
+  const [greetingPlaceholder, setGreetingPlaceholder] = useState("")
+  const [businessKnowledge, setBusinessKnowledge] = useState("")
   // Per-call hard cap in minutes; null = Unlimited (no cap).
   const [maxCallMinutes, setMaxCallMinutes] = useState<number | null>(null)
   const [voices, setVoices] = useState<AgentVoice[]>([])
@@ -40,15 +42,15 @@ export default function VoiceAgentPage() {
   useEffect(() => {
     Promise.all([getAccount(), getSettings().catch(() => null), getVoices().catch(() => [])])
       .then(([account, settings, fetchedVoices]) => {
-        // Show the account's custom greeting if set; otherwise pre-fill with the
-        // site-wide default so an un-customized account has an editable starting
-        // point — with the "[Name of business]" placeholder swapped for the
-        // account's real business name so the user sees their own name.
-        let greeting = account.greetingMessage ?? settings?.defaultGreeting ?? ""
-        if (account.greetingMessage == null && account.businessName) {
-          greeting = greeting.replaceAll("[Name of business]", account.businessName)
-        }
+        // The field starts EMPTY for un-customized accounts — the site-wide default (with
+        // the account's real business name substituted) shows as a PLACEHOLDER instead,
+        // disappearing the moment the user types.
+        const greeting = account.greetingMessage ?? ""
         setGreetingMessage(greeting)
+        let ph = settings?.defaultGreeting ?? ""
+        if (account.businessName) ph = ph.replaceAll("[Name of business]", account.businessName)
+        setGreetingPlaceholder(ph)
+        setBusinessKnowledge(account.businessKnowledge ?? "")
         // null = Unlimited (slider sits at the top).
         const initialMax = account.maximumCallMinutes
         setMaxCallMinutes(initialMax)
@@ -73,7 +75,7 @@ export default function VoiceAgentPage() {
         }
         setQuestions(initialQuestions)
         // Capture the loaded values as the clean baseline.
-        baselineRef.current = JSON.stringify({ greetingMessage: greeting, maxCallMinutes: initialMax, voice: initialVoice, questions: initialQuestions })
+        baselineRef.current = JSON.stringify({ greetingMessage: greeting, businessKnowledge: account.businessKnowledge ?? "", maxCallMinutes: initialMax, voice: initialVoice, questions: initialQuestions })
       })
       .catch(() => {})
       .finally(() => setLoading(false))
@@ -81,8 +83,8 @@ export default function VoiceAgentPage() {
 
   // Report dirty state whenever the editable values diverge from the baseline.
   useEffect(() => {
-    setDirty(JSON.stringify({ greetingMessage, maxCallMinutes, voice, questions }) !== baselineRef.current)
-  }, [greetingMessage, maxCallMinutes, voice, questions, setDirty])
+    setDirty(JSON.stringify({ greetingMessage, businessKnowledge, maxCallMinutes, voice, questions }) !== baselineRef.current)
+  }, [greetingMessage, businessKnowledge, maxCallMinutes, voice, questions, setDirty])
 
   // Clear the guard when leaving the page.
   useEffect(() => () => setDirty(false), [setDirty])
@@ -141,12 +143,13 @@ export default function VoiceAgentPage() {
       const maximumCallMinutes = maxCallMinutes == null ? null : Math.min(Math.max(maxCallMinutes, 1), 120)
       await updateVoiceSettings({
         greetingMessage: greetingMessage.trim() ? greetingMessage.trim() : null,
+        businessKnowledge: businessKnowledge.trim() ? businessKnowledge.trim() : null,
         agentVoice: voice,
         maximumCallMinutes,
       })
       await updateQuestions(questions)
       // The saved values are now the clean baseline → clears the dirty guard.
-      baselineRef.current = JSON.stringify({ greetingMessage, maxCallMinutes, voice, questions })
+      baselineRef.current = JSON.stringify({ greetingMessage, businessKnowledge, maxCallMinutes, voice, questions })
       setDirty(false)
       setSaved(true)
       setTimeout(() => setSaved(false), 2000)
@@ -197,10 +200,28 @@ export default function VoiceAgentPage() {
         <textarea
           value={greetingMessage}
           onChange={(e) => setGreetingMessage(e.target.value)}
+          placeholder={greetingPlaceholder}
           maxLength={500}
           rows={3}
           className="w-full resize-y rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground shadow-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
+      </div>
+
+      {/* Business knowledge — owner-provided facts the agent answers caller questions from */}
+      <div className="relative rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="mb-3">
+          <p className="text-base font-semibold text-foreground">{t("dashboard.knowledgeLabel")}</p>
+          <p className="mt-0.5 text-sm text-muted-foreground">{t("dashboard.knowledgeHint")}</p>
+        </div>
+        <textarea
+          value={businessKnowledge}
+          onChange={(e) => setBusinessKnowledge(e.target.value)}
+          placeholder={t("dashboard.knowledgePlaceholder")}
+          maxLength={2000}
+          rows={6}
+          className="w-full resize-y rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground shadow-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+        />
+        <p className="mt-1 text-right text-xs text-muted-foreground">{businessKnowledge.length}/2000</p>
       </div>
 
       {/* Agent voice */}
