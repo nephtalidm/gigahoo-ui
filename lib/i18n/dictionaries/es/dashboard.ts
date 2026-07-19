@@ -12,7 +12,7 @@ const dashboard = {
   // Voice Agent page
   voiceAgentTitle: "Agente de voz con IA",
   voiceAgentDescription: "Personaliza cómo saluda y suena tu recepcionista de IA con las personas que llaman.",
-  greetingLabel: "Mensaje de saludo",
+  greetingLabel: "Saludo",
   greetingHint: "Lo que dice la IA al contestar una llamada. Déjalo en blanco para usar el saludo predeterminado.",
   knowledgeLabel: "Conocimiento del negocio",
   knowledgeHint: "Datos con los que tu recepcionista puede responder a quienes llaman: servicios, precios, zona, políticas y horarios. Solo usará lo que escribas aquí y nunca inventará detalles.",

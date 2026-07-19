@@ -12,7 +12,7 @@ const dashboard = {
   // Voice Agent page
   voiceAgentTitle: "AI Voice Agent",
   voiceAgentDescription: "Customize how your AI receptionist greets and sounds to callers.",
-  greetingLabel: "Greeting Message",
+  greetingLabel: "Greeting",
   greetingHint: "What the AI says when it first answers a call. Leave blank to use the default greeting.",
   knowledgeLabel: "Business Knowledge",
   knowledgeHint: "Facts your receptionist can answer callers with — services, prices, service area, policies, hours. It will only use what you write here and never invent details.",
