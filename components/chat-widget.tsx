@@ -32,7 +32,9 @@ export function ChatWidget() {
   }
 
   useEffect(() => {
-    if (open) inputRef.current?.focus()
+    // Desktop only: iOS zooms + opens the keyboard when an input is programmatically
+    // focused, which overflowed the panel off-screen on iPhone.
+    if (open && !window.matchMedia("(pointer: coarse)").matches) inputRef.current?.focus()
   }, [open])
 
   useEffect(() => {
@@ -60,7 +62,7 @@ export function ChatWidget() {
   return (
     <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
       {open && (
-        <div className="flex h-[28rem] w-[min(22rem,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-xl">
+        <div className="flex h-[min(28rem,calc(100dvh-7rem))] w-[min(22rem,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-xl">
           <div className="flex items-center justify-between border-b border-border bg-primary px-4 py-3">
             <p className="flex items-center gap-2 text-sm font-semibold text-primary-foreground">
               <span className="h-[6px] w-[6px] rounded-full bg-green-400 motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
@@ -109,7 +111,7 @@ export function ChatWidget() {
               onChange={(e) => setInput(e.target.value)}
               placeholder={t("chat.placeholder")}
               maxLength={1000}
-              className="flex-1 rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="flex-1 rounded-lg border border-border bg-background px-3 py-2 text-base sm:text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             />
             <button
               type="submit"
