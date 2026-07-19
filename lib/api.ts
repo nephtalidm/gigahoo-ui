@@ -159,6 +159,12 @@ export function updateAccountLanguage(language: string) {
   return api.put<{ language: string }>("/api/account/language", { language });
 }
 
+// Homepage help chat — anonymous, ephemeral; the server owns the knowledge + rate limit.
+export type ChatTurn = { role: "user" | "assistant"; content: string };
+export function askChat(messages: ChatTurn[]) {
+  return api.post<{ reply: string }>("/api/chat", { messages });
+}
+
 // SIGNUP gate: account creation requires SMS-verified control of the business phone.
 // verified=true means this identity already proved the exact number (SMS login) - no code needed.
 export function requestSignupPhoneCode(phoneNumber: string) {

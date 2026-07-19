@@ -13,6 +13,7 @@ import settings from "./settings"
 import notifications from "./notifications"
 import categories from "./categories"
 import countries from "./countries"
+import chat from "./chat"
 
 export const fa = {
   common,
@@ -30,4 +31,5 @@ export const fa = {
   notifications,
   categories,
   countries,
+  chat,
 }
