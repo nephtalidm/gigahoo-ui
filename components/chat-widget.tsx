@@ -16,6 +16,20 @@ export function ChatWidget() {
   const [failed, setFailed] = useState(false)
   const listRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  // Noticeability: an Intercom-style teaser pill appears after a few seconds unless the
+  // visitor has already opened or dismissed it this session.
+  const [teaser, setTeaser] = useState(false)
+
+  useEffect(() => {
+    if (sessionStorage.getItem("gigahoo_chat_teaser") === "seen") return
+    const id = setTimeout(() => setTeaser(true), 4000)
+    return () => clearTimeout(id)
+  }, [])
+
+  function dismissTeaser() {
+    setTeaser(false)
+    try { sessionStorage.setItem("gigahoo_chat_teaser", "seen") } catch {}
+  }
 
   useEffect(() => {
     if (open) inputRef.current?.focus()
@@ -106,11 +120,30 @@ export function ChatWidget() {
         </div>
       )}
 
+      {teaser && !open && (
+        <div className="flex items-center gap-2 rounded-full border border-border bg-card py-2 pl-4 pr-2 shadow-lg">
+          <button
+            type="button"
+            onClick={() => { dismissTeaser(); setOpen(true) }}
+            className="text-sm font-medium text-foreground cursor-pointer"
+          >
+            {t("chat.teaser")}
+          </button>
+          <button
+            type="button"
+            onClick={dismissTeaser}
+            aria-label={t("chat.close")}
+            className="inline-flex h-6 w-6 items-center justify-center rounded-full text-muted-foreground cursor-pointer transition-colors hover:bg-accent hover:text-foreground"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      )}
       <button
         type="button"
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => { dismissTeaser(); setOpen((o) => !o) }}
         aria-label={t("chat.title")}
-        className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg cursor-pointer transition-transform hover:scale-105"
+        className={"inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg cursor-pointer transition-transform hover:scale-105" + (teaser && !open ? " animate-pulse" : "")}
       >
         {open ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
       </button>

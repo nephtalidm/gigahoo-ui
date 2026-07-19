@@ -1,5 +1,6 @@
 const chat = {
   title: "Gigahoo assistant",
+  teaser: "May tanong? Mag-chat sa amin",
   greeting: "Kumusta! Magtanong tungkol sa Gigahoo — mga feature, presyo, o paano magsimula.",
   placeholder: "I-type ang tanong…",
   send: "Ipadala",

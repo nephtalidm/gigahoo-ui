@@ -1,5 +1,6 @@
 const chat = {
   title: "Gigahoo सहायक",
+  teaser: "सवाल हैं? हमसे चैट करें",
   greeting: "नमस्ते! Gigahoo के बारे में कुछ भी पूछें — फीचर, कीमत या शुरुआत कैसे करें।",
   placeholder: "अपना सवाल लिखें…",
   send: "भेजें",
