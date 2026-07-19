@@ -203,7 +203,7 @@ export default function VoiceAgentPage() {
           value={greetingMessage}
           onChange={(e) => setGreetingMessage(e.target.value)}
           placeholder={greetingPlaceholder}
-          maxLength={500}
+          maxLength={100}
           rows={3}
           className="w-full resize-y rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground shadow-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
