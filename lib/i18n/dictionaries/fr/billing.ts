@@ -23,6 +23,9 @@ const billing = {
   downgradeScheduledText: "Vous conservez votre offre actuelle jusqu'à son renouvellement, puis vous passez à l'offre inférieure.",
   downgradePendingBanner: "Vous passez à l'offre {plan} le {date}. Vous conservez votre offre actuelle jusque-là.",
   cancelDowngrade: "Annuler la rétrogradation",
+  confirmCancelDowngradeTitle: "Annuler la rétrogradation prévue ?",
+  confirmCancelDowngradeText: "Votre forfait doit passer à {plan} le {date}. Si vous annulez, votre forfait actuel continue simplement.",
+  confirmCancelDowngradeConfirm: "Oui, garder mon forfait actuel",
   noPlans: "Aucun forfait disponible.",
 
   // Payment / Stripe

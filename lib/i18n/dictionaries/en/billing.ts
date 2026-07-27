@@ -23,6 +23,9 @@ const billing = {
   downgradeScheduledText: "You'll keep your current plan until it renews, then move to the smaller plan.",
   downgradePendingBanner: "You're downgrading to {plan} on {date}. You keep your current plan until then.",
   cancelDowngrade: "Cancel downgrade",
+  confirmCancelDowngradeTitle: "Cancel the scheduled downgrade?",
+  confirmCancelDowngradeText: "Your plan is set to change to {plan} on {date}. If you cancel, your current plan simply continues.",
+  confirmCancelDowngradeConfirm: "Yes, keep my current plan",
   noPlans: "No plans available.",
 
   // Payment / Stripe

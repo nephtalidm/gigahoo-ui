@@ -23,6 +23,9 @@ const billing = {
   downgradeScheduledText: "طرح فعلی خود را تا زمان تمدید نگه می‌دارید و سپس به طرح کوچک‌تر منتقل می‌شوید.",
   downgradePendingBanner: "در {date} به طرح {plan} تنزل می‌کنید. تا آن زمان طرح فعلی شما حفظ می‌شود.",
   cancelDowngrade: "لغو تنزل",
+  confirmCancelDowngradeTitle: "لغو تنزل برنامه‌ریزی‌شده؟",
+  confirmCancelDowngradeText: "قرار است طرح شما در {date} به {plan} تغییر کند. اگر لغو کنید، طرح فعلی شما ادامه می‌یابد.",
+  confirmCancelDowngradeConfirm: "بله، طرح فعلی‌ام حفظ شود",
   noPlans: "هیچ طرحی در دسترس نیست.",
 
   // Payment / Stripe

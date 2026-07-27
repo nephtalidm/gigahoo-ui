@@ -23,6 +23,9 @@ const billing = {
   downgradeScheduledText: "在当前套餐续费前你可继续使用它，之后将切换到较低套餐。",
   downgradePendingBanner: "你将于 {date} 降级到 {plan}。在此之前你可继续使用当前套餐。",
   cancelDowngrade: "取消降级",
+  confirmCancelDowngradeTitle: "取消已安排的降级？",
+  confirmCancelDowngradeText: "您的套餐将于{date}变更为{plan}。取消后，您当前的套餐将继续保持不变。",
+  confirmCancelDowngradeConfirm: "是，保留我当前的套餐",
   noPlans: "暂无可用套餐。",
 
   // Payment / Stripe

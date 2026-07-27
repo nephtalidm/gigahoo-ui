@@ -23,6 +23,9 @@ const billing = {
   downgradeScheduledText: "Mananatili ang iyong kasalukuyang plano hanggang mag-renew ito, pagkatapos ay lilipat ka sa mas maliit na plano.",
   downgradePendingBanner: "Magda-downgrade ka sa {plan} sa {date}. Pananatilihin mo ang kasalukuyang plano mo hanggang doon.",
   cancelDowngrade: "Kanselahin ang downgrade",
+  confirmCancelDowngradeTitle: "Kanselahin ang nakatakdang downgrade?",
+  confirmCancelDowngradeText: "Magbabago ang plan mo sa {plan} sa {date}. Kapag kinansela, magpapatuloy lang ang kasalukuyang plan mo.",
+  confirmCancelDowngradeConfirm: "Oo, panatilihin ang kasalukuyang plan ko",
   noPlans: "Walang available na plano.",
 
   // Payment / Stripe

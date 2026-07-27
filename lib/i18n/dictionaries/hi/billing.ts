@@ -23,6 +23,9 @@ const billing = {
   downgradeScheduledText: "आपका मौजूदा प्लान उसके रिन्यू होने तक बना रहेगा, फिर आप छोटे प्लान पर चले जाएँगे।",
   downgradePendingBanner: "आप {date} को {plan} पर डाउनग्रेड कर रहे हैं। तब तक आपका मौजूदा प्लान बना रहेगा।",
   cancelDowngrade: "डाउनग्रेड रद्द करें",
+  confirmCancelDowngradeTitle: "निर्धारित डाउनग्रेड रद्द करें?",
+  confirmCancelDowngradeText: "आपका प्लान {date} को {plan} में बदलने वाला है। रद्द करने पर आपका मौजूदा प्लान जारी रहेगा।",
+  confirmCancelDowngradeConfirm: "हाँ, मेरा मौजूदा प्लान बनाए रखें",
   noPlans: "कोई प्लान उपलब्ध नहीं है।",
 
   // Payment / Stripe

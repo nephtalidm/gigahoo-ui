@@ -32,6 +32,9 @@ export function BillingView({
 }) {
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null)
   const [cancelingDowngrade, setCancelingDowngrade] = useState(false)
+  // Cancelling a scheduled downgrade is confirmed first — it silently re-commits the
+  // customer to the bigger (paid) plan, so it must never happen on a stray click.
+  const [confirmCancelDowngrade, setConfirmCancelDowngrade] = useState(false)
   // Embedded payment modal (no saved card): mounted once we hold a PaymentIntent clientSecret.
   const [payClientSecret, setPayClientSecret] = useState<string | null>(null)
   // The modal opens INSTANTLY in a preparing state when an upgrade starts — card lookup +
@@ -225,7 +228,7 @@ export function BillingView({
           <Button
             variant="outline"
             size="sm"
-            onClick={handleCancelDowngrade}
+            onClick={() => setConfirmCancelDowngrade(true)}
             disabled={cancelingDowngrade}
             className="shrink-0"
           >
@@ -358,6 +361,36 @@ export function BillingView({
           <div className="flex w-full max-w-md flex-col items-center gap-4 rounded-2xl border border-border bg-card p-8 shadow-lg">
             <h2 className="text-lg font-semibold text-foreground">{t(isSubscribing ? "billing.completeSubscribeTo" : "billing.completeUpgradeTo", { plan: payPlan?.name ?? "" })}</h2>
             <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          </div>
+        </div>
+      )}
+      {confirmCancelDowngrade && summary?.pendingPlan && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-lg">
+            <h2 className="mb-2 text-lg font-semibold text-foreground">{t("billing.confirmCancelDowngradeTitle")}</h2>
+            <p className="mb-5 text-sm text-muted-foreground">
+              {t("billing.confirmCancelDowngradeText", {
+                plan: summary.pendingPlan,
+                date: summary.pendingPlanEffectiveDate ?? "",
+              })}
+            </p>
+            <div className="flex items-center justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setConfirmCancelDowngrade(false)}
+                className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground cursor-pointer transition-colors hover:bg-accent"
+              >
+                {t("billing.cancel")}
+              </button>
+              <button
+                type="button"
+                disabled={cancelingDowngrade}
+                onClick={() => { setConfirmCancelDowngrade(false); void handleCancelDowngrade() }}
+                className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm cursor-pointer transition-colors hover:bg-primary/90 disabled:opacity-60"
+              >
+                {t("billing.confirmCancelDowngradeConfirm")}
+              </button>
+            </div>
           </div>
         </div>
       )}

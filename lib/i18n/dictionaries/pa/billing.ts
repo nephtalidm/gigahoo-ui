@@ -23,6 +23,9 @@ const billing = {
   downgradeScheduledText: "ਤੁਹਾਡਾ ਮੌਜੂਦਾ ਪਲਾਨ ਇਸ ਦੇ ਰੀਨਿਊ ਹੋਣ ਤੱਕ ਬਣਿਆ ਰਹੇਗਾ, ਫਿਰ ਤੁਸੀਂ ਛੋਟੇ ਪਲਾਨ ਤੇ ਚਲੇ ਜਾਓਗੇ।",
   downgradePendingBanner: "ਤੁਸੀਂ {date} ਨੂੰ {plan} ਤੇ ਡਾਊਨਗ੍ਰੇਡ ਕਰ ਰਹੇ ਹੋ। ਉਦੋਂ ਤੱਕ ਤੁਹਾਡਾ ਮੌਜੂਦਾ ਪਲਾਨ ਬਣਿਆ ਰਹੇਗਾ।",
   cancelDowngrade: "ਡਾਊਨਗ੍ਰੇਡ ਰੱਦ ਕਰੋ",
+  confirmCancelDowngradeTitle: "ਨਿਯਤ ਡਾਊਨਗ੍ਰੇਡ ਰੱਦ ਕਰਨਾ ਹੈ?",
+  confirmCancelDowngradeText: "ਤੁਹਾਡਾ ਪਲਾਨ {date} ਨੂੰ {plan} ਵਿੱਚ ਬਦਲਣ ਵਾਲਾ ਹੈ। ਰੱਦ ਕਰਨ 'ਤੇ ਤੁਹਾਡਾ ਮੌਜੂਦਾ ਪਲਾਨ ਜਾਰੀ ਰਹੇਗਾ।",
+  confirmCancelDowngradeConfirm: "ਹਾਂ, ਮੇਰਾ ਮੌਜੂਦਾ ਪਲਾਨ ਰੱਖੋ",
   noPlans: "ਕੋਈ ਪਲਾਨ ਉਪਲਬਧ ਨਹੀਂ ਹੈ।",
 
   // Payment / Stripe

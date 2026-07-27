@@ -23,6 +23,9 @@ const billing = {
   downgradeScheduledText: "Mantendrás tu plan actual hasta que se renueve y luego pasarás al plan inferior.",
   downgradePendingBanner: "Vas a bajar al plan {plan} el {date}. Mantienes tu plan actual hasta entonces.",
   cancelDowngrade: "Cancelar cambio de plan",
+  confirmCancelDowngradeTitle: "¿Cancelar el cambio de plan programado?",
+  confirmCancelDowngradeText: "Tu plan cambiará a {plan} el {date}. Si lo cancelas, tu plan actual simplemente continúa.",
+  confirmCancelDowngradeConfirm: "Sí, mantener mi plan actual",
   noPlans: "No hay planes disponibles.",
 
   // Payment / Stripe

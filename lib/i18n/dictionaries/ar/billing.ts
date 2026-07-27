@@ -23,6 +23,9 @@ const billing = {
   downgradeScheduledText: "ستحتفظ بخطتك الحالية حتى تجديدها، ثم تنتقل إلى الخطة الأصغر.",
   downgradePendingBanner: "ستنتقل إلى خطة {plan} في {date}. تحتفظ بخطتك الحالية حتى ذلك الحين.",
   cancelDowngrade: "إلغاء التخفيض",
+  confirmCancelDowngradeTitle: "إلغاء التخفيض المجدول؟",
+  confirmCancelDowngradeText: "من المقرر أن تتغير خطتك إلى {plan} في {date}. إذا ألغيت، تستمر خطتك الحالية كما هي.",
+  confirmCancelDowngradeConfirm: "نعم، أريد الاحتفاظ بخطتي الحالية",
   noPlans: "لا توجد خطط متاحة.",
 
   // Payment / Stripe

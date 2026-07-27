@@ -23,6 +23,9 @@ const billing = {
   downgradeScheduledText: "Ви збережете поточний тариф до його поновлення, а потім перейдете на нижчий.",
   downgradePendingBanner: "Ви перейдете на тариф {plan} {date}. До цього моменту зберігається ваш поточний тариф.",
   cancelDowngrade: "Скасувати зниження",
+  confirmCancelDowngradeTitle: "Скасувати заплановане зниження?",
+  confirmCancelDowngradeText: "Ваш тариф зміниться на {plan} {date}. Якщо скасувати, поточний тариф просто продовжить діяти.",
+  confirmCancelDowngradeConfirm: "Так, залишити поточний тариф",
   noPlans: "Немає доступних тарифів.",
 
   // Payment / Stripe

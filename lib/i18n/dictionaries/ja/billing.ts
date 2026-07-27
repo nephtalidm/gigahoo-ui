@@ -23,6 +23,9 @@ const billing = {
   downgradeScheduledText: "現在のプランは更新まで維持され、その後、下位のプランに移行します。",
   downgradePendingBanner: "{date} に {plan} へダウングレードします。それまでは現在のプランが維持されます。",
   cancelDowngrade: "ダウングレードをキャンセル",
+  confirmCancelDowngradeTitle: "予定されたダウングレードをキャンセルしますか？",
+  confirmCancelDowngradeText: "{date}にプランが{plan}に変更される予定です。キャンセルすると、現在のプランがそのまま継続されます。",
+  confirmCancelDowngradeConfirm: "はい、現在のプランを維持する",
   noPlans: "利用可能なプランがありません。",
 
   // Payment / Stripe

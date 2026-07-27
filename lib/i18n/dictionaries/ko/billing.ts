@@ -23,6 +23,9 @@ const billing = {
   downgradeScheduledText: "현재 요금제가 갱신될 때까지 유지되며, 이후 더 낮은 요금제로 전환됩니다.",
   downgradePendingBanner: "{date}에 {plan}(으)로 다운그레이드됩니다. 그때까지는 현재 요금제가 유지됩니다.",
   cancelDowngrade: "다운그레이드 취소",
+  confirmCancelDowngradeTitle: "예약된 다운그레이드를 취소할까요?",
+  confirmCancelDowngradeText: "{date}에 플랜이 {plan}(으)로 변경될 예정입니다. 취소하면 현재 플랜이 그대로 유지됩니다.",
+  confirmCancelDowngradeConfirm: "네, 현재 플랜을 유지할게요",
   noPlans: "사용 가능한 요금제가 없습니다.",
 
   // Payment / Stripe
