@@ -11,6 +11,7 @@ import { useToast } from "@/components/ui/toaster"
 import { useTranslation } from "@/contexts/language-context"
 import {
   changePlan,
+  cancelDowngrade,
   subscribePlan,
   syncSubscription,
   getPaymentMethods,
@@ -30,6 +31,7 @@ export function BillingView({
   plans: PlanData[]
 }) {
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null)
+  const [cancelingDowngrade, setCancelingDowngrade] = useState(false)
   // Embedded payment modal (no saved card): mounted once we hold a PaymentIntent clientSecret.
   const [payClientSecret, setPayClientSecret] = useState<string | null>(null)
   // The modal opens INSTANTLY in a preparing state when an upgrade starts — card lookup +
@@ -123,10 +125,12 @@ export function BillingView({
 
   async function handleChangePlan(plan: PlanData) {
     if (plan.priceMonthly === 0) {
-      // Free plan — switch directly
+      // Free plan. From a paid plan this is a deferred downgrade (kept until period end).
       setLoadingPlan(plan.name)
       try {
-        await changePlan(plan.id)
+        const res = await changePlan(plan.id)
+        if (res.status === "scheduled")
+          toast({ title: t("billing.downgradeScheduledTitle"), description: t("billing.downgradeScheduledText") })
         window.location.reload()
       } catch {
         toast({ title: t("billing.changePlanFailed"), description: t("billing.tryAgain"), variant: "destructive" })
@@ -159,6 +163,18 @@ export function BillingView({
     }
   }
 
+  // Undo a scheduled downgrade before it takes effect.
+  async function handleCancelDowngrade() {
+    setCancelingDowngrade(true)
+    try {
+      await cancelDowngrade()
+      window.location.reload()
+    } catch {
+      toast({ title: t("billing.changePlanFailed"), description: t("billing.tryAgain"), variant: "destructive" })
+      setCancelingDowngrade(false)
+    }
+  }
+
   // The actual subscribe call — reached directly (no saved card) or via the confirm dialog.
   async function startSubscribe(plan: PlanData) {
     setLoadingPlan(plan.name)
@@ -167,6 +183,10 @@ export function BillingView({
       // never left. Only a 3DS challenge or a missing card needs anything further here.
       const res = await subscribePlan(plan.id)
       if (res.status === "active") {
+        window.location.reload()
+      } else if (res.status === "scheduled") {
+        // Deferred downgrade — no charge now; the plan flips at period end.
+        toast({ title: t("billing.downgradeScheduledTitle"), description: t("billing.downgradeScheduledText") })
         window.location.reload()
       } else if (res.status === "requires_action" && res.clientSecret) {
         const stripe = await stripePromise
@@ -196,6 +216,24 @@ export function BillingView({
 
   return (
     <div className="flex flex-col gap-6">
+      {/* Scheduled downgrade: keep the current plan until period end, then drop to a smaller one. */}
+      {summary?.pendingPlan && (
+        <div className="flex flex-col gap-3 rounded-2xl border border-amber-300 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950/40 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-amber-900 dark:text-amber-200">
+            {t("billing.downgradePendingBanner", { plan: summary.pendingPlan, date: summary.pendingPlanEffectiveDate ?? "" })}
+          </p>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleCancelDowngrade}
+            disabled={cancelingDowngrade}
+            className="shrink-0"
+          >
+            {cancelingDowngrade && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {t("billing.cancelDowngrade")}
+          </Button>
+        </div>
+      )}
       {/* Usage summary */}
       <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
         <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
@@ -305,7 +343,7 @@ export function BillingView({
                   className="mt-8 w-full"
                 >
                   {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {isCurrent ? t("billing.currentPlanBadge") : isUpgrade ? t("billing.upgradeTo", { plan: displayName }) : t("billing.switchTo", { plan: displayName })}
+                  {isCurrent ? t("billing.currentPlanBadge") : isUpgrade ? t("billing.upgradeTo", { plan: displayName }) : t("billing.downgradeTo", { plan: displayName })}
                 </Button>
               </div>
             )

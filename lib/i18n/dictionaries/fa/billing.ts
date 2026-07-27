@@ -18,6 +18,11 @@ const billing = {
   perMonth: "/ماه",
   upgradeTo: "ارتقا به {plan}",
   switchTo: "تغییر به {plan}",
+  downgradeTo: "تنزل به {plan}",
+  downgradeScheduledTitle: "تنزل زمان‌بندی شد",
+  downgradeScheduledText: "طرح فعلی خود را تا زمان تمدید نگه می‌دارید و سپس به طرح کوچک‌تر منتقل می‌شوید.",
+  downgradePendingBanner: "در {date} به طرح {plan} تنزل می‌کنید. تا آن زمان طرح فعلی شما حفظ می‌شود.",
+  cancelDowngrade: "لغو تنزل",
   noPlans: "هیچ طرحی در دسترس نیست.",
 
   // Payment / Stripe

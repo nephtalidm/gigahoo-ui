@@ -850,7 +850,7 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
                 onClick={() => { setSelectedPlan(p.name); setErrors((e) => ({ ...e, plan: undefined })) }}
                 aria-pressed={selected}
                 className={cn(
-                  "relative flex flex-col rounded-2xl border p-5 text-left transition-colors",
+                  "relative flex flex-col cursor-pointer rounded-2xl border p-5 text-left transition-colors",
                   selected
                     ? "border-primary bg-primary/5 ring-1 ring-primary"
                     : "border-border hover:bg-accent",

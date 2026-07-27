@@ -971,7 +971,7 @@ export function SettingsView({
                 <CheckCircle2 className="h-4 w-4" />{t("settings.linked")}
               </span>
             ) : (
-              <GoogleSignInButton onCredential={handleLinkGoogle} text="signin" />
+              <GoogleSignInButton onCredential={handleLinkGoogle} />
             )}
           </div>
 

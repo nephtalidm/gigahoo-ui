@@ -18,6 +18,11 @@ const billing = {
   perMonth: "/buwan",
   upgradeTo: "Mag-upgrade sa {plan}",
   switchTo: "Lumipat sa {plan}",
+  downgradeTo: "Mag-downgrade sa {plan}",
+  downgradeScheduledTitle: "Naka-iskedyul ang downgrade",
+  downgradeScheduledText: "Mananatili ang iyong kasalukuyang plano hanggang mag-renew ito, pagkatapos ay lilipat ka sa mas maliit na plano.",
+  downgradePendingBanner: "Magda-downgrade ka sa {plan} sa {date}. Pananatilihin mo ang kasalukuyang plano mo hanggang doon.",
+  cancelDowngrade: "Kanselahin ang downgrade",
   noPlans: "Walang available na plano.",
 
   // Payment / Stripe

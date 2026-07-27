@@ -12,7 +12,7 @@ export const locales = [
   "ru", // Russian
   "uk", // Ukrainian
   "ar", // Arabic
-  "fa", // Persian
+  "fa", // Farsi
 ] as const
 export type Locale = (typeof locales)[number]
 
@@ -53,7 +53,24 @@ export const LOCALE_META: Record<Locale, { native: string; english: string; flag
   ru: { native: "Русский", english: "Russian", flags: ["ru"] },
   uk: { native: "Українська", english: "Ukrainian", flags: ["ua"] },
   ar: { native: "العربية", english: "Arabic", flags: ["sa"] },
-  fa: { native: "فارسی", english: "Persian", flags: ["ir"] },
+  fa: { native: "فارسی", english: "Farsi", flags: ["ir"] },
+}
+
+// Preferred order of the languages by country (most common languages first for that market).
+// Every country's list covers all locales. Used to order the language switcher (and the Agent
+// Voice language picker) by the account's country, else the browser's detected country.
+export const LANG_ORDER_BY_COUNTRY: Record<string, Locale[]> = {
+  CA: ["en", "fr", "zh", "pa", "es", "yue", "tl", "ar", "hi", "ko", "fa", "ru", "ja", "uk"],
+  US: ["en", "es", "zh", "yue", "tl", "fr", "ar", "ko", "ru", "hi", "pa", "ja", "fa", "uk"],
+  MX: ["es", "en", "fr", "zh", "ja", "ko", "ar", "ru", "yue", "hi", "pa", "fa", "tl", "uk"],
+}
+
+// The `locales` list re-sorted for a country's market (unlisted locales keep their natural order,
+// appended after). Unknown/empty country falls back to the US order.
+export function orderedLocales(country: string | undefined | null): Locale[] {
+  const order = LANG_ORDER_BY_COUNTRY[(country ?? "").toUpperCase()] ?? LANG_ORDER_BY_COUNTRY.US
+  const rank = (l: Locale) => { const i = order.indexOf(l); return i === -1 ? 999 : i }
+  return [...locales].sort((a, b) => rank(a) - rank(b))
 }
 
 // Right-to-left languages.

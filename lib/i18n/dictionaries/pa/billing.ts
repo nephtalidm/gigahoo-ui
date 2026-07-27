@@ -18,6 +18,11 @@ const billing = {
   perMonth: "/ਮਹੀਨਾ",
   upgradeTo: "{plan} ਵਿੱਚ ਅੱਪਗ੍ਰੇਡ ਕਰੋ",
   switchTo: "{plan} 'ਤੇ ਬਦਲੋ",
+  downgradeTo: "{plan} ਤੇ ਡਾਊਨਗ੍ਰੇਡ ਕਰੋ",
+  downgradeScheduledTitle: "ਡਾਊਨਗ੍ਰੇਡ ਨਿਯਤ",
+  downgradeScheduledText: "ਤੁਹਾਡਾ ਮੌਜੂਦਾ ਪਲਾਨ ਇਸ ਦੇ ਰੀਨਿਊ ਹੋਣ ਤੱਕ ਬਣਿਆ ਰਹੇਗਾ, ਫਿਰ ਤੁਸੀਂ ਛੋਟੇ ਪਲਾਨ ਤੇ ਚਲੇ ਜਾਓਗੇ।",
+  downgradePendingBanner: "ਤੁਸੀਂ {date} ਨੂੰ {plan} ਤੇ ਡਾਊਨਗ੍ਰੇਡ ਕਰ ਰਹੇ ਹੋ। ਉਦੋਂ ਤੱਕ ਤੁਹਾਡਾ ਮੌਜੂਦਾ ਪਲਾਨ ਬਣਿਆ ਰਹੇਗਾ।",
+  cancelDowngrade: "ਡਾਊਨਗ੍ਰੇਡ ਰੱਦ ਕਰੋ",
   noPlans: "ਕੋਈ ਪਲਾਨ ਉਪਲਬਧ ਨਹੀਂ ਹੈ।",
 
   // Payment / Stripe

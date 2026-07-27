@@ -18,6 +18,11 @@ const billing = {
   perMonth: "/月",
   upgradeTo: "升级到 {plan}",
   switchTo: "切换到 {plan}",
+  downgradeTo: "降级到 {plan}",
+  downgradeScheduledTitle: "已安排降级",
+  downgradeScheduledText: "在当前套餐续费前你可继续使用它，之后将切换到较低套餐。",
+  downgradePendingBanner: "你将于 {date} 降级到 {plan}。在此之前你可继续使用当前套餐。",
+  cancelDowngrade: "取消降级",
   noPlans: "暂无可用套餐。",
 
   // Payment / Stripe

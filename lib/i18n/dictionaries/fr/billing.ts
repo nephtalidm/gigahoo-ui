@@ -18,6 +18,11 @@ const billing = {
   perMonth: "/mois",
   upgradeTo: "Passer à {plan}",
   switchTo: "Basculer vers {plan}",
+  downgradeTo: "Rétrograder vers {plan}",
+  downgradeScheduledTitle: "Rétrogradation programmée",
+  downgradeScheduledText: "Vous conservez votre offre actuelle jusqu'à son renouvellement, puis vous passez à l'offre inférieure.",
+  downgradePendingBanner: "Vous passez à l'offre {plan} le {date}. Vous conservez votre offre actuelle jusque-là.",
+  cancelDowngrade: "Annuler la rétrogradation",
   noPlans: "Aucun forfait disponible.",
 
   // Payment / Stripe

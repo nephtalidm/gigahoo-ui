@@ -302,7 +302,7 @@ export function AuthMethods({ onAuthenticated }: { onAuthenticated?: () => void 
     return (
       <div className="flex flex-col gap-3">
         {error && <p className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">{error}</p>}
-        <GoogleSignInButton onCredential={handleGoogle} text="continue_with" />
+        <GoogleSignInButton onCredential={handleGoogle} oneTap />
         <Button onClick={() => setMode("sms")} variant="outline" size="lg" className="w-full justify-center gap-3">
           <MessageSquare className="h-5 w-5" />
           {t("auth.continueWithSms")}

@@ -18,6 +18,11 @@ const billing = {
   perMonth: "/月",
   upgradeTo: "{plan}にアップグレード",
   switchTo: "{plan}に切り替え",
+  downgradeTo: "{plan} にダウングレード",
+  downgradeScheduledTitle: "ダウングレード予約済み",
+  downgradeScheduledText: "現在のプランは更新まで維持され、その後、下位のプランに移行します。",
+  downgradePendingBanner: "{date} に {plan} へダウングレードします。それまでは現在のプランが維持されます。",
+  cancelDowngrade: "ダウングレードをキャンセル",
   noPlans: "利用可能なプランがありません。",
 
   // Payment / Stripe

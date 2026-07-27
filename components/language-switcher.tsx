@@ -8,24 +8,10 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useTranslation } from "@/contexts/language-context"
-import { locales, isLocale, LOCALE_META, type Locale } from "@/lib/i18n/config"
+import { useAuth } from "@/contexts/auth-context"
+import { isLocale, LOCALE_META, orderedLocales, type Locale } from "@/lib/i18n/config"
 import { cn } from "@/lib/utils"
-
-// The single, most-common flag for a language (e.g. UK for English, Spain for
-// Spanish, Punjab for Punjabi). Country selection lives in its own dropdown.
-function Flag({ code }: { code: string }) {
-  return (
-    // Local asset (e.g. "/flags/punjab.svg") or a flagcdn country code.
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={code.startsWith("/") ? code : `https://flagcdn.com/${code}.svg`}
-      alt=""
-      width={18}
-      height={13}
-      className="h-[13px] w-[18px] shrink-0 rounded-[2px] object-cover shadow-sm ring-1 ring-black/5"
-    />
-  )
-}
+import { Flag } from "@/components/flag"
 
 export function LanguageSwitcher({
   className,
@@ -34,8 +20,11 @@ export function LanguageSwitcher({
   className?: string
   onChange?: (locale: Locale) => void
 }) {
-  const { locale, setLocale } = useTranslation()
+  const { locale, setLocale, country } = useTranslation()
+  const { account, isAuthenticated } = useAuth()
   const current = LOCALE_META[locale]
+  // Order the languages by the account's country when logged in, else the browser's detected country.
+  const locales = orderedLocales(isAuthenticated && account?.countryCode ? account.countryCode : country)
 
   return (
     <Select value={locale} onValueChange={(v) => { if (isLocale(v)) { setLocale(v); onChange?.(v) } }}>

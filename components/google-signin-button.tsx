@@ -12,23 +12,27 @@ declare global {
 const GSI_SRC = "https://accounts.google.com/gsi/client"
 
 /**
- * Google Identity Services "Sign in with Google" button. Obtains a real ID
- * token and hands it to `onCredential`. Renders nothing when
- * NEXT_PUBLIC_GOOGLE_CLIENT_ID is not configured, so there's no broken button.
+ * Google Identity Services sign-in: the NATIVE "Sign in with Google" button (Google's
+ * own rendered button) PLUS Google One Tap, which auto-shows the signed-in account
+ * prompt on load (login only). Both return a real ID token to `onCredential`. Renders
+ * nothing when NEXT_PUBLIC_GOOGLE_CLIENT_ID is unset.
  */
 export function GoogleSignInButton({
   onCredential,
+  oneTap = false,
   text = "continue_with",
 }: {
   onCredential: (idToken: string) => void
+  // Auto-show the One Tap account prompt on load (login only; not on the settings
+  // link-account button, where an auto-prompt would be intrusive).
+  oneTap?: boolean
   text?: "signin_with" | "signup_with" | "continue_with" | "signin"
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
 
-  // Keep the latest callback in a ref so the init effect does NOT re-run (and
-  // re-render the Google button, which caused a flicker) just because the parent
-  // passes a new onCredential function reference on each render.
+  // Keep the latest callback in a ref so the init effect doesn't re-run (and re-render
+  // the Google button, causing a flicker) on every parent render.
   const onCredentialRef = useRef(onCredential)
   useEffect(() => {
     onCredentialRef.current = onCredential
@@ -45,6 +49,7 @@ export function GoogleSignInButton({
         callback: (resp: { credential?: string }) => {
           if (resp?.credential) onCredentialRef.current(resp.credential)
         },
+        use_fedcm_for_prompt: true,
       })
       ref.current.innerHTML = ""
       window.google.accounts.id.renderButton(ref.current, {
@@ -56,6 +61,8 @@ export function GoogleSignInButton({
         logo_alignment: "center",
         width: Math.min(ref.current.clientWidth || 320, 400),
       })
+      // One Tap: auto-show the account prompt on load (login only).
+      if (oneTap) { try { window.google.accounts.id.prompt() } catch { /* prompt unavailable */ } }
     }
 
     if (window.google?.accounts?.id) {
@@ -75,8 +82,15 @@ export function GoogleSignInButton({
       cancelled = true
       script?.removeEventListener("load", render)
     }
-  }, [clientId, text])
+  }, [clientId, text, oneTap])
 
   if (!clientId) return null
-  return <div ref={ref} className="flex min-h-10 justify-center" />
+  return (
+    <>
+      {/* Warm the connection + fetch the GSI script early (React hoists these to <head>). */}
+      <link rel="preconnect" href="https://accounts.google.com" />
+      <link rel="preload" as="script" href={GSI_SRC} />
+      <div ref={ref} className="flex min-h-10 justify-center" />
+    </>
+  )
 }

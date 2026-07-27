@@ -95,7 +95,7 @@ export function CountrySwitcher({ className }: { className?: string }) {
           ) : null}
         </SelectValue>
       </SelectTrigger>
-      <SelectContent className="w-auto min-w-[12rem] max-w-[min(20rem,90vw)]">
+      <SelectContent mobileSheet={false} className="w-auto min-w-[12rem] max-w-[min(20rem,90vw)]">
         {options.map((code) => (
           <SelectItem key={code} value={code}>
             <span className="flex items-center gap-2">

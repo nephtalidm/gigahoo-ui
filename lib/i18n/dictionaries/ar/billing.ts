@@ -18,6 +18,11 @@ const billing = {
   perMonth: "/شهر",
   upgradeTo: "الترقية إلى {plan}",
   switchTo: "التبديل إلى {plan}",
+  downgradeTo: "التخفيض إلى {plan}",
+  downgradeScheduledTitle: "تم جدولة التخفيض",
+  downgradeScheduledText: "ستحتفظ بخطتك الحالية حتى تجديدها، ثم تنتقل إلى الخطة الأصغر.",
+  downgradePendingBanner: "ستنتقل إلى خطة {plan} في {date}. تحتفظ بخطتك الحالية حتى ذلك الحين.",
+  cancelDowngrade: "إلغاء التخفيض",
   noPlans: "لا توجد خطط متاحة.",
 
   // Payment / Stripe

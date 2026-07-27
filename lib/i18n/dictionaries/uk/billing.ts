@@ -18,6 +18,11 @@ const billing = {
   perMonth: "/місяць",
   upgradeTo: "Перейти на {plan}",
   switchTo: "Перейти на {plan}",
+  downgradeTo: "Знизити до {plan}",
+  downgradeScheduledTitle: "Зниження заплановано",
+  downgradeScheduledText: "Ви збережете поточний тариф до його поновлення, а потім перейдете на нижчий.",
+  downgradePendingBanner: "Ви перейдете на тариф {plan} {date}. До цього моменту зберігається ваш поточний тариф.",
+  cancelDowngrade: "Скасувати зниження",
   noPlans: "Немає доступних тарифів.",
 
   // Payment / Stripe

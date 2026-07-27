@@ -18,6 +18,11 @@ const billing = {
   perMonth: "/월",
   upgradeTo: "{plan}(으)로 업그레이드",
   switchTo: "{plan}(으)로 전환",
+  downgradeTo: "{plan}(으)로 다운그레이드",
+  downgradeScheduledTitle: "다운그레이드 예약됨",
+  downgradeScheduledText: "현재 요금제가 갱신될 때까지 유지되며, 이후 더 낮은 요금제로 전환됩니다.",
+  downgradePendingBanner: "{date}에 {plan}(으)로 다운그레이드됩니다. 그때까지는 현재 요금제가 유지됩니다.",
+  cancelDowngrade: "다운그레이드 취소",
   noPlans: "사용 가능한 요금제가 없습니다.",
 
   // Payment / Stripe

@@ -133,6 +133,11 @@ export interface AccountData {
   greetingMessage: string | null;
   businessKnowledge?: string | null;
   agentVoice: string | null;
+  // Per-language voice picks: { languageCode -> voice apiName }. Only languages the account
+  // has customized appear; the dashboard defaults the rest from the voice catalog.
+  agentVoicesByLanguage?: Record<string, string>;
+  // true = one voice (agentVoice) for every language; false = a distinct voice per language.
+  usesSingleVoice?: boolean;
   maximumCallMinutes: number | null;
   accountLanguage: string | null;
   timeZone?: string | null;
@@ -227,13 +232,18 @@ export interface VoiceSettings {
   greetingMessage: string | null;
   businessKnowledge: string | null;
   agentVoice: string | null;
+  agentVoicesByLanguage?: Record<string, string>;
   maximumCallMinutes: number | null;
 }
 
 export function updateVoiceSettings(s: {
   greetingMessage: string | null;
   businessKnowledge: string | null;
-  agentVoice: string | null;
+  // Voice mode: true = one voice for all languages (sent via agentVoice); false = a voice per
+  // language (sent via agentVoicesByLanguage).
+  usesSingleVoice: boolean;
+  agentVoice?: string | null;
+  agentVoicesByLanguage?: Record<string, string>;
   maximumCallMinutes: number | null;
 }) {
   return api.put<VoiceSettings>("/api/account/voice-settings", s);
@@ -258,6 +268,8 @@ export interface AgentVoice {
   // Fish voices carry gender + the language they speak (picker grouping).
   gender?: string | null;
   language?: string | null;
+  // BCP-47-ish code of the language this voice speaks (e.g. "es"); keys the per-language picks.
+  languageCode?: string | null;
   // Per-voice instruct "context" options (scenarios/roles/identities). Empty for non-instruct voices.
   options: { key: string; label: string }[];
 }
@@ -371,6 +383,9 @@ export interface BillingSummary {
   remainingMinutes: number;
   billingPeriod: string;
   usagePercent: number;
+  // Set when a downgrade is scheduled for period end: the target plan + the date it takes effect.
+  pendingPlan?: string | null;
+  pendingPlanEffectiveDate?: string | null;
 }
 
 export interface PlanData {
@@ -421,8 +436,15 @@ export function getPublicPrices(country: string) {
   );
 }
 
+// Move to the Free plan. "scheduled" = deferred to period end (downgrade from a paid plan);
+// "active" = applied now.
 export function changePlan(planId: number) {
-  return api.post<{ message: string; plan: string }>("/api/billing/change-plan", { planId });
+  return api.post<{ status: "active" | "scheduled" }>("/api/billing/change-plan", { planId });
+}
+
+// Undo a scheduled downgrade before it takes effect.
+export function cancelDowngrade() {
+  return api.post<{ status: string }>("/api/billing/cancel-downgrade");
 }
 
 // EMBEDDED payment epilogue: pull the just-paid subscription's state straight from Stripe so
@@ -436,7 +458,7 @@ export function syncSubscription() {
 // the in-app card form ("requires_payment_method") or a 3DS confirmation ("requires_action").
 export function subscribePlan(planId: number) {
   return api.post<{
-    status: "active" | "requires_action" | "requires_payment_method";
+    status: "active" | "scheduled" | "requires_action" | "requires_payment_method";
     clientSecret?: string;
   }>("/api/billing/subscribe", { planId });
 }

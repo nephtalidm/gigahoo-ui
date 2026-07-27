@@ -8,6 +8,7 @@ import { Faq } from "@/components/faq"
 import { FinalCta } from "@/components/final-cta"
 import { SiteFooter } from "@/components/site-footer"
 import { ChatWidget } from "@/components/chat-widget"
+import { GoogleOneTap } from "@/components/google-one-tap"
 import type { PublicPrices } from "@/lib/api"
 
 // Sensible USD defaults so the page never breaks if the price fetch fails.
@@ -53,6 +54,8 @@ export default async function Page() {
       </main>
       <SiteFooter />
       <ChatWidget />
+      {/* Google One Tap for logged-out visitors who already have a Google session. */}
+      <GoogleOneTap />
     </div>
   )
 }
