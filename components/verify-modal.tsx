@@ -46,7 +46,18 @@ export function VerifyModal({
 
   return (
     <Dialog open={open} onOpenChange={(o) => { if (!o) onCancel() }}>
-      <DialogContent showCloseButton={false} className="sm:max-w-md">
+      <DialogContent
+        showCloseButton={false}
+        className="sm:max-w-md"
+        // Enter = the default (confirm) action: focus lives in the code boxes, so the keydown
+        // bubbles here. Only fires once the code is complete — same guard as the button.
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !busy && code.length >= 6) {
+            e.preventDefault()
+            onConfirm()
+          }
+        }}
+      >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
