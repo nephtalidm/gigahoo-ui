@@ -13,6 +13,11 @@ export default function CallHistoryPage() {
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [timeZone, setTimeZone] = useState<string | undefined>(undefined)
   const [loading, setLoading] = useState(true)
+  // Deep link from the summary email/SMS: ?call=<id> opens that conversation's detail popup.
+  const [openId, setOpenId] = useState<string | null>(null)
+  useEffect(() => {
+    setOpenId(new URLSearchParams(window.location.search).get("call"))
+  }, [])
 
   useEffect(() => {
     // Fetch the account too so we can show call times in the ACCOUNT's timezone (its region),
@@ -37,7 +42,7 @@ export default function CallHistoryPage() {
           <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         </div>
       ) : (
-        <ConversationHistoryTable conversations={conversations} timeZone={timeZone} />
+        <ConversationHistoryTable conversations={conversations} timeZone={timeZone} openId={openId} />
       )}
     </div>
   )

@@ -15,9 +15,17 @@ import { ConversationDetailDialog } from "@/components/dashboard/conversation-de
 import { useTranslation } from "@/contexts/language-context"
 import { type Conversation, formatDateTime, formatDuration, formatPhone } from "@/lib/data"
 
-export function ConversationHistoryTable({ conversations, timeZone }: { conversations: Conversation[]; timeZone?: string }) {
+export function ConversationHistoryTable({ conversations, timeZone, openId }: { conversations: Conversation[]; timeZone?: string; openId?: string | null }) {
   const [selected, setSelected] = useState<Conversation | null>(null)
   const { t } = useTranslation()
+  // Deep link (?call=<id> from the summary email/SMS): open that conversation's popup once
+  // the list has loaded. Only fires while nothing is selected so it can't fight the user.
+  useEffect(() => {
+    if (!openId || selected) return
+    const match = conversations.find((c) => c.id === openId)
+    if (match) setSelected(match)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openId, conversations])
   // Render dates client-side so they show in the VIEWER's local timezone (the server renders in its
   // own TZ — now Singapore). Empty until mounted to avoid a hydration mismatch.
   const [mounted, setMounted] = useState(false)

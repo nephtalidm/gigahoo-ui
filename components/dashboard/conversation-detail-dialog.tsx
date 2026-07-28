@@ -26,7 +26,9 @@ export function ConversationDetailDialog({
 
   return (
     <Dialog open={!!selected} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-lg" initialFocus={detailRef}>
+      {/* Mobile: cap to the visual viewport and scroll inside — long transcripts overflowed the
+          phone screen with no way to scroll or close. */}
+      <DialogContent className="max-w-lg max-h-[85dvh] overflow-y-auto" initialFocus={detailRef}>
         {selected && (
           <>
             <DialogHeader>
