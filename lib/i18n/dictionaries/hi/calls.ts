@@ -15,6 +15,7 @@ const calls = {
   speakerCaller: "कॉलर",
   speakerReceptionist: "रिसेप्शनिस्ट",
   copy: "कॉपी करें",
+  close: "बंद करें",
   status: "स्थिति",
   isEmergency: "क्या आपातकाल?",
   emergency: "आपातकाल",

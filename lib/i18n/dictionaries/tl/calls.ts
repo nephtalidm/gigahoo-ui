@@ -15,6 +15,7 @@ const calls = {
   speakerCaller: "Tumawag",
   speakerReceptionist: "Receptionist",
   copy: "Kopyahin",
+  close: "Isara",
   status: "Status",
   isEmergency: "Emergency ba?",
   emergency: "Emergency",

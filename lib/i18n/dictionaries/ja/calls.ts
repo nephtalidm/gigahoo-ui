@@ -15,6 +15,7 @@ const calls = {
   speakerCaller: "発信者",
   speakerReceptionist: "受付",
   copy: "コピー",
+  close: "閉じる",
   status: "ステータス",
   isEmergency: "緊急ですか？",
   emergency: "緊急",

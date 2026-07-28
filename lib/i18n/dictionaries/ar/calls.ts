@@ -15,6 +15,7 @@ const calls = {
   speakerCaller: "المتصل",
   speakerReceptionist: "موظفة الاستقبال",
   copy: "نسخ",
+  close: "إغلاق",
   status: "الحالة",
   isEmergency: "هل هي حالة طارئة؟",
   emergency: "طارئ",

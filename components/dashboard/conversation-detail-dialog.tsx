@@ -1,12 +1,13 @@
 "use client"
 
 import { useState, useRef } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
 import { StatusBadge } from "@/components/dashboard/status-badge"
 import { EmergencyBadge } from "@/components/dashboard/emergency-badge"
 import { useTranslation } from "@/contexts/language-context"
 import { type Conversation, formatDateTime, formatDuration, formatPhone } from "@/lib/data"
-import { Copy, Check } from "lucide-react"
+import { Copy, Check, X } from "lucide-react"
 
 // Shared "Conversation Details" popup used by both the call-history table and the
 // overview recent-calls list. Controlled: pass the selected conversation (or null) + onClose.
@@ -26,15 +27,29 @@ export function ConversationDetailDialog({
 
   return (
     <Dialog open={!!selected} onOpenChange={(o) => !o && onClose()}>
-      {/* Mobile: cap to the visual viewport and scroll inside — long transcripts overflowed the
-          phone screen with no way to scroll or close. */}
-      <DialogContent className="max-w-lg max-h-[85dvh] overflow-y-auto" initialFocus={detailRef}>
+      {/* A FIXED popup shell: the frame, title, and close button never move — only the body
+          scrolls inside. The close button matches the mobile menu's (outlined 44px X). */}
+      <DialogContent className="max-w-lg max-h-[85dvh] flex flex-col overflow-hidden p-0 gap-0" showCloseButton={false} initialFocus={detailRef}>
         {selected && (
           <>
-            <DialogHeader>
+            <DialogHeader className="shrink-0 border-b border-border p-4 pr-16">
               <DialogTitle>{t("calls.detailsTitle")}</DialogTitle>
             </DialogHeader>
-            <div ref={detailRef} tabIndex={-1} className="flex flex-col gap-4 outline-none">
+            <DialogClose
+              render={
+                <Button
+                  variant="outline"
+                  className="absolute top-3 right-3 size-11"
+                  size="icon-sm"
+                  aria-label={t("calls.close")}
+                />
+              }
+            >
+              <X className="size-6" />
+            </DialogClose>
+            {/* The body itself NEVER scrolls — the popup is a fixed frame. Only the transcript
+                box below scrolls (visibly, and only when it actually overflows). */}
+            <div ref={detailRef} tabIndex={-1} className="flex min-h-0 flex-1 flex-col gap-4 p-4 outline-none">
               <div className="flex items-center justify-between">
                 <p className="text-lg font-semibold text-foreground">{selected.callerName}</p>
                 <div className="flex items-center gap-2">
@@ -72,11 +87,13 @@ export function ConversationDetailDialog({
               </div>
               <DetailSection label={t("calls.summary")} value={selected.summary || "—"} />
 
-              {/* Full transcript — every turn, scrollable; speaker prefix bolded */}
+              {/* Full transcript — the ONLY scrolling area of the popup. It takes whatever height
+                  is left in the fixed frame; a short transcript renders at natural height with no
+                  scrollbar, a long one scrolls with an ALWAYS-VISIBLE styled scrollbar. */}
               {selected.transcript && (
-                <div>
+                <div className="flex min-h-24 flex-1 flex-col">
                   <p className="text-sm font-medium text-foreground">{t("calls.transcript")}</p>
-                  <div className="mt-1 max-h-64 overflow-y-auto rounded-xl border border-border bg-secondary/40 p-3 text-sm">
+                  <div className="mt-1 min-h-0 flex-1 overflow-y-auto rounded-xl border border-border bg-secondary/40 p-3 text-sm [scrollbar-width:thin] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-muted-foreground/40">
                     {selected.transcript.split("\n").map((line, i) => {
                       const m = line.match(/^(Caller|Receptionist):\s*(.*)$/)
                       return (

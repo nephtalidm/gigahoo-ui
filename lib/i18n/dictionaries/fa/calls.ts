@@ -15,6 +15,7 @@ const calls = {
   speakerCaller: "تماس‌گیرنده",
   speakerReceptionist: "منشی",
   copy: "کپی",
+  close: "بستن",
   status: "وضعیت",
   isEmergency: "اضطراری است؟",
   emergency: "اضطراری",

@@ -15,6 +15,7 @@ const calls = {
   speakerCaller: "Cliente",
   speakerReceptionist: "Recepcionista",
   copy: "Copiar",
+  close: "Cerrar",
   status: "Estado",
   isEmergency: "¿Es Emergencia?",
   emergency: "Emergencia",

@@ -15,6 +15,7 @@ const calls = {
   speakerCaller: "발신자",
   speakerReceptionist: "리셉셔니스트",
   copy: "복사",
+  close: "닫기",
   status: "상태",
   isEmergency: "긴급 여부",
   emergency: "긴급",

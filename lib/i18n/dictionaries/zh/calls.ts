@@ -15,6 +15,7 @@ const calls = {
   speakerCaller: "来电者",
   speakerReceptionist: "接待员",
   copy: "复制",
+  close: "关闭",
   status: "状态",
   isEmergency: "是否紧急？",
   emergency: "紧急",
