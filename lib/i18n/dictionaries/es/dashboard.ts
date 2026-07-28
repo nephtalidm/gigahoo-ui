@@ -171,6 +171,7 @@ const dashboard = {
   overviewTitle: "Resumen",
   overviewWelcome: "¡Bienvenido de nuevo!",
   loadFailed: "No se pudo cargar el panel.",
+  saveFailed: "No se pudieron guardar los cambios. Inténtalo de nuevo.",
   tryAgain: "Reintentar",
   currentPlan: "Plan actual",
   minutesPerMonth: "{minutes} min/mes",

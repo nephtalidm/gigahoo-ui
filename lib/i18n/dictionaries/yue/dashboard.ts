@@ -165,6 +165,7 @@ const dashboard = {
   overviewTitle: "概覽",
   overviewWelcome: "歡迎返嚟！",
   loadFailed: "載入儀表板失敗。",
+  saveFailed: "儲存唔到變更。請再試一次。",
   tryAgain: "再試一次",
   currentPlan: "目前方案",
   minutesPerMonth: "每月 {minutes} 分鐘",

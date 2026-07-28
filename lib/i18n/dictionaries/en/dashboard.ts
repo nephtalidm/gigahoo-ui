@@ -171,6 +171,7 @@ const dashboard = {
   overviewTitle: "Overview",
   overviewWelcome: "Welcome back!",
   loadFailed: "Failed to load dashboard.",
+  saveFailed: "Saving failed. Please try again.",
   tryAgain: "Try again",
   currentPlan: "Current Plan",
   minutesPerMonth: "{minutes} min/mo",

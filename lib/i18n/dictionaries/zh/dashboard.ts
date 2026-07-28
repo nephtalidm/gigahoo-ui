@@ -165,6 +165,7 @@ const dashboard = {
   overviewTitle: "概览",
   overviewWelcome: "欢迎回来！",
   loadFailed: "仪表盘加载失败。",
+  saveFailed: "保存失败。请重试。",
   tryAgain: "重试",
   currentPlan: "当前套餐",
   minutesPerMonth: "{minutes} 分钟/月",

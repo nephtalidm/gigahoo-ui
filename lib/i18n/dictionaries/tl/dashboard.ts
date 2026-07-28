@@ -171,6 +171,7 @@ const dashboard = {
   overviewTitle: "Pangkalahatang-tanaw",
   overviewWelcome: "Maligayang pagbabalik!",
   loadFailed: "Nabigong i-load ang dashboard.",
+  saveFailed: "Hindi na-save ang mga pagbabago. Pakisubukan muli.",
   tryAgain: "Subukan muli",
   currentPlan: "Kasalukuyang Plano",
   minutesPerMonth: "{minutes} min/buwan",

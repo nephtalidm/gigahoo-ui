@@ -171,6 +171,7 @@ const dashboard = {
   overviewTitle: "Aperçu",
   overviewWelcome: "Bon retour !",
   loadFailed: "Échec du chargement du tableau de bord.",
+  saveFailed: "L'enregistrement a échoué. Veuillez réessayer.",
   tryAgain: "Réessayer",
   currentPlan: "Forfait actuel",
   minutesPerMonth: "{minutes} min/mois",

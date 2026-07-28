@@ -171,6 +171,7 @@ const dashboard = {
   overviewTitle: "Обзор",
   overviewWelcome: "С возвращением!",
   loadFailed: "Не удалось загрузить панель управления.",
+  saveFailed: "Не удалось сохранить изменения. Попробуйте ещё раз.",
   tryAgain: "Повторить попытку",
   currentPlan: "Текущий тариф",
   minutesPerMonth: "{minutes} мин/мес",

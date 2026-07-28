@@ -165,6 +165,7 @@ const dashboard = {
   overviewTitle: "개요",
   overviewWelcome: "다시 오신 것을 환영합니다!",
   loadFailed: "대시보드를 불러오지 못했습니다.",
+  saveFailed: "저장에 실패했습니다. 다시 시도해 주세요.",
   tryAgain: "다시 시도",
   currentPlan: "현재 요금제",
   minutesPerMonth: "월 {minutes}분",

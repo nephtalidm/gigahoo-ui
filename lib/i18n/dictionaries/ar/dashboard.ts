@@ -171,6 +171,7 @@ const dashboard = {
   overviewTitle: "نظرة عامة",
   overviewWelcome: "مرحبًا بعودتك!",
   loadFailed: "فشل تحميل لوحة التحكم.",
+  saveFailed: "فشل حفظ التغييرات. حاول مرة أخرى.",
   tryAgain: "حاول مرة أخرى",
   currentPlan: "الخطة الحالية",
   minutesPerMonth: "{minutes} دقيقة/شهر",

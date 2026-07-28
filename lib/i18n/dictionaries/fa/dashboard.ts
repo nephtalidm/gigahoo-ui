@@ -171,6 +171,7 @@ const dashboard = {
   overviewTitle: "نمای کلی",
   overviewWelcome: "خوش آمدید!",
   loadFailed: "بارگذاری داشبورد ناموفق بود.",
+  saveFailed: "ذخیره تغییرات ناموفق بود. دوباره تلاش کنید.",
   tryAgain: "تلاش دوباره",
   currentPlan: "طرح فعلی",
   minutesPerMonth: "{minutes} دقیقه در ماه",

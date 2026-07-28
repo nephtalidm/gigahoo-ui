@@ -171,6 +171,7 @@ const dashboard = {
   overviewTitle: "अवलोकन",
   overviewWelcome: "वापस स्वागत है!",
   loadFailed: "डैशबोर्ड लोड करने में विफल।",
+  saveFailed: "परिवर्तन सहेजने में विफल। कृपया फिर से प्रयास करें।",
   tryAgain: "पुनः प्रयास करें",
   currentPlan: "वर्तमान प्लान",
   minutesPerMonth: "{minutes} मिनट/माह",

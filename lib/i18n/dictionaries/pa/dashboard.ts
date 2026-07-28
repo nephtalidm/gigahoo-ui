@@ -171,6 +171,7 @@ const dashboard = {
   overviewTitle: "ਸੰਖੇਪ ਜਾਣਕਾਰੀ",
   overviewWelcome: "ਮੁੜ ਜੀ ਆਇਆਂ ਨੂੰ!",
   loadFailed: "ਡੈਸ਼ਬੋਰਡ ਲੋਡ ਕਰਨ ਵਿੱਚ ਅਸਫਲ।",
+  saveFailed: "ਤਬਦੀਲੀਆਂ ਸੰਭਾਲਣ ਵਿੱਚ ਅਸਫਲ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
   tryAgain: "ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ",
   currentPlan: "ਮੌਜੂਦਾ ਪਲਾਨ",
   minutesPerMonth: "{minutes} ਮਿੰਟ/ਮਹੀਨਾ",

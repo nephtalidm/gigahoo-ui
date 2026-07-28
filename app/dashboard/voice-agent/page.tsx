@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
 import { getAccount, getSettings, updateVoiceSettings, updateQuestions, generateVoiceSample, getVoices, type AgentVoice } from "@/lib/api"
 import { useTranslation } from "@/contexts/language-context"
+import { useToast } from "@/components/ui/toaster"
 import { useUnsavedChanges } from "@/contexts/unsaved-changes-context"
 import { cn } from "@/lib/utils"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -31,6 +32,7 @@ function stableMap(m: Record<string, string>): string {
 
 export default function VoiceAgentPage() {
   const { t } = useTranslation()
+  const { toast } = useToast()
   const { dirty, setDirty } = useUnsavedChanges()
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -204,7 +206,9 @@ export default function VoiceAgentPage() {
       setSaved(true)
       setTimeout(() => setSaved(false), 2000)
     } catch {
-      // Leave the current values in place so the user can retry.
+      // Leave the current values in place so the user can retry — and SAY it failed:
+      // a silent failure reads as saved, then the unsaved-changes guard looks broken.
+      toast({ title: t("dashboard.saveFailed"), variant: "destructive" })
     } finally {
       setSaving(false)
     }

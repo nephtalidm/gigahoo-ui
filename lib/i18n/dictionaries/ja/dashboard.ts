@@ -165,6 +165,7 @@ const dashboard = {
   overviewTitle: "概要",
   overviewWelcome: "おかえりなさい！",
   loadFailed: "ダッシュボードの読み込みに失敗しました。",
+  saveFailed: "保存に失敗しました。もう一度お試しください。",
   tryAgain: "再試行",
   currentPlan: "現在のプラン",
   minutesPerMonth: "{minutes}分/月",
