@@ -26,9 +26,20 @@ export function CodeBoxes({
   autoFocus?: boolean
 }) {
   const refs = useRef<Array<HTMLInputElement | null>>([])
+  // Suppresses the select-on-focus for one programmatic focus: after the LAST digit is
+  // typed there is nothing left to overwrite, so the digit must not sit there selected.
+  const skipSelect = useRef(false)
 
   const focusBox = (i: number) => {
     const el = refs.current[Math.max(0, Math.min(length - 1, i))]
+    if (i >= length) {
+      // Code complete — keep focus on the last box (Enter-to-confirm needs focus inside
+      // the dialog) but collapse the caret past the digit instead of selecting it.
+      skipSelect.current = true
+      el?.focus()
+      el?.setSelectionRange(1, 1)
+      return
+    }
     el?.focus()
     el?.select()
   }
@@ -97,7 +108,10 @@ export function CodeBoxes({
             e.preventDefault()
             place(i, e.clipboardData.getData("text"))
           }}
-          onFocus={(e) => e.target.select()}
+          onFocus={(e) => {
+            if (skipSelect.current) { skipSelect.current = false; return }
+            e.target.select()
+          }}
           className={cn(
             "h-11 w-11 sm:h-9 sm:w-9 rounded-lg border bg-secondary/30 text-center font-mono text-lg text-foreground caret-primary outline-none transition-colors",
             "focus:border-primary focus:ring-2 focus:ring-primary/30",
