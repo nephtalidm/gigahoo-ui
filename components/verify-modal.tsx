@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { CodeBoxes } from "@/components/code-boxes"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
@@ -31,6 +31,7 @@ export function VerifyModal({
 }) {
   const [resending, setResending] = useState(false)
   const [resent, setResent] = useState(false)
+  const confirmRef = useRef<HTMLButtonElement | null>(null)
 
   async function handleResend() {
     setResending(true)
@@ -49,9 +50,11 @@ export function VerifyModal({
       <DialogContent
         showCloseButton={false}
         className="sm:max-w-md"
-        // Enter = the default (confirm) action: focus lives in the code boxes, so the keydown
-        // bubbles here. Only fires once the code is complete — same guard as the button.
+        // Enter = the default (confirm) action while typing in the code boxes. When a
+        // BUTTON has focus (e.g. after the last digit moved focus to Confirm), the
+        // browser's native Enter activation handles it — skip to avoid a double submit.
         onKeyDown={(e) => {
+          if ((e.target as HTMLElement).tagName === "BUTTON") return
           if (e.key === "Enter" && !busy && code.length >= 6) {
             e.preventDefault()
             onConfirm()
@@ -62,7 +65,11 @@ export function VerifyModal({
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        <CodeBoxes id={id} value={code} onChange={setCode} length={6} />
+        {/* On the last digit, focus jumps to Confirm: the boxes visibly let go and
+            Enter/Space activates the button natively. */}
+        {/* Deferred a tick: at onComplete time the button is still disabled in the DOM
+            (the code-length re-render hasn't committed) and focusing it would no-op. */}
+        <CodeBoxes id={id} value={code} onChange={setCode} length={6} onComplete={() => setTimeout(() => confirmRef.current?.focus(), 0)} />
         <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" />
           {waitingLabel}
@@ -91,6 +98,7 @@ export function VerifyModal({
             {cancelLabel}
           </Button>
           <Button
+            ref={confirmRef}
             type="button"
             className="bg-indigo-600 text-white hover:bg-indigo-700"
             onClick={onConfirm}

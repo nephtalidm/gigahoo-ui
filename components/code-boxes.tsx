@@ -14,6 +14,7 @@ export function CodeBoxes({
   value,
   onChange,
   onEscape,
+  onComplete,
   length = 6,
   autoFocus = true,
 }: {
@@ -22,6 +23,9 @@ export function CodeBoxes({
   onChange: (v: string) => void
   /** Called when Backspace is pressed while the first box is empty. */
   onEscape?: () => void
+  /** Called when the last digit lands (code fully entered). Typical use: move focus
+   *  to the confirm button so the boxes visibly let go and Enter activates it. */
+  onComplete?: () => void
   length?: number
   autoFocus?: boolean
 }) {
@@ -33,9 +37,10 @@ export function CodeBoxes({
   const focusBox = (i: number) => {
     const el = refs.current[Math.max(0, Math.min(length - 1, i))]
     if (i >= length) {
-      // Code complete — keep focus on the last box (Enter-to-confirm needs focus inside
-      // the dialog) but collapse the caret past the digit instead of selecting it.
-      skipSelect.current = true
+      // Code complete with no onComplete target — keep focus on the last box but
+      // collapse the caret past the digit instead of selecting it. (The flag is only
+      // set when a focus event will actually fire, else it would go stale.)
+      if (el && document.activeElement !== el) skipSelect.current = true
       el?.focus()
       el?.setSelectionRange(1, 1)
       return
@@ -58,8 +63,10 @@ export function CodeBoxes({
       chars[i] = c
       i++
     }
-    onChange(chars.join("").replace(/\s/g, "").slice(0, length))
-    focusBox(i)
+    const next = chars.join("").replace(/\s/g, "").slice(0, length)
+    onChange(next)
+    if (next.length === length && onComplete) onComplete()
+    else focusBox(i)
   }
 
   const handleKeyDown = (i: number, e: React.KeyboardEvent<HTMLInputElement>) => {
