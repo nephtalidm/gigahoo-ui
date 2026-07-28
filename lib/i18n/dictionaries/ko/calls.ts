@@ -21,7 +21,7 @@ const calls = {
   emergency: "긴급",
 
   // Detail dialog
-  detailsTitle: "대화 세부 정보",
+  detailsTitle: "통화 세부 정보",
 
   // Empty state
   empty: "아직 통화 기록이 없습니다.",

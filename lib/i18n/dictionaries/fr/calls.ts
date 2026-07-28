@@ -21,7 +21,7 @@ const calls = {
   emergency: "Urgence",
 
   // Detail dialog
-  detailsTitle: "Détails de la conversation",
+  detailsTitle: "Détails de l'appel",
 
   // Empty state
   empty: "Vous n'avez pas encore d'historique d'appels.",

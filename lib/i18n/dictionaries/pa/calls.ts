@@ -21,7 +21,7 @@ const calls = {
   emergency: "ਐਮਰਜੈਂਸੀ",
 
   // Detail dialog
-  detailsTitle: "ਗੱਲਬਾਤ ਦੇ ਵੇਰਵੇ",
+  detailsTitle: "ਕਾਲ ਦੇ ਵੇਰਵੇ",
 
   // Empty state
   empty: "ਤੁਹਾਡੇ ਕੋਲ ਅਜੇ ਤੱਕ ਕੋਈ ਕਾਲ ਇਤਿਹਾਸ ਨਹੀਂ ਹੈ।",

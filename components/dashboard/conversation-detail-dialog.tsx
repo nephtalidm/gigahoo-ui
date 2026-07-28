@@ -27,12 +27,14 @@ export function ConversationDetailDialog({
 
   return (
     <Dialog open={!!selected} onOpenChange={(o) => !o && onClose()}>
-      {/* A FIXED popup shell: the frame, title, and close button never move — only the body
-          scrolls inside. The close button matches the mobile menu's (outlined 44px X). */}
+      {/* A FIXED popup shell: the frame, title, and close button never move — the BODY scrolls
+          inside (visible scrollbar when needed) and the transcript renders in full, unscrolled.
+          The close button matches the mobile menu's (outlined 44px X); the header's divider sits
+          BELOW the button with the same margin the button has above it. */}
       <DialogContent className="max-w-lg max-h-[85dvh] flex flex-col overflow-hidden p-0 gap-0" showCloseButton={false} initialFocus={detailRef}>
         {selected && (
           <>
-            <DialogHeader className="shrink-0 border-b border-border p-4 pr-16">
+            <DialogHeader className="min-h-[68px] shrink-0 justify-center border-b border-border px-4 pr-16">
               <DialogTitle>{t("calls.detailsTitle")}</DialogTitle>
             </DialogHeader>
             <DialogClose
@@ -47,9 +49,11 @@ export function ConversationDetailDialog({
             >
               <X className="size-6" />
             </DialogClose>
-            {/* The body itself NEVER scrolls — the popup is a fixed frame. Only the transcript
-                box below scrolls (visibly, and only when it actually overflows). */}
-            <div ref={detailRef} tabIndex={-1} className="flex min-h-0 flex-1 flex-col gap-4 p-4 outline-none">
+            <div
+              ref={detailRef}
+              tabIndex={-1}
+              className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-4 outline-none [scrollbar-width:thin] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-muted-foreground/40"
+            >
               <div className="flex items-center justify-between">
                 <p className="text-lg font-semibold text-foreground">{selected.callerName}</p>
                 <div className="flex items-center gap-2">
@@ -65,8 +69,23 @@ export function ConversationDetailDialog({
                 <DetailItem label={t("calls.language")} value={selected.language} />
               </div>
 
-              {/* Info sections — phone · address (Maps link) · summary */}
-              <DetailSection label={t("calls.phone")} value={formatPhone(selected.callerPhoneNumber)} />
+              {/* Info sections — phone (tap-to-call link) · address (Maps link) · summary */}
+              <div>
+                <p className="text-sm font-medium text-foreground">{t("calls.phone")}</p>
+                {selected.callerPhoneNumber ? (
+                  <p className="mt-1 text-sm">
+                    <a
+                      href={`tel:${selected.callerPhoneNumber}`}
+                      className="text-primary underline underline-offset-2 hover:opacity-80"
+                    >
+                      {formatPhone(selected.callerPhoneNumber)}
+                    </a>
+                    <CopyButton value={formatPhone(selected.callerPhoneNumber)} />
+                  </p>
+                ) : (
+                  <p className="mt-1 text-sm text-muted-foreground">—</p>
+                )}
+              </div>
               <div>
                 <p className="text-sm font-medium text-foreground">{t("calls.address")}</p>
                 {selected.address ? (
@@ -87,13 +106,11 @@ export function ConversationDetailDialog({
               </div>
               <DetailSection label={t("calls.summary")} value={selected.summary || "—"} />
 
-              {/* Full transcript — the ONLY scrolling area of the popup. It takes whatever height
-                  is left in the fixed frame; a short transcript renders at natural height with no
-                  scrollbar, a long one scrolls with an ALWAYS-VISIBLE styled scrollbar. */}
+              {/* Full transcript — rendered IN FULL, no inner scroll; the body above scrolls. */}
               {selected.transcript && (
-                <div className="flex min-h-24 flex-1 flex-col">
+                <div>
                   <p className="text-sm font-medium text-foreground">{t("calls.transcript")}</p>
-                  <div className="mt-1 min-h-0 flex-1 overflow-y-auto rounded-xl border border-border bg-secondary/40 p-3 text-sm [scrollbar-width:thin] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-muted-foreground/40">
+                  <div className="mt-1 rounded-xl border border-border bg-secondary/40 p-3 text-sm">
                     {selected.transcript.split("\n").map((line, i) => {
                       const m = line.match(/^(Caller|Receptionist):\s*(.*)$/)
                       return (

@@ -21,7 +21,7 @@ const calls = {
   emergency: "Терміново",
 
   // Detail dialog
-  detailsTitle: "Деталі розмови",
+  detailsTitle: "Деталі дзвінка",
 
   // Empty state
   empty: "У вас поки немає історії дзвінків.",

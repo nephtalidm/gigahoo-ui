@@ -21,7 +21,7 @@ const calls = {
   emergency: "Emergency",
 
   // Detail dialog
-  detailsTitle: "Mga Detalye ng Pag-uusap",
+  detailsTitle: "Mga Detalye ng Tawag",
 
   // Empty state
   empty: "Wala ka pang anumang kasaysayan ng tawag.",

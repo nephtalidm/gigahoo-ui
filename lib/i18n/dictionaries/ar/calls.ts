@@ -21,7 +21,7 @@ const calls = {
   emergency: "طارئ",
 
   // Detail dialog
-  detailsTitle: "تفاصيل المحادثة",
+  detailsTitle: "تفاصيل المكالمة",
 
   // Empty state
   empty: "ليس لديك أي سجل مكالمات بعد.",

@@ -21,7 +21,7 @@ const calls = {
   emergency: "紧急",
 
   // Detail dialog
-  detailsTitle: "对话详情",
+  detailsTitle: "通话详情",
 
   // Empty state
   empty: "您还没有任何通话记录。",

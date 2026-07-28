@@ -21,7 +21,7 @@ const calls = {
   emergency: "اضطراری",
 
   // Detail dialog
-  detailsTitle: "جزئیات مکالمه",
+  detailsTitle: "جزئیات تماس",
 
   // Empty state
   empty: "شما هنوز هیچ سابقه تماسی ندارید.",

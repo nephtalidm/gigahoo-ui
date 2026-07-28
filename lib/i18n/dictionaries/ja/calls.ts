@@ -21,7 +21,7 @@ const calls = {
   emergency: "緊急",
 
   // Detail dialog
-  detailsTitle: "会話の詳細",
+  detailsTitle: "通話の詳細",
 
   // Empty state
   empty: "通話履歴はまだありません。",
