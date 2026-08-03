@@ -1,4 +1,16 @@
 const home = {
+  // Missed-calls cost calculator
+  calcEyebrow: "漏接來電計算機",
+  calcTitle: "漏接電話令你蝕幾多錢？",
+  calcSubtitle: "每個冇人接嘅電話，就係一個打去搵你對手嘅客。估下你每年走失幾多生意。",
+  calcMissedLabel: "每星期漏接電話",
+  calcValueLabel: "平均每單生意價值",
+  calcAssumption: "假設 40% 漏接嘅來電本來會落單。",
+  calcYearlyLabel: "每年潛在流失收入",
+  calcMonthlyLabel: "每月",
+  calcBookingsLabel: "每星期走失嘅生意",
+  calcCta: "唔好再漏接電話",
+  calcDisclaimer: "只係估算 — 實際結果視乎你嘅來電量同生意類型。",
   // SEO
   metaTitle: "Gigahoo — 為家居服務業而設嘅 AI 電話接待員",
   metaDescription:

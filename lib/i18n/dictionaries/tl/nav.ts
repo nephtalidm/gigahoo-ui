@@ -1,4 +1,6 @@
 const nav = {
+  toggleTheme: "I-toggle ang dark mode",
+  tryDemo: "Subukan nang live",
   features: "Mga Feature",
   pricing: "Presyo",
   faq: "FAQ",

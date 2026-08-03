@@ -204,6 +204,21 @@ export function Hero() {
   // The live two-way demo call now lives in the "Talk to Gigahoo" popup.
   const [demoOpen, setDemoOpen] = useState(false)
 
+  // Open the popup from the header's "Try it live" pill (custom event on this page,
+  // ?demo=1 when arriving from another page — cleaned from the URL after opening).
+  useEffect(() => {
+    const openDemo = () => setDemoOpen(true)
+    window.addEventListener("gigahoo:open-demo", openDemo)
+    const params = new URLSearchParams(window.location.search)
+    if (params.get("demo") === "1") {
+      setDemoOpen(true)
+      params.delete("demo")
+      const qs = params.toString()
+      window.history.replaceState(null, "", window.location.pathname + (qs ? `?${qs}` : ""))
+    }
+    return () => window.removeEventListener("gigahoo:open-demo", openDemo)
+  }, [])
+
   return (
     <section className="relative isolate overflow-hidden border-b border-border lg:flex lg:min-h-[50vh] lg:items-center">
       {/* Background video + dark gradient overlay (darker on the text side) for legibility. */}

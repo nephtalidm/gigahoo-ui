@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { useAuth } from "@/contexts/auth-context"
 import { useTranslation } from "@/contexts/language-context"
 import { useUnsavedGuard } from "@/components/dashboard/unsaved-guard"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { Home, LogOut } from "lucide-react"
 
 export function TopbarActions() {
@@ -16,6 +17,7 @@ export function TopbarActions() {
   return (
     <div className="flex items-center gap-2">
       {confirmDialog}
+      <ThemeToggle />
       <Button
         variant="outline"
         className="cursor-pointer gap-2"

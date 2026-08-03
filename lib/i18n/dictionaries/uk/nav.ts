@@ -1,4 +1,6 @@
 const nav = {
+  toggleTheme: "Перемкнути темну тему",
+  tryDemo: "Спробувати наживо",
   features: "Можливості",
   pricing: "Ціни",
   faq: "Часті запитання",

@@ -1,4 +1,6 @@
 const nav = {
+  toggleTheme: "Basculer le mode sombre",
+  tryDemo: "Essayez-le en direct",
   features: "Fonctionnalités",
   pricing: "Tarifs",
   faq: "FAQ",

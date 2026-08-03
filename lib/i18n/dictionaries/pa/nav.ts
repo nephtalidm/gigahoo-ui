@@ -1,4 +1,6 @@
 const nav = {
+  toggleTheme: "ਡਾਰਕ ਮੋਡ ਬਦਲੋ",
+  tryDemo: "ਲਾਈਵ ਅਜ਼ਮਾਓ",
   features: "ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ",
   pricing: "ਕੀਮਤ",
   faq: "ਆਮ ਸਵਾਲ",

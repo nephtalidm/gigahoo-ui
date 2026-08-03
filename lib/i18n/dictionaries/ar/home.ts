@@ -1,4 +1,16 @@
 const home = {
+  // Missed-calls cost calculator
+  calcEyebrow: "حاسبة المكالمات الفائتة",
+  calcTitle: "كم تكلفك المكالمات الفائتة؟",
+  calcSubtitle: "كل مكالمة لم يُرد عليها هي عميل يتصل بمنافسك. قدّر ما يفوتك كل عام.",
+  calcMissedLabel: "المكالمات الفائتة أسبوعيًا",
+  calcValueLabel: "متوسط قيمة العمل",
+  calcAssumption: "نفترض أن 40% من المتصلين الفائتين كانوا سيحجزون عملًا.",
+  calcYearlyLabel: "إيرادات محتملة مفقودة سنويًا",
+  calcMonthlyLabel: "شهريًا",
+  calcBookingsLabel: "أعمال مفقودة أسبوعيًا",
+  calcCta: "توقف عن خسارة المكالمات",
+  calcDisclaimer: "تقدير فقط — النتائج الفعلية تعتمد على حجم مكالماتك ونوع أعمالك.",
   // SEO
   metaTitle: "Gigahoo — موظف استقبال هاتفي بالذكاء الاصطناعي لشركات الخدمات المنزلية",
   metaDescription:

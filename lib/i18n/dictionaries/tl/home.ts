@@ -1,4 +1,16 @@
 const home = {
+  // Missed-calls cost calculator
+  calcEyebrow: "Calculator ng missed calls",
+  calcTitle: "Magkano ang nawawala sa iyo dahil sa missed calls?",
+  calcSubtitle: "Bawat hindi nasagot na tawag ay customer na tatawag sa kakompetensya mo. Tantiyahin kung magkano ang nawawala bawat taon.",
+  calcMissedLabel: "Missed calls bawat linggo",
+  calcValueLabel: "Average na halaga ng trabaho",
+  calcAssumption: "Ipinapalagay na 40% ng mga hindi nasagot na tumatawag ay sana nag-book ng trabaho.",
+  calcYearlyLabel: "posibleng kitang nawawala bawat taon",
+  calcMonthlyLabel: "Bawat buwan",
+  calcBookingsLabel: "Nawalang trabaho bawat linggo",
+  calcCta: "Itigil ang pagkawala ng tawag",
+  calcDisclaimer: "Pagtatantiya lamang — depende ang totoong resulta sa dami ng tawag at uri ng trabaho mo.",
   // SEO
   metaTitle: "Gigahoo — AI Phone Receptionist para sa mga Negosyong Home Service",
   metaDescription:

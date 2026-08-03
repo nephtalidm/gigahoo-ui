@@ -1,4 +1,6 @@
 const nav = {
+  toggleTheme: "切換深色模式",
+  tryDemo: "即場試吓",
   features: "功能",
   pricing: "價錢",
   faq: "常見問題",

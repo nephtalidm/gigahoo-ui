@@ -1,4 +1,6 @@
 const nav = {
+  toggleTheme: "تغییر حالت تیره",
+  tryDemo: "به‌صورت زنده امتحان کنید",
   features: "امکانات",
   pricing: "قیمت‌گذاری",
   faq: "سوالات متداول",

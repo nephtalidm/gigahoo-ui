@@ -1,4 +1,6 @@
 const nav = {
+  toggleTheme: "Toggle dark mode",
+  tryDemo: "Try it live",
   features: "Features",
   pricing: "Pricing",
   faq: "FAQ",

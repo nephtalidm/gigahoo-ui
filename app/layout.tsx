@@ -44,8 +44,16 @@ export default async function RootLayout({
   const country = (cookieStore.get(COUNTRY_COOKIE)?.value ?? '').toUpperCase()
 
   return (
-    <html lang={locale} dir={dirForLocale(locale)} className={`${geistSans.variable} ${geistMono.variable} bg-background`}>
+    <html lang={locale} dir={dirForLocale(locale)} className={`${geistSans.variable} ${geistMono.variable} bg-background`} suppressHydrationWarning>
       <body className="font-sans antialiased">
+        {/* Apply the theme BEFORE first paint (no flash): stored choice wins,
+            otherwise follow the OS preference. The ThemeToggle flips + persists. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{var s=localStorage.getItem('gigahoo-theme');var d=s?s==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark')}catch(e){}",
+          }}
+        />
         <LanguageProvider initialLocale={locale} initialCountry={country}>
           <LocalizedTitle />
           <ToastProvider>

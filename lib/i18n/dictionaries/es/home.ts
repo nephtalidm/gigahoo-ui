@@ -1,4 +1,16 @@
 const home = {
+  // Missed-calls cost calculator
+  calcEyebrow: "Calculadora de llamadas perdidas",
+  calcTitle: "¿Cuánto te cuestan las llamadas perdidas?",
+  calcSubtitle: "Cada llamada sin contestar es un cliente que marca a tu competencia. Calcula cuánto se te escapa cada año.",
+  calcMissedLabel: "Llamadas perdidas por semana",
+  calcValueLabel: "Valor promedio del trabajo",
+  calcAssumption: "Se asume que el 40% de las llamadas perdidas habrían contratado un trabajo.",
+  calcYearlyLabel: "ingresos potenciales perdidos al año",
+  calcMonthlyLabel: "Al mes",
+  calcBookingsLabel: "Trabajos perdidos por semana",
+  calcCta: "Deja de perder llamadas",
+  calcDisclaimer: "Solo una estimación: los resultados reales dependen de tu volumen de llamadas y tipo de trabajos.",
   // SEO
   metaTitle: "Gigahoo — Recepcionista telefónico con IA para negocios de servicios a domicilio",
   metaDescription:

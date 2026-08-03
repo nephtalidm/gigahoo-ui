@@ -1,4 +1,6 @@
 const nav = {
+  toggleTheme: "ダークモードを切り替え",
+  tryDemo: "ライブで試す",
   features: "機能",
   pricing: "料金",
   faq: "よくある質問",

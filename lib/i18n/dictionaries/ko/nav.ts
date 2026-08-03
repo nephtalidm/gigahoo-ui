@@ -1,4 +1,6 @@
 const nav = {
+  toggleTheme: "다크 모드 전환",
+  tryDemo: "라이브 체험",
   features: "기능",
   pricing: "요금제",
   faq: "자주 묻는 질문",

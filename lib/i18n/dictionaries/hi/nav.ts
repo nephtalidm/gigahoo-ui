@@ -1,4 +1,6 @@
 const nav = {
+  toggleTheme: "डार्क मोड बदलें",
+  tryDemo: "लाइव आज़माएँ",
   features: "विशेषताएँ",
   pricing: "मूल्य निर्धारण",
   faq: "सामान्य प्रश्न",

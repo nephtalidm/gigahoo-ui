@@ -1,4 +1,6 @@
 const nav = {
+  toggleTheme: "Cambiar modo oscuro",
+  tryDemo: "Pruébalo en vivo",
   features: "Funciones",
   pricing: "Precios",
   faq: "Preguntas",

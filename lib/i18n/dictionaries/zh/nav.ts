@@ -1,4 +1,6 @@
 const nav = {
+  toggleTheme: "切换深色模式",
+  tryDemo: "在线体验",
   features: "功能",
   pricing: "价格",
   faq: "常见问题",

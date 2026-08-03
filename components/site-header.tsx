@@ -7,14 +7,27 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/s
 import { BrandLogo } from "@/components/brand-logo"
 import { LanguageSwitcher } from "@/components/language-switcher"
 import { CountrySwitcher } from "@/components/country-switcher"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { useTranslation } from "@/contexts/language-context"
 import { useAuth } from "@/contexts/auth-context"
-import { LayoutDashboard, LogOut, Menu } from "lucide-react"
+import { LayoutDashboard, LogOut, Menu, PhoneCall } from "lucide-react"
+
+// Fired by the header's "Try it live" pill; the home-page Hero listens and opens
+// the demo popup. On other pages the pill navigates to /?demo=1 instead.
+export const OPEN_DEMO_EVENT = "gigahoo:open-demo"
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
   const { t } = useTranslation()
   const { isAuthenticated, logout } = useAuth()
+
+  const tryLive = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (window.location.pathname === "/") {
+      e.preventDefault()
+      setOpen(false)
+      window.dispatchEvent(new CustomEvent(OPEN_DEMO_EVENT))
+    }
+  }
 
   const navLinks = [
     { label: t("nav.features"), href: "/#features" },
@@ -41,12 +54,23 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
+          {/* "Try it live" pill — opens the demo popup on the home page, navigates there otherwise. */}
+          <a
+            href="/?demo=1"
+            onClick={tryLive}
+            className="flex items-center gap-2 rounded-full border border-primary/25 bg-primary/5 px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
+          >
+            <PhoneCall className="h-4 w-4" />
+            {t("nav.tryDemo")}
+            <span className="h-[5px] w-[5px] rounded-full bg-green-600 motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
+          </a>
           {!isAuthenticated && (
             <>
               <CountrySwitcher />
               <LanguageSwitcher />
             </>
           )}
+          <ThemeToggle />
           {isAuthenticated ? (
             <>
               <Button
@@ -93,6 +117,16 @@ export function SiteHeader() {
                   <LanguageSwitcher className="h-11 w-full data-[size=default]:h-11" />
                 </div>
               )}
+              <ThemeToggle className="mb-1 h-11 w-full" />
+              <a
+                href="/?demo=1"
+                onClick={tryLive}
+                className="mb-1 flex items-center justify-center gap-2 rounded-full border border-primary/25 bg-primary/5 px-4 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
+              >
+                <PhoneCall className="h-4 w-4" />
+                {t("nav.tryDemo")}
+                <span className="h-[5px] w-[5px] rounded-full bg-green-600 motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
+              </a>
               {navLinks.map((link) => (
                 <a
                   key={link.href}

@@ -1,4 +1,16 @@
 const home = {
+  // Missed-calls cost calculator
+  calcEyebrow: "Calculateur d'appels manqués",
+  calcTitle: "Combien vous coûtent les appels manqués ?",
+  calcSubtitle: "Chaque appel sans réponse est un client qui compose le numéro de votre concurrent. Estimez ce qui vous échappe chaque année.",
+  calcMissedLabel: "Appels manqués par semaine",
+  calcValueLabel: "Valeur moyenne d'un travail",
+  calcAssumption: "On suppose que 40 % des appelants manqués auraient réservé.",
+  calcYearlyLabel: "de revenus potentiels perdus par an",
+  calcMonthlyLabel: "Par mois",
+  calcBookingsLabel: "Travaux perdus par semaine",
+  calcCta: "Arrêtez de perdre des appels",
+  calcDisclaimer: "Estimation seulement — les résultats réels dépendent de votre volume d'appels et de vos types de travaux.",
   // SEO
   metaTitle: "Gigahoo — Réceptionniste téléphonique IA pour les entreprises de services à domicile",
   metaDescription:

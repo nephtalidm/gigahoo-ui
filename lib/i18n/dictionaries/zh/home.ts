@@ -1,4 +1,16 @@
 const home = {
+  // Missed-calls cost calculator
+  calcEyebrow: "漏接来电计算器",
+  calcTitle: "漏接电话让您损失多少？",
+  calcSubtitle: "每一个无人接听的电话，都是一个转头拨给竞争对手的客户。估算一下您每年流失多少。",
+  calcMissedLabel: "每周漏接电话数",
+  calcValueLabel: "平均每单价值",
+  calcAssumption: "假设 40% 的漏接来电本会成交。",
+  calcYearlyLabel: "每年潜在流失收入",
+  calcMonthlyLabel: "每月",
+  calcBookingsLabel: "每周流失的订单",
+  calcCta: "别再漏接电话",
+  calcDisclaimer: "仅为估算 — 实际结果取决于您的来电量和业务类型。",
   // SEO
   metaTitle: "Gigahoo — 面向家庭服务企业的 AI 电话接待员",
   metaDescription:

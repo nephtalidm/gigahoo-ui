@@ -1,4 +1,6 @@
 const nav = {
+  toggleTheme: "تبديل الوضع الداكن",
+  tryDemo: "جرّبه مباشرة",
   features: "المميزات",
   pricing: "الأسعار",
   faq: "الأسئلة الشائعة",
