@@ -14,6 +14,7 @@ import notifications from "./notifications"
 import categories from "./categories"
 import countries from "./countries"
 import chat from "./chat"
+import industries from "./industries"
 
 export const ja = {
   common,
@@ -32,4 +33,5 @@ export const ja = {
   categories,
   countries,
   chat,
+  industries,
 }
