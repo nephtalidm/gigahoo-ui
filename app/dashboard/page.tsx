@@ -85,7 +85,7 @@ export default function OverviewPage() {
               </span>
               <div className="min-w-0">
                 <p className="text-sm font-medium text-muted-foreground">{t("dashboard.forwardingNumberTitle")}</p>
-                <p className="mt-0.5 break-all text-3xl font-bold tabular-nums tracking-tight text-foreground sm:text-4xl">
+                <p className="mt-0.5 break-all text-2xl font-bold tabular-nums tracking-tight text-foreground sm:text-3xl">
                   {formatPhoneDisplay(forwardingPhone)}
                 </p>
                 <p className="mt-1 text-sm text-muted-foreground">{t("dashboard.forwardingNumberHint")}</p>
