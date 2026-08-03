@@ -43,6 +43,16 @@ const home = {
   heroGreeting: "Greeting…",
   heroMicError: "Microphone or connection failed. Please allow mic access and try again.",
 
+  // Demo-call popup ("Talk to Gigahoo")
+  demoBadge: "Live AI demo",
+  demoTitle: "Talk to Gigahoo",
+  demoSubtitle: "Pick a business type and talk to our AI receptionist — right from your browser.",
+  demoChipInstant: "Starts instantly",
+  demoChipReal: "Real AI conversation",
+  demoChipFree: "Free to try",
+  demoStart: "Start demo call",
+  demoMicNote: "Uses your microphone — talk to it like a real phone call",
+
   // Features
   featuresEyebrow: "Features",
   featuresTitle: "Everything you need to capture every lead",

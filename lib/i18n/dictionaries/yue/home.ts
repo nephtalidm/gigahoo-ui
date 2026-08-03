@@ -43,6 +43,16 @@ const home = {
   heroGreeting: "打緊招呼…",
   heroMicError: "麥克風或者連接失敗。請允許麥克風存取權限再試一次。",
 
+  // Demo-call popup ("Talk to Gigahoo")
+  demoBadge: "AI 即場示範",
+  demoTitle: "同 Gigahoo 傾偈",
+  demoSubtitle: "揀一個行業類型，直接喺瀏覽器同我哋嘅 AI 接待員傾偈。",
+  demoChipInstant: "即刻開始",
+  demoChipReal: "真實 AI 對話",
+  demoChipFree: "免費試用",
+  demoStart: "開始示範通話",
+  demoMicNote: "會用到你嘅麥克風 — 當佢係真電話咁傾就得",
+
   // Features
   featuresEyebrow: "功能",
   featuresTitle: "搶住每一個潛在客戶所需嘅一切",

@@ -44,6 +44,16 @@ const home = {
   heroGreeting: "Saludando…",
   heroMicError: "Error de micrófono o de conexión. Permite el acceso al micrófono e inténtalo de nuevo.",
 
+  // Demo-call popup ("Talk to Gigahoo")
+  demoBadge: "Demostración de IA en vivo",
+  demoTitle: "Habla con Gigahoo",
+  demoSubtitle: "Elige un tipo de negocio y habla con nuestro recepcionista de IA, directamente desde tu navegador.",
+  demoChipInstant: "Empieza al instante",
+  demoChipReal: "Conversación real con IA",
+  demoChipFree: "Pruébalo gratis",
+  demoStart: "Iniciar llamada de demostración",
+  demoMicNote: "Usa tu micrófono: háblale como en una llamada telefónica real",
+
   // Features
   featuresEyebrow: "Funciones",
   featuresTitle: "Todo lo que necesitas para captar cada oportunidad",

@@ -43,6 +43,16 @@ const home = {
   heroGreeting: "Bumabati…",
   heroMicError: "Nabigo ang mikropono o koneksyon. Mangyaring payagan ang access sa mic at subukang muli.",
 
+  // Demo-call popup ("Talk to Gigahoo")
+  demoBadge: "Live na AI demo",
+  demoTitle: "Makipag-usap kay Gigahoo",
+  demoSubtitle: "Pumili ng uri ng negosyo at makipag-usap sa aming AI receptionist — direkta mula sa iyong browser.",
+  demoChipInstant: "Agad na nagsisimula",
+  demoChipReal: "Totoong pakikipag-usap sa AI",
+  demoChipFree: "Libreng subukan",
+  demoStart: "Simulan ang demo call",
+  demoMicNote: "Gumagamit ng iyong mikropono — kausapin ito na parang totoong tawag sa telepono",
+
   // Features
   featuresEyebrow: "Mga Feature",
   featuresTitle: "Lahat ng kailangan mo para makuha ang bawat lead",

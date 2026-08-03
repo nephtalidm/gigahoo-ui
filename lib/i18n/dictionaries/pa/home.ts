@@ -43,6 +43,16 @@ const home = {
   heroGreeting: "ਸਵਾਗਤ ਕਰ ਰਿਹਾ ਹੈ…",
   heroMicError: "ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਜਾਂ ਕਨੈਕਸ਼ਨ ਫੇਲ੍ਹ ਹੋ ਗਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਮਾਈਕ ਪਹੁੰਚ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
 
+  // Demo-call popup ("Talk to Gigahoo")
+  demoBadge: "ਲਾਈਵ AI ਡੈਮੋ",
+  demoTitle: "Gigahoo ਨਾਲ ਗੱਲ ਕਰੋ",
+  demoSubtitle: "ਕਾਰੋਬਾਰ ਦੀ ਕਿਸਮ ਚੁਣੋ ਅਤੇ ਸਿੱਧਾ ਆਪਣੇ ਬ੍ਰਾਊਜ਼ਰ ਤੋਂ ਸਾਡੇ AI ਰਿਸੈਪਸ਼ਨਿਸਟ ਨਾਲ ਗੱਲ ਕਰੋ।",
+  demoChipInstant: "ਤੁਰੰਤ ਸ਼ੁਰੂ",
+  demoChipReal: "ਅਸਲੀ AI ਗੱਲਬਾਤ",
+  demoChipFree: "ਮੁਫ਼ਤ ਅਜ਼ਮਾਓ",
+  demoStart: "ਡੈਮੋ ਕਾਲ ਸ਼ੁਰੂ ਕਰੋ",
+  demoMicNote: "ਤੁਹਾਡਾ ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਵਰਤਦਾ ਹੈ — ਇਸ ਨਾਲ ਅਸਲੀ ਫ਼ੋਨ ਕਾਲ ਵਾਂਗ ਗੱਲ ਕਰੋ",
+
   // Features
   featuresEyebrow: "ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ",
   featuresTitle: "ਹਰ ਮੌਕੇ ਨੂੰ ਹਾਸਲ ਕਰਨ ਲਈ ਤੁਹਾਨੂੰ ਜੋ ਵੀ ਚਾਹੀਦਾ ਹੈ",

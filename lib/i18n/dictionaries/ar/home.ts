@@ -43,6 +43,16 @@ const home = {
   heroGreeting: "يُرحّب بك…",
   heroMicError: "فشل الميكروفون أو الاتصال. يُرجى السماح بالوصول إلى الميكروفون والمحاولة مرة أخرى.",
 
+  // Demo-call popup ("Talk to Gigahoo")
+  demoBadge: "عرض مباشر للذكاء الاصطناعي",
+  demoTitle: "تحدث مع Gigahoo",
+  demoSubtitle: "اختر نوع النشاط التجاري وتحدث مع موظف الاستقبال الذكي مباشرة من متصفحك.",
+  demoChipInstant: "يبدأ فورًا",
+  demoChipReal: "محادثة حقيقية مع الذكاء الاصطناعي",
+  demoChipFree: "جرّبه مجانًا",
+  demoStart: "ابدأ مكالمة تجريبية",
+  demoMicNote: "يستخدم الميكروفون الخاص بك — تحدث معه كأنها مكالمة هاتفية حقيقية",
+
   // Features
   featuresEyebrow: "المميزات",
   featuresTitle: "كل ما تحتاجه لالتقاط كل فرصة عميل",

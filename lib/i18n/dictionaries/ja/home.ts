@@ -43,6 +43,16 @@ const home = {
   heroGreeting: "ご挨拶中…",
   heroMicError: "マイクまたは接続に失敗しました。マイクへのアクセスを許可して、もう一度お試しください。",
 
+  // Demo-call popup ("Talk to Gigahoo")
+  demoBadge: "ライブAIデモ",
+  demoTitle: "Gigahooと話す",
+  demoSubtitle: "業種を選んで、ブラウザからそのままAI受付係と話してみましょう。",
+  demoChipInstant: "すぐに開始",
+  demoChipReal: "本物のAIとの会話",
+  demoChipFree: "無料でお試し",
+  demoStart: "デモ通話を開始",
+  demoMicNote: "マイクを使用します — 実際の電話のように話しかけてください",
+
   // Features
   featuresEyebrow: "機能",
   featuresTitle: "すべての顧客を逃さないために必要なすべて",

@@ -43,6 +43,16 @@ const home = {
   heroGreeting: "در حال خوش‌آمدگویی…",
   heroMicError: "میکروفون یا اتصال ناموفق بود. لطفاً دسترسی به میکروفون را مجاز کرده و دوباره تلاش کنید.",
 
+  // Demo-call popup ("Talk to Gigahoo")
+  demoBadge: "دموی زنده هوش مصنوعی",
+  demoTitle: "با Gigahoo صحبت کنید",
+  demoSubtitle: "نوع کسب‌وکار را انتخاب کنید و مستقیماً از مرورگر خود با منشی هوش مصنوعی ما صحبت کنید.",
+  demoChipInstant: "شروع فوری",
+  demoChipReal: "گفتگوی واقعی با هوش مصنوعی",
+  demoChipFree: "امتحان رایگان",
+  demoStart: "شروع تماس آزمایشی",
+  demoMicNote: "از میکروفون شما استفاده می‌کند — مانند یک تماس تلفنی واقعی صحبت کنید",
+
   // Features
   featuresEyebrow: "امکانات",
   featuresTitle: "هر آنچه برای ثبت همه سرنخ‌ها نیاز دارید",

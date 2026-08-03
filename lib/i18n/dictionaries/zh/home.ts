@@ -43,6 +43,16 @@ const home = {
   heroGreeting: "正在问候…",
   heroMicError: "麦克风或连接失败。请允许麦克风访问权限后重试。",
 
+  // Demo-call popup ("Talk to Gigahoo")
+  demoBadge: "AI 实时演示",
+  demoTitle: "和 Gigahoo 对话",
+  demoSubtitle: "选择一个行业类型，直接在浏览器里和我们的 AI 前台通话。",
+  demoChipInstant: "即刻开始",
+  demoChipReal: "真实 AI 对话",
+  demoChipFree: "免费试用",
+  demoStart: "开始演示通话",
+  demoMicNote: "会使用您的麦克风 — 像打真实电话一样和它交谈",
+
   // Features
   featuresEyebrow: "功能",
   featuresTitle: "捕捉每一条商机所需的一切",

@@ -43,6 +43,16 @@ const home = {
   heroGreeting: "Vous accueille…",
   heroMicError: "Échec du microphone ou de la connexion. Veuillez autoriser l'accès au micro et réessayer.",
 
+  // Demo-call popup ("Talk to Gigahoo")
+  demoBadge: "Démo IA en direct",
+  demoTitle: "Parlez à Gigahoo",
+  demoSubtitle: "Choisissez un type d'entreprise et parlez à notre réceptionniste IA, directement depuis votre navigateur.",
+  demoChipInstant: "Démarrage instantané",
+  demoChipReal: "Vraie conversation avec l'IA",
+  demoChipFree: "Essai gratuit",
+  demoStart: "Lancer l'appel de démo",
+  demoMicNote: "Utilise votre microphone — parlez-lui comme lors d'un vrai appel téléphonique",
+
   // Features
   featuresEyebrow: "Fonctionnalités",
   featuresTitle: "Tout ce qu'il vous faut pour saisir chaque prospect",

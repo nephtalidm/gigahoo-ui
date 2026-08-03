@@ -2,12 +2,11 @@
 
 import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Check, Loader2, PhoneCall } from "lucide-react"
+import { Check, PhoneCall } from "lucide-react"
 import Link from "next/link"
 import { useTranslation } from "@/contexts/language-context"
 import { COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
-import { businessCategories, businessCategoryKeys } from "@/lib/data"
-import { useBrowserDemo } from "@/hooks/use-browser-demo"
+import { DemoCallDialog } from "@/components/demo-call-dialog"
 
 // Timing (ms) for the looping live-call demo animation.
 const RINGING_MS = 1500
@@ -123,7 +122,7 @@ function useCallAnimation(messageCount: number, reducedMotion: boolean) {
 }
 
 export function Hero() {
-  const { t, locale } = useTranslation()
+  const { t } = useTranslation()
   // The visitor's country, read from the same cookie middleware sets for geo.
   const [country, setCountry] = useState<string>("")
 
@@ -201,17 +200,8 @@ export function Hero() {
     return () => clearInterval(iv)
   }, [connected, reducedMotion, conversationMs])
 
-  // Live two-way voice call (real call to the AI agent via the API).
-  const live = useBrowserDemo()
-  const liveActive = live.status === "connecting" || live.status === "live"
-  const [category, setCategory] = useState(businessCategories[0])
-
-  // Auto-scroll the live transcript to the newest message.
-  useEffect(() => {
-    if (!liveActive) return
-    const el = scrollRef.current
-    if (el) el.scrollTop = el.scrollHeight
-  }, [live.messages.length, live.agentSpeaking, liveActive])
+  // The live two-way demo call now lives in the "Talk to Gigahoo" popup.
+  const [demoOpen, setDemoOpen] = useState(false)
 
   return (
     <section className="relative isolate overflow-hidden border-b border-border lg:flex lg:min-h-[50vh] lg:items-center">
@@ -297,99 +287,44 @@ export function Hero() {
               <div className="flex items-center gap-3 border-b border-border pb-4">
                 <span
                   className={`flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground ${
-                    connected || liveActive ? "" : "animate-pulse"
+                    connected ? "" : "animate-pulse"
                   }`}
                 >
                   <PhoneCall className="h-5 w-5" />
                 </span>
-                {liveActive ? (
-                  <>
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">{t("home.heroLiveCall")}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {live.ringing
-                          ? t("home.heroConnecting")
-                          : live.status === "live"
-                            ? live.listening
-                              ? t("home.heroListening")
-                              : t("home.heroGreeting")
-                            : t("home.heroConnecting")}
-                      </p>
-                    </div>
-                    {live.status === "live" && !live.ringing && (
-                      <span className="ml-auto flex items-center gap-1.5 rounded-full bg-accent px-2.5 py-1 text-xs font-medium text-accent-foreground">
-                        <span className="h-[5px] w-[5px] rounded-full bg-green-600 motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
-                        {t("home.heroCardLive")}
-                      </span>
-                    )}
-                  </>
+                <div>
+                  <p className="text-sm font-semibold text-foreground">{t("home.heroCardIncoming")}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {t("home.heroCardAnswered")}
+                    {connected && <> · {formatTime(elapsed)}</>}
+                  </p>
+                </div>
+                {ended ? (
+                  <span className="ml-auto flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">
+                    {t("home.heroCardEnded")}
+                  </span>
                 ) : (
-                  <>
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">{t("home.heroCardIncoming")}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {t("home.heroCardAnswered")}
-                        {connected && <> · {formatTime(elapsed)}</>}
-                      </p>
-                    </div>
-                    {ended ? (
-                      <span className="ml-auto flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">
-                        {t("home.heroCardEnded")}
-                      </span>
-                    ) : (
-                      <span
-                        className={`ml-auto flex items-center gap-1.5 rounded-full bg-accent px-2.5 py-1 text-xs font-medium text-accent-foreground transition-opacity duration-300 ${
-                          connected ? "opacity-100" : "opacity-0"
-                        }`}
-                        aria-hidden={!connected}
-                      >
-                        <span className="h-[5px] w-[5px] rounded-full bg-green-600 motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
-                        {t("home.heroCardLive")}
-                      </span>
-                    )}
-                  </>
+                  <span
+                    className={`ml-auto flex items-center gap-1.5 rounded-full bg-accent px-2.5 py-1 text-xs font-medium text-accent-foreground transition-opacity duration-300 ${
+                      connected ? "opacity-100" : "opacity-0"
+                    }`}
+                    aria-hidden={!connected}
+                  >
+                    <span className="h-[5px] w-[5px] rounded-full bg-green-600 motion-safe:[animation:heroLiveBlink_0.7s_ease-in-out_infinite]" />
+                    {t("home.heroCardLive")}
+                  </span>
                 )}
               </div>
 
-              {/* Live-call controls — between the "Incoming call" header and the conversation. */}
+              {/* Demo-call entry point — opens the centered "Talk to Gigahoo" popup. */}
               <div className="mt-4 border-b border-border pb-4">
-                <div className="flex items-center gap-2">
-                  <select
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    disabled={liveActive}
-                    aria-label={t("settings.businessCategory")}
-                    className="h-11 sm:h-9 min-w-0 flex-1 truncate rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50"
-                  >
-                    {businessCategories.map((cat) => (
-                      <option key={cat} value={cat}>
-                        {t(`categories.${businessCategoryKeys[cat]}`)}
-                      </option>
-                    ))}
-                  </select>
-
-                  {live.status === "live" || live.status === "connecting" ? (
-                    live.ringing ? (
-                      // Ringback playing — waiting for the agent to pick up and greet.
-                      <Button className="h-auto min-h-9 min-w-0 flex-1 whitespace-normal py-1.5 text-center text-xs leading-tight" disabled>
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        {t("home.heroConnecting")}
-                      </Button>
-                    ) : (
-                      // Agent is greeting / the call is live — allow hanging up.
-                      <Button variant="destructive" className="h-auto min-h-9 min-w-0 flex-1 whitespace-normal py-1.5 text-center text-xs leading-tight" onClick={() => live.stop()}>
-                        {t("home.heroEndCall")}
-                      </Button>
-                    )
-                  ) : (
-                    <Button className="h-auto min-h-9 min-w-0 flex-1 whitespace-normal bg-black py-1.5 text-center text-xs leading-tight text-white hover:bg-black/90" onClick={() => live.start(category, "Jennifer", locale)}>
-                      {t("home.heroTryLive")}
-                    </Button>
-                  )}
-                </div>
-                {live.status === "error" && (
-                  <p className="mt-2 text-xs text-destructive">{t("home.heroMicError")}</p>
-                )}
+                <Button
+                  className="h-auto min-h-9 w-full whitespace-normal bg-black py-2 text-center text-sm leading-tight text-white hover:bg-black/90"
+                  onClick={() => setDemoOpen(true)}
+                >
+                  <PhoneCall className="h-4 w-4" />
+                  {t("home.heroTryLive")}
+                </Button>
               </div>
 
               {/* Fixed-height chat viewport: never resizes the card; messages bottom-anchor
@@ -398,80 +333,34 @@ export function Hero() {
                 ref={scrollRef}
                 className="mt-4 flex h-56 min-w-0 flex-col overflow-y-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:h-auto lg:min-h-0 lg:flex-1"
               >
-                {liveActive ? (
-                  <div className="mt-auto space-y-3">
-                    {live.messages.filter((m) => m.text).map((m, i) => {
-                      const isAgent = m.role === "agent"
-                      // "…" is the live placeholder for a caller turn being transcribed — render an
-                      // animated typing indicator (never wrong text) until the clean transcript fills it.
-                      const isPending = m.text === "…"
-                      return (
-                        <div
-                          key={i}
-                          className={`max-w-[85%] break-words rounded-2xl px-4 py-2.5 text-sm motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-bottom-2 motion-safe:duration-500 ${
-                            isAgent
-                              ? "rounded-tl-sm bg-muted text-foreground"
-                              : "ml-auto rounded-tr-sm bg-primary text-primary-foreground"
-                          }`}
-                        >
-                          {isPending ? (
-                            <span className="flex items-center gap-1 py-0.5" aria-hidden>
-                              <span className="h-1.5 w-1.5 rounded-full bg-primary-foreground/70 motion-safe:animate-bounce [animation-delay:-0.3s]" />
-                              <span className="h-1.5 w-1.5 rounded-full bg-primary-foreground/70 motion-safe:animate-bounce [animation-delay:-0.15s]" />
-                              <span className="h-1.5 w-1.5 rounded-full bg-primary-foreground/70 motion-safe:animate-bounce" />
-                            </span>
-                          ) : (
-                            m.text
-                          )}
-                        </div>
-                      )
-                    })}
-
-                    {live.agentSpeaking ? (
+                <div className="mt-auto space-y-3">
+                  {messages.slice(0, visibleCount).map((m, i) => {
+                    const isAssistant = m.role === "assistant"
+                    return (
                       <div
-                        className="flex max-w-[85%] items-center gap-1 rounded-2xl rounded-tl-sm bg-muted px-4 py-3 motion-safe:animate-in motion-safe:fade-in-0"
-                        aria-hidden
+                        key={i}
+                        className={`max-w-[85%] break-words rounded-2xl px-4 py-2.5 text-sm motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-bottom-2 motion-safe:duration-500 ${
+                          isAssistant
+                            ? "rounded-tl-sm bg-muted text-foreground"
+                            : "ml-auto rounded-tr-sm bg-primary text-primary-foreground"
+                        }`}
                       >
-                        <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce [animation-delay:-0.3s]" />
-                        <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce [animation-delay:-0.15s]" />
-                        <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce" />
+                        {m.text}
                       </div>
-                    ) : (
-                      live.status === "live" && live.listening && (
-                        <p className="text-xs text-muted-foreground">{t("home.heroListening")}</p>
-                      )
-                    )}
-                  </div>
-                ) : (
-                  <div className="mt-auto space-y-3">
-                    {messages.slice(0, visibleCount).map((m, i) => {
-                      const isAssistant = m.role === "assistant"
-                      return (
-                        <div
-                          key={i}
-                          className={`max-w-[85%] break-words rounded-2xl px-4 py-2.5 text-sm motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-bottom-2 motion-safe:duration-500 ${
-                            isAssistant
-                              ? "rounded-tl-sm bg-muted text-foreground"
-                              : "ml-auto rounded-tr-sm bg-primary text-primary-foreground"
-                          }`}
-                        >
-                          {m.text}
-                        </div>
-                      )
-                    })}
+                    )
+                  })}
 
-                    {typing && (
-                      <div
-                        className="flex max-w-[85%] items-center gap-1 rounded-2xl rounded-tl-sm bg-muted px-4 py-3 motion-safe:animate-in motion-safe:fade-in-0"
-                        aria-hidden
-                      >
-                        <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce [animation-delay:-0.3s]" />
-                        <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce [animation-delay:-0.15s]" />
-                        <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce" />
-                      </div>
-                    )}
-                  </div>
-                )}
+                  {typing && (
+                    <div
+                      className="flex max-w-[85%] items-center gap-1 rounded-2xl rounded-tl-sm bg-muted px-4 py-3 motion-safe:animate-in motion-safe:fade-in-0"
+                      aria-hidden
+                    >
+                      <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce [animation-delay:-0.3s]" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce [animation-delay:-0.15s]" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 motion-safe:animate-bounce" />
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="mt-5 grid grid-cols-3 gap-3 border-t border-border pt-4 text-center">
@@ -498,6 +387,9 @@ export function Hero() {
           </div>
         </div>
       </div>
+
+      {/* Centered "Talk to Gigahoo" demo-call popup (dark blurred backdrop). */}
+      <DemoCallDialog open={demoOpen} onOpenChange={setDemoOpen} />
     </section>
   )
 }

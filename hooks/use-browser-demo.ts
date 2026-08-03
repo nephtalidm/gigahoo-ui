@@ -127,7 +127,7 @@ export function useBrowserDemo() {
     }
   }, [stop, stopRing])
 
-  const start = useCallback(async (category: string, _voice: string, locale: string) => {
+  const start = useCallback(async (category: string, _voice: string, locale: string, captchaToken?: string) => {
     setMessages([])
     setAgentSpeaking(false)
     setListening(false)
@@ -177,7 +177,11 @@ export function useBrowserDemo() {
 
       // 3. The single media WebSocket.
       const sessionId = Math.random().toString(36).slice(2) + Date.now().toString(36)
-      const url = `${voiceWsBase()}/demo/media?session=${sessionId}&category=${encodeURIComponent(category)}&lang=${encodeURIComponent(locale)}`
+      // `cf` carries the Cloudflare Turnstile token; the voice agent verifies it
+      // server-side (when armed) before accepting the demo session.
+      const url = `${voiceWsBase()}/demo/media?session=${sessionId}&category=${encodeURIComponent(category)}&lang=${encodeURIComponent(locale)}${
+        captchaToken ? `&cf=${encodeURIComponent(captchaToken)}` : ""
+      }`
       const ws = new WebSocket(url); ws.binaryType = "arraybuffer"; wsRef.current = ws
 
       // Each quantum: send the aligned mic+lpb concatenated as ONE binary frame (mic half, then lpb).

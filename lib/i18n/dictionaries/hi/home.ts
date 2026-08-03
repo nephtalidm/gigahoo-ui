@@ -43,6 +43,16 @@ const home = {
   heroGreeting: "अभिवादन कर रहा है…",
   heroMicError: "माइक्रोफ़ोन या कनेक्शन विफल रहा। कृपया माइक एक्सेस की अनुमति दें और फिर से प्रयास करें।",
 
+  // Demo-call popup ("Talk to Gigahoo")
+  demoBadge: "लाइव AI डेमो",
+  demoTitle: "Gigahoo से बात करें",
+  demoSubtitle: "व्यवसाय का प्रकार चुनें और सीधे अपने ब्राउज़र से हमारे AI रिसेप्शनिस्ट से बात करें।",
+  demoChipInstant: "तुरंत शुरू",
+  demoChipReal: "असली AI बातचीत",
+  demoChipFree: "मुफ़्त में आज़माएँ",
+  demoStart: "डेमो कॉल शुरू करें",
+  demoMicNote: "आपके माइक्रोफ़ोन का उपयोग करता है — इससे असली फ़ोन कॉल की तरह बात करें",
+
   // Features
   featuresEyebrow: "विशेषताएँ",
   featuresTitle: "हर लीड को कैप्चर करने के लिए आवश्यक सब कुछ",
