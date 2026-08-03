@@ -1,23 +1,4 @@
 const home = {
-  // Business lookup + personalized demo
-  lookupPlaceholder: "What's your business name?",
-  lookupHint: "Find your business — then talk to your own AI receptionist before you even sign up.",
-  lookupTalk: "Talk to your receptionist",
-  lookupSignup: "Set it up for my business",
-  lookupClear: "Choose a different business",
-  demoAnsweringAs: "Answering as {name}",
-  // Missed-calls cost calculator
-  calcEyebrow: "Missed-call calculator",
-  calcTitle: "What are missed calls costing you?",
-  calcSubtitle: "Every unanswered call is a customer dialing your competitor next. Estimate what slips away each year.",
-  calcMissedLabel: "Missed calls per week",
-  calcValueLabel: "Average job value",
-  calcAssumption: "Assumes 40% of missed callers would have booked a job.",
-  calcYearlyLabel: "potential revenue lost per year",
-  calcMonthlyLabel: "Per month",
-  calcBookingsLabel: "Lost jobs per week",
-  calcCta: "Stop losing calls",
-  calcDisclaimer: "Estimate only — actual results depend on your call volume and job mix.",
   // SEO
   metaTitle: "Gigahoo — AI Phone Receptionist for Home Service Businesses",
   metaDescription:

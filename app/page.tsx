@@ -3,7 +3,6 @@ import { SiteHeader } from "@/components/site-header"
 import { Hero } from "@/components/hero"
 import { Features } from "@/components/features"
 import { HowItWorks } from "@/components/how-it-works"
-import { MissedCallsCalculator } from "@/components/missed-calls-calculator"
 import { Pricing } from "@/components/pricing"
 import { Faq } from "@/components/faq"
 import { FinalCta } from "@/components/final-cta"
@@ -49,7 +48,6 @@ export default async function Page() {
         <Hero />
         <Features />
         <HowItWorks />
-        <MissedCallsCalculator />
         <Pricing currency={currency} prices={prices} country={country} />
         <Faq />
         <FinalCta />

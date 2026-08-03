@@ -178,35 +178,6 @@ export function SignupFlow({ countries: apiCountries, regionsByCountryId }: {
   // passwordless (a password can be added later in Settings).
   const isEmailSignup = !isPhoneSignup && !isGoogleSignup
 
-  // Prefill from the home-page business lookup (Google Places pick stashed in
-  // sessionStorage by BusinessLookup) — read once, then cleared. Only fills
-  // empty fields so it never clobbers anything the visitor already typed.
-  useEffect(() => {
-    let raw: string | null = null
-    try {
-      raw = sessionStorage.getItem("gigahoo-signup-prefill")
-      if (raw) sessionStorage.removeItem("gigahoo-signup-prefill")
-    } catch {
-      return
-    }
-    if (!raw) return
-    try {
-      const p = JSON.parse(raw) as {
-        name?: string; category?: string; phone?: string
-        line1?: string; city?: string; postalCode?: string
-      }
-      if (p.name) setBusinessName((v) => v || p.name!)
-      if (p.category && businessCategories.includes(p.category)) setCategory((v) => v || p.category!)
-      if (p.phone) setBusinessPhone((v) => v || p.phone!.replace(/[^\d+() -]/g, ""))
-      if (p.line1) setAddressLine1((v) => v || p.line1!)
-      if (p.city) setCity((v) => v || p.city!)
-      if (p.postalCode) setPostalCode((v) => v || p.postalCode!)
-    } catch {
-      // Malformed stash — ignore, signup starts empty.
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   // Show plan amounts in the visitor's currency (Country.Currency via the API),
   // resolved from the geo country middleware records in a cookie.
   useEffect(() => {

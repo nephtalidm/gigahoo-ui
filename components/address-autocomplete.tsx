@@ -23,13 +23,13 @@ export type ParsedAddress = {
   countryCode: string
 }
 
-export const MAPS_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+const MAPS_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
 
 // Module-level singleton so the Maps JS script is injected at most once across
-// every consumer (AddressAutocomplete, BusinessLookup) and across re-mounts.
+// every AddressAutocomplete instance (and across re-mounts).
 let mapsPromise: Promise<void> | null = null
 
-export function loadMaps(): Promise<void> {
+function loadMaps(): Promise<void> {
   if (typeof window === "undefined") return Promise.resolve()
   // Already available (e.g. another instance finished loading).
   if (window.google?.maps?.places) return Promise.resolve()

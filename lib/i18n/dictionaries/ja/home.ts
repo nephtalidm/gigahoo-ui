@@ -1,23 +1,4 @@
 const home = {
-  // Business lookup + personalized demo
-  lookupPlaceholder: "あなたのビジネス名は？",
-  lookupHint: "自分のビジネスを検索して、登録前に専用のAI受付係と話してみましょう。",
-  lookupTalk: "自分の受付係と話す",
-  lookupSignup: "自分のビジネスに設定する",
-  lookupClear: "別のビジネスを選ぶ",
-  demoAnsweringAs: "{name}として応答します",
-  // Missed-calls cost calculator
-  calcEyebrow: "不在着信コスト計算機",
-  calcTitle: "取り逃した電話、いくら損していますか？",
-  calcSubtitle: "応答されなかった電話は、競合に掛け直される顧客です。毎年いくら逃しているか試算してみましょう。",
-  calcMissedLabel: "週あたりの不在着信数",
-  calcValueLabel: "平均的な仕事の単価",
-  calcAssumption: "不在着信のうち40%が成約したと仮定しています。",
-  calcYearlyLabel: "年間の潜在的な損失額",
-  calcMonthlyLabel: "月間",
-  calcBookingsLabel: "週に失う仕事数",
-  calcCta: "電話の取り逃しをなくす",
-  calcDisclaimer: "あくまで概算です。実際の結果は着信数や仕事内容により異なります。",
   // SEO
   metaTitle: "Gigahoo — ホームサービス事業者向けAI電話受付",
   metaDescription:

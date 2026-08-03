@@ -14,7 +14,6 @@ import notifications from "./notifications"
 import categories from "./categories"
 import countries from "./countries"
 import chat from "./chat"
-import industries from "./industries"
 
 export const yue = {
   common,
@@ -33,5 +32,4 @@ export const yue = {
   categories,
   countries,
   chat,
-  industries,
 }

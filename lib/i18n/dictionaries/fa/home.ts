@@ -1,23 +1,4 @@
 const home = {
-  // Business lookup + personalized demo
-  lookupPlaceholder: "نام کسب‌وکار شما چیست؟",
-  lookupHint: "کسب‌وکار خود را پیدا کنید و پیش از ثبت‌نام با منشی هوش مصنوعی خودتان صحبت کنید.",
-  lookupTalk: "با منشی خود صحبت کنید",
-  lookupSignup: "راه‌اندازی برای کسب‌وکار من",
-  lookupClear: "انتخاب کسب‌وکار دیگر",
-  demoAnsweringAs: "با نام {name} پاسخ می‌دهد",
-  // Missed-calls cost calculator
-  calcEyebrow: "ماشین‌حساب تماس‌های ازدست‌رفته",
-  calcTitle: "تماس‌های ازدست‌رفته چقدر برایتان هزینه دارند؟",
-  calcSubtitle: "هر تماس بی‌پاسخ مشتری‌ای است که با رقیب شما تماس می‌گیرد. برآورد کنید سالانه چقدر از دست می‌دهید.",
-  calcMissedLabel: "تماس‌های ازدست‌رفته در هفته",
-  calcValueLabel: "میانگین ارزش هر کار",
-  calcAssumption: "فرض بر این است که ۴۰٪ از تماس‌گیرندگان ازدست‌رفته کار رزرو می‌کردند.",
-  calcYearlyLabel: "درآمد بالقوه ازدست‌رفته در سال",
-  calcMonthlyLabel: "در ماه",
-  calcBookingsLabel: "کارهای ازدست‌رفته در هفته",
-  calcCta: "دیگر تماسی را از دست ندهید",
-  calcDisclaimer: "فقط یک برآورد است — نتایج واقعی به حجم تماس‌ها و نوع کارهای شما بستگی دارد.",
   // SEO
   metaTitle: "Gigahoo — منشی تلفنی هوش مصنوعی برای کسب‌وکارهای خدمات خانگی",
   metaDescription:

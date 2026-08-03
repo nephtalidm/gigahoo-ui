@@ -1,23 +1,4 @@
 const home = {
-  // Business lookup + personalized demo
-  lookupPlaceholder: "आपके व्यवसाय का नाम क्या है?",
-  lookupHint: "अपना व्यवसाय खोजें — और साइन अप करने से पहले ही अपने AI रिसेप्शनिस्ट से बात करें।",
-  lookupTalk: "अपने रिसेप्शनिस्ट से बात करें",
-  lookupSignup: "मेरे व्यवसाय के लिए सेट करें",
-  lookupClear: "कोई और व्यवसाय चुनें",
-  demoAnsweringAs: "{name} के रूप में जवाब देगा",
-  // Missed-calls cost calculator
-  calcEyebrow: "मिस्ड कॉल कैलकुलेटर",
-  calcTitle: "मिस्ड कॉल्स आपको कितनी महंगी पड़ रही हैं?",
-  calcSubtitle: "हर अनुत्तरित कॉल एक ग्राहक है जो आपके प्रतिस्पर्धी को फ़ोन करता है। अनुमान लगाएँ कि हर साल कितना निकल जाता है।",
-  calcMissedLabel: "प्रति सप्ताह मिस्ड कॉल्स",
-  calcValueLabel: "औसत काम की कीमत",
-  calcAssumption: "माना गया है कि 40% मिस्ड कॉल करने वाले काम बुक करते।",
-  calcYearlyLabel: "प्रति वर्ष संभावित राजस्व हानि",
-  calcMonthlyLabel: "प्रति माह",
-  calcBookingsLabel: "प्रति सप्ताह खोए काम",
-  calcCta: "कॉल खोना बंद करें",
-  calcDisclaimer: "केवल अनुमान — वास्तविक परिणाम आपकी कॉल संख्या और काम के प्रकार पर निर्भर करते हैं।",
   // SEO
   metaTitle: "Gigahoo — होम सर्विस व्यवसायों के लिए AI फ़ोन रिसेप्शनिस्ट",
   metaDescription:

@@ -1,23 +1,4 @@
 const home = {
-  // Business lookup + personalized demo
-  lookupPlaceholder: "ਤੁਹਾਡੇ ਕਾਰੋਬਾਰ ਦਾ ਨਾਮ ਕੀ ਹੈ?",
-  lookupHint: "ਆਪਣਾ ਕਾਰੋਬਾਰ ਲੱਭੋ — ਅਤੇ ਸਾਈਨ ਅੱਪ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਹੀ ਆਪਣੇ AI ਰਿਸੈਪਸ਼ਨਿਸਟ ਨਾਲ ਗੱਲ ਕਰੋ।",
-  lookupTalk: "ਆਪਣੇ ਰਿਸੈਪਸ਼ਨਿਸਟ ਨਾਲ ਗੱਲ ਕਰੋ",
-  lookupSignup: "ਮੇਰੇ ਕਾਰੋਬਾਰ ਲਈ ਸੈੱਟ ਕਰੋ",
-  lookupClear: "ਕੋਈ ਹੋਰ ਕਾਰੋਬਾਰ ਚੁਣੋ",
-  demoAnsweringAs: "{name} ਵਜੋਂ ਜਵਾਬ ਦੇਵੇਗਾ",
-  // Missed-calls cost calculator
-  calcEyebrow: "ਮਿਸਡ ਕਾਲ ਕੈਲਕੁਲੇਟਰ",
-  calcTitle: "ਮਿਸਡ ਕਾਲਾਂ ਤੁਹਾਨੂੰ ਕਿੰਨੀਆਂ ਮਹਿੰਗੀਆਂ ਪੈ ਰਹੀਆਂ ਹਨ?",
-  calcSubtitle: "ਹਰ ਅਣ-ਜਵਾਬੀ ਕਾਲ ਇੱਕ ਗਾਹਕ ਹੈ ਜੋ ਤੁਹਾਡੇ ਮੁਕਾਬਲੇਬਾਜ਼ ਨੂੰ ਫ਼ੋਨ ਕਰਦਾ ਹੈ। ਅੰਦਾਜ਼ਾ ਲਗਾਓ ਕਿ ਹਰ ਸਾਲ ਕਿੰਨਾ ਨਿਕਲ ਜਾਂਦਾ ਹੈ।",
-  calcMissedLabel: "ਹਫ਼ਤੇ ਵਿੱਚ ਮਿਸਡ ਕਾਲਾਂ",
-  calcValueLabel: "ਔਸਤ ਕੰਮ ਦੀ ਕੀਮਤ",
-  calcAssumption: "ਮੰਨਿਆ ਗਿਆ ਹੈ ਕਿ 40% ਮਿਸਡ ਕਾਲ ਕਰਨ ਵਾਲੇ ਕੰਮ ਬੁੱਕ ਕਰਦੇ।",
-  calcYearlyLabel: "ਸਾਲਾਨਾ ਸੰਭਾਵੀ ਗੁਆਚੀ ਕਮਾਈ",
-  calcMonthlyLabel: "ਮਹੀਨਾਵਾਰ",
-  calcBookingsLabel: "ਹਫ਼ਤੇ ਵਿੱਚ ਗੁਆਚੇ ਕੰਮ",
-  calcCta: "ਕਾਲਾਂ ਗੁਆਉਣੀਆਂ ਬੰਦ ਕਰੋ",
-  calcDisclaimer: "ਸਿਰਫ਼ ਅੰਦਾਜ਼ਾ — ਅਸਲ ਨਤੀਜੇ ਤੁਹਾਡੀਆਂ ਕਾਲਾਂ ਦੀ ਗਿਣਤੀ ਅਤੇ ਕੰਮ ਦੀ ਕਿਸਮ ਉੱਤੇ ਨਿਰਭਰ ਕਰਦੇ ਹਨ।",
   // SEO
   metaTitle: "Gigahoo — ਘਰੇਲੂ ਸੇਵਾ ਕਾਰੋਬਾਰਾਂ ਲਈ AI ਫ਼ੋਨ ਰਿਸੈਪਸ਼ਨਿਸਟ",
   metaDescription:

@@ -1,23 +1,4 @@
 const home = {
-  // Business lookup + personalized demo
-  lookupPlaceholder: "업체 이름이 무엇인가요?",
-  lookupHint: "내 업체를 찾아 가입 전에 나만의 AI 상담원과 대화해 보세요.",
-  lookupTalk: "내 상담원과 대화하기",
-  lookupSignup: "내 업체에 설정하기",
-  lookupClear: "다른 업체 선택",
-  demoAnsweringAs: "{name}(으)로 응답합니다",
-  // Missed-calls cost calculator
-  calcEyebrow: "부재중 전화 계산기",
-  calcTitle: "놓친 전화, 얼마나 손해일까요?",
-  calcSubtitle: "받지 못한 전화는 경쟁업체로 걸려가는 고객입니다. 매년 얼마나 놓치는지 계산해 보세요.",
-  calcMissedLabel: "주당 부재중 전화 수",
-  calcValueLabel: "평균 작업 단가",
-  calcAssumption: "부재중 전화의 40%가 예약으로 이어졌다고 가정합니다.",
-  calcYearlyLabel: "연간 놓치는 잠재 매출",
-  calcMonthlyLabel: "월간",
-  calcBookingsLabel: "주당 놓친 작업",
-  calcCta: "전화 놓치지 마세요",
-  calcDisclaimer: "추정치일 뿐이며 실제 결과는 통화량과 작업 유형에 따라 다릅니다.",
   // SEO
   metaTitle: "Gigahoo — 홈 서비스 비즈니스를 위한 AI 전화 응대원",
   metaDescription:

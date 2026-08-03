@@ -1,23 +1,4 @@
 const home = {
-  // Business lookup + personalized demo
-  lookupPlaceholder: "¿Cómo se llama tu negocio?",
-  lookupHint: "Encuentra tu negocio y habla con tu propio recepcionista de IA antes de registrarte.",
-  lookupTalk: "Habla con tu recepcionista",
-  lookupSignup: "Configurarlo para mi negocio",
-  lookupClear: "Elegir otro negocio",
-  demoAnsweringAs: "Contestará como {name}",
-  // Missed-calls cost calculator
-  calcEyebrow: "Calculadora de llamadas perdidas",
-  calcTitle: "¿Cuánto te cuestan las llamadas perdidas?",
-  calcSubtitle: "Cada llamada sin contestar es un cliente que marca a tu competencia. Calcula cuánto se te escapa cada año.",
-  calcMissedLabel: "Llamadas perdidas por semana",
-  calcValueLabel: "Valor promedio del trabajo",
-  calcAssumption: "Se asume que el 40% de las llamadas perdidas habrían contratado un trabajo.",
-  calcYearlyLabel: "ingresos potenciales perdidos al año",
-  calcMonthlyLabel: "Al mes",
-  calcBookingsLabel: "Trabajos perdidos por semana",
-  calcCta: "Deja de perder llamadas",
-  calcDisclaimer: "Solo una estimación: los resultados reales dependen de tu volumen de llamadas y tipo de trabajos.",
   // SEO
   metaTitle: "Gigahoo — Recepcionista telefónico con IA para negocios de servicios a domicilio",
   metaDescription:

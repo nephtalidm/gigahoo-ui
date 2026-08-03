@@ -7,17 +7,16 @@ import Link from "next/link"
 import { useTranslation } from "@/contexts/language-context"
 import { COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
 import { DemoCallDialog } from "@/components/demo-call-dialog"
-import { BusinessLookup, type BusinessProfile } from "@/components/business-lookup"
 
 // Timing (ms) for the looping live-call demo animation.
 const RINGING_MS = 1500
 const TYPING_MS = 1000
 const MESSAGE_GAP_MS = 2700
 const HOLD_MS = 3000
-// Messages shown instantly when the call connects (we join mid-call), so the chat
-// is already populated instead of starting empty — high enough that the
-// conversation box reads FULL from the first moment, not two lonely bubbles.
-const PREROLL = 3
+// Messages visible AT ALL TIMES (first paint, ringing, every loop restart) —
+// the conversation box must read FULL from the very first frame, never blank.
+// With 5 messages, 4 stay pinned and only the final reply streams in per loop.
+const PREROLL = 4
 
 type CallPhase = "ringing" | "connected"
 
@@ -50,8 +49,9 @@ function usePrefersReducedMotion() {
  */
 function useCallAnimation(messageCount: number, reducedMotion: boolean) {
   const [phase, setPhase] = useState<CallPhase>("ringing")
-  // Number of messages currently revealed.
-  const [visibleCount, setVisibleCount] = useState(0)
+  // Number of messages currently revealed. Starts at PREROLL (not 0) so the
+  // very first SSR/paint already shows a full conversation box.
+  const [visibleCount, setVisibleCount] = useState(PREROLL)
   // Whether the typing indicator is showing (before an assistant message).
   const [typing, setTyping] = useState(false)
   // True once the whole conversation has played — the call has wrapped up.
@@ -79,14 +79,15 @@ function useCallAnimation(messageCount: number, reducedMotion: boolean) {
     const runLoop = () => {
       clearTimers()
       setPhase("ringing")
-      setVisibleCount(0)
+      // Keep the box POPULATED while ringing — we "join mid-call": the preroll
+      // messages stay visible, so the panel is never empty, not even for a frame.
+      setVisibleCount(PREROLL)
       setTyping(false)
       setEnded(false)
 
-      // Ringing -> connected, already a few messages into the call.
+      // Ringing -> connected: continue revealing from the preroll point.
       schedule(() => {
         setPhase("connected")
-        setVisibleCount(PREROLL)
         revealNext(PREROLL)
       }, RINGING_MS)
     }
@@ -204,9 +205,6 @@ export function Hero() {
 
   // The live two-way demo call now lives in the "Talk to Gigahoo" popup.
   const [demoOpen, setDemoOpen] = useState(false)
-  // A real business picked from Google Places — the popup then answers AS that
-  // business ("Thanks for calling Summit Plumbing!") before any signup.
-  const [business, setBusiness] = useState<BusinessProfile | null>(null)
 
   // Open the popup from the header's "Try it live" pill (custom event on this page,
   // ?demo=1 when arriving from another page — cleaned from the URL after opening).
@@ -286,16 +284,6 @@ export function Hero() {
             </div>
 
             <p className="mt-3 text-sm text-white/75">{t("home.heroNoCard")}</p>
-
-            {/* Personalized enrollment hook: find your business → talk to YOUR receptionist. */}
-            <div className="mt-8 w-full">
-              <BusinessLookup
-                business={business}
-                onSelect={setBusiness}
-                onClear={() => setBusiness(null)}
-                onTalk={() => setDemoOpen(true)}
-              />
-            </div>
 
             <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
               {bullets.map((b) => (
@@ -421,11 +409,7 @@ export function Hero() {
       </div>
 
       {/* Centered "Talk to Gigahoo" demo-call popup (dark blurred backdrop). */}
-      <DemoCallDialog
-        open={demoOpen}
-        onOpenChange={setDemoOpen}
-        business={business ? { name: business.name, category: business.category } : undefined}
-      />
+      <DemoCallDialog open={demoOpen} onOpenChange={setDemoOpen} />
     </section>
   )
 }

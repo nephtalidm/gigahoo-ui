@@ -1,23 +1,4 @@
 const home = {
-  // Business lookup + personalized demo
-  lookupPlaceholder: "Quel est le nom de votre entreprise ?",
-  lookupHint: "Trouvez votre entreprise et parlez à votre propre réceptionniste IA avant même de vous inscrire.",
-  lookupTalk: "Parlez à votre réceptionniste",
-  lookupSignup: "Le configurer pour mon entreprise",
-  lookupClear: "Choisir une autre entreprise",
-  demoAnsweringAs: "Répondra en tant que {name}",
-  // Missed-calls cost calculator
-  calcEyebrow: "Calculateur d'appels manqués",
-  calcTitle: "Combien vous coûtent les appels manqués ?",
-  calcSubtitle: "Chaque appel sans réponse est un client qui compose le numéro de votre concurrent. Estimez ce qui vous échappe chaque année.",
-  calcMissedLabel: "Appels manqués par semaine",
-  calcValueLabel: "Valeur moyenne d'un travail",
-  calcAssumption: "On suppose que 40 % des appelants manqués auraient réservé.",
-  calcYearlyLabel: "de revenus potentiels perdus par an",
-  calcMonthlyLabel: "Par mois",
-  calcBookingsLabel: "Travaux perdus par semaine",
-  calcCta: "Arrêtez de perdre des appels",
-  calcDisclaimer: "Estimation seulement — les résultats réels dépendent de votre volume d'appels et de vos types de travaux.",
   // SEO
   metaTitle: "Gigahoo — Réceptionniste téléphonique IA pour les entreprises de services à domicile",
   metaDescription:
