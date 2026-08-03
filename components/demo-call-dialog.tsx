@@ -38,14 +38,29 @@ declare global {
 export function DemoCallDialog({
   open,
   onOpenChange,
+  business,
+  initialCategory,
 }: {
   open: boolean
   onOpenChange: (open: boolean) => void
+  /** Personalized demo: the AI answers AS this business ("Thanks for calling <name>!"). */
+  business?: { name: string; category: string }
+  /** Preselected trade (industry landing pages). A picked business wins over this. */
+  initialCategory?: string
 }) {
   const { t, locale } = useTranslation()
   const live = useBrowserDemo()
   const liveActive = live.status === "connecting" || live.status === "live"
-  const [category, setCategory] = useState(businessCategories[0])
+  const [category, setCategory] = useState(
+    initialCategory && businessCategories.includes(initialCategory) ? initialCategory : businessCategories[0],
+  )
+
+  // A picked business pre-sets the category (still adjustable in the select).
+  useEffect(() => {
+    if (business?.category && businessCategories.includes(business.category)) {
+      setCategory(business.category)
+    }
+  }, [business?.category])
 
   const handleOpenChange = (o: boolean) => {
     if (!o) live.stop()
@@ -155,6 +170,11 @@ export function DemoCallDialog({
             <DialogDescription className="mt-2 max-w-[300px] text-sm leading-relaxed">
               {t("home.demoSubtitle")}
             </DialogDescription>
+            {business && (
+              <span className="mt-2.5 inline-flex max-w-full items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary ring-1 ring-primary/15">
+                <span className="truncate">{t("home.demoAnsweringAs", { name: business.name })}</span>
+              </span>
+            )}
           </div>
 
           {/* Feature chips */}
@@ -275,7 +295,7 @@ export function DemoCallDialog({
               <Button
                 className="h-[52px] w-full rounded-2xl text-[15px] font-semibold sm:h-14 sm:text-base"
                 disabled={!!TURNSTILE_SITE_KEY && !captchaToken}
-                onClick={() => live.start(category, "Jennifer", locale, captchaToken || undefined)}
+                onClick={() => live.start(category, "Jennifer", locale, captchaToken || undefined, business?.name)}
               >
                 <PhoneCall className="h-[18px] w-[18px]" />
                 {t("home.demoStart")}

@@ -1,4 +1,11 @@
 const home = {
+  // Business lookup + personalized demo
+  lookupPlaceholder: "ما اسم نشاطك التجاري؟",
+  lookupHint: "ابحث عن نشاطك التجاري وتحدث مع موظف الاستقبال الذكي الخاص بك قبل التسجيل.",
+  lookupTalk: "تحدث مع موظف الاستقبال الخاص بك",
+  lookupSignup: "إعداده لنشاطي التجاري",
+  lookupClear: "اختيار نشاط تجاري آخر",
+  demoAnsweringAs: "سيرد باسم {name}",
   // Missed-calls cost calculator
   calcEyebrow: "حاسبة المكالمات الفائتة",
   calcTitle: "كم تكلفك المكالمات الفائتة؟",

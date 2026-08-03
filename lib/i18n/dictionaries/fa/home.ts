@@ -1,4 +1,11 @@
 const home = {
+  // Business lookup + personalized demo
+  lookupPlaceholder: "نام کسب‌وکار شما چیست؟",
+  lookupHint: "کسب‌وکار خود را پیدا کنید و پیش از ثبت‌نام با منشی هوش مصنوعی خودتان صحبت کنید.",
+  lookupTalk: "با منشی خود صحبت کنید",
+  lookupSignup: "راه‌اندازی برای کسب‌وکار من",
+  lookupClear: "انتخاب کسب‌وکار دیگر",
+  demoAnsweringAs: "با نام {name} پاسخ می‌دهد",
   // Missed-calls cost calculator
   calcEyebrow: "ماشین‌حساب تماس‌های ازدست‌رفته",
   calcTitle: "تماس‌های ازدست‌رفته چقدر برایتان هزینه دارند؟",

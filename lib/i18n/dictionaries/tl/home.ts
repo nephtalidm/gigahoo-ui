@@ -1,4 +1,11 @@
 const home = {
+  // Business lookup + personalized demo
+  lookupPlaceholder: "Ano ang pangalan ng negosyo mo?",
+  lookupHint: "Hanapin ang negosyo mo — at kausapin ang sarili mong AI receptionist bago ka pa mag-sign up.",
+  lookupTalk: "Kausapin ang receptionist mo",
+  lookupSignup: "I-set up para sa negosyo ko",
+  lookupClear: "Pumili ng ibang negosyo",
+  demoAnsweringAs: "Sasagot bilang {name}",
   // Missed-calls cost calculator
   calcEyebrow: "Calculator ng missed calls",
   calcTitle: "Magkano ang nawawala sa iyo dahil sa missed calls?",

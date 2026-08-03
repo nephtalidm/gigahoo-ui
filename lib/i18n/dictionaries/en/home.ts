@@ -1,4 +1,11 @@
 const home = {
+  // Business lookup + personalized demo
+  lookupPlaceholder: "What's your business name?",
+  lookupHint: "Find your business — then talk to your own AI receptionist before you even sign up.",
+  lookupTalk: "Talk to your receptionist",
+  lookupSignup: "Set it up for my business",
+  lookupClear: "Choose a different business",
+  demoAnsweringAs: "Answering as {name}",
   // Missed-calls cost calculator
   calcEyebrow: "Missed-call calculator",
   calcTitle: "What are missed calls costing you?",

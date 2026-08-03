@@ -1,4 +1,11 @@
 const home = {
+  // Business lookup + personalized demo
+  lookupPlaceholder: "업체 이름이 무엇인가요?",
+  lookupHint: "내 업체를 찾아 가입 전에 나만의 AI 상담원과 대화해 보세요.",
+  lookupTalk: "내 상담원과 대화하기",
+  lookupSignup: "내 업체에 설정하기",
+  lookupClear: "다른 업체 선택",
+  demoAnsweringAs: "{name}(으)로 응답합니다",
   // Missed-calls cost calculator
   calcEyebrow: "부재중 전화 계산기",
   calcTitle: "놓친 전화, 얼마나 손해일까요?",

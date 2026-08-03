@@ -1,4 +1,11 @@
 const home = {
+  // Business lookup + personalized demo
+  lookupPlaceholder: "Как называется ваш бизнес?",
+  lookupHint: "Найдите свой бизнес — и поговорите с собственным ИИ-администратором ещё до регистрации.",
+  lookupTalk: "Поговорить со своим администратором",
+  lookupSignup: "Настроить для моего бизнеса",
+  lookupClear: "Выбрать другой бизнес",
+  demoAnsweringAs: "Ответит как {name}",
   // Missed-calls cost calculator
   calcEyebrow: "Калькулятор пропущенных звонков",
   calcTitle: "Сколько вам стоят пропущенные звонки?",

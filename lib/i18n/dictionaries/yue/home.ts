@@ -1,4 +1,11 @@
 const home = {
+  // Business lookup + personalized demo
+  lookupPlaceholder: "你間公司叫咩名？",
+  lookupHint: "搵返你間公司 — 未註冊都可以即刻同你自己嘅 AI 接待員傾偈。",
+  lookupTalk: "同你嘅接待員傾偈",
+  lookupSignup: "幫我間公司設定",
+  lookupClear: "揀第二間公司",
+  demoAnsweringAs: "會以 {name} 身份接聽",
   // Missed-calls cost calculator
   calcEyebrow: "漏接來電計算機",
   calcTitle: "漏接電話令你蝕幾多錢？",

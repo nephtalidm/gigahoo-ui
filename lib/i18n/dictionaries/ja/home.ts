@@ -1,4 +1,11 @@
 const home = {
+  // Business lookup + personalized demo
+  lookupPlaceholder: "あなたのビジネス名は？",
+  lookupHint: "自分のビジネスを検索して、登録前に専用のAI受付係と話してみましょう。",
+  lookupTalk: "自分の受付係と話す",
+  lookupSignup: "自分のビジネスに設定する",
+  lookupClear: "別のビジネスを選ぶ",
+  demoAnsweringAs: "{name}として応答します",
   // Missed-calls cost calculator
   calcEyebrow: "不在着信コスト計算機",
   calcTitle: "取り逃した電話、いくら損していますか？",

@@ -7,6 +7,7 @@ import Link from "next/link"
 import { useTranslation } from "@/contexts/language-context"
 import { COMING_SOON_COUNTRY_CODES } from "@/lib/settings"
 import { DemoCallDialog } from "@/components/demo-call-dialog"
+import { BusinessLookup, type BusinessProfile } from "@/components/business-lookup"
 
 // Timing (ms) for the looping live-call demo animation.
 const RINGING_MS = 1500
@@ -203,6 +204,9 @@ export function Hero() {
 
   // The live two-way demo call now lives in the "Talk to Gigahoo" popup.
   const [demoOpen, setDemoOpen] = useState(false)
+  // A real business picked from Google Places — the popup then answers AS that
+  // business ("Thanks for calling Summit Plumbing!") before any signup.
+  const [business, setBusiness] = useState<BusinessProfile | null>(null)
 
   // Open the popup from the header's "Try it live" pill (custom event on this page,
   // ?demo=1 when arriving from another page — cleaned from the URL after opening).
@@ -282,6 +286,16 @@ export function Hero() {
             </div>
 
             <p className="mt-3 text-sm text-white/75">{t("home.heroNoCard")}</p>
+
+            {/* Personalized enrollment hook: find your business → talk to YOUR receptionist. */}
+            <div className="mt-8 w-full">
+              <BusinessLookup
+                business={business}
+                onSelect={setBusiness}
+                onClear={() => setBusiness(null)}
+                onTalk={() => setDemoOpen(true)}
+              />
+            </div>
 
             <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
               {bullets.map((b) => (
@@ -407,7 +421,11 @@ export function Hero() {
       </div>
 
       {/* Centered "Talk to Gigahoo" demo-call popup (dark blurred backdrop). */}
-      <DemoCallDialog open={demoOpen} onOpenChange={setDemoOpen} />
+      <DemoCallDialog
+        open={demoOpen}
+        onOpenChange={setDemoOpen}
+        business={business ? { name: business.name, category: business.category } : undefined}
+      />
     </section>
   )
 }
