@@ -30,8 +30,12 @@ export function ConversationDetailDialog({
       {/* A FIXED popup shell: the frame, title, and close button never move — the BODY scrolls
           inside (visible scrollbar when needed) and the transcript renders in full, unscrolled.
           The close button matches the mobile menu's (outlined 44px X); the header's divider sits
-          BELOW the button with the same margin the button has above it. */}
-      <DialogContent className="max-w-lg max-h-[85dvh] flex flex-col overflow-hidden p-0 gap-0" showCloseButton={false} initialFocus={detailRef}>
+          BELOW the button with the same margin the button has above it.
+          SIZING: the width override must be sm:-prefixed — the base DialogContent carries
+          sm:max-w-sm, and an unprefixed max-w-* neither wins in CSS nor gets deduped by
+          tailwind-merge (different variant group), so the popup stayed phone-width (384px) on
+          desktop. Mobile keeps the base near-full width; sm+ gets a real desktop panel. */}
+      <DialogContent className="sm:max-w-2xl max-h-[85dvh] flex flex-col overflow-hidden p-0 gap-0" showCloseButton={false} initialFocus={detailRef}>
         {selected && (
           <>
             <DialogHeader className="min-h-[68px] shrink-0 justify-center border-b border-border px-4 pr-16">
