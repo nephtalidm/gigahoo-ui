@@ -3,12 +3,13 @@
 import { useEffect, useRef, useState } from "react"
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { Gift, Loader2, Mic, PhoneCall, Sparkles, Zap } from "lucide-react"
+import { Gift, Loader2, Mic, PhoneCall, Sparkles, X, Zap } from "lucide-react"
 import { useTranslation } from "@/contexts/language-context"
 import { businessCategories, businessCategoryKeys } from "@/lib/data"
 import { useBrowserDemo } from "@/hooks/use-browser-demo"
@@ -116,7 +117,22 @@ export function DemoCallDialog({
       <DialogContent
         className="gap-0 rounded-3xl p-0 sm:max-w-[420px]"
         overlayClassName="bg-black/60 supports-backdrop-filter:backdrop-blur-sm"
+        showCloseButton={false}
       >
+        {/* Close button matches the site-wide standard (outlined 44px X, like the
+            conversation-details popup and the mobile menu). */}
+        <DialogClose
+          render={
+            <Button
+              variant="outline"
+              className="absolute top-3 right-3 size-11"
+              size="icon-sm"
+              aria-label={t("calls.close")}
+            />
+          }
+        >
+          <X className="size-6" />
+        </DialogClose>
         <div className="px-5 pt-8 pb-5 sm:px-8 sm:pb-7">
           {/* Badge, phone icon, and title — all centered like a call screen. */}
           <div className="flex flex-col items-center text-center">
@@ -237,7 +253,7 @@ export function DemoCallDialog({
               )}
             </div>
           ) : (
-            <div className="mt-5 space-y-3">
+            <div className="mt-4 space-y-3">
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
@@ -257,7 +273,7 @@ export function DemoCallDialog({
               )}
 
               <Button
-                className="h-12 w-full rounded-2xl text-[15px] font-semibold"
+                className="h-[52px] w-full rounded-2xl text-[15px] font-semibold sm:h-14 sm:text-base"
                 disabled={!!TURNSTILE_SITE_KEY && !captchaToken}
                 onClick={() => live.start(category, "Jennifer", locale, captchaToken || undefined)}
               >

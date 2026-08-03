@@ -14,8 +14,9 @@ const TYPING_MS = 1000
 const MESSAGE_GAP_MS = 2700
 const HOLD_MS = 3000
 // Messages shown instantly when the call connects (we join mid-call), so the chat
-// is already populated instead of starting empty.
-const PREROLL = 2
+// is already populated instead of starting empty — high enough that the
+// conversation box reads FULL from the first moment, not two lonely bubbles.
+const PREROLL = 3
 
 type CallPhase = "ringing" | "connected"
 
@@ -333,13 +334,15 @@ export function Hero() {
                 ref={scrollRef}
                 className="mt-4 flex h-56 min-w-0 flex-col overflow-y-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:h-auto lg:min-h-0 lg:flex-1"
               >
-                <div className="mt-auto space-y-3">
+                {/* Bubbles scale up on lg so the conversation fills the (taller) desktop box
+                    instead of huddling at the bottom of an empty panel. */}
+                <div className="mt-auto space-y-3 lg:space-y-4">
                   {messages.slice(0, visibleCount).map((m, i) => {
                     const isAssistant = m.role === "assistant"
                     return (
                       <div
                         key={i}
-                        className={`max-w-[85%] break-words rounded-2xl px-4 py-2.5 text-sm motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-bottom-2 motion-safe:duration-500 ${
+                        className={`max-w-[85%] break-words rounded-2xl px-4 py-2.5 text-sm lg:px-5 lg:py-3 lg:text-base motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-bottom-2 motion-safe:duration-500 ${
                           isAssistant
                             ? "rounded-tl-sm bg-muted text-foreground"
                             : "ml-auto rounded-tr-sm bg-primary text-primary-foreground"
