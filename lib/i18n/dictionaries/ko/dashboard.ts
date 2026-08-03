@@ -1,4 +1,8 @@
 const dashboard = {
+  // Overview: forwarding-number card
+  forwardingNumberTitle: "내 Gigahoo 번호",
+  forwardingNumberHint: "비즈니스 전화를 이 번호로 착신 전환하면 Gigahoo가 모든 전화를 대신 받아 드립니다.",
+
   // Sidebar nav
   navOverview: "개요",
   navCallHistory: "통화 기록",

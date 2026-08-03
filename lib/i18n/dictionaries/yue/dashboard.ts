@@ -1,4 +1,8 @@
 const dashboard = {
+  // Overview: forwarding-number card
+  forwardingNumberTitle: "你嘅 Gigahoo 號碼",
+  forwardingNumberHint: "將你公司電話線轉駁去呢個號碼 — Gigahoo 幫你接聽每一個來電。",
+
   // Sidebar nav
   navOverview: "概覽",
   navCallHistory: "通話記錄",

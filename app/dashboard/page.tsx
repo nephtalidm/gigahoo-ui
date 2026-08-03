@@ -9,28 +9,43 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ConversationDetailDialog } from "@/components/dashboard/conversation-detail-dialog"
 import { getDashboardOverview, getAccount, type DashboardOverview } from "@/lib/api"
-import { mapApiConversation, formatDateTime, formatDuration, type Conversation } from "@/lib/data"
+import { mapApiConversation, formatDateTime, formatDuration, formatPhoneDisplay, type Conversation } from "@/lib/data"
 import { useTranslation } from "@/contexts/language-context"
-import { ArrowRight, ArrowUpRight, Loader2 } from "lucide-react"
+import { ArrowRight, ArrowUpRight, Check, Copy, Loader2, PhoneForwarded } from "lucide-react"
 
 export default function OverviewPage() {
   const { t } = useTranslation()
   const [data, setData] = useState<DashboardOverview | null>(null)
   const [timeZone, setTimeZone] = useState<string | undefined>(undefined)
+  const [forwardingPhone, setForwardingPhone] = useState<string | null>(null)
   const [selected, setSelected] = useState<Conversation | null>(null)
   const [loading, setLoading] = useState(true)
+  const [copied, setCopied] = useState(false)
 
   useEffect(() => {
     // Also fetch the account so call times show in the account's region timezone (consistent with
-    // the summary email + the calls page), not the viewer's browser / the UTC server.
+    // the summary email + the calls page), not the viewer's browser / the UTC server — and so the
+    // forwarding number can be shown front-and-center below.
     Promise.all([getDashboardOverview(), getAccount().catch(() => null)])
       .then(([overview, account]) => {
         setData(overview)
         if (account?.timeZone) setTimeZone(account.timeZone)
+        if (account?.forwardingPhone) setForwardingPhone(account.forwardingPhone)
       })
       .catch(() => {})
       .finally(() => setLoading(false))
   }, [])
+
+  const copyForwardingPhone = async () => {
+    if (!forwardingPhone) return
+    try {
+      await navigator.clipboard.writeText(formatPhoneDisplay(forwardingPhone))
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1500)
+    } catch {
+      // Clipboard unavailable (e.g. insecure context) — silently ignore.
+    }
+  }
 
   if (loading) {
     return (
@@ -58,6 +73,31 @@ export default function OverviewPage() {
   return (
     <div className="flex flex-col gap-6">
       <PageHeader title={t("dashboard.overviewTitle")} description={t("dashboard.overviewWelcome")} />
+
+      {/* Forwarding number — the ONE thing every customer needs to see: shown huge,
+          with one-tap copy. (Moved here from General Settings.) */}
+      {forwardingPhone && (
+        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-4 sm:items-center">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                <PhoneForwarded className="h-6 w-6" />
+              </span>
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-muted-foreground">{t("dashboard.forwardingNumberTitle")}</p>
+                <p className="mt-0.5 break-all text-3xl font-bold tabular-nums tracking-tight text-foreground sm:text-4xl">
+                  {formatPhoneDisplay(forwardingPhone)}
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">{t("dashboard.forwardingNumberHint")}</p>
+              </div>
+            </div>
+            <Button variant="outline" className="gap-1.5 self-start sm:self-center" onClick={copyForwardingPhone}>
+              {copied ? <Check className="h-4 w-4 text-emerald-600" /> : <Copy className="h-4 w-4" />}
+              {t("calls.copy")}
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Plan summary */}
       <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">

@@ -718,19 +718,8 @@ export function SettingsView({
               placeholder={t("settings.websiteUrlPlaceholder")}
             />
           </Field>
-          <Field label={t("settings.forwardingPhone")} htmlFor="forwardingPhone">
-            <Input
-              id="forwardingPhone"
-              value={account.forwardingPhone ? formatPhoneDisplay(account.forwardingPhone) : "—"}
-              readOnly
-              disabled
-              aria-describedby="forwardingPhoneHint"
-              className="bg-muted text-muted-foreground"
-            />
-            <p id="forwardingPhoneHint" className="text-xs text-muted-foreground">
-              {t("settings.forwardingPhoneHint")}
-            </p>
-          </Field>
+          {/* The forwarding number now lives on the Overview page (big, copyable) —
+              it's the single most important thing for a customer to see. */}
           <Field label={t("settings.websiteLanguage")} htmlFor="websiteLanguage">
             <LanguageSwitcher />
             <p className="text-xs text-muted-foreground">{t("settings.websiteLanguageHint")}</p>

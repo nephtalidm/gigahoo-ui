@@ -1,4 +1,8 @@
 const dashboard = {
+  // Overview: forwarding-number card
+  forwardingNumberTitle: "Ваш номер Gigahoo",
+  forwardingNumberHint: "Переадресуйте робочу лінію на цей номер — Gigahoo відповідатиме на всі ваші дзвінки.",
+
   // Sidebar nav
   navOverview: "Огляд",
   navCallHistory: "Історія дзвінків",

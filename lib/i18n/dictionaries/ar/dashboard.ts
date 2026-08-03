@@ -1,4 +1,8 @@
 const dashboard = {
+  // Overview: forwarding-number card
+  forwardingNumberTitle: "رقم Gigahoo الخاص بك",
+  forwardingNumberHint: "حوّل خط عملك إلى هذا الرقم — وسيرد Gigahoo على جميع مكالماتك.",
+
   // Sidebar nav
   navOverview: "نظرة عامة",
   navCallHistory: "سجل المكالمات",

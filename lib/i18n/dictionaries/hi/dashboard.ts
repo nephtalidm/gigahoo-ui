@@ -1,4 +1,8 @@
 const dashboard = {
+  // Overview: forwarding-number card
+  forwardingNumberTitle: "आपका Gigahoo नंबर",
+  forwardingNumberHint: "अपने व्यवसाय की लाइन इस नंबर पर फ़ॉरवर्ड करें — Gigahoo आपकी हर कॉल का जवाब देगा।",
+
   // Sidebar nav
   navOverview: "अवलोकन",
   navCallHistory: "कॉल इतिहास",

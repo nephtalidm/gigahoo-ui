@@ -1,4 +1,8 @@
 const dashboard = {
+  // Overview: forwarding-number card
+  forwardingNumberTitle: "あなたのGigahoo番号",
+  forwardingNumberHint: "ビジネス回線をこの番号に転送すると、Gigahooがすべての電話に応答します。",
+
   // Sidebar nav
   navOverview: "概要",
   navCallHistory: "通話履歴",
