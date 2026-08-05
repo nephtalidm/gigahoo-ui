@@ -105,7 +105,7 @@ const home = {
   pricingFreeFeature3: "Збір даних клієнтів",
   pricingFreeFeature4: "Підсумки дзвінків",
   pricingFreeFeatureSpam: "Блокує спам і рекламні дзвінки",
-  pricingFreeFeature5: "25 хвилин на день",
+  pricingFreeFeature5: "25 хвилин/день",
   pricingFreeCta: "Почати безкоштовно",
   pricingStarterName: "Starter",
   pricingStarterPrice: "$49",

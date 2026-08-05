@@ -107,7 +107,7 @@ const home = {
   pricingFreeFeature3: "Registro de clientes",
   pricingFreeFeature4: "Resúmenes de llamadas",
   pricingFreeFeatureSpam: "Bloquea llamadas de spam y de venta",
-  pricingFreeFeature5: "25 minutos al día",
+  pricingFreeFeature5: "25 minutos/día",
   pricingFreeCta: "Comenzar gratis",
   pricingStarterName: "Inicial",
   pricingStarterPrice: "$49",

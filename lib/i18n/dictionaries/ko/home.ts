@@ -105,7 +105,7 @@ const home = {
   pricingFreeFeature3: "고객 정보 접수",
   pricingFreeFeature4: "통화 요약",
   pricingFreeFeatureSpam: "스팸 및 영업 전화 차단",
-  pricingFreeFeature5: "하루 25분",
+  pricingFreeFeature5: "25분/일",
   pricingFreeCta: "무료로 시작",
   pricingStarterName: "Starter",
   pricingStarterPrice: "$49",

@@ -105,7 +105,7 @@ const home = {
   pricingFreeFeature3: "ثبت اطلاعات مشتری",
   pricingFreeFeature4: "خلاصه تماس‌ها",
   pricingFreeFeatureSpam: "مسدود کردن تماس‌های تبلیغاتی و هرزنامه",
-  pricingFreeFeature5: "۲۵ دقیقه در روز",
+  pricingFreeFeature5: "۲۵ دقیقه/روز",
   pricingFreeCta: "شروع رایگان",
   pricingStarterName: "Starter",
   pricingStarterPrice: "$49",

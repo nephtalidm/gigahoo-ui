@@ -105,7 +105,7 @@ const home = {
   pricingFreeFeature3: "客户信息采集",
   pricingFreeFeature4: "通话摘要",
   pricingFreeFeatureSpam: "拦截垃圾和推销来电",
-  pricingFreeFeature5: "每天 25 分钟",
+  pricingFreeFeature5: "25 分钟/天",
   pricingFreeCta: "免费开始",
   pricingStarterName: "Starter",
   pricingStarterPrice: "$49",

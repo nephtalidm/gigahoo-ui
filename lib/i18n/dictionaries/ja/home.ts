@@ -105,7 +105,7 @@ const home = {
   pricingFreeFeature3: "お客様情報の収集",
   pricingFreeFeature4: "通話の要約",
   pricingFreeFeatureSpam: "迷惑電話・営業電話をブロック",
-  pricingFreeFeature5: "1日25分",
+  pricingFreeFeature5: "25分/日",
   pricingFreeCta: "無料で始める",
   pricingStarterName: "Starter",
   pricingStarterPrice: "$49",

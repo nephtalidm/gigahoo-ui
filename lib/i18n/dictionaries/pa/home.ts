@@ -105,7 +105,7 @@ const home = {
   pricingFreeFeature3: "ਗਾਹਕ ਇਨਟੇਕ",
   pricingFreeFeature4: "ਕਾਲ ਸਾਰ",
   pricingFreeFeatureSpam: "ਸਪੈਮ ਅਤੇ ਵਿਕਰੀ ਕਾਲਾਂ ਬਲਾਕ ਕਰਦਾ ਹੈ",
-  pricingFreeFeature5: "ਰੋਜ਼ਾਨਾ 25 ਮਿੰਟ",
+  pricingFreeFeature5: "25 ਮਿੰਟ/ਦਿਨ",
   pricingFreeCta: "ਮੁਫ਼ਤ ਸ਼ੁਰੂ ਕਰੋ",
   pricingStarterName: "Starter",
   pricingStarterPrice: "$49",

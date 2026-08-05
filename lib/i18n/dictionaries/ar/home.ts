@@ -105,7 +105,7 @@ const home = {
   pricingFreeFeature3: "تسجيل بيانات العملاء",
   pricingFreeFeature4: "ملخّصات المكالمات",
   pricingFreeFeatureSpam: "حظر مكالمات البريد العشوائي والمبيعات",
-  pricingFreeFeature5: "25 دقيقة يوميًا",
+  pricingFreeFeature5: "25 دقيقة/يوم",
   pricingFreeCta: "ابدأ مجانًا",
   pricingStarterName: "Starter",
   pricingStarterPrice: "$49",

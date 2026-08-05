@@ -105,7 +105,7 @@ const home = {
   pricingFreeFeature3: "Pagkuha ng impormasyon ng customer",
   pricingFreeFeature4: "Mga buod ng tawag",
   pricingFreeFeatureSpam: "Hinaharang ang spam at sales calls",
-  pricingFreeFeature5: "25 minuto bawat araw",
+  pricingFreeFeature5: "25 minuto/araw",
   pricingFreeCta: "Magsimula nang Libre",
   pricingStarterName: "Starter",
   pricingStarterPrice: "$49",
