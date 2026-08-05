@@ -19,6 +19,8 @@ const calls = {
   status: "상태",
   isEmergency: "긴급 여부",
   emergency: "긴급",
+  tag_out_of_scope: "제공 안 함",
+  tag_possible_spam: "스팸 의심",
 
   // Detail dialog
   detailsTitle: "통화 세부 정보",

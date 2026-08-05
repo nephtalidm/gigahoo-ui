@@ -100,6 +100,7 @@ const home = {
   pricingFreeFeature2: "Multilingual support",
   pricingFreeFeature3: "Customer intake",
   pricingFreeFeature4: "Call summaries",
+  pricingFreeFeatureSpam: "Blocks spam and sales calls",
   pricingFreeFeature5: "25 included minutes",
   pricingFreeCta: "Start Free",
   pricingStarterName: "Starter",

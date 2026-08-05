@@ -19,6 +19,8 @@ const calls = {
   status: "स्थिति",
   isEmergency: "क्या आपातकाल?",
   emergency: "आपातकाल",
+  tag_out_of_scope: "सेवा नहीं",
+  tag_possible_spam: "संभावित स्पैम",
 
   // Detail dialog
   detailsTitle: "कॉल विवरण",

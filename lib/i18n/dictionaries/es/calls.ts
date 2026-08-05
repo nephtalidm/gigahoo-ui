@@ -19,6 +19,8 @@ const calls = {
   status: "Estado",
   isEmergency: "¿Es Emergencia?",
   emergency: "Emergencia",
+  tag_out_of_scope: "No ofrecido",
+  tag_possible_spam: "Posible spam",
 
   // Detail dialog
   detailsTitle: "Detalles de la llamada",

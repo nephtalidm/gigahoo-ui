@@ -100,6 +100,7 @@ const home = {
   pricingFreeFeature2: "ਬਹੁ-ਭਾਸ਼ਾਈ ਸਮਰਥਨ",
   pricingFreeFeature3: "ਗਾਹਕ ਇਨਟੇਕ",
   pricingFreeFeature4: "ਕਾਲ ਸਾਰ",
+  pricingFreeFeatureSpam: "ਸਪੈਮ ਅਤੇ ਵਿਕਰੀ ਕਾਲਾਂ ਬਲਾਕ ਕਰਦਾ ਹੈ",
   pricingFreeFeature5: "25 ਸ਼ਾਮਲ ਮਿੰਟ",
   pricingFreeCta: "ਮੁਫ਼ਤ ਸ਼ੁਰੂ ਕਰੋ",
   pricingStarterName: "Starter",

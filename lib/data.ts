@@ -18,6 +18,13 @@ export type Conversation = {
   isEmergency: boolean
   status: CallStatus
   transcript: string | null
+  /**
+   * Stable codes the voice agent decided ONCE when the call ended ("out_of_scope",
+   * "possible_spam") — never re-derived here, so history keeps its original meaning even after the
+   * rules that produce tags change. Unknown codes are dropped rather than shown raw: a future agent
+   * release must not leak an untranslated identifier into the dashboard.
+   */
+  tags: string[]
 }
 
 export type Account = {
@@ -66,7 +73,22 @@ export function mapApiConversation(c: ConversationData): Conversation {
     isEmergency: c.isEmergency ?? false,
     status: c.status as CallStatus,
     transcript: c.transcript ?? null,
+    tags: parseTags(c.tags),
   };
+}
+
+/** Tag codes the dashboard knows how to label. Anything else is ignored (see Conversation.tags). */
+const KNOWN_TAGS = ["out_of_scope", "possible_spam"] as const
+
+function parseTags(raw: string | null | undefined): string[] {
+  if (!raw) return []
+  try {
+    const parsed: unknown = JSON.parse(raw)
+    if (!Array.isArray(parsed)) return []
+    return parsed.filter((t): t is string => typeof t === "string" && (KNOWN_TAGS as readonly string[]).includes(t))
+  } catch {
+    return [] // malformed JSON must never break a call-history row
+  }
 }
 
 export function mapApiAccount(a: AccountData): Account {

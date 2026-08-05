@@ -19,6 +19,8 @@ const calls = {
   status: "ਸਥਿਤੀ",
   isEmergency: "ਕੀ ਐਮਰਜੈਂਸੀ?",
   emergency: "ਐਮਰਜੈਂਸੀ",
+  tag_out_of_scope: "ਸੇਵਾ ਨਹੀਂ",
+  tag_possible_spam: "ਸੰਭਾਵੀ ਸਪੈਮ",
 
   // Detail dialog
   detailsTitle: "ਕਾਲ ਦੇ ਵੇਰਵੇ",

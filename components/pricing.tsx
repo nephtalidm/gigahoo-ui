@@ -33,6 +33,7 @@ export function Pricing({ currency, prices = {}, country = "" }: PricingProps) {
         t("home.pricingFreeFeature2"),
         t("home.pricingFreeFeature3"),
         t("home.pricingFreeFeature4"),
+        t("home.pricingFreeFeatureSpam"),
         t("home.pricingFreeFeature5"),
       ],
       cta: t("home.pricingFreeCta"),

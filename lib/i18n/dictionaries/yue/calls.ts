@@ -19,6 +19,8 @@ const calls = {
   status: "狀態",
   isEmergency: "係咪緊急？",
   emergency: "緊急",
+  tag_out_of_scope: "唔提供",
+  tag_possible_spam: "疑似垃圾來電",
 
   // Detail dialog
   detailsTitle: "通話詳情",

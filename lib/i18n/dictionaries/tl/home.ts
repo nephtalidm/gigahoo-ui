@@ -100,6 +100,7 @@ const home = {
   pricingFreeFeature2: "Suporta sa maraming wika",
   pricingFreeFeature3: "Pagkuha ng impormasyon ng customer",
   pricingFreeFeature4: "Mga buod ng tawag",
+  pricingFreeFeatureSpam: "Hinaharang ang spam at sales calls",
   pricingFreeFeature5: "25 kasamang minuto",
   pricingFreeCta: "Magsimula nang Libre",
   pricingStarterName: "Starter",

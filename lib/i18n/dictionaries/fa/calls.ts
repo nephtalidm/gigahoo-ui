@@ -19,6 +19,8 @@ const calls = {
   status: "وضعیت",
   isEmergency: "اضطراری است؟",
   emergency: "اضطراری",
+  tag_out_of_scope: "ارائه نمی‌شود",
+  tag_possible_spam: "احتمال هرزنامه",
 
   // Detail dialog
   detailsTitle: "جزئیات تماس",

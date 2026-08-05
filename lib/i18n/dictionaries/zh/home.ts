@@ -100,6 +100,7 @@ const home = {
   pricingFreeFeature2: "多语言支持",
   pricingFreeFeature3: "客户信息采集",
   pricingFreeFeature4: "通话摘要",
+  pricingFreeFeatureSpam: "拦截垃圾和推销来电",
   pricingFreeFeature5: "含 25 分钟通话时长",
   pricingFreeCta: "免费开始",
   pricingStarterName: "Starter",

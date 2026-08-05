@@ -19,6 +19,8 @@ const calls = {
   status: "ステータス",
   isEmergency: "緊急ですか？",
   emergency: "緊急",
+  tag_out_of_scope: "対象外",
+  tag_possible_spam: "迷惑電話の可能性",
 
   // Detail dialog
   detailsTitle: "通話の詳細",

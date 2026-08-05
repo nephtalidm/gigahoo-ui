@@ -351,6 +351,8 @@ export interface ConversationData {
   summary: string | null;
   address?: string | null;
   isEmergency?: boolean;
+  /** Raw JSON array of stable tag codes as stored ('["out_of_scope"]'), or null. */
+  tags?: string | null;
   status: string;
   transcript?: string | null;
 }

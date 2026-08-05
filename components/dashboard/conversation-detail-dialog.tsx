@@ -5,6 +5,7 @@ import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle } from "@
 import { Button } from "@/components/ui/button"
 import { StatusBadge } from "@/components/dashboard/status-badge"
 import { EmergencyBadge } from "@/components/dashboard/emergency-badge"
+import { CallTagBadges } from "@/components/dashboard/call-tag-badge"
 import { useTranslation } from "@/contexts/language-context"
 import { type Conversation, formatDateTime, formatDuration, formatPhone } from "@/lib/data"
 import { Copy, Check, X } from "lucide-react"
@@ -63,6 +64,7 @@ export function ConversationDetailDialog({
                 <div className="flex items-center gap-2">
                   <StatusBadge status={selected.status} />
                   {selected.isEmergency && <EmergencyBadge />}
+                  <CallTagBadges tags={selected.tags} />
                 </div>
               </div>
 

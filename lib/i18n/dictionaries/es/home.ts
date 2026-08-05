@@ -102,6 +102,7 @@ const home = {
   pricingFreeFeature2: "Soporte multilingüe",
   pricingFreeFeature3: "Registro de clientes",
   pricingFreeFeature4: "Resúmenes de llamadas",
+  pricingFreeFeatureSpam: "Bloquea llamadas de spam y de venta",
   pricingFreeFeature5: "25 minutos incluidos",
   pricingFreeCta: "Comenzar gratis",
   pricingStarterName: "Inicial",

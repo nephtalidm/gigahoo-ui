@@ -100,6 +100,7 @@ const home = {
   pricingFreeFeature2: "बहुभाषी समर्थन",
   pricingFreeFeature3: "ग्राहक इनटेक",
   pricingFreeFeature4: "कॉल सारांश",
+  pricingFreeFeatureSpam: "स्पैम और बिक्री कॉल ब्लॉक करता है",
   pricingFreeFeature5: "25 शामिल मिनट",
   pricingFreeCta: "मुफ़्त शुरू करें",
   pricingStarterName: "Starter",

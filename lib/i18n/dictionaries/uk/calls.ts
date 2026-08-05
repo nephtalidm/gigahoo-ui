@@ -19,6 +19,8 @@ const calls = {
   status: "Статус",
   isEmergency: "Терміново?",
   emergency: "Терміново",
+  tag_out_of_scope: "Не надається",
+  tag_possible_spam: "Можливо спам",
 
   // Detail dialog
   detailsTitle: "Деталі дзвінка",

@@ -19,6 +19,8 @@ const calls = {
   status: "Status",
   isEmergency: "Emergency ba?",
   emergency: "Emergency",
+  tag_out_of_scope: "Hindi inaalok",
+  tag_possible_spam: "Posibleng spam",
 
   // Detail dialog
   detailsTitle: "Mga Detalye ng Tawag",

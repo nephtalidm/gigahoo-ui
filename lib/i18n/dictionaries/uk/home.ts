@@ -100,6 +100,7 @@ const home = {
   pricingFreeFeature2: "Багатомовна підтримка",
   pricingFreeFeature3: "Збір даних клієнтів",
   pricingFreeFeature4: "Підсумки дзвінків",
+  pricingFreeFeatureSpam: "Блокує спам і рекламні дзвінки",
   pricingFreeFeature5: "25 включених хвилин",
   pricingFreeCta: "Почати безкоштовно",
   pricingStarterName: "Starter",

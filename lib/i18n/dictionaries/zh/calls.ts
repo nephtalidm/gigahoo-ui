@@ -19,6 +19,8 @@ const calls = {
   status: "状态",
   isEmergency: "是否紧急？",
   emergency: "紧急",
+  tag_out_of_scope: "不提供",
+  tag_possible_spam: "疑似垃圾来电",
 
   // Detail dialog
   detailsTitle: "通话详情",

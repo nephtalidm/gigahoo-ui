@@ -19,6 +19,8 @@ const calls = {
   status: "الحالة",
   isEmergency: "هل هي حالة طارئة؟",
   emergency: "طارئ",
+  tag_out_of_scope: "غير متوفرة",
+  tag_possible_spam: "بريد عشوائي محتمل",
 
   // Detail dialog
   detailsTitle: "تفاصيل المكالمة",

@@ -100,6 +100,7 @@ const home = {
   pricingFreeFeature2: "Prise en charge multilingue",
   pricingFreeFeature3: "Collecte des informations clients",
   pricingFreeFeature4: "Résumés d'appels",
+  pricingFreeFeatureSpam: "Bloque les appels de spam et de démarchage",
   pricingFreeFeature5: "25 minutes incluses",
   pricingFreeCta: "Commencer gratuitement",
   pricingStarterName: "Starter",

@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/table"
 import { StatusBadge } from "@/components/dashboard/status-badge"
 import { EmergencyBadge } from "@/components/dashboard/emergency-badge"
+import { CallTagBadges } from "@/components/dashboard/call-tag-badge"
 import { ConversationDetailDialog } from "@/components/dashboard/conversation-detail-dialog"
 import { useTranslation } from "@/contexts/language-context"
 import { type Conversation, formatDateTime, formatDuration, formatPhone } from "@/lib/data"
@@ -92,7 +93,11 @@ export function ConversationHistoryTable({ conversations, timeZone, openId }: { 
                       <StatusBadge status={conv.status} />
                     </TableCell>
                     <TableCell className="text-center">
-                      {conv.isEmergency ? <EmergencyBadge /> : <span className="text-muted-foreground">—</span>}
+                      <div className="flex flex-wrap items-center justify-center gap-1">
+                        {conv.isEmergency && <EmergencyBadge />}
+                        <CallTagBadges tags={conv.tags} />
+                        {!conv.isEmergency && !conv.tags.length && <span className="text-muted-foreground">—</span>}
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -116,6 +121,7 @@ export function ConversationHistoryTable({ conversations, timeZone, openId }: { 
                   <div className="flex shrink-0 flex-col items-end gap-1">
                     <StatusBadge status={conv.status} />
                     {conv.isEmergency && <EmergencyBadge />}
+                    <CallTagBadges tags={conv.tags} />
                   </div>
                 </div>
                 <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{conv.summary}</p>
