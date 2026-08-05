@@ -6,6 +6,7 @@ import {
   FileText,
   ClipboardList,
   MessageCircleQuestion,
+  ShieldBan,
 } from "lucide-react"
 import { useTranslation } from "@/contexts/language-context"
 
@@ -37,6 +38,11 @@ export function Features() {
       icon: MessageCircleQuestion,
       title: t("home.feature5Title"),
       description: t("home.feature5Description"),
+    },
+    {
+      icon: ShieldBan,
+      title: t("home.feature6Title"),
+      description: t("home.feature6Description"),
     },
   ]
 

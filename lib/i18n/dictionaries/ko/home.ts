@@ -72,6 +72,9 @@ const home = {
   feature5Title: "서비스에 대한 질문 답변",
   feature5Description:
     "서비스, 서비스 지역, 비즈니스 정보에 대한 일반적인 질문에 즉시 답변을 제공합니다.",
+  feature6Title: "스팸 및 영업 전화 차단",
+  feature6Description:
+    "텔레마케팅과 영업 전화는 정중히 종료되어, 실제 고객의 용건만 전달됩니다.",
 
   // How it works
   howEyebrow: "이용 방법",

@@ -73,6 +73,9 @@ const home = {
   feature5Title: "Responde preguntas sobre tus servicios",
   feature5Description:
     "Ofrece respuestas inmediatas a las preguntas frecuentes sobre tus servicios, zonas de cobertura e información del negocio.",
+  feature6Title: "Bloquea llamadas de spam y de venta",
+  feature6Description:
+    "Los telemarketers y las llamadas comerciales se cortan con cortesía, para que solo sepas de clientes reales.",
 
   // How it works
   howEyebrow: "Cómo funciona",

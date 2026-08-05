@@ -72,6 +72,9 @@ const home = {
   feature5Title: "Sumasagot ng mga Tanong Tungkol sa mga Serbisyo",
   feature5Description:
     "Magbigay ng agarang sagot sa mga karaniwang tanong tungkol sa iyong mga serbisyo, saklaw na lugar, at impormasyon ng negosyo.",
+  feature6Title: "Hinaharang ang spam at sales calls",
+  feature6Description:
+    "Magalang na tinatapos ang telemarketing at sales calls, kaya tunay na customer lang ang makakarating sa iyo.",
 
   // How it works
   howEyebrow: "Paano ito gumagana",

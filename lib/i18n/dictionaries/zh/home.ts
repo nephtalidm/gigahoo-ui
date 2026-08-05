@@ -72,6 +72,9 @@ const home = {
   feature5Title: "解答有关服务的问题",
   feature5Description:
     "即时解答有关您的服务、服务区域和企业信息的常见问题。",
+  feature6Title: "拦截垃圾和推销来电",
+  feature6Description:
+    "礼貌地结束推销电话，让您只需关注真正的客户。",
 
   // How it works
   howEyebrow: "工作原理",

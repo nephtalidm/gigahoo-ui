@@ -72,6 +72,9 @@ const home = {
   feature5Title: "Answers Questions About Services",
   feature5Description:
     "Provide instant answers to common questions about your services, service areas, and business information.",
+  feature6Title: "Blocks Spam & Sales Calls",
+  feature6Description:
+    "Telemarketers and sales pitches are politely ended, so you only hear about real customers.",
 
   // How it works
   howEyebrow: "How it works",

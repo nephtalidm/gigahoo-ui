@@ -72,6 +72,9 @@ const home = {
   feature5Title: "Répond aux questions sur les services",
   feature5Description:
     "Fournissez des réponses instantanées aux questions courantes sur vos services, vos zones d'intervention et les informations de votre entreprise.",
+  feature6Title: "Bloque le spam et le démarchage",
+  feature6Description:
+    "Les télévendeurs et les appels commerciaux sont poliment écourtés : vous n'entendez parler que de vrais clients.",
 
   // How it works
   howEyebrow: "Comment ça marche",

@@ -72,6 +72,9 @@ const home = {
   feature5Title: "回答有關服務嘅問題",
   feature5Description:
     "即時解答有關你嘅服務、服務範圍同商業資料嘅常見問題。",
+  feature6Title: "攔截垃圾同推銷來電",
+  feature6Description:
+    "有禮貌噉結束推銷電話，令你只需要關注真正嘅客戶。",
 
   // How it works
   howEyebrow: "運作方式",

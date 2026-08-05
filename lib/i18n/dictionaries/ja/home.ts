@@ -72,6 +72,9 @@ const home = {
   feature5Title: "サービスに関する質問への回答",
   feature5Description:
     "サービス内容、対応エリア、ビジネス情報に関するよくある質問に即座に回答します。",
+  feature6Title: "迷惑電話・営業電話をブロック",
+  feature6Description:
+    "営業電話や勧誘は丁寧にお断りするので、本当のお客様の用件だけが届きます。",
 
   // How it works
   howEyebrow: "ご利用の流れ",
