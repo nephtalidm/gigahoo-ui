@@ -26,7 +26,9 @@ export function Pricing({ currency, prices = {}, country = "" }: PricingProps) {
     {
       slug: "Free",
       name: t("home.pricingFreeName"),
-      period: t("home.pricingPeriod"),
+      // Its own period, not the shared "/month" — a 7-day trial rendered as "$0/month" reads as a
+      // permanent free plan, which is the one thing this tier must not promise.
+      period: t("home.pricingFreePeriod"),
       description: t("home.pricingFreeDescription"),
       features: [
         t("home.pricingFreeFeature1"),
